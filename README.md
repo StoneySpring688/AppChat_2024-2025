@@ -36,6 +36,22 @@ La aplicación está estructurada en un modelo de **tres capas**:
    ```bash
    git clone https://github.com/StoneySpring688/AppChat_2024-2025.git
    cd AppChat_2024-2025
+   ```
+
+## 🔧 Construcción
+
+Asegúrate de tener **Maven** instalado y ejecuta el siguiente comando:
+
+```bash
+mvn clean install
+```
+
+## ▶️ Ejecutar la aplicación
+
+```bash
+java -jar target/AppChat.jar
+```
+
 
 ## 📖 Documentación
 La documentación detallada del proyecto incluye:
