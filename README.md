@@ -7,7 +7,7 @@
 > ### Requiere Java para funcionar
 
 ## 📋 Descripción del proyecto
-**AppChat** es una aplicación de mensajería inspirada en aplicaciones populares como **WhatsApp Web** y **Telegram**, diseñada como una aplicación de escritorio en **Java/Swing**
+**AppChat** es una aplicación de mensajería inspirada en aplicaciones populares como **WhatsApp Web** y **Telegram**, diseñada como una aplicación de escritorio en **Java/Swing**.
 
 Esta aplicación permite a los usuarios comunicarse de manera privada y organizada, gestionar listas de contactos y grupos, y realizar búsquedas avanzadas de mensajes. Los usuarios también pueden optar por una cuenta **Premium** para obtener beneficios adicionales.
 
@@ -31,7 +31,7 @@ La aplicación está estructurada en un modelo de **tres capas**:
 - **iText**: Para la generación de archivos PDF en cuentas premium.
 - **JCalendar**: Componente Swing para el manejo de fechas en la interfaz de usuario.
 
-## 🔧 Instalación
+## 🧩 Instalación
 **Clonar el repositorio**:
 ```bash
 git clone https://github.com/StoneySpring688/AppChat_2024-2025.git
