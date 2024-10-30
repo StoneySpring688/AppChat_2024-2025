@@ -1,0 +1,87 @@
+package registro;
+
+import javax.swing.*;
+//import com.toedter.calendar.JDateChooser;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+public class RegistroPanel extends JPanel {
+    private JTextField nombreField, emailField, telefonoField, saludoField;
+    private JPasswordField passwordField, confirmPasswordField;
+    private JDateChooser fechaNacimientoChooser;
+    private JTextField imagenURLField;
+    private JButton registroButton;
+
+    public RegistroPanel() {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        
+        // Nombre
+        add(new JLabel("Nombre completo:"));
+        nombreField = new JTextField(20);
+        add(nombreField);
+
+        // Fecha de nacimiento
+        add(new JLabel("Fecha de nacimiento:"));
+        fechaNacimientoChooser = new JDateChooser();
+        add(fechaNacimientoChooser);
+
+        // Email
+        add(new JLabel("Email:"));
+        emailField = new JTextField(20);
+        add(emailField);
+
+        // Teléfono
+        add(new JLabel("Teléfono:"));
+        telefonoField = new JTextField(15);
+        add(telefonoField);
+
+        // Contraseña
+        add(new JLabel("Contraseña:"));
+        passwordField = new JPasswordField(20);
+        add(passwordField);
+
+        // Confirmar Contraseña
+        add(new JLabel("Confirmar Contraseña:"));
+        confirmPasswordField = new JPasswordField(20);
+        add(confirmPasswordField);
+
+        // URL de Imagen
+        add(new JLabel("URL de Imagen de perfil:"));
+        imagenURLField = new JTextField(30);
+        add(imagenURLField);
+
+        // Mensaje de saludo (opcional)
+        add(new JLabel("Mensaje de saludo:"));
+        saludoField = new JTextField(30);
+        add(saludoField);
+
+        // Botón de registro
+        registroButton = new JButton("Registrar");
+        add(registroButton);
+
+        // Acción del botón
+        registroButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registrarUsuario();
+            }
+        });
+    }
+
+    private void registrarUsuario() {
+        String nombre = nombreField.getText();
+        String email = emailField.getText();
+        String telefono = telefonoField.getText();
+        String password = new String(passwordField.getPassword());
+        String confirmPassword = new String(confirmPasswordField.getPassword());
+
+        if (nombre.isEmpty() || email.isEmpty() || telefono.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos obligatorios.");
+        } else if (!password.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario registrado con éxito.");
+            // Lógica para procesar el registro del usuario
+        }
+    }
+}
