@@ -31,12 +31,12 @@ La aplicación está estructurada en un modelo de **tres capas**:
 - **iText**: Para la generación de archivos PDF en cuentas premium.
 - **JCalendar**: Componente Swing para el manejo de fechas en la interfaz de usuario.
 
-## 🔧 Instalación y Configuración
-1. **Clonar el repositorio**:
-   ```bash
-   git clone https://github.com/StoneySpring688/AppChat_2024-2025.git
-   cd AppChat_2024-2025
-   ```
+## 🔧 Instalación
+**Clonar el repositorio**:
+```bash
+git clone https://github.com/StoneySpring688/AppChat_2024-2025.git
+cd AppChat_2024-2025
+```
 
 ## 🔧 Construcción
 
