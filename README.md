@@ -1,2 +1,50 @@
 # AppChat_2024-2025
-A chat aplication 
+### A modern, feature-rich chat application powered by Java Swing
+
+---
+
+> [!IMPORTANT]
+> ### Requiere Java para funcionar
+
+## 📋 Descripción del proyecto
+**AppChat** es una aplicación de mensajería inspirada en aplicaciones populares como **WhatsApp Web** y **Telegram**, diseñada como una aplicación de escritorio en **Java/Swing** para la Facultad de Informática de la Universidad de Murcia.
+
+Esta aplicación permite a los usuarios comunicarse de manera privada y organizada, gestionar listas de contactos y grupos, y realizar búsquedas avanzadas de mensajes. Los usuarios también pueden optar por una cuenta **Premium** para obtener beneficios adicionales.
+
+## 🚀 Funcionalidades principales
+- **Login y Registro de usuarios**: Los usuarios pueden registrarse usando su número de teléfono y otros datos personales.
+- **Lista de contactos y grupos**: Gestión personalizada de contactos individuales y grupos para un fácil acceso.
+- **Mensajería**: Envía mensajes a contactos individuales o grupos, con soporte para emoticonos y un sistema de ordenación cronológica.
+- **Cuentas Premium**: Opción de cuenta premium con descuentos basados en la actividad del usuario y la posibilidad de exportar conversaciones en formato PDF.
+- **Búsqueda avanzada**: Filtros para encontrar mensajes específicos basados en texto, número de teléfono, nombre del contacto, y más.
+
+## 💻 Arquitectura de la aplicación
+La aplicación está estructurada en un modelo de **tres capas**:
+1. **Presentación**: Desarrollada en **Java Swing**, contiene todas las interfaces de usuario.
+2. **Lógica de Negocio**: Maneja las operaciones principales y la lógica de la aplicación.
+3. **Almacenamiento**: Implementa persistencia de datos usando servicios específicos y el patrón **DAO** para desacoplar el acceso a datos.
+
+## 🛠️ Tecnologías y Librerías
+- **Java 11**: Lenguaje principal para la lógica de negocio y la interfaz.
+- **Java Swing**: Para construir las interfaces de usuario.
+- **Maven**: Gestión de dependencias y construcción del proyecto.
+- **iText**: Para la generación de archivos PDF en cuentas premium.
+- **JCalendar**: Componente Swing para el manejo de fechas en la interfaz de usuario.
+
+## 🔧 Instalación y Configuración
+1. **Clonar el repositorio**:
+   ```bash
+   git clone https://github.com/StoneySpring688/AppChat_2024-2025.git
+   cd AppChat_2024-2025
+
+## 📖 Documentación
+La documentación detallada del proyecto incluye:
+- Modelado de requisitos y diagramas de clases.
+- Manual de usuario.
+- Explicaciones de diseño y patrones utilizados.
+
+Consulta el archivo `TDS-AppChat-Documentacion.pdf` para más detalles técnicos.
+
+## 🏆 Créditos
+Este proyecto ha sido desarrollado como parte del curso de **Tecnologías de Desarrollo de Software** en la Universidad de Murcia (Curso 2024/2025).
+
