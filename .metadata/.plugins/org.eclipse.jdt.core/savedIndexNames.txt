@@ -1,4 +1,0 @@
-INDEX VERSION 1.134+/home/stoneyspring/Música/AppChat/.metadata/.plugins/org.eclipse.jdt.core
-764203739.index
-1865797976.index
-2970861272.index
