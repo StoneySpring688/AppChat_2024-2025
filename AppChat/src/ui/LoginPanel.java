@@ -13,8 +13,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import login.Login;
-import registro.Register;
 
 public class LoginPanel extends JPanel {
 
@@ -35,7 +33,7 @@ public class LoginPanel extends JPanel {
 		
 		// Botón o etiqueta para cerrar la ventana
 		JLabel closeButton = new JLabel("");
-		closeButton.setIcon(new ImageIcon(Register.class.getResource("/resources/Exit_Door.png")));
+		closeButton.setIcon(new ImageIcon(RegisterPanel.class.getResource("/resources/Exit_Door.png")));
 		closeButton.setForeground(new Color(241, 57, 83));
 		closeButton.setBounds(676, 0, 41, 44);
 		closeButton.setBackground(Color.WHITE);
@@ -127,7 +125,7 @@ public class LoginPanel extends JPanel {
 		add(rdbtnshowPassword1);
 		
 		JLabel lblBanner = new JLabel("");
-		lblBanner.setIcon(new ImageIcon(Login.class.getResource("/resources/Login_Banner.png")));
+		lblBanner.setIcon(new ImageIcon(RegisterPanel.class.getResource("/resources/Login_Banner.png")));
 		lblBanner.setBounds(370, 30, 285, 80);
 		add(lblBanner);		
 	}
