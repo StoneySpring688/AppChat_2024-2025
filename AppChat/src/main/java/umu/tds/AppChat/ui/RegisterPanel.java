@@ -35,9 +35,9 @@ public class RegisterPanel extends JPanel {
 		
 		// Botón o etiqueta para cerrar la ventana
 		JLabel closeButton = new JLabel("");
-		closeButton.setIcon(new ImageIcon(RegisterPanel.class.getResource("/assets/Exit_Door.png")));
+		closeButton.setIcon(new ImageIcon(RegisterPanel.class.getResource("/assets/UI_Exit.png")));
 		closeButton.setForeground(new Color(241, 57, 83));
-		closeButton.setBounds(676, 0, 41, 44);
+		closeButton.setBounds(685, 2, 33, 33);
 		closeButton.setBackground(Color.WHITE);
 		add(closeButton);
 				
