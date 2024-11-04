@@ -1,113 +1,57 @@
-package login;
+package ui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
 import java.awt.Color;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import java.awt.Component;
-import javax.swing.Box;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.ActionEvent;
-import javax.swing.JPasswordField;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.border.TitledBorder;
-
-import registro.Register;
-import ui.RegisterPanel;
 
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
-public class Login extends JFrame {
+import login.Login;
+import registro.Register;
+
+public class LoginPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	
-	private JPanel contentPane;
-	int posX=0;
-	int posY=0;
 	private JTextField textFieldPhone;
 	private JPasswordField password1;
-
+	protected JButton RegisterButton;
+	private JButton LoginButton;
+	
 	/**
-	 * Launch the application.
+	 * Create the panel.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login frame = new Login();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public Login() {
+	public LoginPanel() {
 		setBackground(Color.WHITE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720, 420);
-		setSize(720,420);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setUndecorated(true);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		//movilidad del frame
-		contentPane.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				posX = e.getX();
-				posY = e.getY();
-			}
-		});
-		contentPane.addMouseMotionListener(new MouseMotionAdapter() {
-			public void mouseDragged(MouseEvent e) {
-				setLocation(e.getXOnScreen() - posX, e.getYOnScreen() - posY);
-			}
-		});
+		setLayout(null);
 		
 		// Botón o etiqueta para cerrar la ventana
-				JLabel closeButton = new JLabel("");
-				closeButton.setIcon(new ImageIcon(Register.class.getResource("/resources/Exit_Door.png")));
-				closeButton.setForeground(new Color(241, 57, 83));
-				closeButton.setBounds(676, 0, 41, 44);
-				closeButton.setBackground(Color.WHITE);
-				contentPane.add(closeButton);
-						
-				closeButton.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						System.exit(0); // Cierra la aplicación
-						}
-					});
-		
+		JLabel closeButton = new JLabel("");
+		closeButton.setIcon(new ImageIcon(Register.class.getResource("/resources/Exit_Door.png")));
+		closeButton.setForeground(new Color(241, 57, 83));
+		closeButton.setBounds(676, 0, 41, 44);
+		closeButton.setBackground(Color.WHITE);
+		add(closeButton);
+				
+		closeButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.exit(0); // Cierra la aplicación
+				}
+			});
+
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
 		panel.setBounds(0, 0, 346, 420);
-		getContentPane().add(panel);
+		add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblDecoration1 = new JLabel("");
@@ -140,47 +84,35 @@ public class Login extends JFrame {
 		lblDecoration5_1.setBounds(141, 344, 64, 64);
 		panel.add(lblDecoration5_1);
 		
-		JLabel backButton = new JLabel("");
-		backButton.setIcon(new ImageIcon(RegisterPanel.class.getResource("/resources/UI_Icon_RoleCombat_Com_Back.png")));
-		backButton.setBounds(0, 0, 42, 42);
-		panel.add(backButton);
-		backButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//System.exit(0); // TODO actualizar el estado del programa a login
-				}
-			});
-		
-		
-		JButton LoginButton = new JButton("Login");
+		LoginButton = new JButton("Login");
 		LoginButton.setForeground(Color.WHITE);
 		LoginButton.setBackground(new Color(241, 57, 83));
 		LoginButton.setBounds(370, 360, 120, 35); // x = 370+(285/2)-(187/2)
-		getContentPane().add(LoginButton);
+		add(LoginButton);
 		
-		JButton RegisterButton = new JButton("Register");
+		RegisterButton = new JButton("Register");
 		RegisterButton.setForeground(Color.WHITE);
 		RegisterButton.setBackground(new Color(241, 57, 83));
 		RegisterButton.setBounds(535, 360, 120, 35);
-		contentPane.add(RegisterButton);
+		add(RegisterButton);
 		
 		textFieldPhone = new JTextField();
 		textFieldPhone.setBounds(370, 160, 285, 30);
-		getContentPane().add(textFieldPhone);
+		add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
 		JLabel lblPhone = new JLabel("Phone");
 		lblPhone.setBounds(370, 142, 40, 20);
-		getContentPane().add(lblPhone);
+		add(lblPhone);
 		
 		password1 = new JPasswordField();
 		password1.setColumns(10);
 		password1.setBounds(370, 235, 285, 30);
-		getContentPane().add(password1);
+		add(password1);
 		
 		JLabel lblPassword1 = new JLabel("Password");
 		lblPassword1.setBounds(370, 217, 60, 20);
-		getContentPane().add(lblPassword1);
+		add(lblPassword1);
 		
 		JRadioButton rdbtnshowPassword1 = new JRadioButton("show Password");
 		rdbtnshowPassword1.setBackground(Color.WHITE);
@@ -192,11 +124,13 @@ public class Login extends JFrame {
 				password1.setEchoChar('•');
 			}
 		});
-		getContentPane().add(rdbtnshowPassword1);
+		add(rdbtnshowPassword1);
 		
 		JLabel lblBanner = new JLabel("");
 		lblBanner.setIcon(new ImageIcon(Login.class.getResource("/resources/Login_Banner.png")));
 		lblBanner.setBounds(370, 30, 285, 80);
-		contentPane.add(lblBanner);
+		add(lblBanner);		
 	}
+	
+
 }
