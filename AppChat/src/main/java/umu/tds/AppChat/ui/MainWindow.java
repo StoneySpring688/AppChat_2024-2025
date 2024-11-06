@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import java.awt.CardLayout;
 
 public class MainWindow extends JFrame {
 
@@ -76,7 +77,7 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(null);
 		
 		closeButton = new JLabel("");
-		closeButton.setIcon(new ImageIcon(MainWindow.class.getResource("/assets/UI_Exit.png")));
+		closeButton.setIcon(new ImageIcon(getClass().getResource("/assets/UI_Exit.png")));
 		closeButton.setBounds(1245, 2, 33, 33);
 		contentPane.add(closeButton);
 		closeButton.addMouseListener(new MouseAdapter() {
@@ -92,28 +93,28 @@ public class MainWindow extends JFrame {
 		contentPane.add(panelBotonera);
 		panelBotonera.setLayout(null);
 		
-		buttonChats = new JButton(new ImageIcon(MainWindow.class.getResource("/assets/UI_ChapterIcon_Wanderer.png")));
+		buttonChats = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Wanderer.png")));
 		buttonChats.setBounds(10, 0, 100, 100);
 		buttonChats.setContentAreaFilled(false);
 		buttonChats.setBorderPainted(false);
 		buttonChats.setOpaque(false);
 		panelBotonera.add(buttonChats);
 		
-		buttonGroups = new JButton(new ImageIcon(MainWindow.class.getResource("/assets/UI_ChapterIcon_Traveler.png")));
+		buttonGroups = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Traveler.png")));
 		buttonGroups.setOpaque(false);
 		buttonGroups.setContentAreaFilled(false);
 		buttonGroups.setBorderPainted(false);
 		buttonGroups.setBounds(10, 120, 100, 100);
 		panelBotonera.add(buttonGroups);
 		
-		buttonShop = new JButton(new ImageIcon(MainWindow.class.getResource("/assets/Ui_SystemOpenIcon_Shop.png")));
+		buttonShop = new JButton(new ImageIcon(getClass().getResource("/assets/Ui_SystemOpenIcon_Shop.png")));
 		buttonShop.setOpaque(false);
 		buttonShop.setContentAreaFilled(false);
 		buttonShop.setBorderPainted(false);
 		buttonShop.setBounds(10, 240, 100, 100);
 		panelBotonera.add(buttonShop);
 		
-		buttonSearch = new JButton(new ImageIcon(MainWindow.class.getResource("/assets/UI_ChapterIcon_Charlotte.png")));
+		buttonSearch = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Charlotte.png")));
 		buttonSearch.setOpaque(false);
 		buttonSearch.setContentAreaFilled(false);
 		buttonSearch.setBorderPainted(false);
@@ -124,6 +125,15 @@ public class MainWindow extends JFrame {
 		panelMenu1.setBackground(Color.GRAY);
 		panelMenu1.setBounds(120, 0, 240, 660);
 		contentPane.add(panelMenu1);
+		CardLayout actualizadorMenu1 = new CardLayout(0, 0);
+		panelMenu1.setLayout(actualizadorMenu1);
+		
+		
+		// gestionar paneles menu1
+		ChatsList chatslist = new ChatsList();
+		panelMenu1.add(chatslist,"chats");
+		actualizadorMenu1.show(panelMenu1,"chats");
+		
 		
 		panelMenuPerfil = new JPanel();
 		panelMenuPerfil.setBackground(new Color(78,78,78));
@@ -132,7 +142,7 @@ public class MainWindow extends JFrame {
 		panelMenuPerfil.setLayout(null);
 		
 		JLabel lblProfilePic = new JLabel("");
-		lblProfilePic.setIcon(new ImageIcon(MainWindow.class.getResource("/assets/ProfilePic.png")));
+		lblProfilePic.setIcon(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
 		lblProfilePic.setBounds(0, 3, 55, 55);
 		panelMenuPerfil.add(lblProfilePic);
 		
@@ -142,11 +152,11 @@ public class MainWindow extends JFrame {
 		
 		lblsettingGear = new JLabel("");
 		lblsettingGear.setBounds(200, 15, 33, 33);
-		lblsettingGear.setIcon(new ImageIcon(MainWindow.class.getResource("/assets/SettingsGear.png")));
+		lblsettingGear.setIcon(new ImageIcon(getClass().getResource("/assets/SettingsGear.png")));
 		panelMenuPerfil.add(lblsettingGear);
 		
 		lblLogout = new JLabel("");
-		lblLogout.setIcon(new ImageIcon(MainWindow.class.getResource("/assets/Exit_Door_Reescalada.png")));
+		lblLogout.setIcon(new ImageIcon(getClass().getResource("/assets/Exit_Door_Reescalada.png")));
 		lblLogout.setBounds(157, 14, 33, 35);
 		panelMenuPerfil.add(lblLogout);
 		
