@@ -73,7 +73,7 @@ public class MainWindow extends JFrame {
 				});
 				
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		//contentPane.setBackground(new Color(32,34,37));
 		setContentPane(contentPane);
 		getContentPane().setLayout(null);
 		contentPane.setLayout(null);
@@ -91,26 +91,28 @@ public class MainWindow extends JFrame {
 		
 		//configuración del menu1
 		panelMenu1 = new JPanel();
-		panelMenu1.setBackground(Color.GRAY);
+		//panelMenu1.setBackground(new Color(54,57,63));
 		panelMenu1.setBounds(120, 0, 240, 660);
 		contentPane.add(panelMenu1);
 		CardLayout actualizadorMenu1 = new CardLayout(0, 0);
 		panelMenu1.setLayout(actualizadorMenu1);
 		
-		JPanel panelPorDefectoMenu1 = new JPanel();
-		panelPorDefectoMenu1.setBackground(Color.GRAY);
-		panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
-		
-		
 		//gestionar paneles menu1
+		JPanel panelPorDefectoMenu1 = new JPanel();
+		//panelPorDefectoMenu1.setBackground(new Color(54,57,63));
+		panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
+		panelMenu1.add(panelPorDefectoMenu1, "porDefecto");
+		
 		ChatsList chatslist = new ChatsList();
-		panelMenu1.add(panelPorDefectoMenu1,"porDefecto");
-		panelMenu1.add(chatslist,"chats");
-		actualizadorMenu1.show(panelMenu1,"porDefecto");
+		panelMenu1.add(chatslist, "chats");
+		GroupsList groupslist = new GroupsList();
+		panelMenu1.add(groupslist, "groups");
+		
+		actualizadorMenu1.show(panelMenu1, "porDefecto");
 		
 		//botonera
 		panelBotonera = new JPanel();
-		panelBotonera.setBackground(Color.DARK_GRAY);
+		//panelBotonera.setBackground(new Color(54,57,63));
 		panelBotonera.setBounds(0, 0, 120, 720);
 		contentPane.add(panelBotonera);
 		panelBotonera.setLayout(null);
@@ -132,6 +134,7 @@ public class MainWindow extends JFrame {
 		buttonGroups.setBounds(10, 120, 100, 100);
 		buttonGroups.setFocusPainted(false);
 		this.addHoverEffect(buttonGroups);
+		this.showMenu("groups", buttonGroups, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonGroups);
 		
 		buttonShop = new JButton(new ImageIcon(getClass().getResource("/assets/Ui_SystemOpenIcon_Shop.png")));
@@ -155,7 +158,7 @@ public class MainWindow extends JFrame {
 		
 		//panel del perfil
 		panelMenuPerfil = new JPanel();
-		panelMenuPerfil.setBackground(new Color(78,78,78));
+		//panelMenuPerfil.setBackground(new Color(47,49,54));
 		panelMenuPerfil.setBounds(120, 660, 240, 60);
 		contentPane.add(panelMenuPerfil);
 		panelMenuPerfil.setLayout(null);
@@ -166,6 +169,7 @@ public class MainWindow extends JFrame {
 		panelMenuPerfil.add(lblProfilePic);
 		
 		JLabel lblYourname = new JLabel("YourName");
+		lblYourname.setForeground(Color.WHITE);
 		lblYourname.setBounds(60, 20, 90, 20);
 		panelMenuPerfil.add(lblYourname);
 		
@@ -179,6 +183,13 @@ public class MainWindow extends JFrame {
 		lblLogout.setBounds(157, 14, 33, 35);
 		panelMenuPerfil.add(lblLogout);
 		
+		//configuración de colores
+		contentPane.setBackground(new Color(64, 68, 75));      // Gris claro para el fondo principal
+		panelBotonera.setBackground(new Color(40, 43, 48));    // Gris muy oscuro para la botonera   15, 15, 17 -> 32, 34, 37 -> 40, 43, 48
+		panelMenuPerfil.setBackground(new Color(47, 49, 54));  // Gris oscuro para el perfil
+		panelMenu1.setBackground(new Color(54, 57, 63));       // Gris medio para el menú
+		panelPorDefectoMenu1.setBackground(new Color(54, 57, 63)); // Gris medio para el menú
+
 	}
 	
 	private void addHoverEffect(JButton button) {

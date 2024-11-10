@@ -1,17 +1,26 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 
 public class RegisterPanel extends JPanel {
 
@@ -21,14 +30,19 @@ public class RegisterPanel extends JPanel {
 	private JTextField textFieldPhone;
 	private JPasswordField password1;
 	private JPasswordField password2;
-	private JTextField textFieldSignature;
+	private JTextArea textFieldSignature;
 	protected JLabel backButton;
+	private JTextField urlField;
+	
+	private final Color defaultDark = new Color(40, 43, 48);
+	private final Color Gray = new Color(64, 68, 75);
+	private final static String defaultProfileImage = "/assets/ProfilePic.png";
 
 	/**
 	 * Create the panel.
 	 */
 	public RegisterPanel() {
-		setBackground(Color.WHITE);
+		setBackground(this.Gray);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setLayout(null);
@@ -39,7 +53,7 @@ public class RegisterPanel extends JPanel {
 		closeButton.setForeground(new Color(241, 57, 83));
 		closeButton.setBounds(685, 2, 33, 33);
 		closeButton.setBackground(Color.WHITE);
-		add(closeButton);
+		this.add(closeButton);
 				
 		closeButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -49,9 +63,9 @@ public class RegisterPanel extends JPanel {
 			});
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
+		panel.setBackground(this.defaultDark);
 		panel.setBounds(0, 0, 346, 420);
-		add(panel);
+		this.add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblDecoration1 = new JLabel("");
@@ -93,68 +107,107 @@ public class RegisterPanel extends JPanel {
 		RegisterButton.setForeground(Color.WHITE);
 		RegisterButton.setBackground(new Color(241, 57, 83));
 		RegisterButton.setBounds(419, 360, 187, 35); // x = 370+(285/2)-(187/2)
-		add(RegisterButton);
+		this.add(RegisterButton);
 		
 		textFieldName = new JTextField();
 		textFieldName.setBounds(370, 25, 285, 30);
-		add(textFieldName);
+		textFieldName.setBackground(this.Gray);
+		textFieldName.setCaretColor(Color.WHITE);
+		textFieldName.setForeground(Color.WHITE);
+		textFieldName.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		this.add(textFieldName);
 		textFieldName.setColumns(10);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(370, 53, 285, 2);
-		add(separator);
+		this.add(separator);
 		
 		JLabel lblName = new JLabel("Name");
 		lblName.setBounds(370, 10, 40, 15);
-		add(lblName);
+		lblName.setForeground(Color.WHITE);
+		this.add(lblName);
 		
 		textFieldLastName = new JTextField();
 		textFieldLastName.setBounds(370, 80, 285, 30);
-		add(textFieldLastName);
+		textFieldLastName.setBackground(this.Gray);
+		textFieldLastName.setCaretColor(Color.WHITE);
+		textFieldLastName.setForeground(Color.WHITE);
+		textFieldLastName.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		this.add(textFieldLastName);
 		textFieldLastName.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("LastName");
 		lblLastName.setBounds(370, 62, 65, 20);
-		add(lblLastName);
+		lblLastName.setForeground(Color.WHITE);
+		this.add(lblLastName);
 		
 		textFieldPhone = new JTextField();
 		textFieldPhone.setBounds(370, 135, 285, 30);
-		add(textFieldPhone);
+		textFieldPhone.setBackground(this.Gray);
+		textFieldPhone.setCaretColor(Color.WHITE);
+		textFieldPhone.setForeground(Color.WHITE);
+		textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		this.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
 		JLabel lblPhone = new JLabel("Phone");
 		lblPhone.setBounds(370, 117, 40, 20);
-		add(lblPhone);
+		lblPhone.setForeground(Color.WHITE);
+		this.add(lblPhone);
 		
 		password1 = new JPasswordField();
+		password1.setBackground(this.Gray);
+		password1.setCaretColor(Color.WHITE);
+		password1.setForeground(Color.WHITE);
+		password1.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		password1.setColumns(10);
 		password1.setBounds(370, 190, 130, 30);
-		add(password1);
+		this.add(password1);
 		
 		JLabel lblPassword1 = new JLabel("Password");
 		lblPassword1.setBounds(370, 172, 60, 20);
-		add(lblPassword1);
+		lblPassword1.setForeground(Color.WHITE);
+		this.add(lblPassword1);
 		
 		password2 = new JPasswordField();
+		password2.setBackground(this.Gray);
+		password2.setCaretColor(Color.WHITE);
+		password2.setForeground(Color.WHITE);
+		password2.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		password2.setColumns(10);
 		password2.setBounds(525, 190, 130, 30);
-		add(password2);
+		this.add(password2);
 		
 		JLabel lblPassword2 = new JLabel("Repeat Password");
 		lblPassword2.setBounds(525, 172, 120, 20);
-		add(lblPassword2);
+		lblPassword2.setForeground(Color.WHITE);
+		this.add(lblPassword2);
 		
-		textFieldSignature = new JTextField();
+		textFieldSignature = new JTextArea();
+		textFieldSignature.setBackground(this.Gray);
+		textFieldSignature.setCaretColor(Color.WHITE);
+		textFieldSignature.setForeground(Color.WHITE);
+		textFieldSignature.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		textFieldSignature.setLineWrap(true); // Ajusta el texto para que envuelva líneas
+		textFieldSignature.setWrapStyleWord(true); // Asegura que envuelva líneas completas
 		textFieldSignature.setColumns(10);
-		textFieldSignature.setBounds(370, 270, 190, 70);
-		add(textFieldSignature);
+		textFieldSignature.setBounds(370, 270, 155, 70);
+		//this.add(textFieldSignature);
+		JScrollPane scrollPaneSignature = new JScrollPane(textFieldSignature);
+		scrollPaneSignature.setBounds(370, 270, 155, 70);
+		scrollPaneSignature.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPaneSignature.setVerticalScrollBar(new ScrollBar());
+		scrollPaneSignature.setHorizontalScrollBar(new ScrollBar());
+		this.add(scrollPaneSignature);
 		
 		JLabel lblSignature = new JLabel("Signature");
 		lblSignature.setBounds(370, 250, 60, 20);
-		add(lblSignature);
+		lblSignature.setForeground(Color.WHITE);
+		this.add(lblSignature);
 		
 		JRadioButton rdbtnshowPassword1 = new JRadioButton("show Password");
-		rdbtnshowPassword1.setBackground(Color.WHITE);
+		rdbtnshowPassword1.setBackground(this.Gray);
+		rdbtnshowPassword1.setForeground(Color.WHITE);
 		rdbtnshowPassword1.setBounds(370, 225, 130, 25);
 		rdbtnshowPassword1.addItemListener (e -> {
 			if(rdbtnshowPassword1.isSelected()) {
@@ -163,10 +216,11 @@ public class RegisterPanel extends JPanel {
 				password1.setEchoChar('•');
 			}
 		});
-		add(rdbtnshowPassword1);
+		this.add(rdbtnshowPassword1);
 		
 		JRadioButton rdbtnshowPassword2 = new JRadioButton("show Password");
-		rdbtnshowPassword2.setBackground(Color.WHITE);
+		rdbtnshowPassword2.setBackground(this.Gray);
+		rdbtnshowPassword2.setForeground(Color.WHITE);
 		rdbtnshowPassword2.setBounds(525, 225, 130, 25);
 		rdbtnshowPassword2.addItemListener (e -> {
 			if(rdbtnshowPassword2.isSelected()) {
@@ -175,12 +229,79 @@ public class RegisterPanel extends JPanel {
 				password2.setEchoChar('•');
 			}
 		});
-		add(rdbtnshowPassword2);
+		this.add(rdbtnshowPassword2);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(RegisterPanel.class.getResource("/assets/ProfilePic.png")));
-		lblNewLabel.setBounds(600, 285, 55, 55);
-		add(lblNewLabel);
-	}
+		JLabel lblProfile = new JLabel("");
+		ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+		lblProfile.setIcon(image);
+		lblProfile.setBounds(611, 270, 44, 44);
+		this.add(lblProfile);
+		
+		urlField = new JTextField();
+		urlField.setBackground(this.Gray);
+		urlField.setCaretColor(Color.WHITE);
+		urlField.setForeground(Color.WHITE);
+		urlField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		urlField.setBounds(543, 320, 112, 20);
+		this.add(urlField);
+		
+		JLabel lblUrlImage = new JLabel("ImageUrl");
+		lblUrlImage.setBounds(543, 302, 60, 20);
+		lblUrlImage.setForeground(Color.WHITE);
+		this.add(lblUrlImage);
+		
+		//ImageIcon nuevo = new ImageIcon();
+		
+		urlField.getDocument().addDocumentListener(new DocumentListener() {
+		    private final String defaultProfileImage = RegisterPanel.getDefaultProfileImage();
 
+			@Override
+		    public void insertUpdate(DocumentEvent e) {
+		        actualizarImagen();
+		    }
+
+		    @Override
+		    public void removeUpdate(DocumentEvent e) {
+		        actualizarImagen();
+		    }
+
+		    @Override
+		    public void changedUpdate(DocumentEvent e) {
+		        actualizarImagen();
+		    }
+
+		    private void actualizarImagen() {
+		        String urlText = urlField.getText();
+		        URL url;
+		        
+				try {
+					url = new URL(urlText);
+					ImageIcon icono = new ImageIcon(url);
+					
+			        if (icono.getIconWidth() > 0 && icono.getIconHeight() > 0) { // Verifica que la imagen sea válida
+			            Image imagenEscalada = icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH);
+			            //image.setImage(imagenEscalada);
+			            lblProfile.setIcon(new ImageIcon(imagenEscalada));
+			            lblProfile.revalidate();
+			            lblProfile.repaint();
+			            System.out.println("Imagen cargada exitosamente.");
+			            
+			        } else {
+			            System.out.println("Texto ingresado no contiene una imagen válida.");
+			            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(this.defaultProfileImage )).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+			    		lblProfile.setIcon(image);
+			        }
+			        
+				} catch (MalformedURLException e) {
+					ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(this.defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+					lblProfile.setIcon(image);
+				}
+		    }
+		});
+		
+	}
+	
+	public static String getDefaultProfileImage() {
+		return new String(defaultProfileImage);
+	}
 }

@@ -9,6 +9,7 @@ import java.awt.event.MouseMotionAdapter;
 public class ElementoChatOGrupoRender extends DefaultListCellRenderer {
     private static final long serialVersionUID = 1L;
     private int ratonIndex = -1;
+	private final Color darkPorDefecto = new Color(54, 57, 63);
 
     public ElementoChatOGrupoRender(JList<?> list) {
         list.addMouseMotionListener(new MouseMotionAdapter() {
@@ -40,7 +41,7 @@ public class ElementoChatOGrupoRender extends DefaultListCellRenderer {
                 ele.cambio_color(Color.LIGHT_GRAY);
                 //ele.cambio_color(Color.DARK_GRAY);  // TODO decidir que hacer con esto (no me convence)
             } else {
-                ele.cambio_color(Color.GRAY);
+                ele.cambio_color(this.darkPorDefecto);
             }
 
             return ele;

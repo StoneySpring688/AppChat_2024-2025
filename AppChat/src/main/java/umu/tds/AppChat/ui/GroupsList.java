@@ -12,10 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-public class ChatsList extends JPanel {
+public class GroupsList extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	DefaultListModel<ElementoChatOGrupo> chats;
+	DefaultListModel<ElementoChatOGrupo> groups;
 	JList<ElementoChatOGrupo> lista;
 	JScrollPane scroll;
 	private final Color darkPorDefecto = new Color(54, 57, 63);
@@ -23,22 +23,22 @@ public class ChatsList extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ChatsList() {
+	public GroupsList() {
 		setBackground(this.darkPorDefecto);
 		this.setLayout(new BorderLayout());
 		this.setBounds(120, 0, 240, 660);
-		this.chats = new DefaultListModel<>();
+		this.groups = new DefaultListModel<>();
 		
 		//Para probar
 		
-		chats.addElement(new ElementoChatOGrupo("User1", 648163506, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
-		chats.addElement(new ElementoChatOGrupo("User2", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
-		for(int i=0 ;i<25 ;i++) {
-			chats.addElement(new ElementoChatOGrupo("User", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
+		groups.addElement(new ElementoChatOGrupo("Group1", 648163506, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.of(true)));
+		groups.addElement(new ElementoChatOGrupo("Group2", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.of(true)));
+		for(int i=0 ;i<10 ;i++) {
+			groups.addElement(new ElementoChatOGrupo("Group", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.of(true)));
 		}
 		
 		
-		this.lista = new JList<>(chats);
+		this.lista = new JList<>(groups);
 		this.lista.setCellRenderer(new ElementoChatOGrupoRender(this.lista));
 		this.lista.setBackground(this.darkPorDefecto);
 		
@@ -50,7 +50,6 @@ public class ChatsList extends JPanel {
 		this.scroll.setBackground(this.darkPorDefecto);
 		
 		this.add(this.scroll, BorderLayout.CENTER);
-		
 	}
 
 }

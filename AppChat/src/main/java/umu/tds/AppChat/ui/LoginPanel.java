@@ -12,6 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 
 public class LoginPanel extends JPanel {
@@ -22,11 +23,14 @@ public class LoginPanel extends JPanel {
 	protected JButton RegisterButton;
 	private JButton LoginButton;
 	
+	private final Color defaultDark = new Color(40, 43, 48);
+	private final Color Gray = new Color(64, 68, 75);
+	
 	/**
 	 * Create the panel.
 	 */
 	public LoginPanel() {
-		setBackground(Color.WHITE);
+		setBackground(this.Gray);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setLayout(null);
@@ -37,7 +41,7 @@ public class LoginPanel extends JPanel {
 		closeButton.setForeground(new Color(241, 57, 83));
 		closeButton.setBounds(685, 2, 33, 33);
 		closeButton.setBackground(Color.WHITE);
-		add(closeButton);
+		this.add(closeButton);
 				
 		closeButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -47,9 +51,9 @@ public class LoginPanel extends JPanel {
 			});
 
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
+		panel.setBackground(this.defaultDark);
 		panel.setBounds(0, 0, 346, 420);
-		add(panel);
+		this.add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblDecoration1 = new JLabel("");
@@ -86,34 +90,45 @@ public class LoginPanel extends JPanel {
 		LoginButton.setForeground(Color.WHITE);
 		LoginButton.setBackground(new Color(241, 57, 83));
 		LoginButton.setBounds(370, 360, 120, 35); // x = 370+(285/2)-(187/2)
-		add(LoginButton);
+		this.add(LoginButton);
 		
 		RegisterButton = new JButton("Register");
 		RegisterButton.setForeground(Color.WHITE);
 		RegisterButton.setBackground(new Color(241, 57, 83));
 		RegisterButton.setBounds(535, 360, 120, 35);
-		add(RegisterButton);
+		this.add(RegisterButton);
 		
 		textFieldPhone = new JTextField();
 		textFieldPhone.setBounds(370, 160, 285, 30);
-		add(textFieldPhone);
+		textFieldPhone.setBackground(this.Gray);
+		textFieldPhone.setCaretColor(Color.WHITE);
+		textFieldPhone.setForeground(Color.WHITE);
+		textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		this.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
 		JLabel lblPhone = new JLabel("Phone");
 		lblPhone.setBounds(370, 142, 40, 20);
+		lblPhone.setForeground(Color.WHITE);
 		add(lblPhone);
 		
 		password1 = new JPasswordField();
+		password1.setBackground(this.Gray);
+		password1.setCaretColor(Color.WHITE);
+		password1.setForeground(Color.WHITE);
+		password1.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		password1.setColumns(10);
 		password1.setBounds(370, 235, 285, 30);
 		add(password1);
 		
 		JLabel lblPassword1 = new JLabel("Password");
 		lblPassword1.setBounds(370, 217, 60, 20);
+		lblPassword1.setForeground(Color.WHITE);
 		add(lblPassword1);
 		
 		JRadioButton rdbtnshowPassword1 = new JRadioButton("show Password");
-		rdbtnshowPassword1.setBackground(Color.WHITE);
+		rdbtnshowPassword1.setBackground(this.Gray);
+		rdbtnshowPassword1.setForeground(Color.WHITE);
 		rdbtnshowPassword1.setBounds(370, 270, 130, 25);
 		rdbtnshowPassword1.addItemListener (e -> {
 			if(rdbtnshowPassword1.isSelected()) {
