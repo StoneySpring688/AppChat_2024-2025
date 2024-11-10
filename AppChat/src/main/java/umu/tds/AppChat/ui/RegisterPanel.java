@@ -21,6 +21,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import umu.tds.AppChat.controllers.UIController;
+
 
 public class RegisterPanel extends JPanel {
 
@@ -38,10 +40,7 @@ public class RegisterPanel extends JPanel {
 	private final Color Gray = new Color(64, 68, 75);
 	private final static String defaultProfileImage = "/assets/ProfilePic.png";
 
-	/**
-	 * Create the panel.
-	 */
-	public RegisterPanel() {
+	public RegisterPanel(UIController uiController) {
 		setBackground(this.Gray);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -188,8 +187,8 @@ public class RegisterPanel extends JPanel {
 		textFieldSignature.setCaretColor(Color.WHITE);
 		textFieldSignature.setForeground(Color.WHITE);
 		textFieldSignature.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-		textFieldSignature.setLineWrap(true); // Ajusta el texto para que envuelva líneas
-		textFieldSignature.setWrapStyleWord(true); // Asegura que envuelva líneas completas
+		textFieldSignature.setLineWrap(true);
+		textFieldSignature.setWrapStyleWord(true);
 		textFieldSignature.setColumns(10);
 		textFieldSignature.setBounds(370, 270, 155, 70);
 		//this.add(textFieldSignature);
@@ -284,10 +283,10 @@ public class RegisterPanel extends JPanel {
 			            lblProfile.setIcon(new ImageIcon(imagenEscalada));
 			            lblProfile.revalidate();
 			            lblProfile.repaint();
-			            System.out.println("Imagen cargada exitosamente.");
+			            //System.out.println("Imagen cargada exitosamente.");
 			            
 			        } else {
-			            System.out.println("Texto ingresado no contiene una imagen válida.");
+			            //System.out.println("Texto ingresado no contiene una imagen válida.");
 			            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(this.defaultProfileImage )).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
 			    		lblProfile.setIcon(image);
 			        }
@@ -303,5 +302,9 @@ public class RegisterPanel extends JPanel {
 	
 	public static String getDefaultProfileImage() {
 		return new String(defaultProfileImage);
+	}
+	
+	public JLabel getBackButton() {
+		return this.backButton;
 	}
 }

@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JFrame;
 
+import umu.tds.AppChat.controllers.UIController;
+
 public class AppFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -15,11 +17,12 @@ public class AppFrame extends JFrame {
 	int posY=0;
 	private LoginPanel login;
 	private RegisterPanel register;
+	private MainPanel mainPanel;
 	private CardLayout actualizadorUI;
 
 	/**
 	 * Launch the application.
-	 */
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -32,11 +35,13 @@ public class AppFrame extends JFrame {
 			}
 		});
 	}
-
+	*/
 	/**
 	 * Create the frame.
 	 */
-	public AppFrame() {
+	public AppFrame(UIController uiController) {
+		
+		//configuración del frame
 		setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 720, 420);
@@ -46,41 +51,59 @@ public class AppFrame extends JFrame {
 		setUndecorated(true);
 		
 		//movilidad del frame
-				addMouseListener(new MouseAdapter() {
-					public void mousePressed(MouseEvent e) {
-						posX = e.getX();
-						posY = e.getY();
-					}
-				});
-				addMouseMotionListener(new MouseMotionAdapter() {
-					public void mouseDragged(MouseEvent e) {
-						setLocation(e.getXOnScreen() - posX, e.getYOnScreen() - posY);
-					}
-				});
-				
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				posX = e.getX();
+				posY = e.getY();
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				setLocation(e.getXOnScreen() - posX, e.getYOnScreen() - posY);
+			}
+		});
+		
+		//layout
 		actualizadorUI = new CardLayout();
 		setLayout(actualizadorUI);
 		
-		login = new LoginPanel();
-		register = new RegisterPanel();
+		//paneles
+		login = new LoginPanel(uiController);
+		register = new RegisterPanel(uiController);
+		mainPanel = new MainPanel(uiController);
 
 		add(login, "login");
 		add(register, "register");
+		add(mainPanel, "mainPanel");
 		
 		actualizadorUI.show(getContentPane(), "login");
 		
-		login.RegisterButton.addActionListener(e -> actualizadorUI.show(getContentPane(), "register"));
+		login.getRegisterButton().addActionListener(e -> actualizadorUI.show(getContentPane(), "register"));
+		login.getLoginButton().addActionListener(e -> { uiController.doLogin(); });
 		
-		register.backButton.addMouseListener(new MouseAdapter() {
+		register.getBackButton().addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
 		    	actualizadorUI.show(getContentPane(), "login");
 		    }
 		});
-
-		
-		
 		
 	}
+	
+	public void showLoginPanel() {
+        this.actualizadorUI.show(getContentPane(), "login");
+    }
+
+    public void showMainPanel() {
+        this.actualizadorUI.show(getContentPane(), "mainPanel");
+    }
+
+    public void resizeForMainPanel() {
+        setSize(1280, 720);
+    }
+    
+    public void resizeForLoginPanel() {
+        setSize(720,420);
+    }
 
 }

@@ -14,10 +14,13 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import umu.tds.AppChat.controllers.UIController;
+
 
 public class LoginPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
 	private JTextField textFieldPhone;
 	private JPasswordField password1;
 	protected JButton RegisterButton;
@@ -26,10 +29,7 @@ public class LoginPanel extends JPanel {
 	private final Color defaultDark = new Color(40, 43, 48);
 	private final Color Gray = new Color(64, 68, 75);
 	
-	/**
-	 * Create the panel.
-	 */
-	public LoginPanel() {
+	public LoginPanel(UIController uiController) {
 		setBackground(this.Gray);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -145,5 +145,12 @@ public class LoginPanel extends JPanel {
 		add(lblBanner);		
 	}
 	
-
+	public JButton getRegisterButton() {
+		return this.RegisterButton;
+	}
+	
+	public JButton getLoginButton() {
+		return this.LoginButton;
+	}
+	
 }

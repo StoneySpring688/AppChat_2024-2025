@@ -1,25 +1,22 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import umu.tds.AppChat.controllers.UIController;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.CardLayout;
 
-public class MainWindow extends JFrame {
+public class MainPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	int posX=0;
-	int posY=0;
-	private JPanel contentPane;
+	
 	private JPanel panelBotonera;
 	private JPanel panelMenu1;
 	private JPanel panelMenuPerfil;
@@ -31,57 +28,16 @@ public class MainWindow extends JFrame {
 	private JButton buttonShop;
 	private JLabel closeButton;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow frame = new MainWindow();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public MainWindow() {
+	public MainPanel(UIController uiController) {
 		setBackground(Color.WHITE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 720, 420);
-		setSize(1280,720);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setUndecorated(true);
+		setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLayout(null);
 		
-		//movilidad del frame
-				addMouseListener(new MouseAdapter() {
-					public void mousePressed(MouseEvent e) {
-						posX = e.getX();
-						posY = e.getY();
-					}
-				});
-				addMouseMotionListener(new MouseMotionAdapter() {
-					public void mouseDragged(MouseEvent e) {
-						setLocation(e.getXOnScreen() - posX, e.getYOnScreen() - posY);
-					}
-				});
-				
-		contentPane = new JPanel();
-		//contentPane.setBackground(new Color(32,34,37));
-		setContentPane(contentPane);
-		getContentPane().setLayout(null);
-		contentPane.setLayout(null);
-		
+		//boton de cierre
 		closeButton = new JLabel("");
 		closeButton.setIcon(new ImageIcon(getClass().getResource("/assets/UI_Exit.png")));
 		closeButton.setBounds(1245, 2, 33, 33);
-		contentPane.add(closeButton);
+		this.add(closeButton);
 		closeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -93,7 +49,7 @@ public class MainWindow extends JFrame {
 		panelMenu1 = new JPanel();
 		//panelMenu1.setBackground(new Color(54,57,63));
 		panelMenu1.setBounds(120, 0, 240, 660);
-		contentPane.add(panelMenu1);
+		this.add(panelMenu1);
 		CardLayout actualizadorMenu1 = new CardLayout(0, 0);
 		panelMenu1.setLayout(actualizadorMenu1);
 		
@@ -114,7 +70,7 @@ public class MainWindow extends JFrame {
 		panelBotonera = new JPanel();
 		//panelBotonera.setBackground(new Color(54,57,63));
 		panelBotonera.setBounds(0, 0, 120, 720);
-		contentPane.add(panelBotonera);
+		this.add(panelBotonera);
 		panelBotonera.setLayout(null);
 		
 		buttonChats = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Wanderer.png")));
@@ -160,7 +116,7 @@ public class MainWindow extends JFrame {
 		panelMenuPerfil = new JPanel();
 		//panelMenuPerfil.setBackground(new Color(47,49,54));
 		panelMenuPerfil.setBounds(120, 660, 240, 60);
-		contentPane.add(panelMenuPerfil);
+		this.add(panelMenuPerfil);
 		panelMenuPerfil.setLayout(null);
 		
 		JLabel lblProfilePic = new JLabel("");
@@ -184,7 +140,7 @@ public class MainWindow extends JFrame {
 		panelMenuPerfil.add(lblLogout);
 		
 		//configuración de colores
-		contentPane.setBackground(new Color(64, 68, 75));      // Gris claro para el fondo principal
+		this.setBackground(new Color(64, 68, 75));      // Gris claro para el fondo principal
 		panelBotonera.setBackground(new Color(40, 43, 48));    // Gris muy oscuro para la botonera   15, 15, 17 -> 32, 34, 37 -> 40, 43, 48
 		panelMenuPerfil.setBackground(new Color(47, 49, 54));  // Gris oscuro para el perfil
 		panelMenu1.setBackground(new Color(54, 57, 63));       // Gris medio para el menú
