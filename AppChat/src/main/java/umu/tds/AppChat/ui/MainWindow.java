@@ -2,6 +2,7 @@ package umu.tds.AppChat.ui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -70,6 +71,7 @@ public class MainWindow extends JFrame {
 						setLocation(e.getXOnScreen() - posX, e.getYOnScreen() - posY);
 					}
 				});
+				
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		setContentPane(contentPane);
@@ -87,40 +89,7 @@ public class MainWindow extends JFrame {
 				}
 			});
 		
-		panelBotonera = new JPanel();
-		panelBotonera.setBackground(Color.DARK_GRAY);
-		panelBotonera.setBounds(0, 0, 120, 720);
-		contentPane.add(panelBotonera);
-		panelBotonera.setLayout(null);
-		
-		buttonChats = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Wanderer.png")));
-		buttonChats.setBounds(10, 0, 100, 100);
-		buttonChats.setContentAreaFilled(false);
-		buttonChats.setBorderPainted(false);
-		buttonChats.setOpaque(false);
-		panelBotonera.add(buttonChats);
-		
-		buttonGroups = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Traveler.png")));
-		buttonGroups.setOpaque(false);
-		buttonGroups.setContentAreaFilled(false);
-		buttonGroups.setBorderPainted(false);
-		buttonGroups.setBounds(10, 120, 100, 100);
-		panelBotonera.add(buttonGroups);
-		
-		buttonShop = new JButton(new ImageIcon(getClass().getResource("/assets/Ui_SystemOpenIcon_Shop.png")));
-		buttonShop.setOpaque(false);
-		buttonShop.setContentAreaFilled(false);
-		buttonShop.setBorderPainted(false);
-		buttonShop.setBounds(10, 240, 100, 100);
-		panelBotonera.add(buttonShop);
-		
-		buttonSearch = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Charlotte.png")));
-		buttonSearch.setOpaque(false);
-		buttonSearch.setContentAreaFilled(false);
-		buttonSearch.setBorderPainted(false);
-		buttonSearch.setBounds(10, 600, 100, 100);
-		panelBotonera.add(buttonSearch);
-		
+		//configuración del menu1
 		panelMenu1 = new JPanel();
 		panelMenu1.setBackground(Color.GRAY);
 		panelMenu1.setBounds(120, 0, 240, 660);
@@ -128,13 +97,63 @@ public class MainWindow extends JFrame {
 		CardLayout actualizadorMenu1 = new CardLayout(0, 0);
 		panelMenu1.setLayout(actualizadorMenu1);
 		
+		JPanel panelPorDefectoMenu1 = new JPanel();
+		panelPorDefectoMenu1.setBackground(Color.GRAY);
+		panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
 		
-		// gestionar paneles menu1
+		
+		//gestionar paneles menu1
 		ChatsList chatslist = new ChatsList();
+		panelMenu1.add(panelPorDefectoMenu1,"porDefecto");
 		panelMenu1.add(chatslist,"chats");
-		actualizadorMenu1.show(panelMenu1,"chats");
+		actualizadorMenu1.show(panelMenu1,"porDefecto");
 		
+		//botonera
+		panelBotonera = new JPanel();
+		panelBotonera.setBackground(Color.DARK_GRAY);
+		panelBotonera.setBounds(0, 0, 120, 720);
+		contentPane.add(panelBotonera);
+		panelBotonera.setLayout(null);
 		
+		buttonChats = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Wanderer.png")));
+		buttonChats.setOpaque(false);
+		buttonChats.setContentAreaFilled(false);
+		buttonChats.setBorderPainted(false);
+		buttonChats.setBounds(10, 0, 100, 100);
+		buttonChats.setFocusPainted(false);
+		this.addHoverEffect(buttonChats);
+		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
+		panelBotonera.add(buttonChats);
+		
+		buttonGroups = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Traveler.png")));
+		buttonGroups.setOpaque(false);
+		buttonGroups.setContentAreaFilled(false);
+		buttonGroups.setBorderPainted(false);
+		buttonGroups.setBounds(10, 120, 100, 100);
+		buttonGroups.setFocusPainted(false);
+		this.addHoverEffect(buttonGroups);
+		panelBotonera.add(buttonGroups);
+		
+		buttonShop = new JButton(new ImageIcon(getClass().getResource("/assets/Ui_SystemOpenIcon_Shop.png")));
+		buttonShop.setOpaque(false);
+		buttonShop.setContentAreaFilled(false);
+		buttonShop.setBorderPainted(false);
+		buttonShop.setBounds(10, 240, 100, 100);
+		buttonShop.setFocusPainted(false);
+		this.addHoverEffect(buttonShop);
+		this.showMenu("porDefecto", buttonShop, actualizadorMenu1, panelMenu1);
+		panelBotonera.add(buttonShop);
+		
+		buttonSearch = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Charlotte.png")));
+		buttonSearch.setOpaque(false);
+		buttonSearch.setContentAreaFilled(false);
+		buttonSearch.setBorderPainted(false);
+		buttonSearch.setBounds(10, 600, 100, 100);
+		buttonSearch.setFocusPainted(false);
+		this.addHoverEffect(buttonSearch);
+		panelBotonera.add(buttonSearch);
+		
+		//panel del perfil
 		panelMenuPerfil = new JPanel();
 		panelMenuPerfil.setBackground(new Color(78,78,78));
 		panelMenuPerfil.setBounds(120, 660, 240, 60);
@@ -161,4 +180,28 @@ public class MainWindow extends JFrame {
 		panelMenuPerfil.add(lblLogout);
 		
 	}
+	
+	private void addHoverEffect(JButton button) {
+	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
+	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
+
+	    
+	    button.addMouseListener(new java.awt.event.MouseAdapter() {
+	        @Override
+	        public void mouseEntered(java.awt.event.MouseEvent evt) {
+	            button.setIcon(scaledIcon);  // Cambia a icono más pequeño al pasar el ratón
+	        }
+
+	        @Override
+	        public void mouseExited(java.awt.event.MouseEvent evt) {
+	            button.setIcon(originalIcon);  // Vuelve al icono original al salir
+	        }
+	    });
+	}
+	
+	private void showMenu(String menu, JButton button, CardLayout actualizador, JPanel panelObjetivo) {
+		button.addActionListener(e -> actualizador.show(panelObjetivo, menu));
+	}
+
+
 }
