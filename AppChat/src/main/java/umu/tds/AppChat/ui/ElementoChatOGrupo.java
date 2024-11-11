@@ -15,14 +15,14 @@ public class ElementoChatOGrupo extends JPanel {
 	private ImageIcon imagen;
 	private int numero;
 	private String nombre;
-	JPanel panelInfo;
-	Color colorElemento;
+	private JPanel panelInfo;
+	//private Color colorElemento;
 	boolean isGrupo;
 	
 	private final Color darkPorDefecto = new Color(54, 57, 63);
 	
 	public ElementoChatOGrupo(String nom, int num, ImageIcon img, Optional<Boolean> isGrupo) {
-		this.colorElemento = this.darkPorDefecto;
+		//this.colorElemento = this.darkPorDefecto;
 		setBackground(this.darkPorDefecto);
 		this.nombre = nom;
 		this.numero = num;

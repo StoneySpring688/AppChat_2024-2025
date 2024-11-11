@@ -2,11 +2,8 @@ package umu.tds.AppChat.ui;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import umu.tds.AppChat.controllers.UIController;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,30 +17,37 @@ public class MainPanel extends JPanel {
 	private JPanel panelBotonera;
 	private JPanel panelMenu1;
 	private JPanel panelMenuPerfil;
+	private SearchPanel searchPanel;
 	private JLabel lblLogout;
 	private JLabel lblsettingGear;
 	private JButton buttonGroups;
 	private JButton buttonSearch;
 	private JButton buttonChats;
 	private JButton buttonShop;
-	private JLabel closeButton;
+	private CardLayout actualizadorUiPrincipal;
 
 	public MainPanel(UIController uiController) {
 		setBackground(Color.WHITE);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		
-		//boton de cierre
-		closeButton = new JLabel("");
-		closeButton.setIcon(new ImageIcon(getClass().getResource("/assets/UI_Exit.png")));
-		closeButton.setBounds(1245, 2, 33, 33);
-		this.add(closeButton);
-		closeButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.exit(0); // Cierra la aplicación
-				}
-			});
+		//panelPrincipal
+		JPanel principal = new JPanel();
+		principal.setBounds(360, 0, 920, 720);
+		this.add(principal);
+		
+		//actualizador principal
+		actualizadorUiPrincipal = new CardLayout();
+		principal.setLayout(this.actualizadorUiPrincipal);
+		
+		//panelesPrincipales
+		PanelGrande PanelGrandePorDefecto = new PanelGrande();
+		searchPanel = new SearchPanel(uiController);
+		
+		principal.add(PanelGrandePorDefecto, "porDefecto");
+		principal.add(searchPanel, "search");
+		
+		this.actualizadorUiPrincipal.show(principal, "porDefecto");
 		
 		//configuración del menu1
 		panelMenu1 = new JPanel();
@@ -63,6 +67,8 @@ public class MainPanel extends JPanel {
 		panelMenu1.add(chatslist, "chats");
 		GroupsList groupslist = new GroupsList();
 		panelMenu1.add(groupslist, "groups");
+		MessageList messageList = new MessageList();
+		panelMenu1.add(messageList,"messages");
 		
 		actualizadorMenu1.show(panelMenu1, "porDefecto");
 		
@@ -110,6 +116,8 @@ public class MainPanel extends JPanel {
 		buttonSearch.setBounds(10, 600, 100, 100);
 		buttonSearch.setFocusPainted(false);
 		this.addHoverEffect(buttonSearch);
+		this.showMenu("search", buttonSearch, this.actualizadorUiPrincipal, principal);
+		this.showMenu("messages", buttonSearch, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonSearch);
 		
 		//panel del perfil
@@ -137,6 +145,7 @@ public class MainPanel extends JPanel {
 		lblLogout = new JLabel("");
 		lblLogout.setIcon(new ImageIcon(getClass().getResource("/assets/Exit_Door_Reescalada.png")));
 		lblLogout.setBounds(157, 14, 33, 35);
+		addHoverEffect(lblLogout, 30, 32);
 		panelMenuPerfil.add(lblLogout);
 		
 		//configuración de colores
@@ -166,8 +175,30 @@ public class MainPanel extends JPanel {
 	    });
 	}
 	
+	private void addHoverEffect(JLabel button, int xHover, int yHover) {
+	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
+	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(xHover, yHover, Image.SCALE_SMOOTH));
+
+	    
+	    button.addMouseListener(new java.awt.event.MouseAdapter() {
+	        @Override
+	        public void mouseEntered(java.awt.event.MouseEvent evt) {
+	            button.setIcon(scaledIcon);  // Cambia a icono más pequeño al pasar el ratón
+	        }
+
+	        @Override
+	        public void mouseExited(java.awt.event.MouseEvent evt) {
+	            button.setIcon(originalIcon);  // Vuelve al icono original al salir
+	        }
+	    });
+	}
+	
 	private void showMenu(String menu, JButton button, CardLayout actualizador, JPanel panelObjetivo) {
 		button.addActionListener(e -> actualizador.show(panelObjetivo, menu));
+	}
+	
+	public JLabel getLogoutBotton() {
+		return this.lblLogout;
 	}
 
 

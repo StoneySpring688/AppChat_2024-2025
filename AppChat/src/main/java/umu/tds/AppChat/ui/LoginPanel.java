@@ -32,7 +32,6 @@ public class LoginPanel extends JPanel {
 	public LoginPanel(UIController uiController) {
 		setBackground(this.Gray);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setLayout(null);
 		
 		// Botón o etiqueta para cerrar la ventana

@@ -2,7 +2,6 @@ package umu.tds.AppChat.ui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -18,27 +17,9 @@ public class AppFrame extends JFrame {
 	private LoginPanel login;
 	private RegisterPanel register;
 	private MainPanel mainPanel;
+	private PanelIntermedio intermedio;
 	private CardLayout actualizadorUI;
 
-	/**
-	 * Launch the application.
-	 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AppFrame frame = new AppFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	*/
-	/**
-	 * Create the frame.
-	 */
 	public AppFrame(UIController uiController) {
 		
 		//configuración del frame
@@ -71,31 +52,48 @@ public class AppFrame extends JFrame {
 		login = new LoginPanel(uiController);
 		register = new RegisterPanel(uiController);
 		mainPanel = new MainPanel(uiController);
+		intermedio = new PanelIntermedio();
 
+		//gestion paneles
 		add(login, "login");
 		add(register, "register");
 		add(mainPanel, "mainPanel");
-		
+		add(intermedio, "intermedio");
 		actualizadorUI.show(getContentPane(), "login");
 		
-		login.getRegisterButton().addActionListener(e -> actualizadorUI.show(getContentPane(), "register"));
-		login.getLoginButton().addActionListener(e -> { uiController.doLogin(); });
-		
+		//gestion botones
+		login.getRegisterButton().addActionListener(e -> uiController.showRegister());
+		login.getLoginButton().addActionListener(e -> uiController.doLogin());
 		register.getBackButton().addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	actualizadorUI.show(getContentPane(), "login");
+		    	uiController.showLogin();
+		    }
+		});
+		
+		mainPanel.getLogoutBotton().addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	uiController.doLogout();
 		    }
 		});
 		
 	}
 	
 	public void showLoginPanel() {
-        this.actualizadorUI.show(getContentPane(), "login");
+        this.changePanel("login");
     }
 
     public void showMainPanel() {
-        this.actualizadorUI.show(getContentPane(), "mainPanel");
+        changePanel("mainPanel");
+    }
+    
+    public void showRegisterPanel() {
+        changePanel("register");
+    }
+    
+    public void showPanelIntermedio() {
+        changePanel("intermedio");
     }
 
     public void resizeForMainPanel() {
@@ -105,5 +103,8 @@ public class AppFrame extends JFrame {
     public void resizeForLoginPanel() {
         setSize(720,420);
     }
-
+    
+    public void changePanel(String panel) {
+    	this.actualizadorUI.show(getContentPane(), panel);
+    }
 }

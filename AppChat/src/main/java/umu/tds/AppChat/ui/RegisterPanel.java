@@ -39,6 +39,7 @@ public class RegisterPanel extends JPanel {
 	private final Color defaultDark = new Color(40, 43, 48);
 	private final Color Gray = new Color(64, 68, 75);
 	private final static String defaultProfileImage = "/assets/ProfilePic.png";
+	private final static String defaultProfileUrl = "https://github.com/StoneySpring688/AppChat_2024-2025/blob/main/AppChat/src/main/resources/assets/ProfilePic.png?raw=true";
 
 	public RegisterPanel(UIController uiController) {
 		setBackground(this.Gray);
@@ -256,20 +257,32 @@ public class RegisterPanel extends JPanel {
 
 			@Override
 		    public void insertUpdate(DocumentEvent e) {
-		        actualizarImagen();
+		        try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
+				}
 		    }
 
 		    @Override
 		    public void removeUpdate(DocumentEvent e) {
-		        actualizarImagen();
+		        try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
+				}
 		    }
 
 		    @Override
 		    public void changedUpdate(DocumentEvent e) {
-		        actualizarImagen();
+		        try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
+				}
 		    }
 
-		    private void actualizarImagen() {
+		    private void actualizarImagen() throws MalformedURLException {
 		        String urlText = urlField.getText();
 		        URL url;
 		        
@@ -287,13 +300,31 @@ public class RegisterPanel extends JPanel {
 			            
 			        } else {
 			            //System.out.println("Texto ingresado no contiene una imagen válida.");
-			            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(this.defaultProfileImage )).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+			        	url = new URL(this.defaultProfileImage);
+			            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
 			    		lblProfile.setIcon(image);
+			    		lblProfile.revalidate();
+			            lblProfile.repaint();
 			        }
 			        
 				} catch (MalformedURLException e) {
-					ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(this.defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-					lblProfile.setIcon(image);
+					url = new URL(this.defaultProfileImage);
+		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+		            lblProfile.setIcon(image);
+		            lblProfile.revalidate();
+		            lblProfile.repaint();
+				}catch (java.lang.NullPointerException e){
+					url = new URL(this.defaultProfileImage);
+		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+		            lblProfile.setIcon(image);
+		            lblProfile.revalidate();
+		            lblProfile.repaint();
+				} catch (Exception e) {
+					url = new URL(this.defaultProfileImage);
+		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+		            lblProfile.setIcon(image);
+		            lblProfile.revalidate();
+		            lblProfile.repaint();
 				}
 		    }
 		});
@@ -301,7 +332,7 @@ public class RegisterPanel extends JPanel {
 	}
 	
 	public static String getDefaultProfileImage() {
-		return new String(defaultProfileImage);
+		return new String(defaultProfileUrl);
 	}
 	
 	public JLabel getBackButton() {

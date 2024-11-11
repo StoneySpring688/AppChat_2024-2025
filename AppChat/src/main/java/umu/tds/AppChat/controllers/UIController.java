@@ -15,15 +15,31 @@ public class UIController {
         appFrame.showLoginPanel();
         appFrame.setVisible(true);
     }
+    
+    public void showRegister() {
+    	appFrame.showRegisterPanel();
+    }
 
     public void showMainPanel() {
-        appFrame.resizeForMainPanel();
         appFrame.showMainPanel();
     }
     
-    public void doLogin() {
-        // Aquí podrías realizar una verificación del login
-        // Si el login es exitoso, cambia al MainPanel
-        showMainPanel(); // TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
+    public void showPanelIntermedio() {
+    	appFrame.showPanelIntermedio();
     }
+    
+    public void doLogin() {
+    	// TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
+    	showPanelIntermedio();
+        appFrame.resizeForMainPanel();
+        showMainPanel();
+    }
+    
+    public void doLogout() {
+    	//TODO gestionar el logout con el MainController
+    	showPanelIntermedio();
+    	appFrame.resizeForLoginPanel();
+    	showLogin();
+    }
+    
 }
