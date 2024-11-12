@@ -17,7 +17,9 @@ public class MainPanel extends JPanel {
 	private JPanel panelBotonera;
 	private JPanel panelMenu1;
 	private JPanel panelMenuPerfil;
+	private JPanel principal;
 	private SearchPanel searchPanel;
+	private AddContactPanel panelAnyadirContacto;
 	private JLabel lblLogout;
 	private JLabel lblsettingGear;
 	private JButton buttonGroups;
@@ -32,7 +34,7 @@ public class MainPanel extends JPanel {
 		setLayout(null);
 		
 		//panelPrincipal
-		JPanel principal = new JPanel();
+		principal = new JPanel();
 		principal.setBounds(360, 0, 920, 720);
 		this.add(principal);
 		
@@ -43,9 +45,11 @@ public class MainPanel extends JPanel {
 		//panelesPrincipales
 		PanelGrande PanelGrandePorDefecto = new PanelGrande();
 		searchPanel = new SearchPanel(uiController);
+		panelAnyadirContacto = new AddContactPanel(uiController);
 		
 		principal.add(PanelGrandePorDefecto, "porDefecto");
 		principal.add(searchPanel, "search");
+		principal.add(panelAnyadirContacto, "anyadirContacto");
 		
 		this.actualizadorUiPrincipal.show(principal, "porDefecto");
 		
@@ -63,9 +67,9 @@ public class MainPanel extends JPanel {
 		panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
 		panelMenu1.add(panelPorDefectoMenu1, "porDefecto");
 		
-		ChatsList chatslist = new ChatsList();
+		ChatsList chatslist = new ChatsList(uiController);
 		panelMenu1.add(chatslist, "chats");
-		GroupsList groupslist = new GroupsList();
+		GroupsList groupslist = new GroupsList(uiController);
 		panelMenu1.add(groupslist, "groups");
 		MessageList messageList = new MessageList();
 		panelMenu1.add(messageList,"messages");
@@ -86,6 +90,7 @@ public class MainPanel extends JPanel {
 		buttonChats.setBounds(10, 0, 100, 100);
 		buttonChats.setFocusPainted(false);
 		this.addHoverEffect(buttonChats);
+		this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
 		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonChats);
 		
@@ -96,6 +101,7 @@ public class MainPanel extends JPanel {
 		buttonGroups.setBounds(10, 120, 100, 100);
 		buttonGroups.setFocusPainted(false);
 		this.addHoverEffect(buttonGroups);
+		this.showMenu("porDefecto", buttonGroups, this.actualizadorUiPrincipal, principal);
 		this.showMenu("groups", buttonGroups, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonGroups);
 		
@@ -197,8 +203,16 @@ public class MainPanel extends JPanel {
 		button.addActionListener(e -> actualizador.show(panelObjetivo, menu));
 	}
 	
+	public void changePanelPrincipal(String panel) {
+    	this.actualizadorUiPrincipal.show(this.principal, panel);
+    }
+	
 	public JLabel getLogoutBotton() {
 		return this.lblLogout;
+	}
+	
+	public CardLayout getActualizadorUiPrincipal() {
+		return this.actualizadorUiPrincipal;
 	}
 
 

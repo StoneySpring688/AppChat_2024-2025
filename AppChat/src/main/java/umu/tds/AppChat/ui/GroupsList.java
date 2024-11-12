@@ -1,16 +1,22 @@
 package umu.tds.AppChat.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Optional;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.MatteBorder;
+
+import umu.tds.AppChat.controllers.UIController;
 
 public class GroupsList extends JPanel {
 
@@ -23,9 +29,9 @@ public class GroupsList extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public GroupsList() {
+	public GroupsList(UIController uiController) {
 		setBackground(this.darkPorDefecto);
-		this.setLayout(new BorderLayout());
+		this.setLayout(null);
 		this.setBounds(120, 0, 240, 660);
 		this.groups = new DefaultListModel<>();
 		
@@ -49,7 +55,43 @@ public class GroupsList extends JPanel {
 		this.scroll.setBorder(BorderFactory.createEmptyBorder());
 		this.scroll.setBackground(this.darkPorDefecto);
 		
-		this.add(this.scroll, BorderLayout.CENTER);
+		this.scroll.setBounds(0, 65, 240, 595);
+		this.add(this.scroll);
+		
+		//boton añadir usuario
+				JPanel buttonAnyadirGrupo = new JPanel();
+				JLabel iconAnyadirGrupo = new JLabel();
+				JLabel lblAnyadirGrupo = new JLabel("Create Group");
+				ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ui-talent-s-mika-03.png"));
+				iconAnyadirGrupo.setIcon(new ImageIcon(icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH)));
+				iconAnyadirGrupo.setBounds(13, 12, 44, 44);
+				lblAnyadirGrupo.setBounds(61, 23, 80, 30);
+				lblAnyadirGrupo.setForeground(Color.WHITE);
+				buttonAnyadirGrupo.add(iconAnyadirGrupo);
+				buttonAnyadirGrupo.add(lblAnyadirGrupo);
+				buttonAnyadirGrupo.setLayout(null);
+				buttonAnyadirGrupo.setBackground(this.darkPorDefecto);
+				buttonAnyadirGrupo.setBounds(0,  0, 240, 60);
+				buttonAnyadirGrupo.setBorder(new MatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));
+				this.add(buttonAnyadirGrupo);
+				
+				buttonAnyadirGrupo.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						uiController.anyadirContacto();
+						}
+					
+					@Override
+		            public void mouseEntered(MouseEvent e) {
+				        lblAnyadirGrupo.setForeground(new Color(173, 216, 230)); // azul claro
+		            }
+					
+					@Override
+		            public void mouseExited(MouseEvent e) {
+				        lblAnyadirGrupo.setForeground(Color.WHITE);
+		            }
+					
+					});
 	}
 
 }

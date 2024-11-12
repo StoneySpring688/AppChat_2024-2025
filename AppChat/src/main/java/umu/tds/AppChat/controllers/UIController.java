@@ -28,6 +28,10 @@ public class UIController {
     	appFrame.showPanelIntermedio();
     }
     
+    public void showPanelAnyadirContacto() {
+    	appFrame.showAnyadirContactoPanel();
+    }
+    
     public void doLogin() {
     	// TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
     	showPanelIntermedio();
@@ -40,6 +44,10 @@ public class UIController {
     	showPanelIntermedio();
     	appFrame.resizeForLoginPanel();
     	showLogin();
+    }
+    
+    public void anyadirContacto() {
+    	showPanelAnyadirContacto();
     }
     
 }

@@ -6,6 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import umu.tds.AppChat.controllers.UIController;
 
@@ -14,6 +16,8 @@ public class AppFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	int posX=0;
 	int posY=0;
+	private JPanel movilidad;
+	private JPanel panelIntercambiable;
 	private LoginPanel login;
 	private RegisterPanel register;
 	private MainPanel mainPanel;
@@ -30,23 +34,34 @@ public class AppFrame extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
+		getContentPane().setLayout(null);
 		
 		//movilidad del frame
-		addMouseListener(new MouseAdapter() {
+		this.movilidad = new JPanel();
+		this.movilidad.setOpaque(false);
+		this.movilidad.setBackground(new Color(0, 0, 0, 0)); //transparente, alpha a 0
+		this.movilidad.setBounds(0, 0, 684, 22);
+		this.movilidad.setBorder(new EmptyBorder(0, 0, 0, 0));
+		
+		this.movilidad.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				posX = e.getX();
 				posY = e.getY();
 			}
 		});
-		addMouseMotionListener(new MouseMotionAdapter() {
+		this.movilidad.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
 				setLocation(e.getXOnScreen() - posX, e.getYOnScreen() - posY);
 			}
 		});
+		getContentPane().add(this.movilidad);
 		
 		//layout
+		panelIntercambiable = new JPanel();
+		panelIntercambiable.setBounds(0, 0, 720, 420);
 		actualizadorUI = new CardLayout();
-		setLayout(actualizadorUI);
+		panelIntercambiable.setLayout(actualizadorUI);
+		getContentPane().add(panelIntercambiable);
 		
 		//paneles
 		login = new LoginPanel(uiController);
@@ -55,11 +70,11 @@ public class AppFrame extends JFrame {
 		intermedio = new PanelIntermedio();
 
 		//gestion paneles
-		add(login, "login");
-		add(register, "register");
-		add(mainPanel, "mainPanel");
-		add(intermedio, "intermedio");
-		actualizadorUI.show(getContentPane(), "login");
+		panelIntercambiable.add(login, "login");
+		panelIntercambiable.add(register, "register");
+		panelIntercambiable.add(mainPanel, "mainPanel");
+		panelIntercambiable.add(intermedio, "intermedio");
+		this.actualizadorUI.show(panelIntercambiable, "login");
 		
 		//gestion botones
 		login.getRegisterButton().addActionListener(e -> uiController.showRegister());
@@ -82,6 +97,7 @@ public class AppFrame extends JFrame {
 	
 	public void showLoginPanel() {
         this.changePanel("login");
+        this.movilidad.setBounds(0, 0, 684, 22);
     }
 
     public void showMainPanel() {
@@ -90,21 +106,30 @@ public class AppFrame extends JFrame {
     
     public void showRegisterPanel() {
         changePanel("register");
+        this.movilidad.setBounds(42, 0, 642, 22);
     }
     
     public void showPanelIntermedio() {
         changePanel("intermedio");
     }
+    
+    public void showAnyadirContactoPanel() {
+        this.mainPanel.changePanelPrincipal("anyadirContacto");
+    }
 
     public void resizeForMainPanel() {
         setSize(1280, 720);
+        this.panelIntercambiable.setSize(1280, 720);
+        this.movilidad.setSize(1244, 22);
     }
     
     public void resizeForLoginPanel() {
         setSize(720,420);
+        this.panelIntercambiable.setSize(720,420);
+        this.movilidad.setSize(684, 22);
     }
     
     public void changePanel(String panel) {
-    	this.actualizadorUI.show(getContentPane(), panel);
+    	this.actualizadorUI.show(panelIntercambiable, panel);
     }
 }
