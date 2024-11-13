@@ -58,7 +58,7 @@ public class GroupsList extends JPanel {
 		this.scroll.setBounds(0, 65, 240, 595);
 		this.add(this.scroll);
 		
-		//boton añadir usuario
+		//boton crear grupo
 				JPanel buttonAnyadirGrupo = new JPanel();
 				JLabel iconAnyadirGrupo = new JLabel();
 				JLabel lblAnyadirGrupo = new JLabel("Create Group");
@@ -78,7 +78,7 @@ public class GroupsList extends JPanel {
 				buttonAnyadirGrupo.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						uiController.anyadirContacto();
+						uiController.crearGrupo();
 						}
 					
 					@Override

@@ -1,10 +1,13 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
-import java.awt.Image;
+import java.util.Optional;
+
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import umu.tds.AppChat.controllers.UIController;
+
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,6 +23,7 @@ public class MainPanel extends JPanel {
 	private JPanel principal;
 	private SearchPanel searchPanel;
 	private AddContactPanel panelAnyadirContacto;
+	private CreateGroupPanel panelCrearGrupo;
 	private JLabel lblLogout;
 	private JLabel lblsettingGear;
 	private JButton buttonGroups;
@@ -46,10 +50,12 @@ public class MainPanel extends JPanel {
 		PanelGrande PanelGrandePorDefecto = new PanelGrande();
 		searchPanel = new SearchPanel(uiController);
 		panelAnyadirContacto = new AddContactPanel(uiController);
+		panelCrearGrupo = new CreateGroupPanel(uiController);
 		
 		principal.add(PanelGrandePorDefecto, "porDefecto");
 		principal.add(searchPanel, "search");
 		principal.add(panelAnyadirContacto, "anyadirContacto");
+		principal.add(panelCrearGrupo, "crearGrupo");
 		
 		this.actualizadorUiPrincipal.show(principal, "porDefecto");
 		
@@ -89,7 +95,7 @@ public class MainPanel extends JPanel {
 		buttonChats.setBorderPainted(false);
 		buttonChats.setBounds(10, 0, 100, 100);
 		buttonChats.setFocusPainted(false);
-		this.addHoverEffect(buttonChats);
+		UIController.addHoverEffect(buttonChats);
 		this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
 		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonChats);
@@ -100,7 +106,7 @@ public class MainPanel extends JPanel {
 		buttonGroups.setBorderPainted(false);
 		buttonGroups.setBounds(10, 120, 100, 100);
 		buttonGroups.setFocusPainted(false);
-		this.addHoverEffect(buttonGroups);
+		UIController.addHoverEffect(buttonGroups);
 		this.showMenu("porDefecto", buttonGroups, this.actualizadorUiPrincipal, principal);
 		this.showMenu("groups", buttonGroups, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonGroups);
@@ -111,7 +117,7 @@ public class MainPanel extends JPanel {
 		buttonShop.setBorderPainted(false);
 		buttonShop.setBounds(10, 240, 100, 100);
 		buttonShop.setFocusPainted(false);
-		this.addHoverEffect(buttonShop);
+		UIController.addHoverEffect(buttonShop);
 		this.showMenu("porDefecto", buttonShop, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonShop);
 		
@@ -121,7 +127,7 @@ public class MainPanel extends JPanel {
 		buttonSearch.setBorderPainted(false);
 		buttonSearch.setBounds(10, 600, 100, 100);
 		buttonSearch.setFocusPainted(false);
-		this.addHoverEffect(buttonSearch);
+		UIController.addHoverEffect(buttonSearch);
 		this.showMenu("search", buttonSearch, this.actualizadorUiPrincipal, principal);
 		this.showMenu("messages", buttonSearch, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonSearch);
@@ -151,7 +157,7 @@ public class MainPanel extends JPanel {
 		lblLogout = new JLabel("");
 		lblLogout.setIcon(new ImageIcon(getClass().getResource("/assets/Exit_Door_Reescalada.png")));
 		lblLogout.setBounds(157, 14, 33, 35);
-		addHoverEffect(lblLogout, 30, 32);
+		UIController.addHoverEffect(lblLogout, 30, 32);
 		panelMenuPerfil.add(lblLogout);
 		
 		//configuración de colores
@@ -161,42 +167,6 @@ public class MainPanel extends JPanel {
 		panelMenu1.setBackground(new Color(54, 57, 63));       // Gris medio para el menú
 		panelPorDefectoMenu1.setBackground(new Color(54, 57, 63)); // Gris medio para el menú
 
-	}
-	
-	private void addHoverEffect(JButton button) {
-	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
-	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
-
-	    
-	    button.addMouseListener(new java.awt.event.MouseAdapter() {
-	        @Override
-	        public void mouseEntered(java.awt.event.MouseEvent evt) {
-	            button.setIcon(scaledIcon);  // Cambia a icono más pequeño al pasar el ratón
-	        }
-
-	        @Override
-	        public void mouseExited(java.awt.event.MouseEvent evt) {
-	            button.setIcon(originalIcon);  // Vuelve al icono original al salir
-	        }
-	    });
-	}
-	
-	private void addHoverEffect(JLabel button, int xHover, int yHover) {
-	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
-	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(xHover, yHover, Image.SCALE_SMOOTH));
-
-	    
-	    button.addMouseListener(new java.awt.event.MouseAdapter() {
-	        @Override
-	        public void mouseEntered(java.awt.event.MouseEvent evt) {
-	            button.setIcon(scaledIcon);  // Cambia a icono más pequeño al pasar el ratón
-	        }
-
-	        @Override
-	        public void mouseExited(java.awt.event.MouseEvent evt) {
-	            button.setIcon(originalIcon);  // Vuelve al icono original al salir
-	        }
-	    });
 	}
 	
 	private void showMenu(String menu, JButton button, CardLayout actualizador, JPanel panelObjetivo) {
@@ -213,6 +183,26 @@ public class MainPanel extends JPanel {
 	
 	public CardLayout getActualizadorUiPrincipal() {
 		return this.actualizadorUiPrincipal;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void accederMetodoNoVisible(int numMetodo, Optional<Object> ... arg) {
+		
+		switch (numMetodo) {
+		// inicializar lista de usuarios de crearGrupo
+		case 1: {
+
+			if (arg[0].isPresent() && arg[0].get() instanceof DefaultListModel) {
+				DefaultListModel<ElementoChatOGrupo> lista = (DefaultListModel<ElementoChatOGrupo>) arg[0].get();
+				panelCrearGrupo.iniciar(lista);
+			}
+			break;
+			
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + numMetodo);
+		}
+		
 	}
 
 

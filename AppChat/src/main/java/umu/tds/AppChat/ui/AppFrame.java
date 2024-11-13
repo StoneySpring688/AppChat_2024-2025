@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Optional;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -116,6 +119,10 @@ public class AppFrame extends JFrame {
     public void showAnyadirContactoPanel() {
         this.mainPanel.changePanelPrincipal("anyadirContacto");
     }
+    
+    public void showAnyadirCrearGrupoPanel() {
+        this.mainPanel.changePanelPrincipal("crearGrupo");
+    }
 
     public void resizeForMainPanel() {
         setSize(1280, 720);
@@ -132,4 +139,25 @@ public class AppFrame extends JFrame {
     public void changePanel(String panel) {
     	this.actualizadorUI.show(panelIntercambiable, panel);
     }
+    
+    @SuppressWarnings("unchecked")
+	public void llamarMetodo(int numMetodo, Optional<Object> ... arg) {
+		
+		switch (numMetodo) {
+		// inicializar lista de usuarios de crearGrupo
+		case 1: {
+			
+			if (arg[0].isPresent() && arg[0].get() instanceof DefaultListModel) {
+				DefaultListModel<ElementoChatOGrupo> lista = (DefaultListModel<ElementoChatOGrupo>) arg[0].get();
+				mainPanel.accederMetodoNoVisible(1, Optional.of(lista));
+			}
+			break;
+			
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + numMetodo);
+		}
+		
+	}
+    
 }
