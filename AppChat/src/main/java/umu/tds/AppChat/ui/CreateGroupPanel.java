@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import umu.tds.AppChat.controllers.UIController;
@@ -48,7 +47,7 @@ public class CreateGroupPanel  extends PanelGrande {
 		textNombreGrupo.setBackground(this.Gray);
 		textNombreGrupo.setCaretColor(Color.WHITE);
 		textNombreGrupo.setForeground(Color.WHITE);
-		textNombreGrupo.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textNombreGrupo.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textNombreGrupo);
 		textNombreGrupo.setColumns(10);
 		
@@ -83,7 +82,7 @@ public class CreateGroupPanel  extends PanelGrande {
 		urlField.setBackground(this.Gray);
 		urlField.setCaretColor(Color.WHITE);
 		urlField.setForeground(Color.WHITE);
-		urlField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//urlField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		urlField.setBounds(627, 104, 202, 30);
 		this.add(urlField);
 		urlField.getDocument().addDocumentListener(new DocumentListener() {
@@ -247,7 +246,6 @@ public class CreateGroupPanel  extends PanelGrande {
 	}
 	
 	public void iniciar(DefaultListModel<ElementoChatOGrupo> lista) {
-		//TODO cargar la lista de contactos
 		this.miembros.clear();
 		this.contactos.clear();
 		lista.elements().asIterator().forEachRemaining(this.contactos::addElement);

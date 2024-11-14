@@ -3,7 +3,6 @@ package umu.tds.AppChat.ui;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,8 +11,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import umu.tds.AppChat.controllers.UIController;
 
 
@@ -102,12 +99,12 @@ public class LoginPanel extends JPanel {
 		textFieldPhone.setBackground(this.Gray);
 		textFieldPhone.setCaretColor(Color.WHITE);
 		textFieldPhone.setForeground(Color.WHITE);
-		textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
 		JLabel lblPhone = new JLabel("Phone");
-		lblPhone.setBounds(370, 142, 40, 20);
+		lblPhone.setBounds(370, 142, 50, 20);
 		lblPhone.setForeground(Color.WHITE);
 		add(lblPhone);
 		
@@ -115,13 +112,13 @@ public class LoginPanel extends JPanel {
 		password1.setBackground(this.Gray);
 		password1.setCaretColor(Color.WHITE);
 		password1.setForeground(Color.WHITE);
-		password1.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//password1.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		password1.setColumns(10);
 		password1.setBounds(370, 235, 285, 30);
 		add(password1);
 		
 		JLabel lblPassword1 = new JLabel("Password");
-		lblPassword1.setBounds(370, 217, 60, 20);
+		lblPassword1.setBounds(370, 217, 70, 20);
 		lblPassword1.setForeground(Color.WHITE);
 		add(lblPassword1);
 		

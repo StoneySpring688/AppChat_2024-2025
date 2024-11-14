@@ -29,6 +29,7 @@
   </dependencyManagement>
 
   <dependencies>
+  
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -40,6 +41,32 @@
       <artifactId>junit-jupiter-params</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- flatlaf -->
+    <dependency>
+       <groupId>com.formdev</groupId>
+       <artifactId>flatlaf</artifactId>
+       <version>3.5.2</version> <!-- Usa la última versión disponible -->
+    </dependency>
+    <!-- miglayout -->
+    <dependency>
+       <groupId>com.miglayout</groupId>
+       <artifactId>miglayout-swing</artifactId>
+       <version>4.2</version> <!-- Usa la última versión disponible -->
+    </dependency>
+    <!-- timingframework -->
+	<dependency>
+    	<groupId>net.java.dev.timingframework</groupId>
+    	<artifactId>timingframework</artifactId>
+    	<version>1.0</version>
+	</dependency>
+	<!-- gradient icon font -->
+	<dependency>
+        <groupId>umu.tds</groupId>
+        <artifactId>gradient-icon-font</artifactId>
+        <version>1.0</version>
+    </dependency>
+
+    
   </dependencies>
 
   <build>

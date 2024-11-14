@@ -11,4 +11,5 @@ public class ScrollBar extends JScrollBar {
         setPreferredSize(new Dimension(8, 8));
         setOpaque(false);
     }
+    
 }

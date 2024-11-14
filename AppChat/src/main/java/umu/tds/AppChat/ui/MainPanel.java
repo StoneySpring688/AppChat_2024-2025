@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import umu.tds.AppChat.controllers.UIController;
+import umu.tds.AppChat.ui.chatInterface.ChatPanel;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -51,11 +52,13 @@ public class MainPanel extends JPanel {
 		searchPanel = new SearchPanel(uiController);
 		panelAnyadirContacto = new AddContactPanel(uiController);
 		panelCrearGrupo = new CreateGroupPanel(uiController);
+		ChatPanel chat = new ChatPanel();
 		
 		principal.add(PanelGrandePorDefecto, "porDefecto");
 		principal.add(searchPanel, "search");
 		principal.add(panelAnyadirContacto, "anyadirContacto");
 		principal.add(panelCrearGrupo, "crearGrupo");
+		principal.add(chat, "chat");
 		
 		this.actualizadorUiPrincipal.show(principal, "porDefecto");
 		
@@ -118,6 +121,7 @@ public class MainPanel extends JPanel {
 		buttonShop.setBounds(10, 240, 100, 100);
 		buttonShop.setFocusPainted(false);
 		UIController.addHoverEffect(buttonShop);
+		this.showMenu("chat", buttonShop, this.actualizadorUiPrincipal, principal);
 		this.showMenu("porDefecto", buttonShop, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonShop);
 		

@@ -1,12 +1,9 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-
 import umu.tds.AppChat.controllers.UIController;
 
 public class AddContactPanel extends PanelGrande {
@@ -26,12 +23,12 @@ public class AddContactPanel extends PanelGrande {
 		textFieldPhone.setBackground(this.Gray);
 		textFieldPhone.setCaretColor(Color.WHITE);
 		textFieldPhone.setForeground(Color.WHITE);
-		textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
 		JLabel lblPhone = new JLabel("Phone");
-		lblPhone.setBounds(20, 112, 40, 20);
+		lblPhone.setBounds(20, 112, 42, 20);
 		lblPhone.setForeground(Color.WHITE);
 		this.add(lblPhone);
 		
@@ -40,7 +37,7 @@ public class AddContactPanel extends PanelGrande {
 		textNombreContacto.setBackground(this.Gray);
 		textNombreContacto.setCaretColor(Color.WHITE);
 		textNombreContacto.setForeground(Color.WHITE);
-		textNombreContacto.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textNombreContacto.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textNombreContacto);
 		textNombreContacto.setColumns(10);
 		

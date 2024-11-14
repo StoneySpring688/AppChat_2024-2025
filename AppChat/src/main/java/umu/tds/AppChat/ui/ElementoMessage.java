@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.JSeparator;
 
 public class ElementoMessage extends JPanel {
 	
@@ -47,6 +48,9 @@ public class ElementoMessage extends JPanel {
         panelInfo.add(lblTo);
         panelInfo.add(lblMessage);
         this.add(panelInfo, BorderLayout.CENTER);
+        
+        JSeparator separator = new JSeparator();
+        add(separator, BorderLayout.SOUTH);
 	}
 	
 	public void cambio_color(Color color) {

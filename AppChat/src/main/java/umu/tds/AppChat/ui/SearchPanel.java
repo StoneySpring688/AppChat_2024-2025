@@ -6,8 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-
 import umu.tds.AppChat.controllers.UIController;
 
 public class SearchPanel extends PanelGrande {
@@ -27,12 +25,12 @@ public class SearchPanel extends PanelGrande {
 		textFieldPhone.setBackground(this.Gray);
 		textFieldPhone.setCaretColor(Color.WHITE);
 		textFieldPhone.setForeground(Color.WHITE);
-		textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
 		JLabel lblPhone = new JLabel("Phone");
-		lblPhone.setBounds(20, 112, 40, 20);
+		lblPhone.setBounds(20, 112, 50, 20);
 		lblPhone.setForeground(Color.WHITE);
 		this.add(lblPhone);
 		
@@ -41,7 +39,7 @@ public class SearchPanel extends PanelGrande {
 		textFieldContacto.setBackground(this.Gray);
 		textFieldContacto.setCaretColor(Color.WHITE);
 		textFieldContacto.setForeground(Color.WHITE);
-		textFieldContacto.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textFieldContacto.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textFieldContacto);
 		textFieldContacto.setColumns(10);
 		
@@ -54,7 +52,7 @@ public class SearchPanel extends PanelGrande {
 		textFieldMessage.setBackground(this.Gray);
 		textFieldMessage.setCaretColor(Color.WHITE);
 		textFieldMessage.setForeground(Color.WHITE);
-		textFieldMessage.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textFieldMessage.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		textFieldMessage.setLineWrap(true);
 		textFieldMessage.setWrapStyleWord(true);
 		textFieldMessage.setColumns(10);

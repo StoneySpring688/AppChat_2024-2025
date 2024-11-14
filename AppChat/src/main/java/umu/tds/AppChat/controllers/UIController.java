@@ -2,12 +2,12 @@ package umu.tds.AppChat.controllers;
 
 import java.awt.Image;
 import java.util.Optional;
-
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
+import javax.swing.UIManager;
+import com.formdev.flatlaf.FlatDarculaLaf;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
 
@@ -17,9 +17,21 @@ public class UIController {
 
     public UIController(MainController mainController) {
         this.mainController = mainController;
-        this.appFrame = new AppFrame(this);
+        
+        iniciarUI();
+        
     }
 
+    public void iniciarUI() {
+    	UIManager.put( "Button.arc", 300 );
+    	UIManager.put( "TextComponent.arc", 100 );
+    	UIManager.put( "Component.arc", 100 );
+    	FlatDarculaLaf.setup();
+    	
+    	this.appFrame = new AppFrame(this);
+    }
+    
+    
     public void showLogin() {
         appFrame.showLoginPanel();
         appFrame.setVisible(true);
@@ -65,6 +77,7 @@ public class UIController {
     
     @SuppressWarnings("unchecked")
 	public void crearGrupo() {
+    	//TODO cargar la lista de contactos
     	DefaultListModel<ElementoChatOGrupo> lista = new DefaultListModel<>();
     	
     	for(int i=0 ;i<10 ;i++) {

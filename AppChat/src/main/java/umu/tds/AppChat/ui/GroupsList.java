@@ -65,7 +65,7 @@ public class GroupsList extends JPanel {
 				ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ui-talent-s-mika-03.png"));
 				iconAnyadirGrupo.setIcon(new ImageIcon(icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH)));
 				iconAnyadirGrupo.setBounds(13, 12, 44, 44);
-				lblAnyadirGrupo.setBounds(61, 23, 80, 30);
+				lblAnyadirGrupo.setBounds(61, 23, 90, 30);
 				lblAnyadirGrupo.setForeground(Color.WHITE);
 				buttonAnyadirGrupo.add(iconAnyadirGrupo);
 				buttonAnyadirGrupo.add(lblAnyadirGrupo);

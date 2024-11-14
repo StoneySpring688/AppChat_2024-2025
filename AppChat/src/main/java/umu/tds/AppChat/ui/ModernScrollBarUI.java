@@ -14,6 +14,10 @@ public class ModernScrollBarUI extends BasicScrollBarUI {
     	thumbColor = new Color(32, 34, 37, 150);
         trackColor = this.darkPorDefecto;
     }
+    
+    public void ChangesScrollTrackColor(Color color) {
+    	trackColor = color;
+    }
 
     @Override
     protected JButton createDecreaseButton(int orientation) {

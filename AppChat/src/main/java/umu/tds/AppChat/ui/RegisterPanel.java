@@ -13,11 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -114,13 +112,9 @@ public class RegisterPanel extends JPanel {
 		textFieldName.setBackground(this.Gray);
 		textFieldName.setCaretColor(Color.WHITE);
 		textFieldName.setForeground(Color.WHITE);
-		textFieldName.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		///textFieldName.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textFieldName);
 		textFieldName.setColumns(10);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(370, 53, 285, 2);
-		this.add(separator);
 		
 		JLabel lblName = new JLabel("Name");
 		lblName.setBounds(370, 10, 40, 15);
@@ -132,12 +126,12 @@ public class RegisterPanel extends JPanel {
 		textFieldLastName.setBackground(this.Gray);
 		textFieldLastName.setCaretColor(Color.WHITE);
 		textFieldLastName.setForeground(Color.WHITE);
-		textFieldLastName.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textFieldLastName.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textFieldLastName);
 		textFieldLastName.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("LastName");
-		lblLastName.setBounds(370, 62, 65, 20);
+		lblLastName.setBounds(370, 62, 70, 20);
 		lblLastName.setForeground(Color.WHITE);
 		this.add(lblLastName);
 		
@@ -146,12 +140,12 @@ public class RegisterPanel extends JPanel {
 		textFieldPhone.setBackground(this.Gray);
 		textFieldPhone.setCaretColor(Color.WHITE);
 		textFieldPhone.setForeground(Color.WHITE);
-		textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
 		JLabel lblPhone = new JLabel("Phone");
-		lblPhone.setBounds(370, 117, 40, 20);
+		lblPhone.setBounds(370, 117, 50, 20);
 		lblPhone.setForeground(Color.WHITE);
 		this.add(lblPhone);
 		
@@ -159,13 +153,13 @@ public class RegisterPanel extends JPanel {
 		password1.setBackground(this.Gray);
 		password1.setCaretColor(Color.WHITE);
 		password1.setForeground(Color.WHITE);
-		password1.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//password1.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		password1.setColumns(10);
 		password1.setBounds(370, 190, 130, 30);
 		this.add(password1);
 		
 		JLabel lblPassword1 = new JLabel("Password");
-		lblPassword1.setBounds(370, 172, 60, 20);
+		lblPassword1.setBounds(370, 172, 70, 20);
 		lblPassword1.setForeground(Color.WHITE);
 		this.add(lblPassword1);
 		
@@ -173,7 +167,7 @@ public class RegisterPanel extends JPanel {
 		password2.setBackground(this.Gray);
 		password2.setCaretColor(Color.WHITE);
 		password2.setForeground(Color.WHITE);
-		password2.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//password2.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		password2.setColumns(10);
 		password2.setBounds(525, 190, 130, 30);
 		this.add(password2);
@@ -187,7 +181,7 @@ public class RegisterPanel extends JPanel {
 		textFieldSignature.setBackground(this.Gray);
 		textFieldSignature.setCaretColor(Color.WHITE);
 		textFieldSignature.setForeground(Color.WHITE);
-		textFieldSignature.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//textFieldSignature.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		textFieldSignature.setLineWrap(true);
 		textFieldSignature.setWrapStyleWord(true);
 		textFieldSignature.setColumns(10);
@@ -196,12 +190,14 @@ public class RegisterPanel extends JPanel {
 		JScrollPane scrollPaneSignature = new JScrollPane(textFieldSignature);
 		scrollPaneSignature.setBounds(370, 270, 155, 70);
 		scrollPaneSignature.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPaneSignature.setVerticalScrollBar(new ScrollBar());
+		ScrollBar VScroll = new ScrollBar();
+		VScroll.setBackground(this.Gray);
+		scrollPaneSignature.setVerticalScrollBar(VScroll);
 		scrollPaneSignature.setHorizontalScrollBar(new ScrollBar());
 		this.add(scrollPaneSignature);
 		
 		JLabel lblSignature = new JLabel("Signature");
-		lblSignature.setBounds(370, 250, 60, 20);
+		lblSignature.setBounds(370, 250, 70, 20);
 		lblSignature.setForeground(Color.WHITE);
 		this.add(lblSignature);
 		
@@ -241,16 +237,15 @@ public class RegisterPanel extends JPanel {
 		urlField.setBackground(this.Gray);
 		urlField.setCaretColor(Color.WHITE);
 		urlField.setForeground(Color.WHITE);
-		urlField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-		urlField.setBounds(543, 320, 112, 20);
+		//urlField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		urlField.setBounds(543, 315, 112, 25);
 		this.add(urlField);
 		
 		JLabel lblUrlImage = new JLabel("ImageUrl");
-		lblUrlImage.setBounds(543, 302, 60, 20);
+		lblUrlImage.setBounds(543, 294, 60, 20);
 		lblUrlImage.setForeground(Color.WHITE);
 		this.add(lblUrlImage);
 		
-		//ImageIcon nuevo = new ImageIcon();
 		
 		urlField.getDocument().addDocumentListener(new DocumentListener() {
 		    private final String defaultProfileImage = RegisterPanel.getDefaultProfileImage();
