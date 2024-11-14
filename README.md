@@ -4,7 +4,9 @@
 ---
 
 > [!IMPORTANT]
-> ### Requiere Java para funcionar
+> ### Requiere :
+> - [Java](https://www.oracle.com/es/java/technologies/downloads/)
+> - [Maven](https://maven.apache.org/download.cgi)
 
 ## 📋 Descripción del proyecto
 **AppChat** es una aplicación de mensajería inspirada en aplicaciones populares como **WhatsApp Web** y **Telegram**, diseñada como una aplicación de escritorio en **Java/Swing**.
@@ -40,10 +42,15 @@ cd AppChat_2024-2025
 
 ## 🔧 Construcción
 
-Asegúrate de tener **Maven** instalado y ejecuta el siguiente comando:
+1. Asegúrate de tener **Maven** instalado 
+2. Descomprime el archivo si lo has descargado como un **.zip**
+3. Ejecuta estos comandos dentro del directorio del proyecto **AppChat_2024-2025**:
 
 ```bash
+cd AppChat
+mvn install:install-file -Dfile=libs/gradient-icon-font.jar -DgroupId=umu.tds -DartifactId=gradient-icon-font -Dversion=1.0 -Dpackaging=jar
 mvn clean install
+cd ..
 ```
 
 ## ▶️ Ejecutar la aplicación
