@@ -40,6 +40,8 @@ public class ChatArea extends JPanel {
     private JScrollPane scrollBody;
     private Button floatingButton;
     private JLabel labelTitle;
+    private EmojiPanel emojiPanel;
+    private boolean emojiPanelVisibility;
 
     public void addChatEvent(ChatEvent event) {
         events.add(event);
@@ -51,7 +53,20 @@ public class ChatArea extends JPanel {
     }
 
     private void init() {
-        setOpaque(false);
+    	setLayout(null);
+    	setOpaque(false);
+    	
+    	this.emojiPanel = new EmojiPanel();
+    	emojiPanel.setSize(850, 244);
+    	emojiPanel.setLocation(30, 345);
+    	this.setEmojiPanelVisibility(false);
+    	this.add(emojiPanel);
+    	
+    	JPanel principal = new JPanel();
+    	principal.setBounds(0, 0, 910, 650);
+    	principal.setOpaque(false);
+    	this.add(principal);
+    	
         layout = new MigLayout("fill, wrap, inset 0", "[fill]", "[fill,40!][fill, 100%][shrink 0,::30%]");
         header = createHeader();
         body = createBody();
@@ -85,11 +100,11 @@ public class ChatArea extends JPanel {
         floatingButton = createFloatingButton();
         layeredPane.setLayer(floatingButton, JLayeredPane.POPUP_LAYER);
         layeredPane.add(floatingButton, "pos 100%-50 100%,h 40,w 40");
-        layeredPane.add(scrollBody); //TODO
-        setLayout(layout);
-        add(header);
-        add(layeredPane);
-        add(bottom);
+        layeredPane.add(scrollBody);
+        principal.setLayout(layout);
+        principal.add(header);
+        principal.add(layeredPane);
+        principal.add(bottom);
     }
 
     private void initAnimator() {
@@ -112,7 +127,7 @@ public class ChatArea extends JPanel {
     private JPanel createBody() {
         RoundPanel panel = new RoundPanel();
         panel.setBackground(new Color(0, 0, 0, 0));
-        panel.setLayout(new MigLayout("wrap,fillx"));
+        panel.setLayout(new MigLayout("wrap,fillx", "[]", "[][][][][][][][][][][][][][][][][][]"));
         return panel;
     }
 
@@ -120,17 +135,17 @@ public class ChatArea extends JPanel {
         RoundPanel panel = new RoundPanel();
         panel.setBackground(new Color(255, 255, 255, 20));
         panel.setLayout(new MigLayout("fill, inset 2", "[fill,34!]2[fill]2[fill,34!]", "[bottom]"));
-        GoogleMaterialIcon iconFile = new GoogleMaterialIcon(GoogleMaterialDesignIcon.ATTACH_FILE, GradientType.VERTICAL, new Color(210, 210, 210), new Color(255, 255, 255), 20);
+        //GoogleMaterialIcon iconFile = new GoogleMaterialIcon(GoogleMaterialDesignIcon.ATTACH_FILE, GradientType.VERTICAL, new Color(210, 210, 210), new Color(255, 255, 255), 20);
         GoogleMaterialIcon iconSend = new GoogleMaterialIcon(GoogleMaterialDesignIcon.SEND, GradientType.VERTICAL, new Color(0, 133, 237), new Color(90, 182, 255), 20);
         GoogleMaterialIcon iconEmot = new GoogleMaterialIcon(GoogleMaterialDesignIcon.INSERT_EMOTICON, GradientType.VERTICAL, new Color(210, 210, 210), new Color(255, 255, 255), 20);
-        Button cmdFile = new Button();
+        Button cmdEmoji = new Button();
         Button cmdSend = new Button();
-        cmdFile.setFocusable(false);
+        cmdEmoji.setFocusable(false);
         cmdSend.setFocusable(false);
-        cmdFile.setIcon(iconFile.toIcon());
+        cmdEmoji.setIcon(iconEmot.toIcon());
         cmdSend.setIcon(iconSend.toIcon());
         textMessage = new TextField();
-        textMessage.setHint("Write a message here ...");
+        textMessage.setHint("Escribe un Mensaje ...");
         textMessage.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -148,10 +163,10 @@ public class ChatArea extends JPanel {
                 runEventMousePressedSendButton(e);
             }
         });
-        cmdFile.addActionListener(new ActionListener() {
+        cmdEmoji.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                runEventMousePressedFileButton(e);
+                runEventMousePressedEmojiButton(e);
             }
         });
         //JScrollPane scroll = createScroll();
@@ -163,8 +178,8 @@ public class ChatArea extends JPanel {
         scrollBarraBotton.getViewport().setOpaque(false);
         scrollBarraBotton.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
         scrollBarraBotton.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
-        panel.add(cmdFile, "height 34!");
-        panel.add(scrollBarraBotton); //TODO
+        panel.add(cmdEmoji, "height 34!");
+        panel.add(scrollBarraBotton); 
         panel.add(cmdSend, "height 34!");
         return panel;
     }
@@ -191,13 +206,6 @@ public class ChatArea extends JPanel {
             }
         });
         return button;
-    }
-
-    private JScrollPane createScroll() {
-        JScrollPane scroll = new JScrollPane();
-        scroll.setBorder(null);
-        scroll.setViewportBorder(null);
-        return scroll;
     }
 
     public void addChatBox(ModelMessage message, ChatBox.BoxType type) {
@@ -237,10 +245,11 @@ public class ChatArea extends JPanel {
         }
     }
 
-    private void runEventMousePressedFileButton(ActionEvent evt) {
+    private void runEventMousePressedEmojiButton(ActionEvent evt) {
         for (ChatEvent event : events) {
-            event.mousePressedFileButton(evt);
+            event.mousePressedEmojiButton(evt);
         }
+        showHideEmojiPanel();
     }
 
     private void runEventKeyTyped(KeyEvent evt) {
@@ -273,6 +282,24 @@ public class ChatArea extends JPanel {
         textMessage.setText("");
         textMessage.grabFocus();
     }
-
+    
+    public void resetText() {
+        textMessage.setText("");
+    }
+    
+    private boolean getEmojiPanelVisibility() {
+    	return this.emojiPanelVisibility;
+    }
+    
+    private void setEmojiPanelVisibility(boolean visibility) {
+    	this.emojiPanelVisibility = visibility;
+    	emojiPanel.setVisible(visibility);
+    	emojiPanel.repaint();
+    	emojiPanel.revalidate();
+    }
+    
+    public void showHideEmojiPanel() {
+    	this.setEmojiPanelVisibility(!this.getEmojiPanelVisibility());
+    }
     
 }

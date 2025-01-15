@@ -7,7 +7,9 @@ public interface ChatEvent {
 
     public void mousePressedSendButton(ActionEvent evt);
 
-    public void mousePressedFileButton(ActionEvent evt);
+    //public void mousePressedFileButton(ActionEvent evt);
+    
+    public void mousePressedEmojiButton(ActionEvent evt);
 
     public void keyTyped(KeyEvent evt);
 }

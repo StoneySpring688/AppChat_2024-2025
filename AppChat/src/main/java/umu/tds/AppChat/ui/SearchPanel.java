@@ -12,6 +12,7 @@ public class SearchPanel extends PanelGrande {
 
 	private static final long serialVersionUID = 1L;
 	
+	private Background fondo;
 	private JTextField textFieldPhone;
 	private JTextField textFieldContacto;
 	private JButton SearchButton;
@@ -20,19 +21,23 @@ public class SearchPanel extends PanelGrande {
 
 	public SearchPanel(UIController uiController) {
 		
+		this.fondo = new Background();
+		this.fondo.setBounds(0, 60, 920, 660);
+		this.add(fondo);
+		
 		textFieldPhone = new JTextField();
 		textFieldPhone.setBounds(20, 130, 285, 30);
 		textFieldPhone.setBackground(this.Gray);
 		textFieldPhone.setCaretColor(Color.WHITE);
 		textFieldPhone.setForeground(Color.WHITE);
 		//textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-		this.add(textFieldPhone);
+		this.fondo.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
 		JLabel lblPhone = new JLabel("Phone");
 		lblPhone.setBounds(20, 112, 50, 20);
 		lblPhone.setForeground(Color.WHITE);
-		this.add(lblPhone);
+		this.fondo.add(lblPhone);
 		
 		textFieldContacto = new JTextField();
 		textFieldContacto.setBounds(20, 220, 285, 30);
@@ -40,13 +45,13 @@ public class SearchPanel extends PanelGrande {
 		textFieldContacto.setCaretColor(Color.WHITE);
 		textFieldContacto.setForeground(Color.WHITE);
 		//textFieldContacto.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-		this.add(textFieldContacto);
+		this.fondo.add(textFieldContacto);
 		textFieldContacto.setColumns(10);
 		
 		JLabel lblContacto = new JLabel("Contacto");
 		lblContacto.setBounds(20, 202, 60, 20);
 		lblContacto.setForeground(Color.WHITE);
-		this.add(lblContacto);
+		this.fondo.add(lblContacto);
 		
 		JTextArea textFieldMessage = new JTextArea();
 		textFieldMessage.setBackground(this.Gray);
@@ -62,18 +67,18 @@ public class SearchPanel extends PanelGrande {
 		scrollPaneMessage.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPaneMessage.setVerticalScrollBar(new ScrollBar());
 		scrollPaneMessage.setHorizontalScrollBar(new ScrollBar());
-		this.add(scrollPaneMessage);
+		this.fondo.add(scrollPaneMessage);
 		
 		JLabel lblMessage = new JLabel("Message");
 		lblMessage.setBounds(20, 282, 60, 20);
 		lblMessage.setForeground(Color.WHITE);
-		this.add(lblMessage);
+		this.fondo.add(lblMessage);
 		
 		SearchButton = new JButton("Search");
 		SearchButton.setForeground(Color.WHITE);
 		SearchButton.setBackground(new Color(241, 57, 83));
 		SearchButton.setBounds(69, 450, 187, 35); // x = 370+(285/2)-(187/2)
-		this.add(SearchButton);
+		this.fondo.add(SearchButton);
 		
 	}
 

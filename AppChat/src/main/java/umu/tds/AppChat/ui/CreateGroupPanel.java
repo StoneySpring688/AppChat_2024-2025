@@ -25,6 +25,8 @@ import javax.swing.border.TitledBorder;
 public class CreateGroupPanel  extends PanelGrande {
 
 	private static final long serialVersionUID = 1L;
+	
+	private Background fondo;
 	private JTextField textNombreGrupo;
 	private JButton anyadirButton;
 	private JTextField urlField;
@@ -41,6 +43,10 @@ public class CreateGroupPanel  extends PanelGrande {
 	
 	public CreateGroupPanel(UIController uiController) {
 		
+		this.fondo = new Background();
+		this.fondo.setBounds(0, 60, 920, 660);
+		this.add(fondo);
+		
 		//campo para el nombre del grupo
 		textNombreGrupo = new JTextField();
 		textNombreGrupo.setBounds(20, 104, 285, 30);
@@ -48,34 +54,34 @@ public class CreateGroupPanel  extends PanelGrande {
 		textNombreGrupo.setCaretColor(Color.WHITE);
 		textNombreGrupo.setForeground(Color.WHITE);
 		//textNombreGrupo.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-		this.add(textNombreGrupo);
+		this.fondo.add(textNombreGrupo);
 		textNombreGrupo.setColumns(10);
 		
 		//texto indicativo
 		JLabel lblGrupo = new JLabel("Nombre Grupo");
 		lblGrupo.setBounds(20, 87, 120, 20);
 		lblGrupo.setForeground(Color.WHITE);
-		this.add(lblGrupo);
+		this.fondo.add(lblGrupo);
 		
 		//boton para aceptar la operación
 		anyadirButton = new JButton("Accept");
 		anyadirButton.setForeground(Color.WHITE);
 		anyadirButton.setBackground(new Color(241, 57, 83));
 		anyadirButton.setBounds(342, 582, 187, 35); // x = 305 + (262/2) - (187/2)
-		this.add(anyadirButton);
+		this.fondo.add(anyadirButton);
 		
 		//texto indicativo
 		JLabel lblUrlImage = new JLabel("ImageUrl");
 		lblUrlImage.setBounds(627, 87, 60, 20);
 		lblUrlImage.setForeground(Color.WHITE);
-		this.add(lblUrlImage);
+		this.fondo.add(lblUrlImage);
 		
 		// label para ver la imagen del grupo
 		JLabel lblProfile = new JLabel("");
 		ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
 		lblProfile.setIcon(image);
 		lblProfile.setBounds(567, 90, 44, 44);
-		this.add(lblProfile);
+		this.fondo.add(lblProfile);
 		
 		//campo para la url de la imagen del grupo
 		urlField = new JTextField();
@@ -84,7 +90,7 @@ public class CreateGroupPanel  extends PanelGrande {
 		urlField.setForeground(Color.WHITE);
 		//urlField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		urlField.setBounds(627, 104, 202, 30);
-		this.add(urlField);
+		this.fondo.add(urlField);
 		urlField.getDocument().addDocumentListener(new DocumentListener() {
 		    private final String defaultProfileImage = CreateGroupPanel.defaultGroupUrl;
 
@@ -174,13 +180,13 @@ public class CreateGroupPanel  extends PanelGrande {
 				}
 			});
 		UIController.addHoverEffect(buttonDeleteUrl, 20, 20);
-		add(buttonDeleteUrl);
+		this.fondo.add(buttonDeleteUrl);
 		
 		//panel de contactos
 		JPanel panelContactos = new JPanel();
 		panelContactos.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelContactos.setBounds(20, 163, 285, 385);
-		add(panelContactos);
+		this.fondo.add(panelContactos);
 		
 		//lista de contactos
 		this.contactos = new DefaultListModel<>();
@@ -213,7 +219,7 @@ public class CreateGroupPanel  extends PanelGrande {
 		JPanel panelMiembros = new JPanel();
 		panelMiembros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelMiembros.setBounds(567, 163, 285, 385);
-		add(panelMiembros);
+		this.fondo.add(panelMiembros);
 		
 		//lista de miembros
 		this.miembros = new DefaultListModel<>();

@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import umu.tds.AppChat.controllers.UIController;
+import umu.tds.AppChat.ui.chatInterface.Button;
 import umu.tds.AppChat.ui.chatInterface.ChatPanel;
 
 import javax.swing.DefaultListModel;
@@ -27,10 +28,10 @@ public class MainPanel extends JPanel {
 	private CreateGroupPanel panelCrearGrupo;
 	private JLabel lblLogout;
 	private JLabel lblsettingGear;
-	private JButton buttonGroups;
-	private JButton buttonSearch;
-	private JButton buttonChats;
-	private JButton buttonShop;
+	private Button buttonGroups;
+	private Button buttonSearch;
+	private Button buttonChats;
+	private Button buttonShop;
 	private CardLayout actualizadorUiPrincipal;
 
 	public MainPanel(UIController uiController) {
@@ -49,6 +50,9 @@ public class MainPanel extends JPanel {
 		
 		//panelesPrincipales
 		PanelGrande PanelGrandePorDefecto = new PanelGrande();
+		Background fondoPorDefecto = new Background();
+		fondoPorDefecto.setBounds(0, 60, 920, 660);
+		PanelGrandePorDefecto.add(fondoPorDefecto);
 		searchPanel = new SearchPanel(uiController);
 		panelAnyadirContacto = new AddContactPanel(uiController);
 		panelCrearGrupo = new CreateGroupPanel(uiController);
@@ -92,7 +96,10 @@ public class MainPanel extends JPanel {
 		this.add(panelBotonera);
 		panelBotonera.setLayout(null);
 		
-		buttonChats = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Wanderer.png")));
+		buttonChats = new Button();
+		buttonChats.setIcon(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Wanderer.png")));
+		buttonChats.setRound(100);
+		//buttonChats.applyEffectSettings(0.3f, 600, 1.5, new Color(173, 173, 173, 80), 0.3f, 0.3f);
 		buttonChats.setOpaque(false);
 		buttonChats.setContentAreaFilled(false);
 		buttonChats.setBorderPainted(false);
@@ -103,7 +110,9 @@ public class MainPanel extends JPanel {
 		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonChats);
 		
-		buttonGroups = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Traveler.png")));
+		buttonGroups = new Button();
+		buttonGroups.setIcon(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Traveler.png")));
+		buttonGroups.setRound(100);
 		buttonGroups.setOpaque(false);
 		buttonGroups.setContentAreaFilled(false);
 		buttonGroups.setBorderPainted(false);
@@ -114,7 +123,9 @@ public class MainPanel extends JPanel {
 		this.showMenu("groups", buttonGroups, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonGroups);
 		
-		buttonShop = new JButton(new ImageIcon(getClass().getResource("/assets/Ui_SystemOpenIcon_Shop.png")));
+		buttonShop = new Button();
+		buttonShop.setIcon(new ImageIcon(getClass().getResource("/assets/Ui_SystemOpenIcon_Shop.png")));
+		buttonShop.setRound(100);
 		buttonShop.setOpaque(false);
 		buttonShop.setContentAreaFilled(false);
 		buttonShop.setBorderPainted(false);
@@ -125,7 +136,9 @@ public class MainPanel extends JPanel {
 		this.showMenu("porDefecto", buttonShop, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonShop);
 		
-		buttonSearch = new JButton(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Charlotte.png")));
+		buttonSearch = new Button();
+		buttonSearch.setIcon(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Charlotte.png")));
+		buttonSearch.setRound(100);
 		buttonSearch.setOpaque(false);
 		buttonSearch.setContentAreaFilled(false);
 		buttonSearch.setBorderPainted(false);

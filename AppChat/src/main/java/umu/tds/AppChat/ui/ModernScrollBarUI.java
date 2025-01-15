@@ -7,11 +7,13 @@ import java.awt.*;
 
 public class ModernScrollBarUI extends BasicScrollBarUI {
 	private final Color darkPorDefecto = new Color(54, 57, 63);
+	private final Color dark = new Color(30, 30, 30);
 	
     @Override
     protected void configureScrollBarColors() {
         //thumbColor = new Color(100, 100, 100, 150);
-    	thumbColor = new Color(32, 34, 37, 150);
+    	//thumbColor = new Color(32, 34, 37, 150);
+    	thumbColor = this.dark;
         trackColor = this.darkPorDefecto;
     }
     

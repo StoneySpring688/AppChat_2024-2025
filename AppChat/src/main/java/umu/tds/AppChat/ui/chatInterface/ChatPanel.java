@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import umu.tds.AppChat.ui.Background;
 import umu.tds.AppChat.ui.PanelGrande;
 
 public class ChatPanel extends PanelGrande {
@@ -23,10 +24,11 @@ public class ChatPanel extends PanelGrande {
 		this.add(fondo);
 		
 		this.chat = new ChatArea();
-		this.chat.setBounds(5, 5, 910, 650);
+		this.chat.setBounds(5, 5, 915, 655);
 		this.fondo.add(chat);
 		
 		SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
+		
 		this.chat.addChatEvent(new ChatEvent() {
 			
 			@Override
@@ -37,18 +39,19 @@ public class ChatPanel extends PanelGrande {
 				String fecha =fechaAux.format(new Date());
 				String mensaje = chat.getText().trim();
 				chat.addChatBox(new ModelMessage(icono, nombre, fecha, mensaje), ChatBox.BoxType.RIGHT);
+				chat.resetText();
+				
 				
 			}
 			
 			@Override
-			public void mousePressedFileButton(ActionEvent evt) {
-				throw new UnsupportedOperationException("Por Implementar");
+			public void mousePressedEmojiButton(ActionEvent evt) {
+				
 				
 			}
 			
 			@Override
 			public void keyTyped(KeyEvent evt) {
-				throw new UnsupportedOperationException("Por Implementar");
 				
 			}
 		});

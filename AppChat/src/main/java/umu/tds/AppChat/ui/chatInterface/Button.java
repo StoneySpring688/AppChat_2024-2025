@@ -103,6 +103,7 @@ public class Button extends JButton {
         int height = getHeight();
         Graphics2D g2 = (Graphics2D) grphcs.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
         if (paintBackground) {
             g2.setColor(getBackground());
             g2.fillRoundRect(0, 0, width, height, round, round);
@@ -117,4 +118,24 @@ public class Button extends JButton {
         g2.dispose();
         super.paintComponent(grphcs);
     }
+    
+    public void applyEffectSettings(float alpha, int duracion, double factorDeTamaño, Color colorEfecto, float aceleracion, float deceleracion) {
+        // Reducir la opacidad inicial del efecto
+        this.alpha = alpha;
+
+        // Aumentar la duración de la animación para hacerla más lenta
+        this.animator.setDuration(duracion); // De 400 ms a 600 ms
+
+        // Reducir el tamaño de la onda
+        this.targetSize = (int) (Math.max(getWidth(), getHeight()) * factorDeTamaño); // Menor tamaño de expansión
+
+        // Cambiar el color del efecto a un tono más suave
+        this.effectColor = colorEfecto; // Con menor opacidad
+
+        // Ajustar la aceleración y desaceleración de la animación
+        this.animator.setAcceleration(aceleracion);
+        this.animator.setDeceleration(deceleracion);
+    }
+
+    
 }

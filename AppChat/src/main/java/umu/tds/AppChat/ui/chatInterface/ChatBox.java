@@ -16,7 +16,8 @@ import net.miginfocom.swing.MigLayout;
 
 public class ChatBox extends JComponent {
 
-    private final BoxType boxType;
+    private static final long serialVersionUID = 1L;
+	private final BoxType boxType;
     private final ModelMessage message;
 
     public ChatBox(BoxType boxType, ModelMessage message) {
@@ -55,7 +56,7 @@ public class ChatBox extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //establecer antialiasing (suuavizar bordes)
         int width = getWidth();
         int height = getHeight();
         if (boxType == BoxType.LEFT) {
