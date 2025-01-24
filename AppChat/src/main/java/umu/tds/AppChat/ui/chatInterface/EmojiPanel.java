@@ -93,6 +93,16 @@ public class EmojiPanel extends JPanel{
         emojiButton.setFocusable(false);
         emojiPanel.add(emojiButton);
         
+        URL imageUrl1 = getClass().getClassLoader().getResource("assets/HuTao1.png");
+        ImageIcon icon1 = new ImageIcon(imageUrl1);
+        Image scaledImage1 = icon1.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
+        JButton emojiButton1 = new JButton(scaledIcon1);
+        emojiButton1.setContentAreaFilled(false);
+        emojiButton1.setBorder(BorderFactory.createLineBorder(Color.RED));
+        emojiButton1.setFocusable(false);
+        emojiPanel.add(emojiButton1);
+        
         
     }
     
