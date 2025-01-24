@@ -3,14 +3,18 @@ package umu.tds.AppChat.ui.chatInterface;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
-
 import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.ui.ScrollBar;
 
@@ -19,17 +23,18 @@ public class EmojiPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
     private int round;
-    private RoundPanel emojiPanel;
+    private JPanel emojiPanel;
     private JScrollPane scroll;
 	
     public EmojiPanel() {
     	this.setLayout(new MigLayout("fill, insets 0", "[grow]", "[grow]"));
+    	this.setOpaque(false);
     	
     	//panel emojis
     	emojiPanel = new RoundPanel();
-        emojiPanel.setLayout(new  MigLayout("wrap 6, gapx 100, gapy 100","[][][][][][]","[][]"));
+        emojiPanel.setLayout(new  MigLayout("wrap 6, gapx 10, gapy 100","[][][][][][]","[][]"));
         emojiPanel.setOpaque(false);
-        emojiPanel.setRound(30);
+        emojiPanel.setBackground(new Color(54, 57, 63, 212));
         
         //añadir emojis al panel
         this.cargarEmojis();
@@ -48,11 +53,47 @@ public class EmojiPanel extends JPanel{
 	}
     
     private void cargarEmojis() {
-    	for (int i = 1; i <= 50; i++) {
-            JLabel emojiLabel = new JLabel("\uD83D\uDE0A"); // Emoji de ejemplo (😊)
-            emojiLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            emojiPanel.add(emojiLabel);
+        String[] emojiFiles = {"HuTao1.png", "Tartaglia1.png", "Tartaglia2.png"}; // Lista de nombres de archivos
+
+        for (String fileName : emojiFiles) {
+            try {
+                // Obtener el recurso desde la carpeta emojis
+                URL imageUrl = getClass().getClassLoader().getResource("assets/emojis/" + fileName);
+                if (imageUrl == null) {
+                    System.err.println("No se encontró el archivo: " + fileName);
+                    continue;
+                }
+
+                // Crear el ImageIcon
+                ImageIcon icon = new ImageIcon(imageUrl);
+                Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+                ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+                // Crear un botón con el icono del emoji
+                JButton emojiButton = new JButton(scaledIcon);
+                emojiButton.setContentAreaFilled(false);
+                //emojiButton.setBorder(BorderFactory.createEmptyBorder());
+                emojiButton.setBorder(BorderFactory.createLineBorder(Color.RED));
+                emojiButton.setFocusable(false);
+
+                // Añadir el botón al panel
+                emojiPanel.add(emojiButton);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        
+        URL imageUrl = getClass().getClassLoader().getResource("assets/ProfilePic.png");
+        ImageIcon icon = new ImageIcon(imageUrl);
+        Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JButton emojiButton = new JButton(scaledIcon);
+        emojiButton.setContentAreaFilled(false);
+        emojiButton.setBorder(BorderFactory.createLineBorder(Color.RED));
+        emojiButton.setFocusable(false);
+        emojiPanel.add(emojiButton);
+        
+        
     }
     
 	public int getRound() {
