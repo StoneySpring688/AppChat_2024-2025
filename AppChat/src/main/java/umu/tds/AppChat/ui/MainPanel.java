@@ -106,8 +106,9 @@ public class MainPanel extends JPanel {
 		buttonChats.setBounds(10, 0, 100, 100);
 		buttonChats.setFocusPainted(false);
 		UIController.addHoverEffect(buttonChats);
-		this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
+		//this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
 		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
+		this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
 		panelBotonera.add(buttonChats);
 		
 		buttonGroups = new Button();
@@ -132,7 +133,7 @@ public class MainPanel extends JPanel {
 		buttonShop.setBounds(10, 240, 100, 100);
 		buttonShop.setFocusPainted(false);
 		UIController.addHoverEffect(buttonShop);
-		this.showMenu("chat", buttonShop, this.actualizadorUiPrincipal, principal);
+		this.showMenu("porDefecto", buttonShop, this.actualizadorUiPrincipal, principal);
 		this.showMenu("porDefecto", buttonShop, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonShop);
 		

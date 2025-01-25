@@ -15,7 +15,7 @@ public class AddContactPanel extends PanelGrande {
 	private JTextField textNombreContacto;
 	private JButton anyadirButton;
 	
-	private final Color Gray = new Color(64, 68, 75);
+	private final Color Gray = new Color(64, 68, 75); // TODO pasar a config
 	
 	public AddContactPanel(UIController uiController) {
 		

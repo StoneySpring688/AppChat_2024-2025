@@ -5,13 +5,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -25,6 +21,12 @@ public class EmojiPanel extends JPanel{
     private int round;
     private JPanel emojiPanel;
     private JScrollPane scroll;
+    String[] emojiFiles = {
+    		"HuTao1.png", "HuTao2.png", "HuTao3.png", "HuTao4.png", 
+    		"Tartaglia1.png", "Tartaglia2.png",
+    		"Xiao1.png", "Xiao2.png",
+    		"Yanfei1.png", "Yanfei2.png", "Yanfei3.png"
+    		}; // TODO pasar a config
 	
     public EmojiPanel() {
     	this.setLayout(new MigLayout("fill, insets 0", "[grow]", "[grow]"));
@@ -32,7 +34,7 @@ public class EmojiPanel extends JPanel{
     	
     	//panel emojis
     	emojiPanel = new RoundPanel();
-        emojiPanel.setLayout(new  MigLayout("wrap 6, gapx 10, gapy 100","[][][][][][]","[][]"));
+        emojiPanel.setLayout(new  MigLayout("wrap 7, gapx 10, gapy 10","50[][][][][][][]50","[][]"));
         emojiPanel.setOpaque(false);
         emojiPanel.setBackground(new Color(54, 57, 63, 212));
         
@@ -53,58 +55,50 @@ public class EmojiPanel extends JPanel{
 	}
     
     private void cargarEmojis() {
-        String[] emojiFiles = {"HuTao1.png", "Tartaglia1.png", "Tartaglia2.png"}; // Lista de nombres de archivos
-
+    	
         for (String fileName : emojiFiles) {
-            try {
-                // Obtener el recurso desde la carpeta emojis
-                URL imageUrl = getClass().getClassLoader().getResource("assets/emojis/" + fileName);
-                if (imageUrl == null) {
-                    System.err.println("No se encontró el archivo: " + fileName);
-                    continue;
-                }
-
-                // Crear el ImageIcon
-                ImageIcon icon = new ImageIcon(imageUrl);
-                Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-                ImageIcon scaledIcon = new ImageIcon(scaledImage);
-
-                // Crear un botón con el icono del emoji
-                JButton emojiButton = new JButton(scaledIcon);
-                emojiButton.setContentAreaFilled(false);
-                //emojiButton.setBorder(BorderFactory.createEmptyBorder());
-                emojiButton.setBorder(BorderFactory.createLineBorder(Color.RED));
-                emojiButton.setFocusable(false);
-
-                // Añadir el botón al panel
-                emojiPanel.add(emojiButton);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        	ImageIcon icon = cargarIconoEmoji(fileName);
+        	if (icon == null) continue;
+                
+            // Crear un botón con el icono del emoji
+            Button emojiButton = new Button();
+            emojiButton.setIcon(icon);
+            emojiButton.setContentAreaFilled(false);
+            emojiButton.setBorder(BorderFactory.createEmptyBorder());
+            //emojiButton.setBorder(BorderFactory.createLineBorder(Color.RED)); //debug
+            emojiButton.setFocusable(false);
+            emojiButton.applyEffectSettings(0.2f, 600, 0.7, new Color(200, 200, 200, 100), 0.2f, 0.2f);
+            emojiButton.setRound(20);
+                
+            // Añadir el botón al panel
+            emojiPanel.add(emojiButton);
+                
         }
         
-        URL imageUrl = getClass().getClassLoader().getResource("assets/ProfilePic.png");
-        ImageIcon icon = new ImageIcon(imageUrl);
-        Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        JButton emojiButton = new JButton(scaledIcon);
-        emojiButton.setContentAreaFilled(false);
-        emojiButton.setBorder(BorderFactory.createLineBorder(Color.RED));
-        emojiButton.setFocusable(false);
-        emojiPanel.add(emojiButton);
-        
-        URL imageUrl1 = getClass().getClassLoader().getResource("assets/HuTao1.png");
-        ImageIcon icon1 = new ImageIcon(imageUrl1);
-        Image scaledImage1 = icon1.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon1 = new ImageIcon(scaledImage1);
-        JButton emojiButton1 = new JButton(scaledIcon1);
-        emojiButton1.setContentAreaFilled(false);
-        emojiButton1.setBorder(BorderFactory.createLineBorder(Color.RED));
-        emojiButton1.setFocusable(false);
-        emojiPanel.add(emojiButton1);
-        
-        
     }
+    
+    private ImageIcon cargarIconoEmoji(String fileName) {
+        try {
+            // Obtener el recurso desde la carpeta "emojis"
+            URL imageUrl = getClass().getClassLoader().getResource("emojis/" + fileName);
+            if (imageUrl == null) {
+                //System.err.println("No se encontró el archivo: " + fileName); //debug
+                return null;
+            }
+
+            // Crear el ImageIcon
+            ImageIcon icon = new ImageIcon(imageUrl);
+            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            //System.out.println("Archivo cargado exitosamente: " + fileName); //debug
+            return scaledIcon;
+        } catch (Exception e) {
+            //System.err.println("Error al cargar el archivo: " + fileName); //debug
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     
 	public int getRound() {
         return round;
