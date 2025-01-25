@@ -249,7 +249,7 @@ public class ChatArea extends JPanel {
         for (ChatEvent event : events) {
             event.mousePressedEmojiButton(evt);
         }
-        showHideEmojiPanel();
+        //showHideEmojiPanel();
     }
 
     private void runEventKeyTyped(KeyEvent evt) {
@@ -298,7 +298,7 @@ public class ChatArea extends JPanel {
     	emojiPanel.revalidate();
     }
     
-    public void showHideEmojiPanel() {
+    protected void showHideEmojiPanel() {
     	this.setEmojiPanelVisibility(!this.getEmojiPanelVisibility());
     }
     

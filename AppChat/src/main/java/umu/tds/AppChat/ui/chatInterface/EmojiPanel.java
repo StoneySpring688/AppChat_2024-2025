@@ -5,12 +5,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+
 import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.ui.ScrollBar;
 
@@ -26,12 +33,12 @@ public class EmojiPanel extends JPanel{
     		"Tartaglia1.png", "Tartaglia2.png", "Tartaglia3.png",
     		"Xiao1.png", "Xiao2.png",
     		"Yanfei1.png", "Yanfei2.png", "Yanfei3.png",
-    		"Barbara1.png", "Barbara2.png", "Barbara3.png", //TODO 6 más justo tras estas
+    		"Barbara1.png", "Barbara2.png", "Barbara3.png",
     		"Clara1.png",
     		"Huohuo1.png", "Huohuo2.png",
     		"Acheron1.png", "Acheron2.png",
     		"Luka1.png", 
-    		"March7th1.png","March7th2.png", "March7th3.png", "March7th4.png", "March7th5.png",  "March7th6.png", "March7th7.png"
+    		"March7th1.png", "March7th2.png", "March7th3.png", "March7th4.png", "March7th5.png",  "March7th6.png", "March7th7.png"
     		}; // TODO pasar a config
 	
     public EmojiPanel() {
@@ -45,7 +52,7 @@ public class EmojiPanel extends JPanel{
         emojiPanel.setBackground(new Color(54, 57, 63, 212));
         
         //añadir emojis al panel
-        this.cargarEmojis();
+        this.cargarEmojisAsync();
         
         //añadir el panel dentro de un JScrollPane
         scroll = new JScrollPane(emojiPanel);
@@ -60,8 +67,13 @@ public class EmojiPanel extends JPanel{
         this.add(scroll, "grow");
 	}
     
+    private void cargarEmojisAsync() {
+        new Thread(() -> cargarEmojis()).start();
+    }
+    
     private void cargarEmojis() {
     	
+    	List<Button> emojiButtons = new ArrayList<>(); //buffer
         for (String fileName : emojiFiles) {
         	ImageIcon icon = cargarIconoEmoji(fileName);
         	if (icon == null) continue;
@@ -75,11 +87,27 @@ public class EmojiPanel extends JPanel{
             emojiButton.setFocusable(false);
             emojiButton.applyEffectSettings(0.2f, 600, 0.7, new Color(200, 200, 200, 100), 0.2f, 0.2f);
             emojiButton.setRound(20);
-                
-            // Añadir el botón al panel
-            emojiPanel.add(emojiButton);
+            
+            //funcionalidad
+            emojiButton.addMouseListener(new MouseAdapter() {
+    			@Override
+    			public void mouseClicked(MouseEvent e) {
+    				System.out.println("TODO emoji");
+    			}
+    		});
+            
+            emojiButtons.add(emojiButton); //añadir al buffer
                 
         }
+        
+     // Añadir los emojis del buffer
+        SwingUtilities.invokeLater(() -> {
+        	for (Button button : emojiButtons) {
+        		emojiPanel.add(button);
+        	}
+        	emojiPanel.revalidate();
+        	emojiPanel.repaint();
+        });
         
     }
     

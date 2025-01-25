@@ -46,7 +46,7 @@ public class ChatPanel extends PanelGrande {
 			
 			@Override
 			public void mousePressedEmojiButton(ActionEvent evt) {
-				
+				chat.showHideEmojiPanel();
 				
 			}
 			
