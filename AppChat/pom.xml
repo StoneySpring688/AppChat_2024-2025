@@ -5,6 +5,7 @@
 
   <groupId>umu.tds</groupId>
   <artifactId>AppChat</artifactId>
+  <packaging>jar</packaging>
   <version>0.0.1-SNAPSHOT</version>
 
   <name>AppChat</name>

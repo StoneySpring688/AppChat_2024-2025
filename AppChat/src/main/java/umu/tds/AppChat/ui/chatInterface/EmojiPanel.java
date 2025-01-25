@@ -23,9 +23,15 @@ public class EmojiPanel extends JPanel{
     private JScrollPane scroll;
     String[] emojiFiles = {
     		"HuTao1.png", "HuTao2.png", "HuTao3.png", "HuTao4.png", 
-    		"Tartaglia1.png", "Tartaglia2.png",
+    		"Tartaglia1.png", "Tartaglia2.png", "Tartaglia3.png",
     		"Xiao1.png", "Xiao2.png",
-    		"Yanfei1.png", "Yanfei2.png", "Yanfei3.png"
+    		"Yanfei1.png", "Yanfei2.png", "Yanfei3.png",
+    		"Barbara1.png", "Barbara2.png", "Barbara3.png", //TODO 6 más justo tras estas
+    		"Clara1.png",
+    		"Huohuo1.png", "Huohuo2.png",
+    		"Acheron1.png", "Acheron2.png",
+    		"Luka1.png", 
+    		"March7th1.png","March7th2.png", "March7th3.png", "March7th4.png", "March7th5.png",  "March7th6.png", "March7th7.png"
     		}; // TODO pasar a config
 	
     public EmojiPanel() {
@@ -34,7 +40,7 @@ public class EmojiPanel extends JPanel{
     	
     	//panel emojis
     	emojiPanel = new RoundPanel();
-        emojiPanel.setLayout(new  MigLayout("wrap 7, gapx 10, gapy 10","50[][][][][][][]50","[][]"));
+        emojiPanel.setLayout(new  MigLayout("wrap 7, gapx 10, gapy 20","50[][][][][][][]50","[][]"));
         emojiPanel.setOpaque(false);
         emojiPanel.setBackground(new Color(54, 57, 63, 212));
         

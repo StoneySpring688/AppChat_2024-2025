@@ -324,6 +324,20 @@ public class RegisterPanel extends JPanel {
 		    }
 		});
 		
+		//boton para borra directamente la url
+				JLabel buttonDeleteUrl = new JLabel();
+				ImageIcon deleteIcon = new ImageIcon(new ImageIcon(getClass().getResource("/assets/Btn_FairyBook_Cancel.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH) );
+				buttonDeleteUrl.setIcon(deleteIcon);
+				buttonDeleteUrl.setBounds(655, 318, 22, 22);
+				buttonDeleteUrl.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						urlField.setText(""); //eliminar el texto en la url
+						}
+					});
+				UIController.addHoverEffect(buttonDeleteUrl, 20, 20);
+				this.add(buttonDeleteUrl);
+		
 	}
 	
 	public static String getDefaultProfileImage() {
