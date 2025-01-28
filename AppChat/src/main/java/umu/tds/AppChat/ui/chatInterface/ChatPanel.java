@@ -2,7 +2,6 @@ package umu.tds.AppChat.ui.chatInterface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.security.PrivateKey;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
@@ -32,14 +31,13 @@ public class ChatPanel extends PanelGrande {
 		this.emojiPanel.addEmojiClickListener(new EmojiClickListener() {
 			
 			@Override
-			public void emojiClicked(ImageIcon emoji) {
+			public void emojiClicked(ImageIcon emoji) { //TODO construir el mennsaje con toda  la información en el controlador  principal
 				SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
 				Icon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
 				String nombre = "UserPrueba1";
 				String fecha =fechaAux.format(new Date());
 				ModelMessage MMsg = new ModelMessage(icono, nombre, fecha, Optional.empty(), Optional.of(emoji));
 				UIController.addMessage(chat, MMsg, BoxType.RIGHT);
-				System.out.println("TODO hacer que funcione");
 				
 			}
 		});
@@ -53,7 +51,7 @@ public class ChatPanel extends PanelGrande {
 		this.chat.addChatEvent(new ChatEvent() {
 			
 			@Override
-			public void mousePressedSendButton(ActionEvent evt) {
+			public void mousePressedSendButton(ActionEvent evt) { //TODO construir el mennsaje con toda  la información en el controlador  principal
 				//ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
 				SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
 				Icon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
