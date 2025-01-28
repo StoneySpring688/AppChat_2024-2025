@@ -9,9 +9,12 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
+
 import net.miginfocom.swing.MigLayout;
 
 public class ChatBox extends JComponent {
@@ -27,10 +30,15 @@ public class ChatBox extends JComponent {
     }
 
     private void init() {
-        initBox();
+    	if(message.getMessage().isPresent()) {
+    		initBox(message.getMessage().get());
+    	}else {
+    		addImageMessage(message.getEmoji().get(), boxType);
+    	}
+        
     }
 
-    private void initBox() {
+    private void initBox(String messageText) {
         String rightToLeft = boxType == BoxType.RIGHT ? ",rtl" : "";
         setLayout(new MigLayout("inset 5" + rightToLeft, "[40!]5[]", "[top]"));
         ImageAvatar avatar = new ImageAvatar();
@@ -39,7 +47,7 @@ public class ChatBox extends JComponent {
         avatar.setImage(message.getIcon());
         JTextPane text = new JTextPane();
         text.setEditorKit(new AutoWrapText());
-        text.setText(message.getMessage());
+        text.setText(messageText);
         text.setBackground(new Color(0, 0, 0, 0));
         text.setForeground(new Color(242, 242, 242));
         text.setSelectionColor(new Color(200, 200, 200, 100));
@@ -51,6 +59,35 @@ public class ChatBox extends JComponent {
         add(avatar, "height 40,width 40");
         add(text, "gapy 20, wrap");
         add(labelDate, "gapx 20,span 2");
+    }
+    
+    public void addImageMessage(ImageIcon image, BoxType boxType) {
+    	String rightToLeft = boxType == BoxType.RIGHT ? ",rtl" : "";
+        setLayout(new MigLayout("inset 5" + rightToLeft, "[40!]5[]", "[top]"));
+        ImageAvatar avatar = new ImageAvatar();
+        avatar.setBorderSize(1);
+        avatar.setBorderSpace(1);
+        avatar.setImage(message.getIcon());
+        JLabel imageLabel = new JLabel(image);
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+        imageLabel.setVerticalAlignment(JLabel.CENTER);
+        imageLabel.setOpaque(false); // Eliminar fondo si no se requiere
+        JLabel labelDate = new JLabel(message.getName() + " | " + message.getDate());
+        labelDate.setForeground(new Color(127, 127, 127));
+        add(avatar, "height 40,width 40");
+        add(labelDate, "gapx 20,span 2");
+
+        // Configuración del diseño según el tipo de mensaje
+        if (boxType == BoxType.LEFT) {
+            add(imageLabel, "height 40,width ::80%, align left");
+        } else {
+            add(imageLabel, "height 40,width ::80%, align right");
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            revalidate();
+            repaint();
+        });
     }
 
     @Override

@@ -1,6 +1,9 @@
 package umu.tds.AppChat.ui.chatInterface;
 
+import java.util.Optional;
+
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 public class ModelMessage {
 
@@ -28,19 +31,30 @@ public class ModelMessage {
         this.date = date;
     }
 
-    public String getMessage() {
-        return message;
+    public Optional<String> getMessage() {
+    	Optional<String> s = this.message.isPresent() ? Optional.of(this.message.get()) : Optional.empty();
+        return s;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.message = Optional.of(message);
+    }
+    
+    public Optional<ImageIcon> getEmoji(){
+    	Optional<ImageIcon> s = this.emoji.isPresent() ? Optional.of(this.emoji.get()) : Optional.empty();
+        return s;
+    }
+    
+    public void setEmoji(ImageIcon emoji) {
+    	this.emoji = Optional.of(emoji);
     }
 
-    public ModelMessage(Icon icon, String name, String date, String message) {
+    public ModelMessage(Icon icon, String name, String date, Optional<String> message, Optional<ImageIcon> emoji) {
         this.icon = icon;
         this.name = name;
         this.date = date;
-        this.message = message;
+        this.message = message.isPresent() ? Optional.of(message.get()) : Optional.empty();
+        this.emoji = emoji.isPresent() ? Optional.of(emoji.get()) : Optional.empty();
     }
 
     public ModelMessage() {
@@ -49,5 +63,6 @@ public class ModelMessage {
     private Icon icon;
     private String name;
     private String date;
-    private String message;
+    private Optional<String> message;
+    private Optional<ImageIcon> emoji;
 }

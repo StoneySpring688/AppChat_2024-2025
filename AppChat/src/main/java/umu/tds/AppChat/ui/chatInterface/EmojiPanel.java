@@ -28,6 +28,8 @@ public class EmojiPanel extends JPanel{
     private int round;
     private JPanel emojiPanel;
     private JScrollPane scroll;
+    private List<EmojiClickListener> listeners = new ArrayList<>();
+
     String[] emojiFiles = {
     		"HuTao1.png", "HuTao2.png", "HuTao3.png", "HuTao4.png", 
     		"Tartaglia1.png", "Tartaglia2.png", "Tartaglia3.png",
@@ -90,11 +92,14 @@ public class EmojiPanel extends JPanel{
             
             //funcionalidad
             emojiButton.addMouseListener(new MouseAdapter() {
-    			@Override
-    			public void mouseClicked(MouseEvent e) {
-    				System.out.println("TODO emoji");
-    			}
-    		});
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    for (EmojiClickListener listener : listeners) {
+                        listener.emojiClicked(icon); // Notifica a cada listener del evento
+                    }
+                }
+            });
+
             
             emojiButtons.add(emojiButton); //añadir al buffer
                 
@@ -143,6 +148,15 @@ public class EmojiPanel extends JPanel{
         repaint();
     }
 	
+    public void addEmojiClickListener(EmojiClickListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeEmojiClickListener(EmojiClickListener listener) {
+        listeners.remove(listener);
+    }
+
+    
 	@Override
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2 = (Graphics2D) grphcs.create();

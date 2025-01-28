@@ -10,6 +10,10 @@ import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
+import umu.tds.AppChat.ui.chatInterface.ChatArea;
+import umu.tds.AppChat.ui.chatInterface.ChatBox;
+import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
+import umu.tds.AppChat.ui.chatInterface.ModelMessage;
 
 public class UIController {
     private MainController mainController;
@@ -87,6 +91,13 @@ public class UIController {
     	appFrame.llamarMetodo(1, Optional.of(lista));
     	showPanelCrearGrupo();
     }
+    
+    public static void addMessage(ChatArea chat, ModelMessage MMsg, BoxType type) {
+    	chat.addChatBox(MMsg, ChatBox.BoxType.RIGHT);
+		chat.resetText();
+    }
+    
+    
     
     //efectos
     public static void addHoverEffect(JButton button) {

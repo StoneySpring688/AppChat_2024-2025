@@ -47,16 +47,16 @@ public class ChatArea extends JPanel {
         events.add(event);
     }
 
-    public ChatArea() {
-        init();
+    public ChatArea(EmojiPanel emojiPanel) {
+        init(emojiPanel);
         initAnimator();
     }
 
-    private void init() {
+    private void init(EmojiPanel emojiPanel) {
     	setLayout(null);
     	setOpaque(false);
     	
-    	this.emojiPanel = new EmojiPanel();
+    	this.emojiPanel = emojiPanel;
     	emojiPanel.setSize(850, 244);
     	emojiPanel.setLocation(30, 345);
     	this.setEmojiPanelVisibility(false);
