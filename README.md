@@ -31,7 +31,6 @@ La aplicación está estructurada en un modelo de **tres capas**:
 - **Java Swing**: Para construir las interfaces de usuario.
 - **Maven**: Gestión de dependencias y construcción del proyecto.
 - **iText**: Para la generación de archivos PDF en cuentas premium.
-- **JCalendar**: Componente Swing para el manejo de fechas en la interfaz de usuario.
 
 ## 🧩 Instalación
 **Clonar el repositorio**:
