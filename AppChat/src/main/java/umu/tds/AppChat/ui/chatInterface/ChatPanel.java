@@ -1,15 +1,12 @@
 package umu.tds.AppChat.ui.chatInterface;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.Background;
 import umu.tds.AppChat.ui.PanelGrande;

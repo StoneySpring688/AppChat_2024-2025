@@ -14,7 +14,9 @@ import javax.swing.text.ViewFactory;
 
 public class AutoWrapText extends StyledEditorKit {
 
-    @Override
+    private static final long serialVersionUID = 1L;
+
+	@Override
     public ViewFactory getViewFactory() {
         return new WarpColumnFactory();
     }

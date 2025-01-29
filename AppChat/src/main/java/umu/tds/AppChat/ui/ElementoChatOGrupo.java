@@ -36,7 +36,7 @@ public class ElementoChatOGrupo extends JPanel {
         avatar.setImage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
         avatar.setBorderSize(1);
         avatar.setBorderSpace(1);
-        add(avatar, "cell 0 0, spany 2, height 50, width 50"); // Ocupa ambas filas
+        add(avatar, "cell 0 0, spany 2, height 50, width 50");
         
         if (!this.isGrupo) {
             panelInfo = new JPanel(new MigLayout("fill, insets 0, gap 0"));
@@ -50,7 +50,7 @@ public class ElementoChatOGrupo extends JPanel {
             lblNumero.setForeground(Color.WHITE);
             panelInfo.add(lblNumero);
             
-            add(panelInfo, "cell 1 0, span 1 2, grow"); // Ocupa ambas filas en la segunda columna
+            add(panelInfo, "cell 1 0, span 1 2, grow");
         } else {
             panelInfo = new JPanel(new MigLayout("fill, insets 0"));
             panelInfo.setBackground(this.darkPorDefecto);
@@ -59,8 +59,10 @@ public class ElementoChatOGrupo extends JPanel {
             lblNombre.setForeground(Color.WHITE);
             panelInfo.add(lblNombre);
             
-            add(panelInfo, "cell 1 0, span 1 2, grow"); // Para grupos también ocupa ambas filas
+            add(panelInfo, "cell 1 0, span 1 2, grow");
         }
+        
+        this.addMouseListener(null);
     }
     
     public void cambio_color(Color color) {

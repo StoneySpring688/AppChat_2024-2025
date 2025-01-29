@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.Button;
 import umu.tds.AppChat.ui.chatInterface.ChatPanel;
@@ -151,32 +153,29 @@ public class MainPanel extends JPanel {
 		panelBotonera.add(buttonSearch);
 		
 		//panel del perfil
-		panelMenuPerfil = new JPanel();
-		//panelMenuPerfil.setBackground(new Color(47,49,54));
+		panelMenuPerfil = new JPanel(new MigLayout("align left, insets 5","[][]20[]10[]"));
 		panelMenuPerfil.setBounds(120, 660, 240, 60);
 		this.add(panelMenuPerfil);
-		panelMenuPerfil.setLayout(null);
 		
-		JLabel lblProfilePic = new JLabel("");
-		lblProfilePic.setIcon(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
-		lblProfilePic.setBounds(0, 3, 55, 55);
-		panelMenuPerfil.add(lblProfilePic);
+		ImageAvatar avatar = new ImageAvatar();
+		avatar.setImage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
+        avatar.setBorderSize(1);
+        avatar.setBorderSpace(1);
+		panelMenuPerfil.add(avatar,"cell 0 0, height 50, width 50");
 		
 		JLabel lblYourname = new JLabel("YourName");
 		lblYourname.setForeground(Color.WHITE);
-		lblYourname.setBounds(60, 20, 90, 20);
-		panelMenuPerfil.add(lblYourname);
-		
-		lblsettingGear = new JLabel("");
-		lblsettingGear.setBounds(200, 15, 33, 33);
-		lblsettingGear.setIcon(new ImageIcon(getClass().getResource("/assets/SettingsGear.png")));
-		panelMenuPerfil.add(lblsettingGear);
+		panelMenuPerfil.add(lblYourname, "growx, wmax 100");
 		
 		lblLogout = new JLabel("");
 		lblLogout.setIcon(new ImageIcon(getClass().getResource("/assets/Exit_Door_Reescalada.png")));
-		lblLogout.setBounds(157, 14, 33, 35);
 		UIController.addHoverEffect(lblLogout, 30, 32);
-		panelMenuPerfil.add(lblLogout);
+		panelMenuPerfil.add(lblLogout,"cell 2 0, height 35, width 35");
+		
+		lblsettingGear = new JLabel("");
+		lblsettingGear.setIcon(new ImageIcon(getClass().getResource("/assets/SettingsGear.png")));
+		UIController.addHoverEffect(lblsettingGear, 30, 30);
+		panelMenuPerfil.add(lblsettingGear,"cell 3 0, height 35, width 35");
 		
 		//configuración de colores
 		this.setBackground(new Color(64, 68, 75));      // Gris claro para el fondo principal
