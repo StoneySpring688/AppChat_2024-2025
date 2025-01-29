@@ -15,6 +15,9 @@ import javaswingdev.FontAwesomeIcon;
 import javaswingdev.GoogleMaterialDesignIcon;
 import javaswingdev.GoogleMaterialIcon;
 import javaswingdev.GradientType;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -22,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
+import umu.tds.AppChat.ui.ImageAvatar;
 
 public class ChatArea extends JPanel {
 
@@ -114,12 +118,21 @@ public class ChatArea extends JPanel {
 
     private JPanel createHeader() {
         RoundPanel panel = new RoundPanel();
-        panel.setLayout(new MigLayout("fill, inset 2"));
+        panel.setLayout(new MigLayout("align left","[][]"));
         panel.setBackground(new Color(255, 255, 255, 20));
-        labelTitle = new JLabel();
+        
+        ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
+        ImageAvatar avatar = new ImageAvatar();
+        avatar.setBorderSize(1);
+        avatar.setBorderSpace(1);
+        avatar.setImage(icono);
+        
+        labelTitle = new JLabel("User");
         labelTitle.setFont(labelTitle.getFont().deriveFont(14f));
         labelTitle.setBorder(new EmptyBorder(2, 10, 2, 2));
         labelTitle.setForeground(new Color(240, 240, 240));
+        
+        panel.add(avatar, "height 40,width 40");
         panel.add(labelTitle);
         return panel;
     }

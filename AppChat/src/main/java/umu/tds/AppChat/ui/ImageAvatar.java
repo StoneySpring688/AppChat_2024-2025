@@ -1,4 +1,4 @@
-package umu.tds.AppChat.ui.chatInterface;
+package umu.tds.AppChat.ui;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
