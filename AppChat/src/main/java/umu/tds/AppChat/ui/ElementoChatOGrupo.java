@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ElementoChatOGrupo extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -62,7 +64,11 @@ public class ElementoChatOGrupo extends JPanel {
             add(panelInfo, "cell 1 0, span 1 2, grow");
         }
         
-        this.addMouseListener(null);
+
+    }
+    
+    public String getNombre() {
+        return this.nombre;
     }
     
     public void cambio_color(Color color) {

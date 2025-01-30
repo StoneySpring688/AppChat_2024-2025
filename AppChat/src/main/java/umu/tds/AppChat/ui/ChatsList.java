@@ -32,7 +32,7 @@ public class ChatsList extends JPanel {
 		this.setBounds(120, 0, 240, 660);
 		this.chats = new DefaultListModel<>();
 		
-		//Para probar
+		//TODO Para probar
 		chats.addElement(new ElementoChatOGrupo("User1", 648163506, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
 		chats.addElement(new ElementoChatOGrupo("User2", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
 		for(int i=0 ;i<25 ;i++) {
@@ -87,6 +87,19 @@ public class ChatsList extends JPanel {
             }
 			
 			});
+		
+		this.lista.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                // Obtener el índice del elemento clickeado
+                int index = lista.locationToIndex(evt.getPoint());
+                if (index >= 0) {
+                    // Obtener el elemento clickeado
+                    ElementoChatOGrupo elemento = chats.getElementAt(index);
+                    System.out.println("Elemento clickeado: " + elemento.getNombre());
+                }
+            }
+        });
 		
 	}
 
