@@ -1,4 +1,4 @@
-package umu.tds.AppChat.backend;
+package umu.tds.AppChat.backend.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,6 @@ import java.util.Map;
 
 /**
  * @autor StoneySpring688
- * 
  */
 public class LRUCache<K, V> extends LinkedHashMap<K, List<V>>{
 	
@@ -22,7 +21,6 @@ public class LRUCache<K, V> extends LinkedHashMap<K, List<V>>{
 	 * @param initialCapacity número inicial de cubetas
 	 * @param loadFactor porcentaje de uso de la tabla en el que se duplica el número de cubetas (EJ : 0.75f 75%) para prevenir muchas colisiones
 	 * @param accesOrder if True LRU por acceso, if false LRU por inserción
-	 * 
 	 */
 	public LRUCache(int max, int initialCapacity, float loadFactor, boolean accesOrder) { 
 		
@@ -38,7 +36,7 @@ public class LRUCache<K, V> extends LinkedHashMap<K, List<V>>{
 	}
 	
 	/**
-     * Agrega un valor a la lista asociada a una clave, si no existe la clave, la crea.
+     * Agrega un valor a la lista asociada a una clave, si no existe la clave, la añade.
      * 
      * @param key Clave del elemento.
      * @param value Valor a agregar en la lista asociada a la clave.

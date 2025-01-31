@@ -1,6 +1,8 @@
 package umu.tds.AppChat.controllers;
 
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Optional;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -9,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
-import umu.tds.AppChat.backend.ModelMessage;
+import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.chatInterface.ChatArea;
@@ -20,11 +22,8 @@ public class UIController {
     private MainController mainController;
     private AppFrame appFrame;
 
-    public UIController(MainController mainController) {
-        this.mainController = mainController;
-        
-        iniciarUI();
-        
+    public UIController() {  
+        iniciarUI();     
     }
 
     public void iniciarUI() {
@@ -106,14 +105,14 @@ public class UIController {
 	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
 
 	    
-	    button.addMouseListener(new java.awt.event.MouseAdapter() {
+	    button.addMouseListener(new MouseAdapter() {
 	        @Override
-	        public void mouseEntered(java.awt.event.MouseEvent evt) {
+	        public void mouseEntered(MouseEvent evt) {
 	            button.setIcon(scaledIcon);  // Cambia a icono más pequeño al pasar el ratón
 	        }
 
 	        @Override
-	        public void mouseExited(java.awt.event.MouseEvent evt) {
+	        public void mouseExited(MouseEvent evt) {
 	            button.setIcon(originalIcon);  // Vuelve al icono original al salir
 	        }
 	    });

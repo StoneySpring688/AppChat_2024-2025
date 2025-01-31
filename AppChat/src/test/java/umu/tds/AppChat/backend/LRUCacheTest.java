@@ -2,6 +2,9 @@ package umu.tds.AppChat.backend;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import umu.tds.AppChat.backend.utils.LRUCache;
+
 import java.util.List;
 
 /**

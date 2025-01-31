@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import umu.tds.AppChat.controllers.MainController;
 
 public class AppChat {
+	
     public static void main(String[] args) {
     	
     	EventQueue.invokeLater(()-> {

@@ -2,6 +2,7 @@ package umu.tds.AppChat.controllers;
 
 public class MainController {
     private UIController uiController;
+    private BackendController backendController;
     
     //estados
     private Byte actualState;
@@ -9,7 +10,8 @@ public class MainController {
     private final static Byte loggedIn = 1;
 
     public MainController() {
-        this.uiController = new UIController(this);
+        this.uiController = new UIController();
+        this.backendController = new BackendController();
     }
 
     public void startApp() {
