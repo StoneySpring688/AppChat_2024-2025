@@ -92,6 +92,20 @@ public class GroupsList extends JPanel {
 		            }
 					
 					});
+				
+				this.lista.addMouseListener(new MouseAdapter() {
+		            @Override
+		            public void mouseClicked(MouseEvent evt) {
+		                // Obtener el índice del elemento clickeado
+		                int index = lista.locationToIndex(evt.getPoint());
+		                if (index >= 0) {
+		                    // Obtener el elemento clickeado
+		                    ElementoChatOGrupo elemento = groups.getElementAt(index);
+		                    System.out.println("Elemento clickeado: " + elemento.getNombre());
+		                }
+		            }
+		        });
+				
 	}
 
 }
