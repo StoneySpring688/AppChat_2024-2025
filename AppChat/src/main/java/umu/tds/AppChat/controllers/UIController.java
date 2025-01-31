@@ -8,12 +8,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
+
+import umu.tds.AppChat.backend.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.chatInterface.ChatArea;
 import umu.tds.AppChat.ui.chatInterface.ChatBox;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
-import umu.tds.AppChat.ui.chatInterface.ModelMessage;
 
 public class UIController {
     private MainController mainController;

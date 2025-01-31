@@ -1,4 +1,4 @@
-package umu.tds.AppChat.ui.chatInterface;
+package umu.tds.AppChat.backend;
 
 import java.util.Optional;
 

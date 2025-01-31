@@ -71,6 +71,10 @@ public class ElementoChatOGrupo extends JPanel {
         return this.nombre;
     }
     
+    public int getNumero() {
+        return this.numero;
+    }
+    
     public void cambio_color(Color color) {
         this.panelInfo.setBackground(color);
         this.setBackground(color);

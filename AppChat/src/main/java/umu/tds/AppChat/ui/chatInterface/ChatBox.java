@@ -17,6 +17,7 @@ import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
+import umu.tds.AppChat.backend.ModelMessage;
 import umu.tds.AppChat.ui.ImageAvatar;
 
 public class ChatBox extends JComponent {

@@ -8,7 +8,8 @@ import java.util.Map;
 
 /**
  * @autor StoneySpring688
- **/
+ * 
+ */
 public class LRUCache<K, V> extends LinkedHashMap<K, List<V>>{
 	
 	private static final long serialVersionUID = 1L;
@@ -22,7 +23,7 @@ public class LRUCache<K, V> extends LinkedHashMap<K, List<V>>{
 	 * @param loadFactor porcentaje de uso de la tabla en el que se duplica el número de cubetas (EJ : 0.75f 75%) para prevenir muchas colisiones
 	 * @param accesOrder if True LRU por acceso, if false LRU por inserción
 	 * 
-	 **/
+	 */
 	public LRUCache(int max, int initialCapacity, float loadFactor, boolean accesOrder) { 
 		
 		super(initialCapacity, loadFactor, accesOrder); //javaDoc ---> LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) 
@@ -41,7 +42,7 @@ public class LRUCache<K, V> extends LinkedHashMap<K, List<V>>{
      * 
      * @param key Clave del elemento.
      * @param value Valor a agregar en la lista asociada a la clave.
-     **/
+     */
 	public void addMessageToChat(K clave, V valor) { //si ya está presente, solo agrega los nuevos mensajes, agrega clave valor si no está presente
 		
 		this.computeIfAbsent(clave, k -> new ArrayList<>()).add(valor);
@@ -52,7 +53,7 @@ public class LRUCache<K, V> extends LinkedHashMap<K, List<V>>{
      * 
      * @param Clave a buscar.
      * @return Lista de valores asociada a la clave o una lista vacía si no existe.
-     **/
+     */
 	public List<V> getMessages(K clave){
 		
 		return this.getOrDefault(clave, Collections.emptyList());

@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
+import umu.tds.AppChat.backend.ModelMessage;
 import umu.tds.AppChat.ui.ImageAvatar;
 
 public class ChatArea extends JPanel {

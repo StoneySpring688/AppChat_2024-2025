@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Optional;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+
+import umu.tds.AppChat.backend.ModelMessage;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.Background;
 import umu.tds.AppChat.ui.PanelGrande;
