@@ -7,8 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ElementoChatOGrupo extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -18,6 +16,7 @@ public class ElementoChatOGrupo extends JPanel {
     private JPanel panelInfo;
     boolean isGrupo;
     
+    private final int MAX_CARACTERES_DISPLAY = 12;
     private final Color darkPorDefecto = new Color(54, 57, 63);
     
     public ElementoChatOGrupo(String nom, int num, ImageIcon img, Optional<Boolean> isGrupo) {
@@ -44,6 +43,7 @@ public class ElementoChatOGrupo extends JPanel {
             panelInfo = new JPanel(new MigLayout("fill, insets 0, gap 0"));
             panelInfo.setBackground(this.darkPorDefecto);
             
+            this.nombre = nombre.length() > MAX_CARACTERES_DISPLAY ? nombre.substring(0, MAX_CARACTERES_DISPLAY) + "…" : nombre; //limita a 12 caracteres
             JLabel lblNombre = new JLabel(nombre);
             lblNombre.setForeground(Color.WHITE);
             panelInfo.add(lblNombre, "wrap");

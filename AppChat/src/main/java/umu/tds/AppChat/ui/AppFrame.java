@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.controllers.UIController;
 
 public class AppFrame extends JFrame {
@@ -153,6 +154,12 @@ public class AppFrame extends JFrame {
 			}
 			break;
 			
+		}
+		case 2: {
+			if (arg[0].isPresent() && arg[0].get() instanceof EntidadComunicable) {
+				this.mainPanel.accederMetodoNoVisible(2, Optional.of(arg[0].get()));
+			}
+			break;
 		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + numMetodo);

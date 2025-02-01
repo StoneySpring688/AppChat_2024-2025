@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 public class ModelMessage {
 	
 	private Icon icon;
+	private int sender;
+	private int reciver;
     private String name;
     private String date;
     private Optional<String> message;

@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 
+import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.controllers.UIController;
 
 public class ChatsList extends JPanel {
@@ -32,12 +33,14 @@ public class ChatsList extends JPanel {
 		this.setBounds(120, 0, 240, 660);
 		this.chats = new DefaultListModel<>();
 		
-		//TODO Para probar
+		/*
 		chats.addElement(new ElementoChatOGrupo("User1", 648163506, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
 		chats.addElement(new ElementoChatOGrupo("User2", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
+		chats.addElement(new ElementoChatOGrupo("User3", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
 		for(int i=0 ;i<25 ;i++) {
 			chats.addElement(new ElementoChatOGrupo("User", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
 		}
+		*/
 		
 		// lista
 		this.lista = new JList<>(chats);
@@ -101,6 +104,10 @@ public class ChatsList extends JPanel {
             }
         });
 		
+	}
+	
+	public void addChat(EntidadComunicable contacto) {
+		this.chats.addElement(new ElementoChatOGrupo(contacto.getNombre(), contacto.getNumero(), contacto.actualizarImagenFromUrl(), Optional.empty()));
 	}
 
 }

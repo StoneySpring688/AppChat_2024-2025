@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
+import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
@@ -19,8 +20,7 @@ import umu.tds.AppChat.ui.chatInterface.ChatBox;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class UIController {
-    private MainController mainController;
-    private AppFrame appFrame;
+    private static AppFrame appFrame;
 
     public UIController() {  
         iniciarUI();     
@@ -32,7 +32,7 @@ public class UIController {
     	UIManager.put( "Component.arc", 100 );
     	FlatDarculaLaf.setup();
     	
-    	this.appFrame = new AppFrame(this);
+    	appFrame = new AppFrame(this);
     }
     
     
@@ -77,6 +77,19 @@ public class UIController {
     
     public void anyadirContacto() {
     	showPanelAnyadirContacto();
+    	
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static boolean verificarContactoYAnyadirContacto(int numero, String nombre) {
+    	//TODO verificar los datos con la persistencia
+    	if(MainController.anyadirContacto(numero, nombre)) {
+    		EntidadComunicable ent = MainController.getContacto(numero);
+    		appFrame.llamarMetodo(2, Optional.of(ent));
+    		return true;
+    	} 
+    	System.err.println("[ERROR] no se pudo añadir usuario");
+    	return false;
     }
     
     @SuppressWarnings("unchecked")

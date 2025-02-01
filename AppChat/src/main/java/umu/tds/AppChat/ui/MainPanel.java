@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
+import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.Button;
 import umu.tds.AppChat.ui.chatInterface.ChatPanel;
@@ -35,6 +36,8 @@ public class MainPanel extends JPanel {
 	private Button buttonChats;
 	private Button buttonShop;
 	private CardLayout actualizadorUiPrincipal;
+	private ChatsList chatslist;
+	private GroupsList groupslist;
 
 	public MainPanel(UIController uiController) {
 		setBackground(Color.WHITE);
@@ -56,7 +59,7 @@ public class MainPanel extends JPanel {
 		fondoPorDefecto.setBounds(0, 60, 920, 660);
 		PanelGrandePorDefecto.add(fondoPorDefecto);
 		searchPanel = new SearchPanel(uiController);
-		panelAnyadirContacto = new AddContactPanel(uiController);
+		panelAnyadirContacto = new AddContactPanel();
 		panelCrearGrupo = new CreateGroupPanel(uiController);
 		ChatPanel chat = new ChatPanel();
 		
@@ -82,9 +85,9 @@ public class MainPanel extends JPanel {
 		panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
 		panelMenu1.add(panelPorDefectoMenu1, "porDefecto");
 		
-		ChatsList chatslist = new ChatsList(uiController);
+		chatslist = new ChatsList(uiController);
 		panelMenu1.add(chatslist, "chats");
-		GroupsList groupslist = new GroupsList(uiController);
+		groupslist = new GroupsList(uiController);
 		panelMenu1.add(groupslist, "groups");
 		MessageList messageList = new MessageList();
 		panelMenu1.add(messageList,"messages");
@@ -215,6 +218,12 @@ public class MainPanel extends JPanel {
 			}
 			break;
 			
+		}
+		case 2: {
+			if (arg[0].isPresent() && arg[0].get() instanceof EntidadComunicable) {
+				this.chatslist.addChat(new EntidadComunicable((EntidadComunicable) arg[0].get()));
+			}
+			break;
 		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + numMetodo);

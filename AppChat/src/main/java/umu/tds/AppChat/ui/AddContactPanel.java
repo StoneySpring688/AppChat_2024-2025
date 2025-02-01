@@ -1,6 +1,11 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -17,7 +22,7 @@ public class AddContactPanel extends PanelGrande {
 	
 	private final Color Gray = new Color(64, 68, 75); // TODO pasar a config
 	
-	public AddContactPanel(UIController uiController) {
+	public AddContactPanel() {
 		
 		this.fondo = new Background();
 		this.fondo.setBounds(0, 60, 920, 660);
@@ -28,6 +33,16 @@ public class AddContactPanel extends PanelGrande {
 		textFieldPhone.setBackground(this.Gray);
 		textFieldPhone.setCaretColor(Color.WHITE);
 		textFieldPhone.setForeground(Color.WHITE);
+		textFieldPhone.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textFieldPhone.getForeground().equals(Color.RED)) {
+                    textFieldPhone.setText(""); // Borrar el mensaje de error
+                    textFieldPhone.setForeground(Color.WHITE); // Restaurar color normal
+                }
+            }
+        });
+		
 		//textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.fondo.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
@@ -55,7 +70,31 @@ public class AddContactPanel extends PanelGrande {
 		anyadirButton.setForeground(Color.WHITE);
 		anyadirButton.setBackground(new Color(241, 57, 83));
 		anyadirButton.setBounds(69, 310, 187, 35); // x = 370+(285/2)-(187/2)
+		this.anyadirButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//numero inexistente o ya en contactos
+				addContact();	
+			}
+		});
+		
 		this.fondo.add(anyadirButton);
+		
+	}
+	
+	private boolean addContact() {
+		int numero;
+
+		try {
+		    numero = Integer.parseInt(this.textFieldPhone.getText());
+		    return UIController.verificarContactoYAnyadirContacto( numero, this.textNombreContacto.getText());
+		} catch (NumberFormatException e) {
+		    System.err.println("[Error] : El valor no es un número válido.");
+		    textFieldPhone.setForeground(Color.RED);
+            textFieldPhone.setText("Numero");
+		    return false;
+		}
+		
 		
 	}
 

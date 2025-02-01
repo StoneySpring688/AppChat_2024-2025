@@ -7,23 +7,30 @@ public class EntidadComunicable {
 	
 	private int numero;
 	private String nombre;
-	private String IconUrl;
+	private String iconUrl;
 	
-	public EntidadComunicable(int numero, String nombre){
+	public EntidadComunicable(int numero, String nombre, String iconUrl){
 		this.numero = numero;
 		this.nombre = nombre;
+		this.iconUrl = iconUrl;
+	}
+	
+	public EntidadComunicable(EntidadComunicable ent){
+		this.numero = ent.getNumero();
+		this.nombre = ent.getNombre();
+		this.iconUrl = ent.iconUrl;
 	}
 
 	public int getNumero() {
-		return numero;
+		return this.numero;
 	}
 	
 	public String getNombre() {
-		return nombre;
+		return new String(this.nombre);
 	}
 	
 	public String getIconUrl() {
-		return IconUrl;
+		return new String(this.iconUrl);
 	}
 
 	public void setNumero(int numero) {
@@ -35,7 +42,7 @@ public class EntidadComunicable {
 	}
 	
 	public void setIconUrl(String iconUrl) {
-		IconUrl = iconUrl;
+		this.iconUrl = iconUrl;
 	}
 
 	public ImageIcon actualizarImagenFromUrl() {
@@ -50,16 +57,13 @@ public class EntidadComunicable {
 	            return imagen;
 	            
 	        } else {
-	            //System.out.println("Texto ingresado no contiene una imagen válida.");
-	        	url = new URL("/assets/ProfilePic.png");
-	            imagen = new ImageIcon(url);
-	            return imagen;
+	            //System.out.println("Texto ingresado no contiene una imagen válida."); 
+	        	return new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
 
 	        }
 	        
 		} catch (Exception e) {
-			ImageIcon imagen = new ImageIcon(EntidadComunicable.class.getResource("/assets/ProfilePic.png"));
-            return imagen;
+			return new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
 
 			}
     }
