@@ -6,6 +6,7 @@ import java.util.List;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.ModelMessage;
+import umu.tds.AppChat.backend.utils.Usuario;
 import umu.tds.AppChat.backend.services.ChatService;
 import umu.tds.AppChat.backend.services.ContactsList;
 
@@ -71,7 +72,8 @@ public class BackendController {
     	try {
 			int numero = Integer.parseInt(number);
 			LocalDate BirthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-			//System.out.println(BirthDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+			Usuario newUser = new Usuario(name, numero, passwd, BirthDate, profilePicUrl, signature);
+			//TODO escribir newUser en la BD
 			
 		} catch (Exception e) {
     		//System.out.println("[DEBUG] doRegister BackendControoller 6");
