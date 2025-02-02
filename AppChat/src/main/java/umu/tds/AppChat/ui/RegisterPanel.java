@@ -6,8 +6,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -19,6 +23,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import raven.datetime.DatePicker;
+import raven.datetime.DateSelectionAble;
+import raven.datetime.event.DateSelectionEvent;
+import raven.datetime.event.DateSelectionListener;
 import umu.tds.AppChat.controllers.UIController;
 
 
@@ -33,6 +41,7 @@ public class RegisterPanel extends JPanel {
 	private JTextArea textFieldSignature;
 	protected JLabel backButton;
 	private JTextField urlField;
+	private DatePicker datePicker;
 	
 	private final Color defaultDark = new Color(40, 43, 48);
 	private final Color Gray = new Color(64, 68, 75);
@@ -121,6 +130,7 @@ public class RegisterPanel extends JPanel {
 		lblName.setForeground(Color.WHITE);
 		this.add(lblName);
 		
+		/*
 		textFieldLastName = new JTextField();
 		textFieldLastName.setBounds(370, 80, 285, 30);
 		textFieldLastName.setBackground(this.Gray);
@@ -130,10 +140,45 @@ public class RegisterPanel extends JPanel {
 		this.add(textFieldLastName);
 		textFieldLastName.setColumns(10);
 		
+		
 		JLabel lblLastName = new JLabel("LastName");
 		lblLastName.setBounds(370, 62, 70, 20);
 		lblLastName.setForeground(Color.WHITE);
 		this.add(lblLastName);
+		*/
+		
+		JFormattedTextField editor = new JFormattedTextField();
+		editor.setBounds(370, 80, 285, 30);
+		editor.setBackground(this.Gray);
+		editor.setCaretColor(Color.WHITE);
+		editor.setForeground(Color.WHITE);
+		
+		this.datePicker  = new DatePicker();
+		this.datePicker.setEditor(editor);
+		this.datePicker.setDateSelectionAble(new DateSelectionAble() {
+			
+			@Override
+			public boolean isDateSelectedAble(LocalDate date) {
+				return !date.isAfter(LocalDate.now());
+			}
+		});
+		
+		this.datePicker.addDateSelectionListener(new DateSelectionListener() {
+			
+			@Override
+			public void dateSelected(DateSelectionEvent dateSelectionEvent) {
+				datePicker.closePopup();
+				/*
+				DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				LocalDate date = datePicker.getSelectedDate();
+				if(date != null) {
+					System.out.println("[DEBUG]" + df.format(date));
+				}
+				*/
+			}
+		});
+		
+		this.add(editor);	
 		
 		textFieldPhone = new JTextField();
 		textFieldPhone.setBounds(370, 135, 285, 30);
@@ -347,4 +392,7 @@ public class RegisterPanel extends JPanel {
 	public JLabel getBackButton() {
 		return this.backButton;
 	}
+	
+	
+	
 }
