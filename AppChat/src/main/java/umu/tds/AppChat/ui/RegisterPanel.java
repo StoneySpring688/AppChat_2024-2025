@@ -9,8 +9,6 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Optional;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -28,12 +26,12 @@ import raven.datetime.event.DateSelectionEvent;
 import raven.datetime.event.DateSelectionListener;
 import umu.tds.AppChat.controllers.UIController;
 
-
 public class RegisterPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldName;
 	private DatePicker datePicker;
+	private JFormattedTextField editor;
 	private JTextField textFieldPhone;
 	private JPasswordField password1;
 	private JPasswordField password2;
@@ -158,11 +156,19 @@ public class RegisterPanel extends JPanel {
 		this.add(lblDate);
 		
 		
-		JFormattedTextField editor = new JFormattedTextField();
+		editor = new JFormattedTextField();
 		editor.setBounds(370, 80, 285, 30);
 		editor.setBackground(this.Gray);
 		editor.setCaretColor(Color.WHITE);
 		editor.setForeground(Color.WHITE);
+		editor.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (editor.getForeground().equals(Color.RED)) {
+                	editor.setForeground(Color.WHITE); // Restaurar color normal
+                }
+            }
+        });
 		
 		this.datePicker  = new DatePicker();
 		this.datePicker.setEditor(editor);
@@ -214,6 +220,32 @@ public class RegisterPanel extends JPanel {
 		lblPhone.setForeground(Color.WHITE);
 		this.add(lblPhone);
 		
+		JRadioButton rdbtnshowPassword1 = new JRadioButton("show Password");
+		rdbtnshowPassword1.setBackground(this.Gray);
+		rdbtnshowPassword1.setForeground(Color.WHITE);
+		rdbtnshowPassword1.setBounds(370, 225, 130, 25);
+		rdbtnshowPassword1.addItemListener (e -> {
+			if(rdbtnshowPassword1.isSelected()) {
+				password1.setEchoChar((char)0);
+			}else {
+				password1.setEchoChar('•');
+			}
+		});
+		this.add(rdbtnshowPassword1);
+		
+		JRadioButton rdbtnshowPassword2 = new JRadioButton("show Password");
+		rdbtnshowPassword2.setBackground(this.Gray);
+		rdbtnshowPassword2.setForeground(Color.WHITE);
+		rdbtnshowPassword2.setBounds(525, 225, 130, 25);
+		rdbtnshowPassword2.addItemListener (e -> {
+			if(rdbtnshowPassword2.isSelected()) {
+				password2.setEchoChar((char)0);
+			}else {
+				password2.setEchoChar('•');
+			}
+		});
+		this.add(rdbtnshowPassword2);
+		
 		password1 = new JPasswordField();
 		password1.setBackground(this.Gray);
 		password1.setCaretColor(Color.WHITE);
@@ -227,10 +259,10 @@ public class RegisterPanel extends JPanel {
                 if (password1.getForeground().equals(Color.RED)) {
                 	password1.setText(""); // Borrar el mensaje de error
                 	password1.setForeground(Color.WHITE); // Restaurar color normal
-                	password1.setEchoChar('•');
+                	if(!rdbtnshowPassword1.isSelected()) password1.setEchoChar('•');
                 	password2.setText(""); // Borrar el mensaje de error
                 	password2.setForeground(Color.WHITE); // Restaurar color normal
-                	password2.setEchoChar('•');
+                	if(!rdbtnshowPassword2.isSelected()) password2.setEchoChar('•');
                 }
             }
         });
@@ -254,10 +286,10 @@ public class RegisterPanel extends JPanel {
                 if (password2.getForeground().equals(Color.RED)) {
                 	password1.setText(""); // Borrar el mensaje de error
                 	password1.setForeground(Color.WHITE); // Restaurar color normal
-                	password1.setEchoChar('•');
+                	if(!rdbtnshowPassword1.isSelected()) password1.setEchoChar('•');
                 	password2.setText(""); // Borrar el mensaje de error
                 	password2.setForeground(Color.WHITE); // Restaurar color normal
-                	password2.setEchoChar('•');
+                	if(!rdbtnshowPassword2.isSelected()) password2.setEchoChar('•');
                 }
             }
         });
@@ -291,32 +323,6 @@ public class RegisterPanel extends JPanel {
 		lblSignature.setBounds(370, 250, 70, 20);
 		lblSignature.setForeground(Color.WHITE);
 		this.add(lblSignature);
-		
-		JRadioButton rdbtnshowPassword1 = new JRadioButton("show Password");
-		rdbtnshowPassword1.setBackground(this.Gray);
-		rdbtnshowPassword1.setForeground(Color.WHITE);
-		rdbtnshowPassword1.setBounds(370, 225, 130, 25);
-		rdbtnshowPassword1.addItemListener (e -> {
-			if(rdbtnshowPassword1.isSelected()) {
-				password1.setEchoChar((char)0);
-			}else {
-				password1.setEchoChar('•');
-			}
-		});
-		this.add(rdbtnshowPassword1);
-		
-		JRadioButton rdbtnshowPassword2 = new JRadioButton("show Password");
-		rdbtnshowPassword2.setBackground(this.Gray);
-		rdbtnshowPassword2.setForeground(Color.WHITE);
-		rdbtnshowPassword2.setBounds(525, 225, 130, 25);
-		rdbtnshowPassword2.addItemListener (e -> {
-			if(rdbtnshowPassword2.isSelected()) {
-				password2.setEchoChar((char)0);
-			}else {
-				password2.setEchoChar('•');
-			}
-		});
-		this.add(rdbtnshowPassword2);
 		
 		/*
 		lblProfile = new JLabel("");
@@ -433,10 +439,6 @@ public class RegisterPanel extends JPanel {
 	/**
 	 * @return devuelve null si las contraseñas son distintas o de longitud menor que 5*/
 	public String getPasswd() {
-		//System.out.println("[DEBUG] "+ String.copyValueOf(this.password1.getPassword()));
-		//System.out.println("[DEBUG] "+ String.copyValueOf(this.password2.getPassword()));
-		
-		
 		return String.copyValueOf(this.password1.getPassword()).equals(String.copyValueOf(this.password2.getPassword())) ? String.copyValueOf(this.password1.getPassword()) : null;
 	}
 	
@@ -461,6 +463,83 @@ public class RegisterPanel extends JPanel {
 	
 	public JLabel getBackButton() {
 		return this.backButton;
+	}
+	
+	protected void reset() {
+		this.textFieldName.setText("");
+		this.datePicker.clearSelectedDate();
+		this.editor.setForeground(Color.WHITE);
+		this.textFieldPhone.setText("");
+		this.password1.setText("");
+		this.password2.setText("");
+		this.textFieldSignature.setText("");
+		this.urlField.setText("");
+		try {
+			actualizarImagen();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void doRegister() {
+		
+		//System.out.println("[DEBUG] doRegister");
+		
+		String numero = this.getNumero();
+		String birthDate = this.getBirthDate();
+		String nombre = this.getName();
+		String profilepPicUrl = this.getProfilePicUrl();
+		String signature = this.getSignature();
+		String passwd = this.getPasswd();
+		//System.out.println(passwd);
+		
+		UIController.doRegister(nombre, numero, passwd, birthDate, profilepPicUrl, signature);
+		
+	}
+	
+	public void Errors(byte code) {
+		//System.out.println("[DEBUG] Errors" + code);
+		switch (code) {
+		case 1: {
+			this.textFieldName.setForeground(Color.RED);
+			this.textFieldName.setText("invalid name");
+			break;
+		}
+		case 2: {
+			//System.err.println("[Error] : El valor no es una contraseña válida.");
+		    this.password1.setForeground(Color.RED);
+		    this.password2.setForeground(Color.RED);
+            this.password1.setText("not match");
+            this.password2.setText("not match");
+            this.password1.setEchoChar((char)0);
+            this.password2.setEchoChar((char)0);
+            break;
+		}
+		case 3: {
+			//System.err.println("[Error] : El valor no es una contraseña válida.");
+		    this.password1.setForeground(Color.RED);
+		    this.password2.setForeground(Color.RED);
+            this.password1.setText("invalid password");
+            this.password2.setText("invalid password");
+            this.password1.setEchoChar((char)0);
+            this.password2.setEchoChar((char)0);
+            break;
+		}
+		case 4: {
+			//System.err.println("[Error] : El valor no es un numero válido.");
+			this.textFieldPhone.setForeground(Color.RED);
+			this.textFieldPhone.setText("invalid number");
+			break;
+		}
+		case 5: {
+			//System.err.println("[Error] : El valor no es una fecha válida.");
+			this.editor.setForeground(Color.RED);
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + code);
+		}
 	}
 	
 	private void actualizarImagen() throws MalformedURLException {
@@ -510,81 +589,5 @@ public class RegisterPanel extends JPanel {
             validImage = false;
 		}
     }
-	
-	protected void reset() {
-		this.textFieldName.setText("");
-		this.datePicker.clearSelectedDate();
-		this.textFieldPhone.setText("");
-		this.password1.setText("");
-		this.password2.setText("");
-		this.textFieldSignature.setText("");
-		this.urlField.setText("");
-		try {
-			actualizarImagen();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	private void doRegister() {
-		
-		//System.out.println("[DEBUG] doRegister");
-		
-		String numero = this.getNumero();
-		String birthDate = this.getBirthDate();
-		String nombre = this.getName();
-		String profilepPicUrl = this.getProfilePicUrl();
-		String signature = this.getSignature();
-		String passwd = this.getPasswd();
-		//System.out.println(passwd);
-		
-		UIController.doRegister(nombre, numero, passwd, birthDate, profilepPicUrl, signature);
-		
-	}
-	
-	public void Errors(byte code) {
-		//System.out.println("[DEBUG] Errors" + code);
-		switch (code) {
-		case 1: {
-			this.textFieldName.setForeground(Color.RED);
-			this.textFieldName.setText("invalid name");
-			break;
-		}
-		case 2: {
-			//System.err.println("[Error] : El valor no es una contraseña válida.");
-		    this.password1.setForeground(Color.RED);
-		    this.password2.setForeground(Color.RED);
-            this.password1.setText("Passwd not match");
-            this.password2.setText("Passwd not match");
-            this.password1.setEchoChar((char)0);
-            this.password2.setEchoChar((char)0);
-            break;
-		}
-		case 3: {
-			//System.err.println("[Error] : El valor no es una contraseña válida.");
-		    this.password1.setForeground(Color.RED);
-		    this.password2.setForeground(Color.RED);
-            this.password1.setText("invalid password");
-            this.password2.setText("invalid password");
-            this.password1.setEchoChar((char)0);
-            this.password2.setEchoChar((char)0);
-            break;
-		}
-		case 4: {
-			//System.err.println("[Error] : El valor no es un numero válido.");
-			this.textFieldPhone.setForeground(Color.RED);
-			this.textFieldPhone.setText("invalid number");
-			break;
-		}
-		case 5: {
-			//System.err.println("[Error] : El valor no es una fecha válida.");
-			this.datePicker.setForeground(Color.RED);
-			break;
-		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + code);
-		}
-	}
 	
 }

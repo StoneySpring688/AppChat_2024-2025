@@ -1,5 +1,7 @@
 package umu.tds.AppChat.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
@@ -28,7 +30,7 @@ public class BackendController {
     	
     	if(contactList.isContact(numero)) return false;
     	
-    	String url = "/assets/ProfilePic.png"; //TODO ir a persistenncia por la url  de la imagen
+    	String url = "/assets/ProfilePic.png"; //TODO ir a persistencia por la url de la imagen
     	EntidadComunicable contacto = new EntidadComunicable(numero, nombre, url);
     	
     	contactList.addContact(contacto); //TODO comprobar con la persistencia
@@ -67,10 +69,14 @@ public class BackendController {
     	}
     	
     	try {
-			Integer.getInteger(number);
+			int numero = Integer.parseInt(number);
+			LocalDate BirthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			//System.out.println(BirthDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+			
 		} catch (Exception e) {
     		//System.out.println("[DEBUG] doRegister BackendControoller 6");
 			UIController.registerErrors((byte) 4);
+			e.printStackTrace();
 			success = false;
 		}
     	return success;
