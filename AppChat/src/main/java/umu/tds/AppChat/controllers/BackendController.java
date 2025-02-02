@@ -40,5 +40,40 @@ public class BackendController {
     public static EntidadComunicable getContacto(int numero) {
     	return contactList.getContacto(numero);
     }
+    
+    protected static boolean doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {
+		//System.out.println("[DEBUG] doRegister BackendControoller");
+		boolean success = true;
+    	
+    	if(name.isBlank() || name.isEmpty()) {
+    		//System.out.println("[DEBUG] doRegister BackendControoller 1");
+    		UIController.registerErrors((byte) 1);
+    		success = false;
+    	} if(passwd ==  null) {
+    		//System.out.println("[DEBUG] doRegister BackendControoller 2");
+    		UIController.registerErrors((byte) 2);
+    		success = false;
+    	}else if(passwd.length() < 5){
+    		//System.out.println("[DEBUG] doRegister BackendControoller 3");
+    		UIController.registerErrors((byte) 3);
+    		success = false;
+    	} if(number.isBlank() || number.isEmpty()){
+    		//System.out.println("[DEBUG] doRegister BackendControoller 4");
+    		UIController.registerErrors((byte) 4);
+    	} if(birthDate == null || birthDate.isBlank() || birthDate.isEmpty()) {
+    		//System.out.println("[DEBUG] doRegister BackendControoller 5");
+    		UIController.registerErrors((byte) 5);
+    		success = false;
+    	}
+    	
+    	try {
+			Integer.getInteger(number);
+		} catch (Exception e) {
+    		//System.out.println("[DEBUG] doRegister BackendControoller 6");
+			UIController.registerErrors((byte) 4);
+			success = false;
+		}
+    	return success;
+    }
 }
 

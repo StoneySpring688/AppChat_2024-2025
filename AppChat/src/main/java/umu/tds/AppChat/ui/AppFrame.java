@@ -143,7 +143,8 @@ public class AppFrame extends JFrame {
     }
     
     @SuppressWarnings("unchecked")
-	public void llamarMetodo(int numMetodo, Optional<Object> ... arg) {
+	public void llamarMetodo(int numMetodo, Optional<Object> arg2, Optional<Object> ... arg) {
+		//System.out.println("[DEBUG] llamarMetodo" + (byte) arg2.get());
 		
 		switch (numMetodo) {
 		// inicializar lista de usuarios de crearGrupo
@@ -159,6 +160,14 @@ public class AppFrame extends JFrame {
 		case 2: {
 			if (arg[0].isPresent() && arg[0].get() instanceof EntidadComunicable) {
 				this.mainPanel.accederMetodoNoVisible(2, Optional.of(arg[0].get()));
+			}
+			break;
+		}
+		case 3: {
+			//System.out.println("[DEBUG] llamarMetodo case 3");
+			if(!arg[0].isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
+				//System.out.println("[DEBUG] llamarMetodo case 3 if passed" +arg2.get());
+				this.register.Errors((byte) arg2.get());
 			}
 			break;
 		}

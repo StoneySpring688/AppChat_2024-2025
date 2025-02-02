@@ -124,6 +124,15 @@ public class RegisterPanel extends JPanel {
 		textFieldName.setCaretColor(Color.WHITE);
 		textFieldName.setForeground(Color.WHITE);
 		///textFieldName.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		textFieldName.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textFieldName.getForeground().equals(Color.RED)) {
+                	textFieldName.setText(""); // Borrar el mensaje de error
+                	textFieldName.setForeground(Color.WHITE); // Restaurar color normal
+                }
+            }
+        });
 		this.add(textFieldName);
 		textFieldName.setColumns(10);
 		
@@ -417,27 +426,25 @@ public class RegisterPanel extends JPanel {
 		return this.textFieldName.getText();
 	}
 	
-	public Optional<Integer> getNumero() {
-		
-		try {
-			return !this.textFieldPhone.getText().isEmpty() || !this.textFieldPhone.getText().isBlank() ? Optional.of( Integer.getInteger(this.textFieldPhone.getText())) : Optional.empty();
-		} catch (Exception e) {
-			return Optional.empty();
-		}
-		
-		
+	public String getNumero() {
+		return this.textFieldPhone.getText();
 	}
 	
 	/**
 	 * @return devuelve null si las contraseñas son distintas o de longitud menor que 5*/
 	public String getPasswd() {
-		System.out.println("[DEBUG] "+ this.password1.getPassword().toString());
-		return this.password1.getPassword().toString().equals(this.password2.getPassword().toString()) && this.password1.getPassword().toString().length() < 5 ? this.password1.getPassword().toString() : null;
+		//System.out.println("[DEBUG] "+ String.copyValueOf(this.password1.getPassword()));
+		//System.out.println("[DEBUG] "+ String.copyValueOf(this.password2.getPassword()));
+		
+		
+		return String.copyValueOf(this.password1.getPassword()).equals(String.copyValueOf(this.password2.getPassword())) ? String.copyValueOf(this.password1.getPassword()) : null;
 	}
 	
-	public LocalDate getBirthDate() {
-		System.out.println("[DEBUG] "+ this.datePicker.getSelectedDate());
-		return this.datePicker.getSelectedDate();
+	/**
+	 * @return devuelve null si la fecha no es valida*/
+	public String getBirthDate() {
+		//System.out.println("[DEBUG] "+ this.datePicker.getSelectedDateAsString());
+		return this.datePicker.getSelectedDateAsString();
 	}
 	
 	public String getProfilePicUrl() {
@@ -521,36 +528,63 @@ public class RegisterPanel extends JPanel {
 	}
 	
 	private void doRegister() {
-		boolean success = true;
 		
-		int numero = 0;
-		if(this.getNumero().isEmpty()) {
-			System.err.println("[Error] : El valor no es un numero válido.");
-			this.textFieldPhone.setForeground(Color.RED);
-			this.textFieldPhone.setText("invalid number");
-			success = false;
-		}else numero = this.getNumero().get();
+		//System.out.println("[DEBUG] doRegister");
 		
-		LocalDate birthDate = this.getBirthDate();
+		String numero = this.getNumero();
+		String birthDate = this.getBirthDate();
 		String nombre = this.getName();
 		String profilepPicUrl = this.getProfilePicUrl();
 		String signature = this.getSignature();
-		
 		String passwd = this.getPasswd();
-		if(passwd == null) {
-			System.err.println("[Error] : El valor no es una contraseña válida.");
+		//System.out.println(passwd);
+		
+		UIController.doRegister(nombre, numero, passwd, birthDate, profilepPicUrl, signature);
+		
+	}
+	
+	public void Errors(byte code) {
+		//System.out.println("[DEBUG] Errors" + code);
+		switch (code) {
+		case 1: {
+			this.textFieldName.setForeground(Color.RED);
+			this.textFieldName.setText("invalid name");
+			break;
+		}
+		case 2: {
+			//System.err.println("[Error] : El valor no es una contraseña válida.");
+		    this.password1.setForeground(Color.RED);
+		    this.password2.setForeground(Color.RED);
+            this.password1.setText("Passwd not match");
+            this.password2.setText("Passwd not match");
+            this.password1.setEchoChar((char)0);
+            this.password2.setEchoChar((char)0);
+            break;
+		}
+		case 3: {
+			//System.err.println("[Error] : El valor no es una contraseña válida.");
 		    this.password1.setForeground(Color.RED);
 		    this.password2.setForeground(Color.RED);
             this.password1.setText("invalid password");
             this.password2.setText("invalid password");
             this.password1.setEchoChar((char)0);
             this.password2.setEchoChar((char)0);
-            
-            success = false;
+            break;
 		}
-		
-		if(success) UIController.doRegister(nombre, numero, passwd, birthDate, profilepPicUrl, signature);
-		
+		case 4: {
+			//System.err.println("[Error] : El valor no es un numero válido.");
+			this.textFieldPhone.setForeground(Color.RED);
+			this.textFieldPhone.setText("invalid number");
+			break;
+		}
+		case 5: {
+			//System.err.println("[Error] : El valor no es una fecha válida.");
+			this.datePicker.setForeground(Color.RED);
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + code);
+		}
 	}
 	
 }

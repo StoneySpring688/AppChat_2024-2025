@@ -44,4 +44,9 @@ public class MainController {
     protected static EntidadComunicable getContacto(int numero) {
     	return BackendController.getContacto(numero);
     }
+    
+    protected static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
+    	//System.out.println("[DEBUG] doRegister MainController");
+    	return BackendController.doRegister(nombre, numero, passwd, birthDate, url, signature);
+    }
 }

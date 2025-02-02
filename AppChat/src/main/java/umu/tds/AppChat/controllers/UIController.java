@@ -62,9 +62,15 @@ public class UIController {
     	appFrame.showAnyadirCrearGrupoPanel();
     }
     
-    public static boolean doRegister(String nombre, int numero, String passwd, LocalDate birthDate, String url, String signature){
-    	
-    	return true;
+    public static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature){
+    	//System.out.println("[DEBUG] doRegister UIController");
+    	return MainController.doRegister(nombre, numero, passwd, birthDate, url, signature);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static void registerErrors(byte code) {
+		//System.out.println("[DEBUG] registerErrors" + code);
+    	appFrame.llamarMetodo(3, Optional.of((byte) code), Optional.empty());
     }
     
     public void doLogin() {
@@ -91,7 +97,7 @@ public class UIController {
     	//TODO verificar los datos con la persistencia
     	if(MainController.anyadirContacto(numero, nombre)) {
     		EntidadComunicable ent = MainController.getContacto(numero);
-    		appFrame.llamarMetodo(2, Optional.of(ent));
+    		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(ent));
     		return true;
     	} 
     	System.err.println("[ERROR] no se pudo añadir usuario");
@@ -107,7 +113,7 @@ public class UIController {
 			lista.addElement(new ElementoChatOGrupo("User" +(i+1), 648564523+(i+5), new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
 		}
     	
-    	appFrame.llamarMetodo(1, Optional.of(lista));
+    	appFrame.llamarMetodo(1, Optional.empty(), Optional.of(lista));
     	showPanelCrearGrupo();
     }
     
