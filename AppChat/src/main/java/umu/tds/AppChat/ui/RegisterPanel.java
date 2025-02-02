@@ -2,11 +2,15 @@ package umu.tds.AppChat.ui;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Optional;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -37,6 +41,7 @@ public class RegisterPanel extends JPanel {
 	protected JLabel backButton;
 	private JTextField urlField;
 	private ImageAvatar lblProfile;
+	private boolean validImage;
 	
 	
 	private final Color defaultDark = new Color(40, 43, 48);
@@ -110,6 +115,7 @@ public class RegisterPanel extends JPanel {
 		RegisterButton.setForeground(Color.WHITE);
 		RegisterButton.setBackground(new Color(241, 57, 83));
 		RegisterButton.setBounds(419, 360, 187, 35); // x = 370+(285/2)-(187/2)
+		RegisterButton.addActionListener(e -> doRegister());
 		this.add(RegisterButton);
 		
 		textFieldName = new JTextField();
@@ -182,6 +188,15 @@ public class RegisterPanel extends JPanel {
 		textFieldPhone.setCaretColor(Color.WHITE);
 		textFieldPhone.setForeground(Color.WHITE);
 		//textFieldPhone.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		textFieldPhone.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textFieldPhone.getForeground().equals(Color.RED)) {
+                	textFieldPhone.setText(""); // Borrar el mensaje de error
+                	textFieldPhone.setForeground(Color.WHITE); // Restaurar color normal
+                }
+            }
+        });
 		this.add(textFieldPhone);
 		textFieldPhone.setColumns(10);
 		
@@ -197,6 +212,19 @@ public class RegisterPanel extends JPanel {
 		//password1.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		password1.setColumns(10);
 		password1.setBounds(370, 190, 130, 30);
+		password1.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (password1.getForeground().equals(Color.RED)) {
+                	password1.setText(""); // Borrar el mensaje de error
+                	password1.setForeground(Color.WHITE); // Restaurar color normal
+                	password1.setEchoChar('•');
+                	password2.setText(""); // Borrar el mensaje de error
+                	password2.setForeground(Color.WHITE); // Restaurar color normal
+                	password2.setEchoChar('•');
+                }
+            }
+        });
 		this.add(password1);
 		
 		JLabel lblPassword1 = new JLabel("Password");
@@ -211,6 +239,19 @@ public class RegisterPanel extends JPanel {
 		//password2.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		password2.setColumns(10);
 		password2.setBounds(525, 190, 130, 30);
+		password2.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (password2.getForeground().equals(Color.RED)) {
+                	password1.setText(""); // Borrar el mensaje de error
+                	password1.setForeground(Color.WHITE); // Restaurar color normal
+                	password1.setEchoChar('•');
+                	password2.setText(""); // Borrar el mensaje de error
+                	password2.setForeground(Color.WHITE); // Restaurar color normal
+                	password2.setEchoChar('•');
+                }
+            }
+        });
 		this.add(password2);
 		
 		JLabel lblPassword2 = new JLabel("Repeat Password");
@@ -275,6 +316,8 @@ public class RegisterPanel extends JPanel {
 		lblProfile.setBounds(611, 270, 44, 44);
 		this.add(lblProfile);
 		*/
+		
+		this.validImage = false;
 		
 		lblProfile = new ImageAvatar();
 		lblProfile.setImage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
@@ -370,6 +413,41 @@ public class RegisterPanel extends JPanel {
 		
 	}
 	
+	public String getName() {
+		return this.textFieldName.getText();
+	}
+	
+	public Optional<Integer> getNumero() {
+		
+		try {
+			return !this.textFieldPhone.getText().isEmpty() || !this.textFieldPhone.getText().isBlank() ? Optional.of( Integer.getInteger(this.textFieldPhone.getText())) : Optional.empty();
+		} catch (Exception e) {
+			return Optional.empty();
+		}
+		
+		
+	}
+	
+	/**
+	 * @return devuelve null si las contraseñas son distintas o de longitud menor que 5*/
+	public String getPasswd() {
+		System.out.println("[DEBUG] "+ this.password1.getPassword().toString());
+		return this.password1.getPassword().toString().equals(this.password2.getPassword().toString()) && this.password1.getPassword().toString().length() < 5 ? this.password1.getPassword().toString() : null;
+	}
+	
+	public LocalDate getBirthDate() {
+		System.out.println("[DEBUG] "+ this.datePicker.getSelectedDate());
+		return this.datePicker.getSelectedDate();
+	}
+	
+	public String getProfilePicUrl() {
+		return this.validImage == true ? this.urlField.getText() : getDefaultProfileImage();
+	}
+	
+	public String getSignature() {
+		return this.textFieldSignature.getText();
+	}
+	
 	public static String getDefaultProfileImage() {
 		return new String(defaultProfileUrl);
 	}
@@ -392,6 +470,8 @@ public class RegisterPanel extends JPanel {
 	            lblProfile.setImage(new ImageIcon(imagenEscalada));
 	            lblProfile.revalidate();
 	            lblProfile.repaint();
+	            
+	            validImage = true;
 	            //System.out.println("Imagen cargada exitosamente.");
 	            
 	        } else {
@@ -400,6 +480,7 @@ public class RegisterPanel extends JPanel {
 	    		lblProfile.setImage(image);
 	    		lblProfile.revalidate();
 	            lblProfile.repaint();
+	            validImage = false;
 	        }
 	        
 		} catch (MalformedURLException e) {
@@ -407,16 +488,19 @@ public class RegisterPanel extends JPanel {
             lblProfile.setImage(image);
             lblProfile.revalidate();
             lblProfile.repaint();
+            validImage = false;
 		}catch (NullPointerException e){
             ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
             lblProfile.setImage(image);
             lblProfile.revalidate();
             lblProfile.repaint();
+            validImage = false;
 		} catch (Exception e) {
             ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
             lblProfile.setImage(image);
             lblProfile.revalidate();
             lblProfile.repaint();
+            validImage = false;
 		}
     }
 	
@@ -433,7 +517,40 @@ public class RegisterPanel extends JPanel {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
+	private void doRegister() {
+		boolean success = true;
+		
+		int numero = 0;
+		if(this.getNumero().isEmpty()) {
+			System.err.println("[Error] : El valor no es un numero válido.");
+			this.textFieldPhone.setForeground(Color.RED);
+			this.textFieldPhone.setText("invalid number");
+			success = false;
+		}else numero = this.getNumero().get();
+		
+		LocalDate birthDate = this.getBirthDate();
+		String nombre = this.getName();
+		String profilepPicUrl = this.getProfilePicUrl();
+		String signature = this.getSignature();
+		
+		String passwd = this.getPasswd();
+		if(passwd == null) {
+			System.err.println("[Error] : El valor no es una contraseña válida.");
+		    this.password1.setForeground(Color.RED);
+		    this.password2.setForeground(Color.RED);
+            this.password1.setText("invalid password");
+            this.password2.setText("invalid password");
+            this.password1.setEchoChar((char)0);
+            this.password2.setEchoChar((char)0);
+            
+            success = false;
+		}
+		
+		if(success) UIController.doRegister(nombre, numero, passwd, birthDate, profilepPicUrl, signature);
+		
+	}
 	
 }

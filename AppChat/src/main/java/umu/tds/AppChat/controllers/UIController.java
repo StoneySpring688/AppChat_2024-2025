@@ -3,6 +3,7 @@ package umu.tds.AppChat.controllers;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.Optional;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -59,6 +60,11 @@ public class UIController {
     
     public void showPanelCrearGrupo() {
     	appFrame.showAnyadirCrearGrupoPanel();
+    }
+    
+    public static boolean doRegister(String nombre, int numero, String passwd, LocalDate birthDate, String url, String signature){
+    	
+    	return true;
     }
     
     public void doLogin() {
