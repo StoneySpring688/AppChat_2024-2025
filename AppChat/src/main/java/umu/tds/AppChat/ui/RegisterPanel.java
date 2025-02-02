@@ -7,8 +7,6 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -20,9 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import raven.datetime.DatePicker;
 import raven.datetime.DateSelectionAble;
 import raven.datetime.event.DateSelectionEvent;
@@ -34,7 +29,7 @@ public class RegisterPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldName;
-	private JTextField textFieldLastName;
+	private DatePicker datePicker;
 	private JTextField textFieldPhone;
 	private JPasswordField password1;
 	private JPasswordField password2;
@@ -42,7 +37,7 @@ public class RegisterPanel extends JPanel {
 	protected JLabel backButton;
 	private JTextField urlField;
 	private ImageAvatar lblProfile;
-	private DatePicker datePicker;
+	
 	
 	private final Color defaultDark = new Color(40, 43, 48);
 	private final Color Gray = new Color(64, 68, 75);
@@ -140,13 +135,13 @@ public class RegisterPanel extends JPanel {
 		//textFieldLastName.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		this.add(textFieldLastName);
 		textFieldLastName.setColumns(10);
-		
-		
-		JLabel lblLastName = new JLabel("LastName");
-		lblLastName.setBounds(370, 62, 70, 20);
-		lblLastName.setForeground(Color.WHITE);
-		this.add(lblLastName);
 		*/
+		
+		JLabel lblDate = new JLabel("Birth Date");
+		lblDate.setBounds(370, 62, 70, 20);
+		lblDate.setForeground(Color.WHITE);
+		this.add(lblDate);
+		
 		
 		JFormattedTextField editor = new JFormattedTextField();
 		editor.setBounds(370, 80, 285, 30);
@@ -412,7 +407,7 @@ public class RegisterPanel extends JPanel {
             lblProfile.setImage(image);
             lblProfile.revalidate();
             lblProfile.repaint();
-		}catch (java.lang.NullPointerException e){
+		}catch (NullPointerException e){
             ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
             lblProfile.setImage(image);
             lblProfile.revalidate();
@@ -424,6 +419,21 @@ public class RegisterPanel extends JPanel {
             lblProfile.repaint();
 		}
     }
+	
+	protected void reset() {
+		this.textFieldName.setText("");
+		this.datePicker.clearSelectedDate();
+		this.textFieldPhone.setText("");
+		this.password1.setText("");
+		this.password2.setText("");
+		this.textFieldSignature.setText("");
+		this.urlField.setText("");
+		try {
+			actualizarImagen();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 }

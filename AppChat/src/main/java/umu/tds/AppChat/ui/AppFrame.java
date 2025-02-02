@@ -87,6 +87,7 @@ public class AppFrame extends JFrame {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
 		    	uiController.showLogin();
+		    	register.reset();
 		    }
 		});
 		
