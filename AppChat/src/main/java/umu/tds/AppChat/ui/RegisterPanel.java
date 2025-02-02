@@ -41,6 +41,7 @@ public class RegisterPanel extends JPanel {
 	private JTextArea textFieldSignature;
 	protected JLabel backButton;
 	private JTextField urlField;
+	private ImageAvatar lblProfile;
 	private DatePicker datePicker;
 	
 	private final Color defaultDark = new Color(40, 43, 48);
@@ -272,11 +273,20 @@ public class RegisterPanel extends JPanel {
 		});
 		this.add(rdbtnshowPassword2);
 		
-		JLabel lblProfile = new JLabel("");
+		/*
+		lblProfile = new JLabel("");
 		ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
 		lblProfile.setIcon(image);
 		lblProfile.setBounds(611, 270, 44, 44);
 		this.add(lblProfile);
+		*/
+		
+		lblProfile = new ImageAvatar();
+		lblProfile.setImage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
+		lblProfile.setBorderSize(1);
+		lblProfile.setBorderSpace(1);
+		lblProfile.setBounds(611, 270, 44, 44);
+        this.add(lblProfile);
 		
 		urlField = new JTextField();
 		urlField.setBackground(this.Gray);
@@ -291,7 +301,7 @@ public class RegisterPanel extends JPanel {
 		lblUrlImage.setForeground(Color.WHITE);
 		this.add(lblUrlImage);
 		
-		
+		/*
 		urlField.getDocument().addDocumentListener(new DocumentListener() {
 		    private final String defaultProfileImage = RegisterPanel.getDefaultProfileImage();
 
@@ -322,66 +332,46 @@ public class RegisterPanel extends JPanel {
 				}
 		    }
 
-		    private void actualizarImagen() throws MalformedURLException {
-		        String urlText = urlField.getText();
-		        URL url;
-		        
-				try {
-					url = new URL(urlText);
-					ImageIcon icono = new ImageIcon(url);
-					
-			        if (icono.getIconWidth() > 0 && icono.getIconHeight() > 0) { // Verifica que la imagen sea válida
-			            Image imagenEscalada = icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH);
-			            //image.setImage(imagenEscalada);
-			            lblProfile.setIcon(new ImageIcon(imagenEscalada));
-			            lblProfile.revalidate();
-			            lblProfile.repaint();
-			            //System.out.println("Imagen cargada exitosamente.");
-			            
-			        } else {
-			            //System.out.println("Texto ingresado no contiene una imagen válida.");
-			        	url = new URL(this.defaultProfileImage);
-			            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-			    		lblProfile.setIcon(image);
-			    		lblProfile.revalidate();
-			            lblProfile.repaint();
-			        }
-			        
-				} catch (MalformedURLException e) {
-					url = new URL(this.defaultProfileImage);
-		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-		            lblProfile.setIcon(image);
-		            lblProfile.revalidate();
-		            lblProfile.repaint();
-				}catch (java.lang.NullPointerException e){
-					url = new URL(this.defaultProfileImage);
-		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-		            lblProfile.setIcon(image);
-		            lblProfile.revalidate();
-		            lblProfile.repaint();
-				} catch (Exception e) {
-					url = new URL(this.defaultProfileImage);
-		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-		            lblProfile.setIcon(image);
-		            lblProfile.revalidate();
-		            lblProfile.repaint();
-				}
-		    }
+		    
 		});
+		*/
 		
 		//boton para borra directamente la url
 		JLabel buttonDeleteUrl = new JLabel();
 		ImageIcon deleteIcon = new ImageIcon(new ImageIcon(getClass().getResource("/assets/Btn_FairyBook_Cancel.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH) );
 		buttonDeleteUrl.setIcon(deleteIcon);
-		buttonDeleteUrl.setBounds(655, 318, 22, 22);
+		buttonDeleteUrl.setBounds(655, 324, 22, 22);
 		buttonDeleteUrl.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				urlField.setText(""); //eliminar el texto en la url
+				try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		UIController.addHoverEffect(buttonDeleteUrl, 20, 20);
 		this.add(buttonDeleteUrl);
+		
+		//boton para actualizar la imagen
+		JLabel buttonUpdateImage = new JLabel();
+		ImageIcon updateProfileIcon = new ImageIcon(new ImageIcon(getClass().getResource("/assets/UI_MarkPoint_Sign_Inside.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH));
+		buttonUpdateImage.setIcon(updateProfileIcon);
+		buttonUpdateImage.setBounds(677, 324, 22, 22);
+		buttonUpdateImage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		UIController.addHoverEffect(buttonUpdateImage, 20, 20);
+		this.add(buttonUpdateImage);
 		
 	}
 	
@@ -393,6 +383,47 @@ public class RegisterPanel extends JPanel {
 		return this.backButton;
 	}
 	
+	private void actualizarImagen() throws MalformedURLException {
+        String urlText = urlField.getText();
+        URL url;
+        
+		try {
+			url = new URL(urlText);
+			ImageIcon icono = new ImageIcon(url);
+			
+	        if (icono.getIconWidth() > 0 && icono.getIconHeight() > 0) { // Verifica que la imagen sea válida
+	            Image imagenEscalada = icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH);
+	            //image.setImage(imagenEscalada);
+	            lblProfile.setImage(new ImageIcon(imagenEscalada));
+	            lblProfile.revalidate();
+	            lblProfile.repaint();
+	            //System.out.println("Imagen cargada exitosamente.");
+	            
+	        } else {
+	            //System.out.println("Texto ingresado no contiene una imagen válida.");
+	            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+	    		lblProfile.setImage(image);
+	    		lblProfile.revalidate();
+	            lblProfile.repaint();
+	        }
+	        
+		} catch (MalformedURLException e) {
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+		}catch (java.lang.NullPointerException e){
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+		} catch (Exception e) {
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+		}
+    }
 	
 	
 }
