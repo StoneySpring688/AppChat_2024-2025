@@ -2,28 +2,47 @@ package umu.tds.AppChat.backend;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Optional;
+import javax.swing.ImageIcon;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import umu.tds.AppChat.backend.services.ChatService;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 
+@SuppressWarnings("unused")
 class ChatServiceTest {
+    private static final int STRESS_TEST = 1; // Cambia a 0 para ejecutar la prueba normal
+    private static final int CACHE_SIZE = (STRESS_TEST == 1) ? 10000 : 10;
     private ChatService service;
     private long idGrupo;
     private long idContacto;
 
     @BeforeEach
     void setUp() {
-        service = new ChatService(10);
-        idGrupo = 1234567890L;  // Grupo con ID de 10 dígitos
-        idContacto = 123456789L;  // Contacto con ID de 9 dígitos
+        System.out.println("[TEST] STRESS_TEST = " + STRESS_TEST);
+        service = new ChatService(CACHE_SIZE); // Tamaño de caché depende del tipo de prueba
+        idGrupo = 1234567890L;
+        idContacto = 123456789L;
     }
 
     @Test
+    void testChatService() {
+        switch (STRESS_TEST) {
+            case 0:
+                testAddAndRetrieveMessages();
+                break;
+            case 1:
+                testStressPerformance();
+                break;
+            default:
+                System.err.println("[ERROR] Unknown STRESS_CODE");
+                break;
+        }
+    }
+
     void testAddAndRetrieveMessages() {
-        ModelMessage msgContacto = new ModelMessage(null, null, null, Optional.of("Mensaje de contacto"), Optional.empty());
-        ModelMessage msgGrupo = new ModelMessage(null, null, null, Optional.of("Mensaje de grupo"), Optional.empty());
+        ModelMessage msgContacto = new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USER_DESCONOCIDO", "dd / MM / yyyy", Optional.of("Mensaje de contacto"), Optional.empty());
+        ModelMessage msgGrupo = new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USER_DESCONOCIDO", "dd / MM / yyyy", Optional.of("Mensaje de grupo"), Optional.empty());
 
         service.addMessage(idContacto, msgContacto);
         service.addMessage(idGrupo, msgGrupo);
@@ -39,5 +58,39 @@ class ChatServiceTest {
 
         assertEquals("Mensaje de contacto", mensajesContacto.get(0).getMessage().get(), "Mensaje incorrecto en contacto");
         assertEquals("Mensaje de grupo", mensajesGrupo.get(0).getMessage().get(), "Mensaje incorrecto en grupo");
+    }
+
+    void testStressPerformance() {
+        int numChats = 10000;
+        int numMensajesPorChat = 90;
+        int numEmojisPorChat = 10;
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc(); // Solicitar recolección de basura antes de la medición
+        long memoriaAntes = runtime.totalMemory() - runtime.freeMemory();
+        long tiempoInicio = System.currentTimeMillis();
+
+        for (long chatId = 1; chatId <= numChats; chatId++) {
+            for (int i = 0; i < numEmojisPorChat; i++) {
+                service.addMessage(chatId, new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USUARIO_" + chatId, "dd / MM / yyyy", Optional.empty(), Optional.of(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")))));
+            }
+            
+            for (int i = 0; i < numMensajesPorChat; i++) {
+                service.addMessage(chatId, new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USUARIO_" + chatId, "dd / MM / yyyy", Optional.of("Mensaje " + i), Optional.empty()));
+            }
+        }
+        
+        long tiempoFin = System.currentTimeMillis();
+        long tiempoTotalSegundos = (tiempoFin - tiempoInicio) / 1000;
+        long memoriaDespues = runtime.totalMemory() - runtime.freeMemory();
+        long memoriaConsumidaMB = (memoriaDespues - memoriaAntes) / (1024 * 1024);
+
+        System.out.println("[TEST] Num Chats: " + numChats + " | " + "Num Mensajes por chat: " + numMensajesPorChat + " | " + "Num Emojis por chat: " + numEmojisPorChat);
+        System.out.println("[TEST] Memoria consumida en STRESS_TEST: " + memoriaConsumidaMB + " MB");
+        System.out.println("[TEST] Tiempo total en STRESS_TEST: " + tiempoTotalSegundos + " segundos");
+
+        for (long chatId = numChats - 500; chatId <= numChats; chatId++) {
+            assertTrue(service.isInLRU(chatId), "El chat " + chatId + " debería estar en caché");
+        }
     }
 }
