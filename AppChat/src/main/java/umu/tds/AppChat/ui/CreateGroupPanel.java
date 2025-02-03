@@ -6,6 +6,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.Optional;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -17,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.controllers.UIController;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,6 +39,9 @@ public class CreateGroupPanel  extends PanelGrande {
 	private JList<ElementoChatOGrupo> listaContactos;
 	private DefaultListModel<ElementoChatOGrupo> miembros;
 	private JList<ElementoChatOGrupo> listaMiembros;
+	
+    private ImageAvatar lblProfile;
+    private boolean validImage;
 	
 	private final Color darkPorDefecto = new Color(54, 57, 63);
 	private final Color Gray = new Color(64, 68, 75);
@@ -77,9 +85,11 @@ public class CreateGroupPanel  extends PanelGrande {
 		this.fondo.add(lblUrlImage);
 		
 		// label para ver la imagen del grupo
-		JLabel lblProfile = new JLabel("");
+		lblProfile = new ImageAvatar();
 		ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-		lblProfile.setIcon(image);
+		lblProfile.setImage(image);
+		lblProfile.setBorderSize(1);
+		lblProfile.setBorderSpace(1);
 		lblProfile.setBounds(567, 90, 44, 44);
 		this.fondo.add(lblProfile);
 		
@@ -91,82 +101,6 @@ public class CreateGroupPanel  extends PanelGrande {
 		//urlField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		urlField.setBounds(627, 104, 202, 30);
 		this.fondo.add(urlField);
-		urlField.getDocument().addDocumentListener(new DocumentListener() {
-		    private final String defaultProfileImage = CreateGroupPanel.defaultGroupUrl;
-
-			@Override
-		    public void insertUpdate(DocumentEvent e) {
-		        try {
-					actualizarImagen();
-				} catch (MalformedURLException e1) {
-					e1.printStackTrace();
-				}
-		    }
-
-		    @Override
-		    public void removeUpdate(DocumentEvent e) {
-		        try {
-					actualizarImagen();
-				} catch (MalformedURLException e1) {
-					e1.printStackTrace();
-				}
-		    }
-
-		    @Override
-		    public void changedUpdate(DocumentEvent e) {
-		        try {
-					actualizarImagen();
-				} catch (MalformedURLException e1) {
-					e1.printStackTrace();
-				}
-		    }
-
-		    private void actualizarImagen() throws MalformedURLException {
-		        String urlText = urlField.getText();
-		        URL url;
-		        
-				try {
-					url = new URL(urlText);
-					ImageIcon icono = new ImageIcon(url);
-					
-			        if (icono.getIconWidth() > 0 && icono.getIconHeight() > 0) { // Verifica que la imagen sea válida
-			            Image imagenEscalada = icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH);
-			            //image.setImage(imagenEscalada);
-			            lblProfile.setIcon(new ImageIcon(imagenEscalada));
-			            lblProfile.revalidate();
-			            lblProfile.repaint();
-			            //System.out.println("Imagen cargada exitosamente.");
-			            
-			        } else {
-			            //System.out.println("Texto ingresado no contiene una imagen válida.");
-			        	url = new URL(this.defaultProfileImage);
-			            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-			    		lblProfile.setIcon(image);
-			    		lblProfile.revalidate();
-			            lblProfile.repaint();
-			        }
-			        
-				} catch (MalformedURLException e) {
-					url = new URL(this.defaultProfileImage);
-		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-		            lblProfile.setIcon(image);
-		            lblProfile.revalidate();
-		            lblProfile.repaint();
-				}catch (java.lang.NullPointerException e){
-					url = new URL(this.defaultProfileImage);
-		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-		            lblProfile.setIcon(image);
-		            lblProfile.revalidate();
-		            lblProfile.repaint();
-				} catch (Exception e) {
-					url = new URL(this.defaultProfileImage);
-		            ImageIcon image = new ImageIcon( new ImageIcon(url).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
-		            lblProfile.setIcon(image);
-		            lblProfile.revalidate();
-		            lblProfile.repaint();
-				}
-		    }
-		});
 		
 		//boton para borra directamente la url
 		JLabel buttonDeleteUrl = new JLabel();
@@ -177,10 +111,33 @@ public class CreateGroupPanel  extends PanelGrande {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				urlField.setText(""); //eliminar el texto en la url
+				try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
 				}
-			});
+				}
+			});		
 		UIController.addHoverEffect(buttonDeleteUrl, 20, 20);
 		this.fondo.add(buttonDeleteUrl);
+		
+		//boton para actualizar la imagen
+		JLabel buttonUpdateImage = new JLabel();
+		ImageIcon updateProfileIcon = new ImageIcon(new ImageIcon(getClass().getResource("/assets/UI_MarkPoint_Sign_Inside.png")).getImage().getScaledInstance(22, 22,  Image.SCALE_SMOOTH));
+		buttonUpdateImage.setIcon(updateProfileIcon);
+		buttonUpdateImage.setBounds(855, 112, 22, 22);
+		buttonUpdateImage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		UIController.addHoverEffect(buttonUpdateImage, 20, 20);
+		this.fondo.add(buttonUpdateImage);
 		
 		//panel de contactos
 		JPanel panelContactos = new JPanel();
@@ -251,14 +208,62 @@ public class CreateGroupPanel  extends PanelGrande {
 		
 	}
 	
-	public void iniciar(DefaultListModel<ElementoChatOGrupo> lista) {
+	public void iniciar(List<EntidadComunicable> lista) {
 		this.miembros.clear();
 		this.contactos.clear();
-		lista.elements().asIterator().forEachRemaining(this.contactos::addElement);
+		lista.forEach(e -> this.contactos.addElement(new ElementoChatOGrupo(Optional.of(e), Optional.empty())));
 	    this.listaContactos.setModel(this.contactos);
 	    this.repaint();
 	    this.revalidate();
 		
 	}
+	
+    private void actualizarImagen() throws MalformedURLException {
+        String urlText = urlField.getText();
+        URL url;
+        
+		try {
+			url = new URL(urlText);
+			ImageIcon icono = new ImageIcon(url);
+			
+	        if (icono.getIconWidth() > 0 && icono.getIconHeight() > 0) { // Verifica que la imagen sea válida
+	            Image imagenEscalada = icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH);
+	            //image.setImage(imagenEscalada);
+	            lblProfile.setImage(new ImageIcon(imagenEscalada));
+	            lblProfile.revalidate();
+	            lblProfile.repaint();
+	            
+	            validImage = true;
+	            //System.out.println("Imagen cargada exitosamente.");
+	            
+	        } else {
+	            //System.out.println("Texto ingresado no contiene una imagen válida.");
+	            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+	    		lblProfile.setImage(image);
+	    		lblProfile.revalidate();
+	            lblProfile.repaint();
+	            validImage = false;
+	        }
+	        
+		} catch (MalformedURLException e) {
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+            validImage = false;
+		}catch (NullPointerException e){
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+            validImage = false;
+		} catch (Exception e) {
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+            validImage = false;
+		}
+    }
 	
 }

@@ -44,6 +44,10 @@ public class BackendController {
     	return contactList.getContacto(numero);
     }
     
+    public static List<EntidadComunicable> getListaContactos() {
+    	return contactList.getContactos();
+    }
+    
     protected static boolean doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {
 		//System.out.println("[DEBUG] doRegister BackendControoller");
 		boolean success = true;

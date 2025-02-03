@@ -1,6 +1,7 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JPanel;
@@ -206,22 +207,22 @@ public class MainPanel extends JPanel {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void accederMetodoNoVisible(int numMetodo, Optional<Object> ... arg) {
+	public void accederMetodoNoVisible(int numMetodo, Optional<Object> arg) {
 		
 		switch (numMetodo) {
 		// inicializar lista de usuarios de crearGrupo
 		case 1: {
 
-			if (arg[0].isPresent() && arg[0].get() instanceof DefaultListModel) {
-				DefaultListModel<ElementoChatOGrupo> lista = (DefaultListModel<ElementoChatOGrupo>) arg[0].get();
+			if (arg.isPresent() && arg.get() instanceof List<?>) {
+				List<EntidadComunicable> lista = (List<EntidadComunicable>) arg.get();
 				panelCrearGrupo.iniciar(lista);
 			}
 			break;
 			
 		}
 		case 2: {
-			if (arg[0].isPresent() && arg[0].get() instanceof EntidadComunicable) {
-				this.chatslist.addChat(new EntidadComunicable((EntidadComunicable) arg[0].get()));
+			if (arg.isPresent() && arg.get() instanceof EntidadComunicable) {
+				this.chatslist.addChat(new EntidadComunicable((EntidadComunicable) arg.get()));
 			}
 			break;
 		}

@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -108,11 +109,7 @@ public class UIController {
     @SuppressWarnings("unchecked")
 	public void crearGrupo() {
     	//TODO cargar la lista de contactos
-    	DefaultListModel<ElementoChatOGrupo> lista = new DefaultListModel<>();
-    	
-    	for(int i=0 ;i<10 ;i++) {
-			lista.addElement(new ElementoChatOGrupo("User" +(i+1), 648564523+(i+5), new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.empty()));
-		}
+    	List<EntidadComunicable> lista = MainController.getListaContactos() ;
     	
     	appFrame.llamarMetodo(1, Optional.empty(), Optional.of(lista));
     	showPanelCrearGrupo();

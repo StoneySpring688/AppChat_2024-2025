@@ -1,5 +1,7 @@
 package umu.tds.AppChat.controllers;
 
+import java.util.List;
+
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 
 public class MainController {
@@ -43,6 +45,10 @@ public class MainController {
     
     protected static EntidadComunicable getContacto(int numero) {
     	return BackendController.getContacto(numero);
+    }
+    
+    protected static List<EntidadComunicable> getListaContactos(){
+    	return BackendController.getListaContactos();
     }
     
     protected static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {

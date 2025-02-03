@@ -99,7 +99,7 @@ public class ChatsList extends JPanel {
                 if (index >= 0) {
                     // Obtener el elemento clickeado
                     ElementoChatOGrupo elemento = chats.getElementAt(index);
-                    System.out.println("Elemento clickeado: " + elemento.getNombre()); //TODO
+                    System.out.println("Elemento clickeado: " + elemento.getNumero()); //TODO
                 }
             }
         });
@@ -107,7 +107,7 @@ public class ChatsList extends JPanel {
 	}
 	
 	public void addChat(EntidadComunicable contacto) {
-		this.chats.addElement(new ElementoChatOGrupo(contacto.getNombre(), contacto.getNumero(), contacto.actualizarImagenFromUrl(), Optional.empty()));
+		this.chats.addElement(new ElementoChatOGrupo(Optional.of(contacto), Optional.empty()));
 	}
 
 }

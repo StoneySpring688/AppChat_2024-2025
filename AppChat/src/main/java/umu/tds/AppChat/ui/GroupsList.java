@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 
+import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.controllers.UIController;
 
 public class GroupsList extends JPanel {
@@ -24,8 +25,10 @@ public class GroupsList extends JPanel {
 	private DefaultListModel<ElementoChatOGrupo> groups;
 	private JList<ElementoChatOGrupo> lista;
 	private JScrollPane scroll;
-	private final Color darkPorDefecto = new Color(54, 57, 63);
 	
+	private final static String defaultGroupUrl = "https://github.com/StoneySpring688/AppChat_2024-2025/blob/main/AppChat/src/main/resources/assets/ProfilePic.png?raw=true";
+	
+	private final Color darkPorDefecto = new Color(54, 57, 63);
 	/**
 	 * Create the panel.
 	 */
@@ -37,10 +40,8 @@ public class GroupsList extends JPanel {
 		
 		//Para probar
 		
-		groups.addElement(new ElementoChatOGrupo("Group1", 648163506, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.of(true)));
-		groups.addElement(new ElementoChatOGrupo("Group2", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.of(true)));
 		for(int i=0 ;i<10 ;i++) {
-			groups.addElement(new ElementoChatOGrupo("Group", 648564523, new ImageIcon(getClass().getResource("/assets/ProfilePic.png")),Optional.of(true)));
+			groups.addElement(new ElementoChatOGrupo(Optional.empty() , Optional.of(new Grupo(6485645230L+i, "Group "+i, defaultGroupUrl))));
 		}
 		
 		

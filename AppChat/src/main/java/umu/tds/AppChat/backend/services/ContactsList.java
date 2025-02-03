@@ -32,4 +32,8 @@ public class ContactsList {
 		return this.listaContactos.stream().filter(k -> k.getNumero() == numero).findFirst().get();
 	}
 	
+	public List<EntidadComunicable> getContactos(){
+		return List.copyOf(this.listaContactos);
+	}
+	
 }

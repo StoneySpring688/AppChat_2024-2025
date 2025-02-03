@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.DefaultListModel;
@@ -143,29 +144,29 @@ public class AppFrame extends JFrame {
     }
     
     @SuppressWarnings("unchecked")
-	public void llamarMetodo(int numMetodo, Optional<Object> arg2, Optional<Object> ... arg) {
+	public void llamarMetodo(int numMetodo, Optional<Object> arg2, Optional<Object> arg) {
 		//System.out.println("[DEBUG] llamarMetodo" + (byte) arg2.get());
 		
 		switch (numMetodo) {
 		// inicializar lista de usuarios de crearGrupo
 		case 1: {
 			
-			if (arg[0].isPresent() && arg[0].get() instanceof DefaultListModel) {
-				DefaultListModel<ElementoChatOGrupo> lista = (DefaultListModel<ElementoChatOGrupo>) arg[0].get();
+			if (arg.isPresent() && arg.get() instanceof List<?>) {
+				List<EntidadComunicable> lista = (List<EntidadComunicable>) arg.get();
 				mainPanel.accederMetodoNoVisible(1, Optional.of(lista));
 			}
 			break;
 			
 		}
 		case 2: {
-			if (arg[0].isPresent() && arg[0].get() instanceof EntidadComunicable) {
-				this.mainPanel.accederMetodoNoVisible(2, Optional.of(arg[0].get()));
+			if (arg.isPresent() && arg.get() instanceof EntidadComunicable) {
+				this.mainPanel.accederMetodoNoVisible(2, Optional.of(arg.get()));
 			}
 			break;
 		}
 		case 3: {
 			//System.out.println("[DEBUG] llamarMetodo case 3");
-			if(!arg[0].isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
+			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
 				//System.out.println("[DEBUG] llamarMetodo case 3 if passed" +arg2.get());
 				this.register.Errors((byte) arg2.get());
 			}
