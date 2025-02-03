@@ -13,7 +13,6 @@ import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.Button;
 import umu.tds.AppChat.ui.chatInterface.ChatPanel;
 
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -40,7 +39,7 @@ public class MainPanel extends JPanel {
 	private ChatsList chatslist;
 	private GroupsList groupslist;
 
-	public MainPanel(UIController uiController) {
+	public MainPanel() {
 		setBackground(Color.WHITE);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
@@ -59,9 +58,9 @@ public class MainPanel extends JPanel {
 		Background fondoPorDefecto = new Background();
 		fondoPorDefecto.setBounds(0, 60, 920, 660);
 		PanelGrandePorDefecto.add(fondoPorDefecto);
-		searchPanel = new SearchPanel(uiController);
+		searchPanel = new SearchPanel();
 		panelAnyadirContacto = new AddContactPanel();
-		panelCrearGrupo = new CreateGroupPanel(uiController);
+		panelCrearGrupo = new CreateGroupPanel();
 		ChatPanel chat = new ChatPanel();
 		
 		principal.add(PanelGrandePorDefecto, "porDefecto");
@@ -86,9 +85,9 @@ public class MainPanel extends JPanel {
 		panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
 		panelMenu1.add(panelPorDefectoMenu1, "porDefecto");
 		
-		chatslist = new ChatsList(uiController);
+		chatslist = new ChatsList();
 		panelMenu1.add(chatslist, "chats");
-		groupslist = new GroupsList(uiController);
+		groupslist = new GroupsList();
 		panelMenu1.add(groupslist, "groups");
 		MessageList messageList = new MessageList();
 		panelMenu1.add(messageList,"messages");

@@ -13,8 +13,7 @@ public class AppChat {
     	EventQueue.invokeLater(()-> {
     		
     		try {
-        		MainController mainController = new MainController();
-                mainController.startApp();
+                MainController.startApp();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

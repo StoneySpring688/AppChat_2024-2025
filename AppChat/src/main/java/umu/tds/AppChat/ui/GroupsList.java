@@ -32,7 +32,7 @@ public class GroupsList extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public GroupsList(UIController uiController) {
+	public GroupsList() {
 		setBackground(this.darkPorDefecto);
 		this.setLayout(null);
 		this.setBounds(120, 0, 240, 660);
@@ -79,7 +79,7 @@ public class GroupsList extends JPanel {
 		buttonAnyadirGrupo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				uiController.crearGrupo();
+				UIController.crearGrupo();
 			}
 
 			@Override

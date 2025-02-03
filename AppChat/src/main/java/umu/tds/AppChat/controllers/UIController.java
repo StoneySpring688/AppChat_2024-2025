@@ -3,21 +3,16 @@ package umu.tds.AppChat.controllers;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
-
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
-import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.chatInterface.ChatArea;
 import umu.tds.AppChat.ui.chatInterface.ChatBox;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
@@ -26,41 +21,43 @@ public class UIController {
     private static AppFrame appFrame;
 
     public UIController() {  
-        iniciarUI();     
+            
     }
 
-    public void iniciarUI() {
+    public static void iniciarUI() {
     	UIManager.put( "Button.arc", 300 );
     	UIManager.put( "TextComponent.arc", 100 );
     	UIManager.put( "Component.arc", 100 );
     	FlatDarculaLaf.setup();
     	
-    	appFrame = new AppFrame(this);
+    	appFrame = new AppFrame();
+    	
+    	UIController.showLogin();
     }
     
     
-    public void showLogin() {
+    public static void showLogin() {
         appFrame.showLoginPanel();
         appFrame.setVisible(true);
     }
     
-    public void showRegister() {
+    public static void showRegister() {
     	appFrame.showRegisterPanel();
     }
 
-    public void showMainPanel() {
+    public static void showMainPanel() {
         appFrame.showMainPanel();
     }
     
-    public void showPanelIntermedio() {
+    public static void showPanelIntermedio() {
     	appFrame.showPanelIntermedio();
     }
     
-    public void showPanelAnyadirContacto() {
+    public static void showPanelAnyadirContacto() {
     	appFrame.showAnyadirContactoPanel();
     }
     
-    public void showPanelCrearGrupo() {
+    public static void showPanelCrearGrupo() {
     	appFrame.showAnyadirCrearGrupoPanel();
     }
     
@@ -79,21 +76,21 @@ public class UIController {
     	appFrame.llamarMetodo(4, Optional.of((byte) code), Optional.empty());
     }
     
-    public void doLogin() {
+    public static void doLogin() {
     	// TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
     	showPanelIntermedio();
         appFrame.resizeForMainPanel();
         showMainPanel();
     }
     
-    public void doLogout() {
+    public static void doLogout() {
     	//TODO gestionar el logout con el MainController
     	showPanelIntermedio();
     	appFrame.resizeForLoginPanel();
     	showLogin();
     }
     
-    public void anyadirContacto() {
+    public static void anyadirContacto() {
     	showPanelAnyadirContacto();
     	
     }
@@ -112,8 +109,7 @@ public class UIController {
     }
     
     @SuppressWarnings("unchecked")
-	public void crearGrupo() {
-    	//TODO cargar la lista de contactos
+	public static void crearGrupo() {
     	List<EntidadComunicable> lista = MainController.getListaContactos() ;
     	
     	appFrame.llamarMetodo(1, Optional.empty(), Optional.of(lista));

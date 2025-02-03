@@ -18,8 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.controllers.UIController;
@@ -39,7 +37,6 @@ public class CreateGroupPanel  extends PanelGrande {
 	private JList<ElementoChatOGrupo> listaContactos;
 	private DefaultListModel<ElementoChatOGrupo> miembros;
 	private JList<ElementoChatOGrupo> listaMiembros;
-	
     private ImageAvatar lblProfile;
     private boolean validImage;
 	
@@ -49,7 +46,7 @@ public class CreateGroupPanel  extends PanelGrande {
 	private final static String defaultProfileImage = "/assets/ProfilePic.png";
 	private final static String defaultGroupUrl = "https://github.com/StoneySpring688/AppChat_2024-2025/blob/main/AppChat/src/main/resources/assets/ProfilePic.png?raw=true";
 	
-	public CreateGroupPanel(UIController uiController) {
+	public CreateGroupPanel() {
 		
 		this.fondo = new Background();
 		this.fondo.setBounds(0, 60, 920, 660);
@@ -83,6 +80,8 @@ public class CreateGroupPanel  extends PanelGrande {
 		lblUrlImage.setBounds(627, 87, 60, 20);
 		lblUrlImage.setForeground(Color.WHITE);
 		this.fondo.add(lblUrlImage);
+		
+		this.validImage = false;
 		
 		// label para ver la imagen del grupo
 		lblProfile = new ImageAvatar();
@@ -206,6 +205,14 @@ public class CreateGroupPanel  extends PanelGrande {
 		    }
 		});
 		
+	}
+	
+	public static String getDefaultProfileImage() {
+		return new String(defaultGroupUrl);
+	}
+	
+	public String getProfilePicUrl() {
+		return this.validImage == true ? this.urlField.getText() : getDefaultProfileImage();
 	}
 	
 	public void iniciar(List<EntidadComunicable> lista) {

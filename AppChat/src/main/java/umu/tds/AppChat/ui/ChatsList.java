@@ -26,7 +26,7 @@ public class ChatsList extends JPanel {
 	JScrollPane scroll;
 	private final Color darkPorDefecto = new Color(54, 57, 63);
 	
-	public ChatsList(UIController uiController) {
+	public ChatsList() {
 		setBackground(this.darkPorDefecto);
 		//this.setLayout(new BorderLayout());
 		this.setLayout(null);
@@ -76,7 +76,7 @@ public class ChatsList extends JPanel {
 		buttonAnyadirUser.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				uiController.anyadirContacto();
+				UIController.anyadirContacto();
 				}
 			
 			@Override

@@ -8,7 +8,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -29,7 +28,7 @@ public class AppFrame extends JFrame {
 	private PanelIntermedio intermedio;
 	private CardLayout actualizadorUI;
 
-	public AppFrame(UIController uiController) {
+	public AppFrame() {
 		
 		//configuración del frame
 		setBackground(Color.WHITE);
@@ -69,9 +68,9 @@ public class AppFrame extends JFrame {
 		getContentPane().add(panelIntercambiable);
 		
 		//paneles
-		login = new LoginPanel(uiController);
-		register = new RegisterPanel(uiController);
-		mainPanel = new MainPanel(uiController);
+		login = new LoginPanel();
+		register = new RegisterPanel();
+		mainPanel = new MainPanel();
 		intermedio = new PanelIntermedio();
 
 		//gestion paneles
@@ -82,12 +81,12 @@ public class AppFrame extends JFrame {
 		this.actualizadorUI.show(panelIntercambiable, "login");
 		
 		//gestion botones
-		login.getRegisterButton().addActionListener(e -> uiController.showRegister());
-		login.getLoginButton().addActionListener(e -> uiController.doLogin());
+		login.getRegisterButton().addActionListener(e -> UIController.showRegister());
+		login.getLoginButton().addActionListener(e -> UIController.doLogin());
 		register.getBackButton().addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	uiController.showLogin();
+		    	UIController.showLogin();
 		    	register.reset();
 		    }
 		});
@@ -95,7 +94,7 @@ public class AppFrame extends JFrame {
 		mainPanel.getLogoutBotton().addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	uiController.doLogout();
+		    	UIController.doLogout();
 		    }
 		});
 		

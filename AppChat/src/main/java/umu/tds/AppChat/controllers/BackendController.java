@@ -1,23 +1,25 @@
 package umu.tds.AppChat.controllers;
 
-import java.awt.Color;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Usuario;
 import umu.tds.AppChat.backend.services.ChatService;
-import umu.tds.AppChat.backend.services.ContactsList;
+import umu.tds.AppChat.backend.services.ChatsAndGroupsRepository;
 
 public class BackendController {
     private static ChatService chatService;
-    private static ContactsList contactList;
+    private static ChatsAndGroupsRepository chatsRepository;
 
     public BackendController() {
-        chatService = new ChatService(15);
-        contactList  = new ContactsList();
+        
+    }
+    
+    public static void iniciar() {
+    	chatService = new ChatService(15);
+        chatsRepository = new ChatsAndGroupsRepository();
     }
 
     public void nuevoMensaje(int chatID, ModelMessage mensaje) {
@@ -45,7 +47,7 @@ public class BackendController {
     	if(number != 0 && (int) (Math.log10(Math.abs(number)) + 1) != 9) {
     		UIController.addContactErrors((byte) 1);
     		success = false;
-    	}else if(contactList.isContact(number)) {
+    	}else if(chatsRepository.isContact(number)) {
     		UIController.addContactErrors((byte) 2);
     		success = false;
     	}if(nombre.length() == 0) {
@@ -56,7 +58,7 @@ public class BackendController {
     	if(success) {
     		String url = "/assets/ProfilePic.png"; //TODO ir a persistencia por la url de la imagen
         	EntidadComunicable contacto = new EntidadComunicable(number, nombre, url);
-        	contactList.addContact(contacto); //TODO comprobar con la persistencia
+        	chatsRepository.addContact(contacto); //TODO comprobar con la persistencia
     	}
     	
     	return success;
@@ -64,11 +66,11 @@ public class BackendController {
     }
     
     public static EntidadComunicable getContacto(int numero) {
-    	return contactList.getContacto(numero);
+    	return chatsRepository.getContacto(numero);
     }
     
     public static List<EntidadComunicable> getListaContactos() {
-    	return contactList.getContactos();
+    	return chatsRepository.getContactos();
     }
     
     protected static boolean doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {

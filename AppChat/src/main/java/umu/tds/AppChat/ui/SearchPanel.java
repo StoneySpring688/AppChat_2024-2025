@@ -6,7 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import umu.tds.AppChat.controllers.UIController;
 
 public class SearchPanel extends PanelGrande {
 
@@ -19,7 +18,7 @@ public class SearchPanel extends PanelGrande {
 
 	private final Color Gray = new Color(64, 68, 75);
 
-	public SearchPanel(UIController uiController) {
+	public SearchPanel() {
 		
 		this.fondo = new Background();
 		this.fondo.setBounds(0, 60, 920, 660);

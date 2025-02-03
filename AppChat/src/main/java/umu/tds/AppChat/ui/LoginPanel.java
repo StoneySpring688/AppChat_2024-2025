@@ -11,7 +11,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import umu.tds.AppChat.controllers.UIController;
 
 
 public class LoginPanel extends JPanel {
@@ -26,7 +25,7 @@ public class LoginPanel extends JPanel {
 	private final Color defaultDark = new Color(40, 43, 48);
 	private final Color Gray = new Color(64, 68, 75);
 	
-	public LoginPanel(UIController uiController) {
+	public LoginPanel() {
 		setBackground(this.Gray);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);

@@ -47,7 +47,7 @@ public class RegisterPanel extends JPanel {
 	private final static String defaultProfileImage = "/assets/ProfilePic.png";
 	private final static String defaultProfileUrl = "https://github.com/StoneySpring688/AppChat_2024-2025/blob/main/AppChat/src/main/resources/assets/ProfilePic.png?raw=true";
 
-	public RegisterPanel(UIController uiController) {
+	public RegisterPanel() {
 		setBackground(this.Gray);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 

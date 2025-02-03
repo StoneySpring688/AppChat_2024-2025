@@ -5,36 +5,34 @@ import java.util.List;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 
 public class MainController {
-    private static UIController uiController;
-    private static BackendController backendController;
     
     //estados
-    private Byte actualState;
+    private static Byte actualState;
     private final static Byte loggedOut = 0;
     private final static Byte loggedIn = 1;
 
     public MainController() {
-        uiController = new UIController();
-        backendController = new BackendController();
+        
     }
 
-    public void startApp() {
+    public static void startApp() {
     	actualizarEstado(loggedOut);
-        uiController.showLogin();
+    	BackendController.iniciar();
+    	UIController.iniciarUI();
     }
 
-    public void onLoginSuccess() {
+    public static void onLoginSuccess() {
     	//TODO hacer comprobaciones de las credenciales proporcionadas
     	actualizarEstado(loggedIn);
-        uiController.showMainPanel();
+    	UIController.showMainPanel();
     }
     
-    public void actualizarEstado(Byte newState) {
-    	this.actualState = newState;
+    public static void actualizarEstado(Byte newState) {
+    	actualState = newState;
     }
     
-    public Byte getEstadoActual() {
-    	return Byte.valueOf(this.actualState);
+    public static Byte getEstadoActual() {
+    	return Byte.valueOf(actualState);
     }
     
     protected static boolean anyadirContacto(String numero, String nombre) {
