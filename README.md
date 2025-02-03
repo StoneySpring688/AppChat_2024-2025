@@ -5,7 +5,7 @@
 
 > [!IMPORTANT]
 > ### Requiere :
-> - [Java](https://www.oracle.com/es/java/technologies/downloads/)
+> - [Java17 o posterior](https://www.oracle.com/es/java/technologies/downloads/)
 > - [Maven](https://maven.apache.org/download.cgi)
 
 ## 📋 Descripción del proyecto
