@@ -4,15 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Optional;
 import javax.swing.ImageIcon;
 import java.util.List;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.JUnitException;
 import umu.tds.AppChat.backend.services.ChatService;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 
 @SuppressWarnings("unused")
 class ChatServiceTest {
     private static final int STRESS_TEST = 1; // Cambia a 0 para ejecutar la prueba normal
-    private static final int CACHE_SIZE = (STRESS_TEST == 1) ? 10000 : 10;
+    private static final int CACHE_SIZE = (STRESS_TEST == 1) ? 500 : 10;
     private ChatService service;
     private long idGrupo;
     private long idContacto;
@@ -67,7 +70,13 @@ class ChatServiceTest {
 
         Runtime runtime = Runtime.getRuntime();
         runtime.gc(); // Solicitar recolección de basura antes de la medición
-        long memoriaAntes = runtime.totalMemory() - runtime.freeMemory();
+        try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+        MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+        long memoriaAntes = memoryBean.getHeapMemoryUsage().getUsed();
         long tiempoInicio = System.currentTimeMillis();
 
         for (long chatId = 1; chatId <= numChats; chatId++) {
@@ -82,14 +91,15 @@ class ChatServiceTest {
         
         long tiempoFin = System.currentTimeMillis();
         long tiempoTotalSegundos = (tiempoFin - tiempoInicio) / 1000;
-        long memoriaDespues = runtime.totalMemory() - runtime.freeMemory();
+        long memoriaDespues = memoryBean.getHeapMemoryUsage().getUsed();
         long memoriaConsumidaMB = (memoriaDespues - memoriaAntes) / (1024 * 1024);
-
+        
+        System.out.println("[TEST] Num Chats en cache: " + CACHE_SIZE);
         System.out.println("[TEST] Num Chats: " + numChats + " | " + "Num Mensajes por chat: " + numMensajesPorChat + " | " + "Num Emojis por chat: " + numEmojisPorChat);
         System.out.println("[TEST] Memoria consumida en STRESS_TEST: " + memoriaConsumidaMB + " MB");
         System.out.println("[TEST] Tiempo total en STRESS_TEST: " + tiempoTotalSegundos + " segundos");
 
-        for (long chatId = numChats - 500; chatId <= numChats; chatId++) {
+        for (long chatId = numChats - CACHE_SIZE + 1; chatId <= numChats; chatId++) {
             assertTrue(service.isInLRU(chatId), "El chat " + chatId + " debería estar en caché");
         }
     }

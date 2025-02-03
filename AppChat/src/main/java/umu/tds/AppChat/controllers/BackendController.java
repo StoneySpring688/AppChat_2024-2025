@@ -78,7 +78,6 @@ public class BackendController {
 		} catch (Exception e) {
     		//System.out.println("[DEBUG] doRegister BackendControoller 6");
 			UIController.registerErrors((byte) 4);
-			e.printStackTrace();
 			success = false;
 		}
     	return success;

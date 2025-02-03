@@ -10,7 +10,7 @@ import umu.tds.AppChat.backend.utils.ModelMessage;
  * Repositorio de mensajes en memoria*/
 public class ChatService {
 	private LRUCache<Long, ModelMessage> cacheMensajes;
-	private List<ModelMessage> mensajesChatActual;
+	private long ChatActualID;
 	
 	/**
 	 * constructor de ChatService
@@ -18,7 +18,7 @@ public class ChatService {
 	 * @param tamanoCache tamaño de la caché LRU*/
 	public ChatService(int tamanoCache) {
 		this.cacheMensajes = new LRUCache<Long, ModelMessage>(tamanoCache, 10, 0.75f, true);
-		this.mensajesChatActual = new ArrayList<ModelMessage>();
+		this.ChatActualID = 0;
 	}
 	
 	/**
@@ -28,8 +28,9 @@ public class ChatService {
 	 * @param chatID numero asociado al chat
 	 */
 	public void addMessage(long chatID, ModelMessage msg) {
-		this.mensajesChatActual.add(msg);
+		//this.mensajesChatActual.add(msg);
 		this.cacheMensajes.addMessageToChat(chatID, msg);
+		this.setChatActualID(chatID);
 	}
 	
 	/**
@@ -38,7 +39,7 @@ public class ChatService {
      * @return Lista de valores asociada al chat actual.
      */
 	public List<ModelMessage> getMsgChatActual(){
-		return new ArrayList<ModelMessage>(this.mensajesChatActual);		
+		return new ArrayList<ModelMessage>(this.getLRUChat(this.getChatActualID()));		
 	}
 	
 	/**
@@ -53,6 +54,14 @@ public class ChatService {
 	
 	public boolean isInLRU(long chatID) {
 		return this.cacheMensajes.containsKey(chatID);
+	}
+	
+	public void setChatActualID(long id) {
+		this.ChatActualID = id;
+	}
+	
+	public long getChatActualID() {
+		return this.ChatActualID;
 	}
 	
 }
