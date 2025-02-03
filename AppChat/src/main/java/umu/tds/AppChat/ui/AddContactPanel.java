@@ -58,6 +58,15 @@ public class AddContactPanel extends PanelGrande {
 		textNombreContacto.setCaretColor(Color.WHITE);
 		textNombreContacto.setForeground(Color.WHITE);
 		//textNombreContacto.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		textNombreContacto.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textNombreContacto.getForeground().equals(Color.RED)) {
+                	textNombreContacto.setText(""); // Borrar el mensaje de error
+                	textNombreContacto.setForeground(Color.WHITE); // Restaurar color normal
+                }
+            }
+        });
 		this.fondo.add(textNombreContacto);
 		textNombreContacto.setColumns(10);
 		
@@ -74,7 +83,7 @@ public class AddContactPanel extends PanelGrande {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//numero inexistente o ya en contactos
-				addContact();	
+				if(addContact()) reset();	
 			}
 		});
 		
@@ -82,20 +91,50 @@ public class AddContactPanel extends PanelGrande {
 		
 	}
 	
+	public String getNumero() {
+		return textFieldPhone.getForeground().equals(Color.RED) ? "" : this.textFieldPhone.getText();
+	}
+	
+	public String getNombre() {
+		return textNombreContacto.getForeground().equals(Color.RED) ? "" : this.textNombreContacto.getText();
+	}
+	
 	private boolean addContact() {
-		int numero;
-
-		try {
-		    numero = Integer.parseInt(this.textFieldPhone.getText());
-		    return UIController.verificarContactoYAnyadirContacto( numero, this.textNombreContacto.getText());
-		} catch (NumberFormatException e) {
-		    System.err.println("[Error] : El valor no es un número válido.");
+		    return UIController.verificarContactoYAnyadirContacto( getNumero(), getNombre());		
+	}
+	
+	private void reset() {
+		textFieldPhone.setText("");
+        textFieldPhone.setForeground(Color.WHITE);
+        textNombreContacto.setText("");
+        textNombreContacto.setForeground(Color.WHITE);
+	}
+	
+	public void Errors(byte code) {
+		switch (code) {
+		case 1: {
+			//System.err.println("[Error] : El valor no es un número válido.");
 		    textFieldPhone.setForeground(Color.RED);
-            textFieldPhone.setText("Numero");
-		    return false;
+            textFieldPhone.setText("Invalid number");
+			break;
 		}
-		
-		
+		case 2: {
+			//System.err.println("[Error] : contacto ya existente.");
+		    textFieldPhone.setForeground(Color.RED);
+            textFieldPhone.setText("contact already exists");
+            textNombreContacto.setForeground(Color.RED);
+            textNombreContacto.setText("contact already exists");
+			break;
+		}
+		case 3: {
+			//System.err.println("[Error] : nombre invalido.");
+			textNombreContacto.setForeground(Color.RED);
+			textNombreContacto.setText("invalid name");
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + code);
+		}
 	}
 
 }

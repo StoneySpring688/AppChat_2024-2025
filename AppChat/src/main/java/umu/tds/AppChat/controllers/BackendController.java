@@ -1,5 +1,6 @@
 package umu.tds.AppChat.controllers;
 
+import java.awt.Color;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,16 +28,38 @@ public class BackendController {
         return chatService.getMsgChatActual();
     }
     
-    public static boolean addContact(int numero, String nombre) {
+    public static boolean addContact(String numero, String nombre) {
     	
-    	if(contactList.isContact(numero)) return false;
+    	boolean success = true;
+    	int number = 0;
     	
-    	String url = "/assets/ProfilePic.png"; //TODO ir a persistencia por la url de la imagen
-    	EntidadComunicable contacto = new EntidadComunicable(numero, nombre, url);
+    	try {
+		    number = Integer.parseInt(numero);
+		} catch (NumberFormatException e) {
+		    UIController.addContactErrors((byte) 1);
+			success = false;
+		}
     	
-    	contactList.addContact(contacto); //TODO comprobar con la persistencia
+    	//TODO comprobar que no sea el número del usuario
     	
-    	return true;
+    	if(number != 0 && (int) (Math.log10(Math.abs(number)) + 1) != 9) {
+    		UIController.addContactErrors((byte) 1);
+    		success = false;
+    	}else if(contactList.isContact(number)) {
+    		UIController.addContactErrors((byte) 2);
+    		success = false;
+    	}if(nombre.length() == 0) {
+    		UIController.addContactErrors((byte) 3);
+    		success = false;
+    	}
+    	
+    	if(success) {
+    		String url = "/assets/ProfilePic.png"; //TODO ir a persistencia por la url de la imagen
+        	EntidadComunicable contacto = new EntidadComunicable(number, nombre, url);
+        	contactList.addContact(contacto); //TODO comprobar con la persistencia
+    	}
+    	
+    	return success;
     	
     }
     

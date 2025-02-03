@@ -226,6 +226,12 @@ public class MainPanel extends JPanel {
 			}
 			break;
 		}
+		case 3: {
+			if (arg.isPresent() && arg.get() instanceof Byte) {
+				this.panelAnyadirContacto.Errors((byte) arg.get());;
+			}
+			break;
+		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + numMetodo);
 		}

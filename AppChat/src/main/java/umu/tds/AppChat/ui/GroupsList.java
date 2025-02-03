@@ -60,52 +60,52 @@ public class GroupsList extends JPanel {
 		this.add(this.scroll);
 		
 		//boton crear grupo
-				JPanel buttonAnyadirGrupo = new JPanel();
-				JLabel iconAnyadirGrupo = new JLabel();
-				JLabel lblAnyadirGrupo = new JLabel("Create Group");
-				ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ui-talent-s-mika-03.png"));
-				iconAnyadirGrupo.setIcon(new ImageIcon(icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH)));
-				iconAnyadirGrupo.setBounds(13, 12, 44, 44);
-				lblAnyadirGrupo.setBounds(61, 23, 90, 30);
+		JPanel buttonAnyadirGrupo = new JPanel();
+		JLabel iconAnyadirGrupo = new JLabel();
+		JLabel lblAnyadirGrupo = new JLabel("Create Group");
+		ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ui-talent-s-mika-03.png"));
+		iconAnyadirGrupo.setIcon(new ImageIcon(icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH)));
+		iconAnyadirGrupo.setBounds(13, 12, 44, 44);
+		lblAnyadirGrupo.setBounds(61, 23, 90, 30);
+		lblAnyadirGrupo.setForeground(Color.WHITE);
+		buttonAnyadirGrupo.add(iconAnyadirGrupo);
+		buttonAnyadirGrupo.add(lblAnyadirGrupo);
+		buttonAnyadirGrupo.setLayout(null);
+		buttonAnyadirGrupo.setBackground(this.darkPorDefecto);
+		buttonAnyadirGrupo.setBounds(0,  0, 240, 60);
+		buttonAnyadirGrupo.setBorder(new MatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));
+		this.add(buttonAnyadirGrupo);
+
+		buttonAnyadirGrupo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				uiController.crearGrupo();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblAnyadirGrupo.setForeground(new Color(173, 216, 230)); // azul claro
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
 				lblAnyadirGrupo.setForeground(Color.WHITE);
-				buttonAnyadirGrupo.add(iconAnyadirGrupo);
-				buttonAnyadirGrupo.add(lblAnyadirGrupo);
-				buttonAnyadirGrupo.setLayout(null);
-				buttonAnyadirGrupo.setBackground(this.darkPorDefecto);
-				buttonAnyadirGrupo.setBounds(0,  0, 240, 60);
-				buttonAnyadirGrupo.setBorder(new MatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));
-				this.add(buttonAnyadirGrupo);
-				
-				buttonAnyadirGrupo.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						uiController.crearGrupo();
-						}
-					
-					@Override
-		            public void mouseEntered(MouseEvent e) {
-				        lblAnyadirGrupo.setForeground(new Color(173, 216, 230)); // azul claro
-		            }
-					
-					@Override
-		            public void mouseExited(MouseEvent e) {
-				        lblAnyadirGrupo.setForeground(Color.WHITE);
-		            }
-					
-					});
-				
-				this.lista.addMouseListener(new MouseAdapter() {
-		            @Override
-		            public void mouseClicked(MouseEvent evt) {
-		                // Obtener el índice del elemento clickeado
-		                int index = lista.locationToIndex(evt.getPoint());
-		                if (index >= 0) {
-		                    // Obtener el elemento clickeado
-		                    ElementoChatOGrupo elemento = groups.getElementAt(index);
-		                    System.out.println("Elemento clickeado: " + elemento.getNombre()); ///TODO
-		                }
-		            }
-		        });
+			}
+
+		});
+
+		this.lista.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evt) {
+				// Obtener el índice del elemento clickeado
+				int index = lista.locationToIndex(evt.getPoint());
+				if (index >= 0) {
+					// Obtener el elemento clickeado
+					ElementoChatOGrupo elemento = groups.getElementAt(index);
+					System.out.println("Elemento clickeado: " + elemento.getGroupID()); ///TODO
+				}
+			}
+		});
 				
 	}
 

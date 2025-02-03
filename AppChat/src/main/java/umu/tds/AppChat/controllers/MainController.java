@@ -37,7 +37,7 @@ public class MainController {
     	return Byte.valueOf(this.actualState);
     }
     
-    protected static boolean anyadirContacto(int numero, String nombre) {
+    protected static boolean anyadirContacto(String numero, String nombre) {
     	
     	return BackendController.addContact(numero, nombre); //TODO comprobar con la persistencia
     	

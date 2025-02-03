@@ -172,6 +172,14 @@ public class AppFrame extends JFrame {
 			}
 			break;
 		}
+		case 4: {
+			//System.out.println("[DEBUG] llamarMetodo case 3");
+			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
+				//System.out.println("[DEBUG] llamarMetodo case 3 if passed" +arg2.get());
+				this.mainPanel.accederMetodoNoVisible(3, Optional.of(arg2.get()));
+			}
+			break;
+		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + numMetodo);
 		}

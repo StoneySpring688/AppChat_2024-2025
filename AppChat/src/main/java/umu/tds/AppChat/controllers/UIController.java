@@ -75,6 +75,10 @@ public class UIController {
     	appFrame.llamarMetodo(3, Optional.of((byte) code), Optional.empty());
     }
     
+    public static void addContactErrors(byte code) {
+    	appFrame.llamarMetodo(4, Optional.of((byte) code), Optional.empty());
+    }
+    
     public void doLogin() {
     	// TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
     	showPanelIntermedio();
@@ -95,14 +99,15 @@ public class UIController {
     }
     
     @SuppressWarnings("unchecked")
-	public static boolean verificarContactoYAnyadirContacto(int numero, String nombre) {
+	public static boolean verificarContactoYAnyadirContacto(String numero, String nombre) {
     	//TODO verificar los datos con la persistencia
     	if(MainController.anyadirContacto(numero, nombre)) {
-    		EntidadComunicable ent = MainController.getContacto(numero);
+    		int number = Integer.parseInt(numero);
+    		EntidadComunicable ent = MainController.getContacto(number);
     		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(ent));
     		return true;
     	} 
-    	System.err.println("[ERROR] no se pudo añadir usuario");
+    	//System.err.println("[ERROR] no se pudo añadir usuario");
     	return false;
     }
     
