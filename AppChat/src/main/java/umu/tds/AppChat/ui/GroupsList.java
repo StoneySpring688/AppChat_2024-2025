@@ -109,7 +109,6 @@ public class GroupsList extends JPanel {
 	}
 	
 	public void addGroup(Grupo grupo) {
-		System.out.println("[DEBUG] addGroup");
 		this.groups.addElement(new ElementoChatOGrupo(Optional.empty(), Optional.of(grupo)));
 	}
 

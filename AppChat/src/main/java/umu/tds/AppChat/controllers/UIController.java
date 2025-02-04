@@ -117,9 +117,7 @@ public class UIController {
     }
 	
 	public static void addGroup(long id) {
-		System.out.println("[DEBUG] addGroup UIController");
 		Grupo gp = MainController.getGrupo(id);
-		System.out.println("[DEBUG] addGroup UIController 2 " + gp.getID());
 		appFrame.llamarMetodo(6, Optional.empty(), Optional.of(gp));
 	}
 	

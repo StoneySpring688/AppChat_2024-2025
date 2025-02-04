@@ -184,7 +184,6 @@ public class AppFrame extends JFrame {
 		}
 		case 6: { // añadir un nuevo grupo a la lista de grupos
 			if (arg.isPresent() && arg.get() instanceof Grupo) {
-				System.out.println("[DEBUG] llamarMetodo " + numMetodo);
 				this.mainPanel.accederMetodoNoVisible(5, Optional.of(arg.get()));
 			}
 			break;

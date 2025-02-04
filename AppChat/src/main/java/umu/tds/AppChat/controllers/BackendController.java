@@ -102,12 +102,10 @@ public class BackendController {
 		}
 		
 		if(success) {
-			System.out.println("[DEBUG] make Group BackendController");
 	        SecureRandom secureRandom = new SecureRandom();
 	        long idAleatorio;
 	        //TODO añadir la comprobación con la BD
 	        do{idAleatorio = 1_000_000_000L + (long) (secureRandom.nextDouble() * 9_000_000_000L);}while(chatsRepository.isGroup(idAleatorio));
-	        System.out.println("[DEBUG] make Group BackendController 2 " + idAleatorio);
 			chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros));
 			UIController.addGroup(idAleatorio);
 		}

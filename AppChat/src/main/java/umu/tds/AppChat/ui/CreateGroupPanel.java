@@ -94,7 +94,7 @@ public class CreateGroupPanel  extends PanelGrande {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				if(makeGroup()) reset();	
+				if(makeGroup()) hardReset();	
 			}
 		});
 		this.fondo.add(anyadirButton);
@@ -192,7 +192,7 @@ public class CreateGroupPanel  extends PanelGrande {
 		            contactos.removeElementAt(selectedIndex);
 		            miembros.add(0, selectedContact);
 		            
-		            if(((TitledBorder) panelMiembros.getBorder()).getTitle() != "") {
+		            if(((TitledBorder) panelMiembros.getBorder()).getTitleColor() == Color.RED) {
 		            	panelMiembros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		            }
 		        }
@@ -270,6 +270,7 @@ public class CreateGroupPanel  extends PanelGrande {
 	protected void hardReset() {
 		reset();
 		this.miembros = new DefaultListModel<>();
+		this.listaMiembros.setModel(this.miembros);
 		iniciar(BackendController.getListaContactos());
 	}
 	
@@ -303,7 +304,7 @@ public class CreateGroupPanel  extends PanelGrande {
 			break;
 		}
 		case 2: {
-			panelMiembros.setBorder(new TitledBorder(new LineBorder(Color.RED, 2), "no contacts added", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
+			panelMiembros.setBorder(new TitledBorder(new LineBorder(Color.RED, 1), null, TitledBorder.LEADING, TitledBorder.BELOW_TOP, null, Color.RED));
 			break;
 		}
 		default:

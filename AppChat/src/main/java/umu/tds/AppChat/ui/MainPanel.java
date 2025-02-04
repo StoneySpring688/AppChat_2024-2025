@@ -240,7 +240,6 @@ public class MainPanel extends JPanel {
 		}
 		case 5: { // añadir un nuevo grupo a la lista de grupos
 			if (arg.isPresent() && arg.get() instanceof Grupo) {
-				System.out.println("[DEBUG] accederMetodoNoVisible 6");
 				this.groupslist.addGroup(new Grupo((Grupo) arg.get()));
 			}
 			break;
