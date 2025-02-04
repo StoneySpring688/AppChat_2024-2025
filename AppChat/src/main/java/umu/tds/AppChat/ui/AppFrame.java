@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.controllers.UIController;
 
 public class AppFrame extends JFrame {
@@ -122,7 +123,7 @@ public class AppFrame extends JFrame {
         this.mainPanel.changePanelPrincipal("anyadirContacto");
     }
     
-    public void showAnyadirCrearGrupoPanel() {
+    public void showCrearGrupoPanel() {
         this.mainPanel.changePanelPrincipal("crearGrupo");
     }
 
@@ -147,8 +148,8 @@ public class AppFrame extends JFrame {
 		//System.out.println("[DEBUG] llamarMetodo" + (byte) arg2.get());
 		
 		switch (numMetodo) {
-		// inicializar lista de usuarios de crearGrupo
-		case 1: {
+		
+		case 1: { // inicializar lista de usuarios de crearGrupo
 			
 			if (arg.isPresent() && arg.get() instanceof List<?>) {
 				List<EntidadComunicable> lista = (List<EntidadComunicable>) arg.get();
@@ -157,25 +158,34 @@ public class AppFrame extends JFrame {
 			break;
 			
 		}
-		case 2: {
+		case 2: { // añadir un nuevo chat a la lista de chats
 			if (arg.isPresent() && arg.get() instanceof EntidadComunicable) {
 				this.mainPanel.accederMetodoNoVisible(2, Optional.of(arg.get()));
 			}
 			break;
 		}
-		case 3: {
-			//System.out.println("[DEBUG] llamarMetodo case 3");
+		case 3: { // gestionar los errores en el formulario de registro
 			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
-				//System.out.println("[DEBUG] llamarMetodo case 3 if passed" +arg2.get());
 				this.register.Errors((byte) arg2.get());
 			}
 			break;
 		}
-		case 4: {
-			//System.out.println("[DEBUG] llamarMetodo case 3");
+		case 4: { // gestionar los errores en el formulario para añadir contactos
 			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
-				//System.out.println("[DEBUG] llamarMetodo case 3 if passed" +arg2.get());
 				this.mainPanel.accederMetodoNoVisible(3, Optional.of(arg2.get()));
+			}
+			break;
+		}
+		case 5: { // gestionar los errores en el formulario para hacer grupos
+			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
+				this.mainPanel.accederMetodoNoVisible(4, Optional.of(arg2.get()));
+			}
+			break;
+		}
+		case 6: { // añadir un nuevo grupo a la lista de grupos
+			if (arg.isPresent() && arg.get() instanceof Grupo) {
+				System.out.println("[DEBUG] llamarMetodo " + numMetodo);
+				this.mainPanel.accederMetodoNoVisible(5, Optional.of(arg.get()));
 			}
 			break;
 		}

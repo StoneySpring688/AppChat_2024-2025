@@ -2,10 +2,15 @@ package umu.tds.AppChat.ui;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +25,11 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.controllers.BackendController;
 import umu.tds.AppChat.controllers.UIController;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 public class CreateGroupPanel  extends PanelGrande {
@@ -30,6 +37,7 @@ public class CreateGroupPanel  extends PanelGrande {
 	private static final long serialVersionUID = 1L;
 	
 	private Background fondo;
+	private JPanel panelMiembros;
 	private JTextField textNombreGrupo;
 	private JButton anyadirButton;
 	private JTextField urlField;
@@ -59,6 +67,15 @@ public class CreateGroupPanel  extends PanelGrande {
 		textNombreGrupo.setCaretColor(Color.WHITE);
 		textNombreGrupo.setForeground(Color.WHITE);
 		//textNombreGrupo.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		textNombreGrupo.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textNombreGrupo.getForeground().equals(Color.RED)) {
+                	textNombreGrupo.setText(""); // Borrar el mensaje de error
+                	textNombreGrupo.setForeground(Color.WHITE); // Restaurar color normal
+                }
+            }
+        });
 		this.fondo.add(textNombreGrupo);
 		textNombreGrupo.setColumns(10);
 		
@@ -73,6 +90,13 @@ public class CreateGroupPanel  extends PanelGrande {
 		anyadirButton.setForeground(Color.WHITE);
 		anyadirButton.setBackground(new Color(241, 57, 83));
 		anyadirButton.setBounds(342, 582, 187, 35); // x = 305 + (262/2) - (187/2)
+		this.anyadirButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(makeGroup()) reset();	
+			}
+		});
 		this.fondo.add(anyadirButton);
 		
 		//texto indicativo
@@ -167,12 +191,16 @@ public class CreateGroupPanel  extends PanelGrande {
 		            // Removerlo de la lista de contactos y añadirlo a la lista de miembros
 		            contactos.removeElementAt(selectedIndex);
 		            miembros.add(0, selectedContact);
+		            
+		            if(((TitledBorder) panelMiembros.getBorder()).getTitle() != "") {
+		            	panelMiembros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		            }
 		        }
 		    }
 		});
 		
 		//panel de miembros
-		JPanel panelMiembros = new JPanel();
+		panelMiembros = new JPanel();
 		panelMiembros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelMiembros.setBounds(567, 163, 285, 385);
 		this.fondo.add(panelMiembros);
@@ -215,6 +243,36 @@ public class CreateGroupPanel  extends PanelGrande {
 		return this.validImage == true ? this.urlField.getText() : getDefaultProfileImage();
 	}
 	
+	public String getNombre() {
+		return textNombreGrupo.getForeground().equals(Color.RED) ? "" : this.textNombreGrupo.getText();
+	}
+	
+	public List<Integer> getMiembros(){
+		int size = this.miembros.size();
+		List<Integer> lista = new ArrayList<Integer>(size);
+		for (int i = 0; i < size; i++) {
+	        lista.add(this.miembros.get(i).getNumero());
+	    }
+ 		return lista;
+	}
+	
+	protected void reset() {
+		this.textNombreGrupo.setText("");
+		this.urlField.setText("");
+		this.panelMiembros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		try {
+			actualizarImagen();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void hardReset() {
+		reset();
+		this.miembros = new DefaultListModel<>();
+		iniciar(BackendController.getListaContactos());
+	}
+	
 	public void iniciar(List<EntidadComunicable> lista) {
 		this.miembros.clear();
 		this.contactos.clear();
@@ -223,6 +281,34 @@ public class CreateGroupPanel  extends PanelGrande {
 	    this.repaint();
 	    this.revalidate();
 		
+	}
+	
+	private boolean makeGroup() {
+		
+		//System.out.println("[DEBUG] doRegister");
+		String nombre = this.getNombre();
+		String profilepPicUrl = this.getProfilePicUrl();
+		List<Integer> miembros = this.getMiembros();
+		
+		return UIController.makeGroup(nombre, profilepPicUrl, miembros);
+		
+	}
+	
+	public void Errors(byte code) {
+		//System.out.println("[DEBUG] Errors" + code);
+		switch (code) {
+		case 1: {
+			this.textNombreGrupo.setForeground(Color.RED);
+			this.textNombreGrupo.setText("invalid name");
+			break;
+		}
+		case 2: {
+			panelMiembros.setBorder(new TitledBorder(new LineBorder(Color.RED, 2), "no contacts added", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + code);
+		}
 	}
 	
     private void actualizarImagen() throws MalformedURLException {

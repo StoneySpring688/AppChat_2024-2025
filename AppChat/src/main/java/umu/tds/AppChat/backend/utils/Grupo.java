@@ -24,6 +24,20 @@ public class Grupo  {
 		this.iconUrl = iconUrl;
 		this.integrantes =  new ArrayList<Integer>();
 	}
+	
+	public Grupo(long groupID, String nombre, String iconUrl, List<Integer> miembros){
+		this.groupID = groupID;
+		this.nombre = nombre;
+		this.iconUrl = iconUrl;
+		this.integrantes =  new ArrayList<Integer>(miembros);
+	}
+
+	public Grupo(Grupo grupo) {
+		this.groupID = grupo.getID();
+		this.nombre = grupo.getNombre();
+		this.iconUrl = grupo.getIconUrl();
+		this.integrantes = grupo.getIntegrantes();
+	}
 
 	public long getID() {
 		return this.groupID;

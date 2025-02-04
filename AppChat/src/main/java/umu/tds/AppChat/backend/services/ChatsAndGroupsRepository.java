@@ -77,7 +77,7 @@ public class ChatsAndGroupsRepository {
 		this.listaGrupos.removeGroup(id);
 	}
 	
-	public boolean isMember(long id) {
+	public boolean isGroup(long id) {
 		return this.listaGrupos.isMember(id);
 	}
 	

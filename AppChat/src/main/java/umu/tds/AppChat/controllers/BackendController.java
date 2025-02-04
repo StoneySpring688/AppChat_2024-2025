@@ -1,9 +1,11 @@
 package umu.tds.AppChat.controllers;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Usuario;
 import umu.tds.AppChat.backend.services.ChatService;
@@ -28,6 +30,14 @@ public class BackendController {
 
     public List<ModelMessage> obtenerMensajesChat() {
         return chatService.getMsgChatActual();
+    }
+    
+    public static EntidadComunicable getContacto(int numero) {
+    	return chatsRepository.getContacto(numero);
+    }
+    
+    public static List<EntidadComunicable> getListaContactos() {
+    	return chatsRepository.getContactos();
     }
     
     public static boolean addContact(String numero, String nombre) {
@@ -58,19 +68,52 @@ public class BackendController {
     	if(success) {
     		String url = "/assets/ProfilePic.png"; //TODO ir a persistencia por la url de la imagen
         	EntidadComunicable contacto = new EntidadComunicable(number, nombre, url);
-        	chatsRepository.addContact(contacto); //TODO comprobar con la persistencia
+        	
+        	boolean bdOk = true; //TODO comprobar con la persistencia
+        	
+        	if(bdOk) {
+        		chatsRepository.addContact(contacto);
+        		UIController.addChat(number);
+        	}
+        	
     	}
     	
     	return success;
     	
     }
     
-    public static EntidadComunicable getContacto(int numero) {
-    	return chatsRepository.getContacto(numero);
+    public static Grupo getGrupo(long id) {
+    	return chatsRepository.getGrupo(id);
     }
     
-    public static List<EntidadComunicable> getListaContactos() {
-    	return chatsRepository.getContactos();
+    public static List<Grupo> getGrupos() {
+    	return chatsRepository.getGrupos();
+    }
+    
+    public static boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
+		boolean success = true;
+		
+		if(nombre.isBlank() || nombre.isEmpty()) {
+			UIController.makeGroupErrors((byte) 1);
+			success = false;
+		}if(miembros == null || miembros.isEmpty()) {
+			UIController.makeGroupErrors((byte) 2);
+			success = false;
+		}
+		
+		if(success) {
+			System.out.println("[DEBUG] make Group BackendController");
+	        SecureRandom secureRandom = new SecureRandom();
+	        long idAleatorio;
+	        //TODO añadir la comprobación con la BD
+	        do{idAleatorio = 1_000_000_000L + (long) (secureRandom.nextDouble() * 9_000_000_000L);}while(chatsRepository.isGroup(idAleatorio));
+	        System.out.println("[DEBUG] make Group BackendController 2 " + idAleatorio);
+			chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros));
+			UIController.addGroup(idAleatorio);
+		}
+		
+		return success;
+		
     }
     
     protected static boolean doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {
@@ -111,5 +154,6 @@ public class BackendController {
 		}
     	return success;
     }
+    
 }
 

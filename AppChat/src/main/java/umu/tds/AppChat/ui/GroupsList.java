@@ -26,24 +26,23 @@ public class GroupsList extends JPanel {
 	private JList<ElementoChatOGrupo> lista;
 	private JScrollPane scroll;
 	
-	private final static String defaultGroupUrl = "https://github.com/StoneySpring688/AppChat_2024-2025/blob/main/AppChat/src/main/resources/assets/ProfilePic.png?raw=true";
+	//private final static String defaultGroupUrl = "https://github.com/StoneySpring688/AppChat_2024-2025/blob/main/AppChat/src/main/resources/assets/ProfilePic.png?raw=true";
 	
 	private final Color darkPorDefecto = new Color(54, 57, 63);
-	/**
-	 * Create the panel.
-	 */
+
 	public GroupsList() {
 		setBackground(this.darkPorDefecto);
 		this.setLayout(null);
 		this.setBounds(120, 0, 240, 660);
 		this.groups = new DefaultListModel<>();
 		
+		/*
 		//Para probar
 		
 		for(int i=0 ;i<10 ;i++) {
 			groups.addElement(new ElementoChatOGrupo(Optional.empty() , Optional.of(new Grupo(6485645230L+i, "Group "+i, defaultGroupUrl))));
 		}
-		
+		*/
 		
 		this.lista = new JList<>(groups);
 		this.lista.setCellRenderer(new ElementoChatOGrupoRender(this.lista));
@@ -79,7 +78,7 @@ public class GroupsList extends JPanel {
 		buttonAnyadirGrupo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UIController.crearGrupo();
+				UIController.showPanelCrearGrupo();
 			}
 
 			@Override
@@ -107,6 +106,11 @@ public class GroupsList extends JPanel {
 			}
 		});
 				
+	}
+	
+	public void addGroup(Grupo grupo) {
+		System.out.println("[DEBUG] addGroup");
+		this.groups.addElement(new ElementoChatOGrupo(Optional.empty(), Optional.of(grupo)));
 	}
 
 }

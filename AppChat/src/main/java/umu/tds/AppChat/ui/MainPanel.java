@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.Button;
 import umu.tds.AppChat.ui.chatInterface.ChatPanel;
@@ -209,25 +210,38 @@ public class MainPanel extends JPanel {
 	public void accederMetodoNoVisible(int numMetodo, Optional<Object> arg) {
 		
 		switch (numMetodo) {
-		// inicializar lista de usuarios de crearGrupo
-		case 1: {
+		case 1: { // inicializar lista de usuarios de crearGrupo
 
 			if (arg.isPresent() && arg.get() instanceof List<?>) {
 				List<EntidadComunicable> lista = (List<EntidadComunicable>) arg.get();
+				panelCrearGrupo.reset();
 				panelCrearGrupo.iniciar(lista);
 			}
 			break;
 			
 		}
-		case 2: {
+		case 2: { // añadir un nuevo chat a la lista de chats
 			if (arg.isPresent() && arg.get() instanceof EntidadComunicable) {
 				this.chatslist.addChat(new EntidadComunicable((EntidadComunicable) arg.get()));
 			}
 			break;
 		}
-		case 3: {
+		case 3: { // gestionar los errores en el formulario para añadir contactos
 			if (arg.isPresent() && arg.get() instanceof Byte) {
 				this.panelAnyadirContacto.Errors((byte) arg.get());;
+			}
+			break;
+		}
+		case 4: { // gestionar los errores en el formulario para hacer grupos
+			if (arg.isPresent() && arg.get() instanceof Byte) {
+				this.panelCrearGrupo.Errors((byte) arg.get());;
+			}
+			break;
+		}
+		case 5: { // añadir un nuevo grupo a la lista de grupos
+			if (arg.isPresent() && arg.get() instanceof Grupo) {
+				System.out.println("[DEBUG] accederMetodoNoVisible 6");
+				this.groupslist.addGroup(new Grupo((Grupo) arg.get()));
 			}
 			break;
 		}

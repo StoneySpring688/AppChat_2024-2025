@@ -18,7 +18,7 @@ public class EntidadComunicable {
 	public EntidadComunicable(EntidadComunicable ent){
 		this.numero = ent.getNumero();
 		this.nombre = ent.getNombre();
-		this.iconUrl = ent.iconUrl;
+		this.iconUrl = ent.getIconUrl();
 	}
 
 	public int getNumero() {

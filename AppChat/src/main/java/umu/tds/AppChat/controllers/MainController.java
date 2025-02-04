@@ -3,6 +3,7 @@ package umu.tds.AppChat.controllers;
 import java.util.List;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.Grupo;
 
 public class MainController {
     
@@ -50,7 +51,19 @@ public class MainController {
     }
     
     protected static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
-    	//System.out.println("[DEBUG] doRegister MainController");
     	return BackendController.doRegister(nombre, numero, passwd, birthDate, url, signature);
     }
+    
+    public static boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
+		return BackendController.makeGroup(nombre, profilepPicUrl, miembros);
+    }
+    
+    protected static Grupo getGrupo(long id) {
+    	return BackendController.getGrupo(id);
+    }
+    
+    protected static List<Grupo> getGrupos(){
+    	return BackendController.getGrupos();
+    }
+    
 }

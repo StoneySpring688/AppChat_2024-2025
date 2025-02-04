@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.chatInterface.ChatArea;
@@ -58,22 +59,27 @@ public class UIController {
     }
     
     public static void showPanelCrearGrupo() {
-    	appFrame.showAnyadirCrearGrupoPanel();
+    	List<EntidadComunicable> lista = MainController.getListaContactos() ;
+    	appFrame.llamarMetodo(1, Optional.empty(), Optional.of(lista));
+    	appFrame.showCrearGrupoPanel();
     }
+    
+ 	public static void registerErrors(byte code) {
+ 		//System.out.println("[DEBUG] registerErrors" + code);
+     	appFrame.llamarMetodo(3, Optional.of((byte) code), Optional.empty());
+     }
+     
+     public static void addContactErrors(byte code) {
+     	appFrame.llamarMetodo(4, Optional.of((byte) code), Optional.empty());
+     }
+     
+     public static void makeGroupErrors(byte code) {
+      	appFrame.llamarMetodo(5, Optional.of((byte) code), Optional.empty());
+      }
     
     public static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature){
     	//System.out.println("[DEBUG] doRegister UIController");
     	return MainController.doRegister(nombre, numero, passwd, birthDate, url, signature);
-    }
-    
-    @SuppressWarnings("unchecked")
-	public static void registerErrors(byte code) {
-		//System.out.println("[DEBUG] registerErrors" + code);
-    	appFrame.llamarMetodo(3, Optional.of((byte) code), Optional.empty());
-    }
-    
-    public static void addContactErrors(byte code) {
-    	appFrame.llamarMetodo(4, Optional.of((byte) code), Optional.empty());
     }
     
     public static void doLogin() {
@@ -95,34 +101,33 @@ public class UIController {
     	
     }
     
-    @SuppressWarnings("unchecked")
 	public static boolean verificarContactoYAnyadirContacto(String numero, String nombre) {
     	//TODO verificar los datos con la persistencia
-    	if(MainController.anyadirContacto(numero, nombre)) {
-    		int number = Integer.parseInt(numero);
-    		EntidadComunicable ent = MainController.getContacto(number);
-    		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(ent));
-    		return true;
-    	} 
-    	//System.err.println("[ERROR] no se pudo añadir usuario");
-    	return false;
+    	return MainController.anyadirContacto(numero, nombre);
+
     }
     
-    @SuppressWarnings("unchecked")
-	public static void crearGrupo() {
-    	List<EntidadComunicable> lista = MainController.getListaContactos() ;
-    	
-    	appFrame.llamarMetodo(1, Optional.empty(), Optional.of(lista));
-    	showPanelCrearGrupo();
+    public static void addChat(int number) {
+    	EntidadComunicable ent = MainController.getContacto(number);
+		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(ent));
     }
     
+	public static boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
+		return MainController.makeGroup(nombre, profilepPicUrl, miembros);
+    }
+	
+	public static void addGroup(long id) {
+		System.out.println("[DEBUG] addGroup UIController");
+		Grupo gp = MainController.getGrupo(id);
+		System.out.println("[DEBUG] addGroup UIController 2 " + gp.getID());
+		appFrame.llamarMetodo(6, Optional.empty(), Optional.of(gp));
+	}
+	
     public static void addMessage(ChatArea chat, ModelMessage MMsg, BoxType type) {
     	chat.addChatBox(MMsg, ChatBox.BoxType.RIGHT);
 		chat.resetText();
     }
-    
-    
-    
+     
     //efectos
     public static void addHoverEffect(JButton button) {
 	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
