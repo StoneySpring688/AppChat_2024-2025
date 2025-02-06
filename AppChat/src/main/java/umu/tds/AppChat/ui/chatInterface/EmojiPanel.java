@@ -19,6 +19,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
+import umu.tds.AppChat.backend.utils.Emoji;
 import umu.tds.AppChat.config.Config;
 import umu.tds.AppChat.ui.ScrollBar;
 
@@ -63,13 +64,14 @@ public class EmojiPanel extends JPanel{
     
     private void cargarEmojis() {
     	
-    	List<Button> emojiButtons = new ArrayList<>(); //buffer
+    	List<Emoji> emojiButtons = new ArrayList<>(); //buffer
+    	int id = 0;
         for (String fileName : Config.emojiFiles) {
         	ImageIcon icon = cargarIconoEmoji(fileName);
         	if (icon == null) continue;
                 
             // Crear un botón con el icono del emoji
-            Button emojiButton = new Button();
+            Emoji emojiButton = new Emoji(id);
             emojiButton.setIcon(icon);
             emojiButton.setContentAreaFilled(false);
             emojiButton.setBorder(BorderFactory.createEmptyBorder());
@@ -90,12 +92,14 @@ public class EmojiPanel extends JPanel{
 
             
             emojiButtons.add(emojiButton); //añadir al buffer
+            
+            id++;
                 
         }
         
      // Añadir los emojis del buffer
         SwingUtilities.invokeLater(() -> {
-        	for (Button button : emojiButtons) {
+        	for (Emoji button : emojiButtons) {
         		emojiPanel.add(button);
         	}
         	emojiPanel.revalidate();

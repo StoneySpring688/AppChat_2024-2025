@@ -113,9 +113,9 @@ public class MainPanel extends JPanel {
 		buttonChats.setBounds(10, 0, 100, 100);
 		buttonChats.setFocusPainted(false);
 		UIController.addHoverEffect(buttonChats);
-		this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
+		//this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
 		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
-		//this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
+		this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
 		panelBotonera.add(buttonChats);
 		
 		buttonGroups = new Button();
