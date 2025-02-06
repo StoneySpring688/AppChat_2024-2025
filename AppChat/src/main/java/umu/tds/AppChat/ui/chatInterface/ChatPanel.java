@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.Background;
+import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.PanelGrande;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
@@ -31,13 +32,15 @@ public class ChatPanel extends PanelGrande {
 		this.emojiPanel.addEmojiClickListener(new EmojiClickListener() {
 			
 			@Override
-			public void emojiClicked(ImageIcon emoji) { //TODO construir el mennsaje con toda  la información en el controlador  principal
+			public void emojiClicked(ImageIcon emoji, int id) { //TODO construir el mennsaje con toda  la información en el controlador  principal
 				SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
 				ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
 				String nombre = "UserPrueba1";
 				String fecha =fechaAux.format(new Date());
 				ModelMessage MMsg = new ModelMessage(icono, nombre, fecha, Optional.empty(), Optional.of(emoji));
 				UIController.addMessage(chat, MMsg, BoxType.RIGHT);
+				
+				//System.out.println("id emoji : " + id);
 				
 			}
 		});
@@ -81,6 +84,12 @@ public class ChatPanel extends PanelGrande {
 	
 	public void addEmojiMessage(ImageIcon emoji) {
 		
+	}
+	
+	public void changeChat(ElementoChatOGrupo chat) {
+		this.chat.clearChatBox();
+		this.chat.setCurrentChat(chat);
+		//TODO renderizar los mensajes de forma asincrona
 	}
 
 }

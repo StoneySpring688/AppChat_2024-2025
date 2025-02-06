@@ -14,6 +14,7 @@ import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
+import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.chatInterface.ChatArea;
 import umu.tds.AppChat.ui.chatInterface.ChatBox;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
@@ -56,6 +57,11 @@ public class UIController {
     
     public static void showPanelAnyadirContacto() {
     	appFrame.showAnyadirContactoPanel();
+    }
+    
+    public static void changeChat(ElementoChatOGrupo chat) {
+    	appFrame.llamarMetodo(7, Optional.of(chat), Optional.empty());
+    	appFrame.showChatPanel();
     }
     
     public static void showPanelCrearGrupo() {

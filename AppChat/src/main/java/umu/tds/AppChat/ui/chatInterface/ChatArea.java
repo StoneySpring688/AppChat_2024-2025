@@ -335,15 +335,10 @@ public class ChatArea extends JPanel {
     	this.currentChat = chat;
     	
     	ImageIcon headerIcon = new ImageIcon(chat.getProfilePic().getImage());
-        headerAvatar = new ImageAvatar();
-        headerAvatar.setBorderSize(1);
-        headerAvatar.setBorderSpace(1);
-        headerAvatar.setImage(headerIcon);
+        setUserAvatar(headerIcon);      
         
-        headerUserName = new JLabel(new String(chat.getNombre()));
-        headerUserName.setFont(headerUserName.getFont().deriveFont(14f));
-        headerUserName.setBorder(new EmptyBorder(2, 10, 2, 2));
-        headerUserName.setForeground(new Color(240, 240, 240));
+        String nombreOId = chat.getNombre() != null ? chat.getNombre() : Integer.toString(chat.getNumero());
+        setUserName(nombreOId);
         
         
         header.repaint();

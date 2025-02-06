@@ -4,6 +4,8 @@ import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import umu.tds.AppChat.backend.utils.Emoji;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
@@ -22,6 +24,7 @@ public class BackendController {
     public static void iniciar() {
     	chatService = new ChatService(15);
         chatsRepository = new ChatsAndGroupsRepository();
+        Emoji.cargarEmojis();
     }
 
     public void nuevoMensaje(int chatID, ModelMessage mensaje) {

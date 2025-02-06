@@ -3,11 +3,9 @@ package umu.tds.AppChat.ui.chatInterface;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,6 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.Emoji;
-import umu.tds.AppChat.config.Config;
 import umu.tds.AppChat.ui.ScrollBar;
 
 public class EmojiPanel extends JPanel{
@@ -30,6 +27,7 @@ public class EmojiPanel extends JPanel{
     private int round;
     private JPanel emojiPanel;
     private JScrollPane scroll;
+    private List<Emoji> emojiList;
     private List<EmojiClickListener> listeners = new ArrayList<>();
 	
     public EmojiPanel() {
@@ -64,15 +62,13 @@ public class EmojiPanel extends JPanel{
     
     private void cargarEmojis() {
     	
+    	this.emojiList = new ArrayList<Emoji>(Emoji.emojiList);
+    	
+    	//System.out.println("lista_global " + Emoji.emojiList.size() + "lista_local "+ this.emojiList.size());
+    	
     	List<Emoji> emojiButtons = new ArrayList<>(); //buffer
-    	int id = 0;
-        for (String fileName : Config.emojiFiles) {
-        	ImageIcon icon = cargarIconoEmoji(fileName);
-        	if (icon == null) continue;
-                
-            // Crear un botón con el icono del emoji
-            Emoji emojiButton = new Emoji(id);
-            emojiButton.setIcon(icon);
+    	//int id = 0;
+        for (Emoji emojiButton : emojiList) {
             emojiButton.setContentAreaFilled(false);
             emojiButton.setBorder(BorderFactory.createEmptyBorder());
             //emojiButton.setBorder(BorderFactory.createLineBorder(Color.RED)); //debug
@@ -85,7 +81,7 @@ public class EmojiPanel extends JPanel{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     for (EmojiClickListener listener : listeners) {
-                        listener.emojiClicked(icon); // Notifica a cada listener del evento
+                        listener.emojiClicked((ImageIcon) emojiButton.getIcon(), emojiButton.getId()); // Notifica a cada listener del evento
                     }
                 }
             });
@@ -93,7 +89,7 @@ public class EmojiPanel extends JPanel{
             
             emojiButtons.add(emojiButton); //añadir al buffer
             
-            id++;
+            //id++;
                 
         }
         
@@ -107,29 +103,6 @@ public class EmojiPanel extends JPanel{
         });
         
     }
-    
-    private ImageIcon cargarIconoEmoji(String fileName) {
-        try {
-            // Obtener el recurso desde la carpeta "emojis"
-            URL imageUrl = getClass().getClassLoader().getResource("emojis/" + fileName);
-            if (imageUrl == null) {
-                //System.err.println("No se encontró el archivo: " + fileName); //debug
-                return null;
-            }
-
-            // Crear el ImageIcon
-            ImageIcon icon = new ImageIcon(imageUrl);
-            Image scaledImage = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(scaledImage);
-            //System.out.println("Archivo cargado exitosamente: " + fileName); //debug
-            return scaledIcon;
-        } catch (Exception e) {
-            //System.err.println("Error al cargar el archivo: " + fileName); //debug
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     
 	public int getRound() {
         return round;

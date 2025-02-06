@@ -30,6 +30,7 @@ public class MainPanel extends JPanel {
 	private SearchPanel searchPanel;
 	private AddContactPanel panelAnyadirContacto;
 	private CreateGroupPanel panelCrearGrupo;
+	private ChatPanel chat;
 	private JLabel lblLogout;
 	private JLabel lblsettingGear;
 	private Button buttonGroups;
@@ -63,7 +64,7 @@ public class MainPanel extends JPanel {
 		searchPanel = new SearchPanel();
 		panelAnyadirContacto = new AddContactPanel();
 		panelCrearGrupo = new CreateGroupPanel();
-		ChatPanel chat = new ChatPanel();
+		chat = new ChatPanel();
 		
 		principal.add(PanelGrandePorDefecto, "porDefecto");
 		principal.add(searchPanel, "search");
@@ -113,9 +114,9 @@ public class MainPanel extends JPanel {
 		buttonChats.setBounds(10, 0, 100, 100);
 		buttonChats.setFocusPainted(false);
 		UIController.addHoverEffect(buttonChats);
-		//this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
+		this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
 		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
-		this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
+		//this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
 		panelBotonera.add(buttonChats);
 		
 		buttonGroups = new Button();
@@ -242,6 +243,12 @@ public class MainPanel extends JPanel {
 		case 5: { // añadir un nuevo grupo a la lista de grupos
 			if (arg.isPresent() && arg.get() instanceof Grupo) {
 				this.groupslist.addGroup(new Grupo((Grupo) arg.get()));
+			}
+			break;
+		}
+		case 6: { // cambiar de chat al seleccionado
+			if(arg.isPresent() && arg.get() instanceof ElementoChatOGrupo) {
+				this.chat.changeChat((ElementoChatOGrupo) arg.get());
 			}
 			break;
 		}

@@ -99,7 +99,8 @@ public class ChatsList extends JPanel {
                 if (index >= 0) {
                     // Obtener el elemento clickeado
                     ElementoChatOGrupo elemento = chats.getElementAt(index);
-                    System.out.println("Elemento clickeado: " + elemento.getNumero()); //TODO
+                    UIController.changeChat(elemento);
+                    System.out.println("Elemento clickeado: " + elemento.getNumero());
                 }
             }
         });

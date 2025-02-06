@@ -126,6 +126,10 @@ public class AppFrame extends JFrame {
     public void showCrearGrupoPanel() {
         this.mainPanel.changePanelPrincipal("crearGrupo");
     }
+    
+    public void showChatPanel() {
+    	this.mainPanel.changePanelPrincipal("chat");
+    }
 
     public void resizeForMainPanel() {
         setSize(1280, 720);
@@ -185,6 +189,12 @@ public class AppFrame extends JFrame {
 		case 6: { // añadir un nuevo grupo a la lista de grupos
 			if (arg.isPresent() && arg.get() instanceof Grupo) {
 				this.mainPanel.accederMetodoNoVisible(5, Optional.of(arg.get()));
+			}
+			break;
+		}
+		case 7: { // cambiar de chat al seleccionado
+			if(arg2.isPresent() && arg2.get() instanceof ElementoChatOGrupo) {
+				this.mainPanel.accederMetodoNoVisible(6, Optional.of(arg2.get()));
 			}
 			break;
 		}
