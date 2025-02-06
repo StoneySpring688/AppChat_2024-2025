@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 /**
- * cada grupo  tiene un identificador de 10 dígitos
+ * @implNote cada grupo tiene un identificador de 10 dígitos
  */
 public class Grupo  {
 	

@@ -37,6 +37,7 @@ public class MainPanel extends JPanel {
 	private Button buttonChats;
 	private Button buttonShop;
 	private CardLayout actualizadorUiPrincipal;
+	private CardLayout actualizadorMenu1;
 	private ChatsList chatslist;
 	private GroupsList groupslist;
 
@@ -77,7 +78,7 @@ public class MainPanel extends JPanel {
 		//panelMenu1.setBackground(new Color(54,57,63));
 		panelMenu1.setBounds(120, 0, 240, 660);
 		this.add(panelMenu1);
-		CardLayout actualizadorMenu1 = new CardLayout(0, 0);
+		actualizadorMenu1 = new CardLayout(0, 0);
 		panelMenu1.setLayout(actualizadorMenu1);
 		
 		//gestionar paneles menu1
@@ -112,9 +113,9 @@ public class MainPanel extends JPanel {
 		buttonChats.setBounds(10, 0, 100, 100);
 		buttonChats.setFocusPainted(false);
 		UIController.addHoverEffect(buttonChats);
-		//this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
+		this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
 		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
-		this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
+		//this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
 		panelBotonera.add(buttonChats);
 		
 		buttonGroups = new Button();

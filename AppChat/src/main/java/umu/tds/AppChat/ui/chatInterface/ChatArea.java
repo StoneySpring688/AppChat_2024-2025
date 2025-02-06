@@ -15,6 +15,8 @@ import javaswingdev.FontAwesomeIcon;
 import javaswingdev.GoogleMaterialDesignIcon;
 import javaswingdev.GoogleMaterialIcon;
 import javaswingdev.GradientType;
+
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -24,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.ModelMessage;
+import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.ImageAvatar;
 
 public class ChatArea extends JPanel {
@@ -42,8 +45,10 @@ public class ChatArea extends JPanel {
     private TextField textMessage;
     private JScrollPane scrollBody;
     private Button floatingButton;
-    private JLabel labelTitle;
+    private JLabel headerUserName;
+    private ImageAvatar headerAvatar;
     private EmojiPanel emojiPanel;
+    private ElementoChatOGrupo currentChat;
     private boolean emojiPanelVisibility;
 
     public void addChatEvent(ChatEvent event) {
@@ -120,19 +125,19 @@ public class ChatArea extends JPanel {
         panel.setLayout(new MigLayout("align left","[][]"));
         panel.setBackground(new Color(255, 255, 255, 20));
         
-        ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
-        ImageAvatar avatar = new ImageAvatar();
-        avatar.setBorderSize(1);
-        avatar.setBorderSpace(1);
-        avatar.setImage(icono);
+        //ImageIcon headerDefaultIcon = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
+        headerAvatar = new ImageAvatar();
+        headerAvatar.setBorderSize(1);
+        headerAvatar.setBorderSpace(1);
+        //headerAvatar.setImage(headerIcon);
         
-        labelTitle = new JLabel("User");
-        labelTitle.setFont(labelTitle.getFont().deriveFont(14f));
-        labelTitle.setBorder(new EmptyBorder(2, 10, 2, 2));
-        labelTitle.setForeground(new Color(240, 240, 240));
+        headerUserName = new JLabel("headerUserName");
+        headerUserName.setFont(headerUserName.getFont().deriveFont(14f));
+        headerUserName.setBorder(new EmptyBorder(2, 10, 2, 2));
+        headerUserName.setForeground(new Color(240, 240, 240));
         
-        panel.add(avatar, "height 40,width 40");
-        panel.add(labelTitle);
+        panel.add(headerAvatar, "height 40,width 40");
+        panel.add(headerUserName);
         return panel;
     }
 
@@ -269,17 +274,28 @@ public class ChatArea extends JPanel {
             event.keyTyped(evt);
         }
     }
+    
+    private void setEmojiPanelVisibility(boolean visibility) {
+    	this.emojiPanelVisibility = visibility;
+    	emojiPanel.setVisible(visibility);
+    	emojiPanel.repaint();
+    	emojiPanel.revalidate();
+    }
+    
+    protected void showHideEmojiPanel() {
+    	this.setEmojiPanelVisibility(!this.getEmojiPanelVisibility());
+    }
 
     public String getText() {
         return textMessage.getText();
     }
 
-    public void setTitle(String title) {
-        labelTitle.setText(title);
+    public void setUserName(String title) {
+    	headerUserName.setText(title);
     }
 
-    public String getTitle() {
-        return labelTitle.getText();
+    public String getUserName() {
+        return headerUserName.getText();
     }
 
     public void setText(String text) {
@@ -303,15 +319,35 @@ public class ChatArea extends JPanel {
     	return this.emojiPanelVisibility;
     }
     
-    private void setEmojiPanelVisibility(boolean visibility) {
-    	this.emojiPanelVisibility = visibility;
-    	emojiPanel.setVisible(visibility);
-    	emojiPanel.repaint();
-    	emojiPanel.revalidate();
+    protected ElementoChatOGrupo getCurrentChat() {
+    	return this.currentChat;
     }
     
-    protected void showHideEmojiPanel() {
-    	this.setEmojiPanelVisibility(!this.getEmojiPanelVisibility());
+    protected Icon getUserAvatar() {
+    	return this.headerAvatar.getImage();
+    }
+    
+    protected void setUserAvatar(ImageIcon image) {
+    	this.headerAvatar.setImage(image);
+    }
+    
+    protected void setCurrentChat(ElementoChatOGrupo chat) {
+    	this.currentChat = chat;
+    	
+    	ImageIcon headerIcon = new ImageIcon(chat.getProfilePic().getImage());
+        headerAvatar = new ImageAvatar();
+        headerAvatar.setBorderSize(1);
+        headerAvatar.setBorderSpace(1);
+        headerAvatar.setImage(headerIcon);
+        
+        headerUserName = new JLabel(new String(chat.getNombre()));
+        headerUserName.setFont(headerUserName.getFont().deriveFont(14f));
+        headerUserName.setBorder(new EmptyBorder(2, 10, 2, 2));
+        headerUserName.setForeground(new Color(240, 240, 240));
+        
+        
+        header.repaint();
+        header.revalidate();
     }
     
 }
