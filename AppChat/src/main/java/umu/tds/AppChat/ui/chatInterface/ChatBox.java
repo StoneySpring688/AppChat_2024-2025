@@ -17,6 +17,7 @@ import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
+import umu.tds.AppChat.backend.utils.Emoji;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.ImageAvatar;
 
@@ -36,7 +37,8 @@ public class ChatBox extends JComponent {
     	if(message.getMessage().isPresent()) {
     		initBox(message.getMessage().get());
     	}else {
-    		addImageMessage(message.getEmoji().get(), boxType);
+    		ImageIcon emoji = (ImageIcon) Emoji.emojiList.stream().filter(e -> e.getId() == message.getEmoji().get()).findFirst().get().getIcon();
+    		addImageMessage(emoji, boxType);
     	}
         
     }

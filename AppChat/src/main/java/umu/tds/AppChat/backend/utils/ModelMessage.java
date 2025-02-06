@@ -3,7 +3,6 @@ package umu.tds.AppChat.backend.utils;
 import java.util.Optional;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 public class ModelMessage {
 	
@@ -13,9 +12,9 @@ public class ModelMessage {
     private String name;
     private String date;
     private Optional<String> message;
-    private Optional<ImageIcon> emoji;
+    private Optional<Integer> emoji;
 
-    public ModelMessage(Icon icon, String name, String date, Optional<String> message, Optional<ImageIcon> emoji) {
+    public ModelMessage(Icon icon, String name, String date, Optional<String> message, Optional<Integer> emoji) {
         this.icon = icon;
         this.name = name;
         this.date = date;
@@ -59,12 +58,12 @@ public class ModelMessage {
         this.message = Optional.of(message);
     }
     
-    public Optional<ImageIcon> getEmoji(){
-    	Optional<ImageIcon> s = this.emoji.isPresent() ? Optional.of(this.emoji.get()) : Optional.empty();
+    public Optional<Integer> getEmoji(){
+    	Optional<Integer> s = this.emoji.isPresent() ? Optional.of(this.emoji.get()) : Optional.empty();
         return s;
     }
     
-    public void setEmoji(ImageIcon emoji) {
+    public void setEmoji(Integer emoji) {
     	this.emoji = Optional.of(emoji);
     }
     

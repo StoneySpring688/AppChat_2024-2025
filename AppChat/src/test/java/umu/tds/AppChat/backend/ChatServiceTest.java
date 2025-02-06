@@ -81,7 +81,7 @@ class ChatServiceTest {
 
         for (long chatId = 1; chatId <= numChats; chatId++) {
             for (int i = 0; i < numEmojisPorChat; i++) {
-                service.addMessage(chatId, new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USUARIO_" + chatId, "dd / MM / yyyy", Optional.empty(), Optional.of(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")))));
+                service.addMessage(chatId, new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USUARIO_" + chatId, "dd / MM / yyyy", Optional.empty(), Optional.of(1)));
             }
             
             for (int i = 0; i < numMensajesPorChat; i++) {

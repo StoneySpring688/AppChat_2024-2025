@@ -37,7 +37,7 @@ public class ChatPanel extends PanelGrande {
 				ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
 				String nombre = "UserPrueba1";
 				String fecha =fechaAux.format(new Date());
-				ModelMessage MMsg = new ModelMessage(icono, nombre, fecha, Optional.empty(), Optional.of(emoji));
+				ModelMessage MMsg = new ModelMessage(icono, nombre, fecha, Optional.empty(), Optional.of(id));
 				UIController.addMessage(chat, MMsg, BoxType.RIGHT);
 				
 				//System.out.println("id emoji : " + id);
