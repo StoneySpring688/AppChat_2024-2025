@@ -16,6 +16,7 @@ import umu.tds.AppChat.backend.services.ChatsAndGroupsRepository;
 public class BackendController {
     private static ChatService chatService;
     private static ChatsAndGroupsRepository chatsRepository;
+    private static EntidadComunicable user;
 
     public BackendController() {
         
@@ -24,14 +25,28 @@ public class BackendController {
     public static void iniciar() {
     	chatService = new ChatService(15);
         chatsRepository = new ChatsAndGroupsRepository();
+        user = new EntidadComunicable(111222333, "StoneySpring", "https://i.pinimg.com/736x/1c/ff/0b/1cff0b33f92ffd7f34f5cc80adbbf9af.jpg"); //TODO cambiar a datos tras login
         Emoji.cargarEmojis();
     }
 
-    public void nuevoMensaje(int chatID, ModelMessage mensaje) {
-        chatService.addMessage(chatID, mensaje);
+    public static int getUserNumber() {
+    	return user.getNumero();
+    }
+    
+    public static String getUserName() {
+    	return new String(user.getNombre());
+    }
+    
+    public static String getUserIconUrl() {
+    	return new String(user.getIconUrl());
     }
 
-    public List<ModelMessage> obtenerMensajesChat() {
+    public static void nuevoMensaje(long chatID, ModelMessage mensaje) {
+        chatService.addMessage(chatID, mensaje);
+        System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
+    }
+
+    public static List<ModelMessage> obtenerMensajesChat() {
         return chatService.getMsgChatActual();
     }
     

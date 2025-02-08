@@ -44,8 +44,8 @@ class ChatServiceTest {
     }
 
     void testAddAndRetrieveMessages() {
-        ModelMessage msgContacto = new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USER_DESCONOCIDO", "dd / MM / yyyy", Optional.of("Mensaje de contacto"), Optional.empty());
-        ModelMessage msgGrupo = new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USER_DESCONOCIDO", "dd / MM / yyyy", Optional.of("Mensaje de grupo"), Optional.empty());
+        ModelMessage msgContacto = new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USER_DESCONOCIDO", "dd / MM / yyyy", 123456789 , 1234567890 , Optional.of("Mensaje de contacto"), Optional.empty());
+        ModelMessage msgGrupo = new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USER_DESCONOCIDO", "dd / MM / yyyy", 123456789 , 1234567890 ,  Optional.of("Mensaje de grupo"), Optional.empty());
 
         service.addMessage(idContacto, msgContacto);
         service.addMessage(idGrupo, msgGrupo);
@@ -81,11 +81,11 @@ class ChatServiceTest {
 
         for (long chatId = 1; chatId <= numChats; chatId++) {
             for (int i = 0; i < numEmojisPorChat; i++) {
-                service.addMessage(chatId, new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USUARIO_" + chatId, "dd / MM / yyyy", Optional.empty(), Optional.of(1)));
+                service.addMessage(chatId, new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USUARIO_" + chatId, "dd / MM / yyyy", 123456789 , 1234567890 , Optional.empty(), Optional.of(1)));
             }
             
             for (int i = 0; i < numMensajesPorChat; i++) {
-                service.addMessage(chatId, new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USUARIO_" + chatId, "dd / MM / yyyy", Optional.of("Mensaje " + i), Optional.empty()));
+                service.addMessage(chatId, new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USUARIO_" + chatId, "dd / MM / yyyy", 123456789 , 1234567890 ,  Optional.of("Mensaje " + i), Optional.empty()));
             }
         }
         

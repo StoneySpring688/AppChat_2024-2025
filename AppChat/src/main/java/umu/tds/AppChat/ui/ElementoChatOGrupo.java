@@ -102,6 +102,10 @@ public class ElementoChatOGrupo extends JPanel {
     	return this.isGrupo ? this.grupo.get().getID() : null;
     }
     
+    public boolean isGrupo() {
+    	return this.isGrupo;
+    }
+    
     public ImageIcon getProfilePic(){
     	return new ImageIcon(this.imagen.getImage());
     }

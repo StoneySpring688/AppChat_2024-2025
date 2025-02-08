@@ -2,10 +2,8 @@ package umu.tds.AppChat.ui.chatInterface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import java.util.Optional;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import umu.tds.AppChat.backend.utils.ModelMessage;
@@ -33,12 +31,8 @@ public class ChatPanel extends PanelGrande {
 			
 			@Override
 			public void emojiClicked(ImageIcon emoji, int id) { //TODO construir el mennsaje con toda  la información en el controlador  principal
-				SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
-				ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
-				String nombre = "UserPrueba1";
-				String fecha =fechaAux.format(new Date());
-				ModelMessage MMsg = new ModelMessage(icono, nombre, fecha, Optional.empty(), Optional.of(id));
-				UIController.addMessage(chat, MMsg, BoxType.RIGHT);
+
+				UIController.sendMessage(chat.getCurrentChatID() ,Optional.empty(), Optional.of(id));
 				
 				//System.out.println("id emoji : " + id);
 				
@@ -48,21 +42,12 @@ public class ChatPanel extends PanelGrande {
 		this.chat = new ChatArea(this.emojiPanel);
 		this.chat.setBounds(5, 5, 915, 655);
 		this.fondo.add(chat);
-		
-		
-		
 		this.chat.addChatEvent(new ChatEvent() {
 			
 			@Override
 			public void mousePressedSendButton(ActionEvent evt) { //TODO construir el mennsaje con toda  la información en el controlador  principal
-				//ImageIcon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
-				SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
-				Icon icono = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
-				String nombre = "UserPrueba1";
-				String fecha =fechaAux.format(new Date());
 				String mensaje = chat.getText().trim();
-				ModelMessage MMsg = new ModelMessage(icono, nombre, fecha, Optional.of(mensaje), Optional.empty());
-				UIController.addMessage(chat, MMsg, BoxType.RIGHT);
+				UIController.sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
 				
 			}
 			
@@ -82,8 +67,14 @@ public class ChatPanel extends PanelGrande {
 		
 	}
 	
-	public void addEmojiMessage(ImageIcon emoji) {
-		
+	public void addMessage(List<ModelMessage> msgs, BoxType type) {
+		for(ModelMessage msg : msgs) {
+			this.chat.addChatBox(msg, type);
+		}
+	}
+	
+	public void resetText() {
+		chat.resetText();
 	}
 	
 	public void changeChat(ElementoChatOGrupo chat) {

@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.controllers.UIController;
+import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class AppFrame extends JFrame {
 
@@ -157,14 +158,14 @@ public class AppFrame extends JFrame {
 			
 			if (arg.isPresent() && arg.get() instanceof List<?>) {
 				List<EntidadComunicable> lista = (List<EntidadComunicable>) arg.get();
-				mainPanel.accederMetodoNoVisible(1, Optional.of(lista));
+				mainPanel.accederMetodoNoVisible(1, Optional.empty() ,Optional.of(lista));
 			}
 			break;
 			
 		}
 		case 2: { // añadir un nuevo chat a la lista de chats
 			if (arg.isPresent() && arg.get() instanceof EntidadComunicable) {
-				this.mainPanel.accederMetodoNoVisible(2, Optional.of(arg.get()));
+				this.mainPanel.accederMetodoNoVisible(2, Optional.empty() ,Optional.of(arg.get()));
 			}
 			break;
 		}
@@ -176,25 +177,31 @@ public class AppFrame extends JFrame {
 		}
 		case 4: { // gestionar los errores en el formulario para añadir contactos
 			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
-				this.mainPanel.accederMetodoNoVisible(3, Optional.of(arg2.get()));
+				this.mainPanel.accederMetodoNoVisible(3, Optional.empty() ,Optional.of(arg2.get()));
 			}
 			break;
 		}
 		case 5: { // gestionar los errores en el formulario para hacer grupos
 			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
-				this.mainPanel.accederMetodoNoVisible(4, Optional.of(arg2.get()));
+				this.mainPanel.accederMetodoNoVisible(4, Optional.empty() ,Optional.of(arg2.get()));
 			}
 			break;
 		}
 		case 6: { // añadir un nuevo grupo a la lista de grupos
 			if (arg.isPresent() && arg.get() instanceof Grupo) {
-				this.mainPanel.accederMetodoNoVisible(5, Optional.of(arg.get()));
+				this.mainPanel.accederMetodoNoVisible(5, Optional.empty() ,Optional.of(arg.get()));
 			}
 			break;
 		}
 		case 7: { // cambiar de chat al seleccionado
 			if(arg2.isPresent() && arg2.get() instanceof ElementoChatOGrupo) {
-				this.mainPanel.accederMetodoNoVisible(6, Optional.of(arg2.get()));
+				this.mainPanel.accederMetodoNoVisible(6, Optional.empty() ,Optional.of(arg2.get()));
+			}
+			break;
+		}
+		case 8: { // renderizar mensaje
+			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof BoxType) {
+				this.mainPanel.accederMetodoNoVisible(7, Optional.of(arg2.get()) ,Optional.of(arg.get()));
 			}
 			break;
 		}

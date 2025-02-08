@@ -3,6 +3,11 @@ package umu.tds.AppChat.controllers;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.ImageIcon;
@@ -15,8 +20,6 @@ import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
-import umu.tds.AppChat.ui.chatInterface.ChatArea;
-import umu.tds.AppChat.ui.chatInterface.ChatBox;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class UIController {
@@ -127,9 +130,43 @@ public class UIController {
 		appFrame.llamarMetodo(6, Optional.empty(), Optional.of(gp));
 	}
 	
-    public static void addMessage(ChatArea chat, ModelMessage MMsg, BoxType type) {
-    	chat.addChatBox(MMsg, ChatBox.BoxType.RIGHT);
-		chat.resetText();
+    public static void renderMessage(List<ModelMessage> msgs, BoxType type) {
+    	appFrame.llamarMetodo(8, Optional.of(type), Optional.of(msgs));
+    }
+    
+    public static void sendMessage(long reciver, Optional<String> message, Optional<Integer> emoji) {
+		SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
+		String fecha =fechaAux.format(new Date());
+		String nombre = BackendController.getUserName();
+        String urlText = BackendController.getUserIconUrl();
+        URL url;
+        ImageIcon icono = null;
+        
+		try {
+			url = new URL(urlText);
+			icono = new ImageIcon(url);
+			
+	        if (icono.getIconWidth() <= 0 && icono.getIconHeight() <= 0) { // Verifica si la imagen no es válida         
+	            //System.out.println("Imagen inválida.");
+	            icono = new ImageIcon(MainController.class.getResource("/assets/ProfilePic.png"));
+	        }
+	        
+		} catch (MalformedURLException e) {
+            icono = new ImageIcon(MainController.class.getResource("/assets/ProfilePic.png"));
+		}
+		
+		int sender = BackendController.getUserNumber();
+		ModelMessage msg;
+		if(message.isPresent()) {
+			msg = new ModelMessage(icono, nombre, fecha, sender, reciver, message, Optional.empty());
+		}else {
+			msg = new ModelMessage(icono, nombre, fecha, sender, reciver, Optional.empty(), emoji);
+		}
+		
+    	MainController.sendMessage(msg);
+    	List<ModelMessage> msgs = new ArrayList<ModelMessage>();
+		msgs.add(msg);
+		renderMessage(msgs, BoxType.RIGHT);
     }
      
     //efectos
@@ -156,14 +193,14 @@ public class UIController {
 	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(xHover, yHover, Image.SCALE_SMOOTH));
 
 	    
-	    button.addMouseListener(new java.awt.event.MouseAdapter() {
+	    button.addMouseListener(new MouseAdapter() {
 	        @Override
-	        public void mouseEntered(java.awt.event.MouseEvent evt) {
+	        public void mouseEntered(MouseEvent evt) {
 	            button.setIcon(scaledIcon);  // Cambia a icono más pequeño al pasar el ratón
 	        }
 
 	        @Override
-	        public void mouseExited(java.awt.event.MouseEvent evt) {
+	        public void mouseExited(MouseEvent evt) {
 	            button.setIcon(originalIcon);  // Vuelve al icono original al salir
 	        }
 	    });

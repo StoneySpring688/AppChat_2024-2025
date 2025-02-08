@@ -323,6 +323,10 @@ public class ChatArea extends JPanel {
     	return this.currentChat;
     }
     
+    protected long getCurrentChatID() {
+    	return this.currentChat.isGrupo() ? this.currentChat.getGroupID() : this.currentChat.getNumero();
+    }
+    
     protected Icon getUserAvatar() {
     	return this.headerAvatar.getImage();
     }

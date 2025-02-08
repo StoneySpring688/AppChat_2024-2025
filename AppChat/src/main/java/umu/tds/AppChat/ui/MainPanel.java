@@ -10,9 +10,11 @@ import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
+import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.Button;
 import umu.tds.AppChat.ui.chatInterface.ChatPanel;
+import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -209,7 +211,7 @@ public class MainPanel extends JPanel {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void accederMetodoNoVisible(int numMetodo, Optional<Object> arg) {
+	public void accederMetodoNoVisible(int numMetodo, Optional<Object> arg2, Optional<Object> arg) {
 		
 		switch (numMetodo) {
 		case 1: { // inicializar lista de usuarios de crearGrupo
@@ -249,6 +251,13 @@ public class MainPanel extends JPanel {
 		case 6: { // cambiar de chat al seleccionado
 			if(arg.isPresent() && arg.get() instanceof ElementoChatOGrupo) {
 				this.chat.changeChat((ElementoChatOGrupo) arg.get());
+			}
+			break;
+		}
+		case 7: { // renderizar mensaje
+			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof BoxType) {
+				this.chat.addMessage((List<ModelMessage>)arg.get(), (BoxType)arg2.get());
+				this.chat.resetText();
 			}
 			break;
 		}

@@ -8,16 +8,18 @@ public class ModelMessage {
 	
 	private Icon icon;
 	private int sender;
-	private int reciver;
+	private long reciver;
     private String name;
     private String date;
     private Optional<String> message;
     private Optional<Integer> emoji;
 
-    public ModelMessage(Icon icon, String name, String date, Optional<String> message, Optional<Integer> emoji) {
+    public ModelMessage(Icon icon, String name, String date, int sender, long reciver, Optional<String> message, Optional<Integer> emoji) {
         this.icon = icon;
         this.name = name;
         this.date = date;
+        this.sender = sender;
+        this.reciver = reciver;
         this.message = message.isPresent() ? Optional.of(message.get()) : Optional.empty();
         this.emoji = emoji.isPresent() ? Optional.of(emoji.get()) : Optional.empty();
     }
@@ -49,7 +51,23 @@ public class ModelMessage {
         this.date = date;
     }
 
-    public Optional<String> getMessage() {
+    public int getSender() {
+		return sender;
+	}
+
+	public void setSender(int sender) {
+		this.sender = sender;
+	}
+
+	public long getReciver() {
+		return reciver;
+	}
+
+	public void setReciver(int reciver) {
+		this.reciver = reciver;
+	}
+
+	public Optional<String> getMessage() {
     	Optional<String> s = this.message.isPresent() ? Optional.of(this.message.get()) : Optional.empty();
         return s;
     }
@@ -66,5 +84,19 @@ public class ModelMessage {
     public void setEmoji(Integer emoji) {
     	this.emoji = Optional.of(emoji);
     }
+    
+    @Override
+    public String toString() {
+        return "ModelMessage {" + '\n' +
+               " icon=" + (icon != null ? icon.toString() : "null") + '\n' +
+               ", name='" + name + '\'' + '\n' +
+               ", date='" + date + '\'' + '\n' +
+               ", sender=" + sender + '\n' +
+               ", receiver=" + reciver + '\n' +
+               ", message=" + (message.isPresent() ? message.get() : "No message") + '\n' +
+               ", emoji=" + (emoji.isPresent() ? emoji.get() : "No emoji") + '\n' +
+               " }";
+    }
+
     
 }
