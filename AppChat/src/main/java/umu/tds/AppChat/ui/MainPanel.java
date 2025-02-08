@@ -14,7 +14,6 @@ import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.Button;
 import umu.tds.AppChat.ui.chatInterface.ChatPanel;
-import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

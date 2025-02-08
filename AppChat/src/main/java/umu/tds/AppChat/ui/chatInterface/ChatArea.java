@@ -247,7 +247,7 @@ public class ChatArea extends JPanel {
     }
     
     public void addChatBoxAtTop(List<ModelMessage> msgs, ChatBox.BoxType type) {
-        int scrollMax = scrollBody.getVerticalScrollBar().getMaximum();
+        //int scrollMax = scrollBody.getVerticalScrollBar().getMaximum(); no daba tiempo a calcular
 
         for(ModelMessage msg : msgs) {
         	if (type == ChatBox.BoxType.LEFT) {

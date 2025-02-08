@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.controllers.UIController;
