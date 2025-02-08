@@ -50,6 +50,10 @@ public class BackendController {
         return chatService.getMsgChatActual();
     }
     
+    public static List<ModelMessage> getChat(long chatID){
+    	return chatService.getLRUChat(chatID);
+    }
+    
     public static EntidadComunicable getContacto(int numero) {
     	return chatsRepository.getContacto(numero);
     }

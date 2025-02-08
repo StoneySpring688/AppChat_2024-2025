@@ -255,8 +255,15 @@ public class MainPanel extends JPanel {
 			break;
 		}
 		case 7: { // renderizar mensaje
-			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof BoxType) {
-				this.chat.addMessage((List<ModelMessage>)arg.get(), (BoxType)arg2.get());
+			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof Integer) {
+				this.chat.addMessage((List<ModelMessage>)arg.get(), (int)arg2.get());
+				this.chat.resetText();
+			}
+			break;
+		}
+		case 8: { // renderizar mensaje
+			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof Integer) {
+				this.chat.addMessageAtTop((List<ModelMessage>)arg.get(), (int)arg2.get());
 				this.chat.resetText();
 			}
 			break;

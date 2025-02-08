@@ -200,8 +200,14 @@ public class AppFrame extends JFrame {
 			break;
 		}
 		case 8: { // renderizar mensaje
-			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof BoxType) {
+			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof Integer) {
 				this.mainPanel.accederMetodoNoVisible(7, Optional.of(arg2.get()) ,Optional.of(arg.get()));
+			}
+			break;
+		}
+		case 9: { // renderizar mensaje, orden inverso
+			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof Integer) {
+				this.mainPanel.accederMetodoNoVisible(8, Optional.of(arg2.get()) ,Optional.of(arg.get()));
 			}
 			break;
 		}

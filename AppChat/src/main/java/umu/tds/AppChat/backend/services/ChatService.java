@@ -49,7 +49,7 @@ public class ChatService {
      * @return Lista de valores asociada al chat o una lista vacía si no está en caché.
      */
 	public List<ModelMessage> getLRUChat(long chatID){
-		return this.cacheMensajes.getMessages(chatID);
+		return new ArrayList<ModelMessage>(this.cacheMensajes.getMessages(chatID));
 	}
 	
 	public boolean isInLRU(long chatID) {

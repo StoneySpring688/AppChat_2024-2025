@@ -62,11 +62,6 @@ public class UIController {
     	appFrame.showAnyadirContactoPanel();
     }
     
-    public static void changeChat(ElementoChatOGrupo chat) {
-    	appFrame.llamarMetodo(7, Optional.of(chat), Optional.empty());
-    	appFrame.showChatPanel();
-    }
-    
     public static void showPanelCrearGrupo() {
     	List<EntidadComunicable> lista = MainController.getListaContactos() ;
     	appFrame.llamarMetodo(1, Optional.empty(), Optional.of(lista));
@@ -130,8 +125,18 @@ public class UIController {
 		appFrame.llamarMetodo(6, Optional.empty(), Optional.of(gp));
 	}
 	
-    public static void renderMessage(List<ModelMessage> msgs, BoxType type) {
-    	appFrame.llamarMetodo(8, Optional.of(type), Optional.of(msgs));
+    public static void renderMessage(List<ModelMessage> msgs) {
+    	appFrame.llamarMetodo(8, Optional.of(BackendController.getUserNumber()), Optional.of(msgs));
+    }
+    
+    public static void changeChat(ElementoChatOGrupo chat) {
+    	appFrame.llamarMetodo(7, Optional.of(chat), Optional.empty());
+    	appFrame.showChatPanel();
+    	MainController.loadChat(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
+    }
+    
+    protected static void loadChat(List<ModelMessage> msgs) {
+    		appFrame.llamarMetodo(9, Optional.of(BackendController.getUserNumber()), Optional.of(msgs));
     }
     
     public static void sendMessage(long reciver, Optional<String> message, Optional<Integer> emoji) {
@@ -166,7 +171,7 @@ public class UIController {
     	MainController.sendMessage(msg);
     	List<ModelMessage> msgs = new ArrayList<ModelMessage>();
 		msgs.add(msg);
-		renderMessage(msgs, BoxType.RIGHT);
+		renderMessage(msgs);
     }
      
     //efectos

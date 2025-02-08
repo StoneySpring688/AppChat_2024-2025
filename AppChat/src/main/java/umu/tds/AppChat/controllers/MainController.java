@@ -1,7 +1,9 @@
 package umu.tds.AppChat.controllers;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +19,7 @@ public class MainController {
     private final static Byte loggedIn = 1;
     
     // gestión de hilos
-    private static ThreadPoolExecutor executor;
+    private static ExecutorService executor;
 
     public MainController() {
         
@@ -25,8 +27,7 @@ public class MainController {
 
     public static void startApp() {
     	actualizarEstado(loggedOut);
-    	executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-    	executor.setKeepAliveTime(30, TimeUnit.SECONDS);
+    	executor = new ThreadPoolExecutor(2, 20, 30, TimeUnit.SECONDS, new SynchronousQueue<>()); //min hilos, max hilos, tiempo hasta eliminar hilo, unidades, cola de espera
     	BackendController.iniciar();
     	UIController.iniciarUI();
     }
@@ -34,7 +35,7 @@ public class MainController {
     public static void shutdownApp() {
     	executor.shutdown();
     	try {
-			executor.awaitTermination(5, TimeUnit.SECONDS);
+			executor.awaitTermination(5, TimeUnit.SECONDS); // 5 seg de gracia para terminar tareas
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -85,6 +86,10 @@ public class MainController {
     
     protected static void sendMessage(ModelMessage msg) {
     	executor.submit(() -> BackendController.nuevoMensaje(msg.getReciver(), msg));
+    }
+    
+    protected static void loadChat(long chatID) {
+    	executor.submit(() -> UIController.loadChat(BackendController.getChat(chatID)));
     }
     
 }

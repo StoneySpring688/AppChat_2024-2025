@@ -245,6 +245,30 @@ public class ChatArea extends JPanel {
         scrollBody.revalidate();
         scrollToBottom();
     }
+    
+    public void addChatBoxAtTop(List<ModelMessage> msgs, ChatBox.BoxType type) {
+        int scrollMax = scrollBody.getVerticalScrollBar().getMaximum();
+
+        for(ModelMessage msg : msgs) {
+        	if (type == ChatBox.BoxType.LEFT) {
+                body.add(new ChatBox(type, msg), "width ::80%", 0); // Agrega el mensaje en la primera posición
+            } else {
+                body.add(new ChatBox(type, msg), "al right, width ::80%", 0);
+            }
+
+        }
+        SwingUtilities.invokeLater(() -> {
+            body.revalidate();
+            scrollBody.getVerticalScrollBar().setValue(scrollMax);
+            bottom.revalidate();
+        });
+
+        body.repaint();
+        body.revalidate();
+        scrollBody.revalidate();
+        
+    }
+
 
     public void clearChatBox() {
         body.removeAll();

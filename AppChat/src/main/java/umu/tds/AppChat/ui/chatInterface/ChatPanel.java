@@ -2,9 +2,11 @@ package umu.tds.AppChat.ui.chatInterface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.controllers.UIController;
@@ -25,17 +27,12 @@ public class ChatPanel extends PanelGrande {
 		this.fondo = new Background();
 		this.fondo.setBounds(0, 60, 920, 660);
 		this.add(fondo);
-		
 		this.emojiPanel = this.emojiPanel==null ? new EmojiPanel() : this.emojiPanel;
 		this.emojiPanel.addEmojiClickListener(new EmojiClickListener() {
 			
 			@Override
 			public void emojiClicked(ImageIcon emoji, int id) { //TODO construir el mennsaje con toda  la información en el controlador  principal
-
 				UIController.sendMessage(chat.getCurrentChatID() ,Optional.empty(), Optional.of(id));
-				
-				//System.out.println("id emoji : " + id);
-				
 			}
 		});
 		
@@ -48,7 +45,6 @@ public class ChatPanel extends PanelGrande {
 			public void mousePressedSendButton(ActionEvent evt) { //TODO construir el mennsaje con toda  la información en el controlador  principal
 				String mensaje = chat.getText().trim();
 				UIController.sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
-				
 			}
 			
 			@Override
@@ -61,17 +57,34 @@ public class ChatPanel extends PanelGrande {
 			public void keyTyped(KeyEvent evt) {
 				
 			}
-		});
-		
-		
-		
+		});	
 	}
 	
-	public void addMessage(List<ModelMessage> msgs, BoxType type) {
+	public void addMessage(List<ModelMessage> msgs, int userNumber) {
 		for(ModelMessage msg : msgs) {
-			this.chat.addChatBox(msg, type);
+			this.chat.addChatBox(msg, msg.getSender() == userNumber ? BoxType.RIGHT : BoxType.LEFT);
 		}
 	}
+	
+	public void addMessageAtTop(List<ModelMessage> msgs, int userNumber) {
+	    int batchSize = 5;
+	    List<ModelMessage> batch = new ArrayList<>();
+
+	    for (int i = msgs.size() - 1; i >= 0; i--) { // Iterar de final a inicio
+	        ModelMessage msg = msgs.get(i);
+	        batch.add(msg);
+
+	        // Cuando el lote alcanza 5 mensajes o es el último mensaje, se renderiza
+	        if (batch.size() == batchSize || i == 0) {
+	            List<ModelMessage> finalBatch = new ArrayList<>(batch); // Copia para evitar modificaciones concurrentes
+	            
+	            this.chat.addChatBoxAtTop(finalBatch, finalBatch.get(0).getSender() == userNumber ? BoxType.RIGHT : BoxType.LEFT);
+
+	            batch.clear(); // Limpiar lote para el siguiente grupo de mensajes
+	        }
+	    }
+	}
+
 	
 	public void resetText() {
 		chat.resetText();
