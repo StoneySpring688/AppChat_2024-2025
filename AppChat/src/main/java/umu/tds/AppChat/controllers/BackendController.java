@@ -45,7 +45,7 @@ public class BackendController {
         chatService.addMessage(chatID, mensaje);
         System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
     }
-
+    
     public static List<ModelMessage> obtenerMensajesChat() {
         return chatService.getMsgChatActual();
     }

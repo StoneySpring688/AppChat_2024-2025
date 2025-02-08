@@ -85,15 +85,16 @@ public class ChatPanel extends PanelGrande {
 	    }
 	}
 
-	
 	public void resetText() {
 		chat.resetText();
 	}
 	
 	public void changeChat(ElementoChatOGrupo chat) {
-		this.chat.clearChatBox();
-		this.chat.setCurrentChat(chat);
-		//TODO renderizar los mensajes de forma asincrona
+		if(! chat.equals(this.chat.getCurrentChat())) {
+			this.chat.clearChatBox();
+			this.chat.setCurrentChat(chat);
+		}
+		
 	}
 
 }

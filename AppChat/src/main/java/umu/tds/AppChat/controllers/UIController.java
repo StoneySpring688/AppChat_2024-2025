@@ -20,10 +20,10 @@ import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
-import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class UIController {
     private static AppFrame appFrame;
+    private static long actualChatOptimization = 0; // evitar usar el método cambiarChat para el chatActual
 
     public UIController() {  
             
@@ -130,9 +130,14 @@ public class UIController {
     }
     
     public static void changeChat(ElementoChatOGrupo chat) {
-    	appFrame.llamarMetodo(7, Optional.of(chat), Optional.empty());
-    	appFrame.showChatPanel();
-    	MainController.loadChat(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
+    	
+    	if(actualChatOptimization != (chat.isGrupo() ? chat.getGroupID() : chat.getNumero())) {
+    		actualChatOptimization = chat.isGrupo() ? chat.getGroupID() : chat.getNumero();
+        	appFrame.llamarMetodo(7, Optional.of(chat), Optional.empty());
+        	appFrame.showChatPanel();
+        	MainController.loadChat(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
+    	}
+
     }
     
     protected static void loadChat(List<ModelMessage> msgs) {

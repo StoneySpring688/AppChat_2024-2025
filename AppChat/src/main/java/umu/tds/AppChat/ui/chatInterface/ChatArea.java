@@ -259,13 +259,15 @@ public class ChatArea extends JPanel {
         }
         SwingUtilities.invokeLater(() -> {
             body.revalidate();
-            scrollBody.getVerticalScrollBar().setValue(scrollMax);
+            body.repaint();
+            scrollBody.revalidate();
+            
+            SwingUtilities.invokeLater(() -> { // Asegura que el tamaño ya ha sido actualizado
+                scrollBody.getVerticalScrollBar().setValue(scrollBody.getVerticalScrollBar().getMaximum());
+            });
+
             bottom.revalidate();
         });
-
-        body.repaint();
-        body.revalidate();
-        scrollBody.revalidate();
         
     }
 
