@@ -54,6 +54,10 @@ public class UIController {
         appFrame.showMainPanel();
     }
     
+    public static void prepareMainPanel() {
+        appFrame.setUserInfo(BackendController.getUserName(), BackendController.getUserIcon() );
+    }
+    
     public static void showPanelIntermedio() {
     	appFrame.showPanelIntermedio();
     }
@@ -87,8 +91,9 @@ public class UIController {
     }
     
     public static void doLogin() {
-    	// TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
+    	MainController.doLogin(); // TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
     	showPanelIntermedio();
+    	prepareMainPanel();
         appFrame.resizeForMainPanel();
         showMainPanel();
     }

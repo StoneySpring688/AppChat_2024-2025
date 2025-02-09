@@ -32,6 +32,8 @@ public class MainPanel extends JPanel {
 	private AddContactPanel panelAnyadirContacto;
 	private CreateGroupPanel panelCrearGrupo;
 	private ChatPanel chat;
+	private JLabel lblYourname;
+	private ImageAvatar yourAvatar;
 	private JLabel lblLogout;
 	private JLabel lblsettingGear;
 	private Button buttonGroups;
@@ -164,13 +166,13 @@ public class MainPanel extends JPanel {
 		panelMenuPerfil.setBounds(120, 660, 240, 60);
 		this.add(panelMenuPerfil);
 		
-		ImageAvatar avatar = new ImageAvatar();
-		avatar.setImage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
-        avatar.setBorderSize(1);
-        avatar.setBorderSpace(1);
-		panelMenuPerfil.add(avatar,"cell 0 0, height 50, width 50");
+		yourAvatar = new ImageAvatar();
+		yourAvatar.setImage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
+		yourAvatar.setBorderSize(1);
+		yourAvatar.setBorderSpace(1);
+		panelMenuPerfil.add(yourAvatar,"cell 0 0, height 50, width 50");
 		
-		JLabel lblYourname = new JLabel("YourName");
+		lblYourname = new JLabel("YourName");
 		lblYourname.setForeground(Color.WHITE);
 		panelMenuPerfil.add(lblYourname, "growx, wmax 100");
 		
@@ -207,6 +209,13 @@ public class MainPanel extends JPanel {
 	
 	public CardLayout getActualizadorUiPrincipal() {
 		return this.actualizadorUiPrincipal;
+	}
+	
+	public void setUserInfo(String name, ImageIcon profilePic) {
+		this.lblYourname.setText(name);
+		
+		
+		this.yourAvatar.setImage(profilePic);
 	}
 	
 	@SuppressWarnings("unchecked")

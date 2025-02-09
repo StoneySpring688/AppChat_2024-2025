@@ -52,10 +52,15 @@ public class MainController {
     protected static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
     	return BackendController.doRegister(nombre, numero, passwd, birthDate, url, signature);
     }
-
-    public static void onLoginSuccess() {
+    
+    protected static void doLogin() {
     	//TODO hacer comprobaciones de las credenciales proporcionadas
+    	onLoginSuccess();
+    }
+    
+    public static void onLoginSuccess() {
     	actualizarEstado(loggedIn);
+    	BackendController.loadCurrentUser(111222333, "StoneySpring", "https://i.pinimg.com/736x/1c/ff/0b/1cff0b33f92ffd7f34f5cc80adbbf9af.jpg");//TODO cambiar a datos tras login
     	UIController.showMainPanel();
     }
     
@@ -84,10 +89,12 @@ public class MainController {
     }
     
     protected static void sendMessage(ModelMessage msg) {
+    	// TODO escribir en la bd
     	executor.submit(() -> BackendController.nuevoMensaje(msg.getReciver(), msg));
     }
     
     protected static void loadChat(long chatID) {
+    	// TODO Comprobar si está en caché y/o cargar de la bd de forma asincrona en lotes de 10
     	executor.submit(() -> UIController.loadChat(BackendController.getChat(chatID)));
     }
     

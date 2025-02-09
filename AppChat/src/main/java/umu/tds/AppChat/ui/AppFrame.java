@@ -8,6 +8,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -107,7 +108,9 @@ public class AppFrame extends JFrame {
     }
 
     public void showMainPanel() {
+
         changePanel("mainPanel");
+        
     }
     
     public void showRegisterPanel() {
@@ -145,6 +148,10 @@ public class AppFrame extends JFrame {
     
     public void changePanel(String panel) {
     	this.actualizadorUI.show(panelIntercambiable, panel);
+    }
+    
+    public void setUserInfo(String name, ImageIcon profilePicUrl) {
+    	this.mainPanel.setUserInfo(name, profilePicUrl);
     }
     
     @SuppressWarnings("unchecked")

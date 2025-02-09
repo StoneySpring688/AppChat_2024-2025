@@ -1,9 +1,13 @@
 package umu.tds.AppChat.controllers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import umu.tds.AppChat.backend.utils.Emoji;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
@@ -17,6 +21,7 @@ public class BackendController {
     private static ChatService chatService;
     private static ChatsAndGroupsRepository chatsRepository;
     private static EntidadComunicable user;
+    private static ImageIcon userIconCached;
 
     public BackendController() {
         
@@ -25,7 +30,6 @@ public class BackendController {
     public static void iniciar() {
     	chatService = new ChatService(15);
         chatsRepository = new ChatsAndGroupsRepository();
-        user = new EntidadComunicable(111222333, "StoneySpring", "https://i.pinimg.com/736x/1c/ff/0b/1cff0b33f92ffd7f34f5cc80adbbf9af.jpg"); //TODO cambiar a datos tras login
         Emoji.cargarEmojis();
     }
 
@@ -40,7 +44,30 @@ public class BackendController {
     public static String getUserIconUrl() {
     	return new String(user.getIconUrl());
     }
+    
+    public static ImageIcon getUserIcon() {
+    	return new ImageIcon(userIconCached.getImage());
+    }
 
+    public static void loadCurrentUser(int number, String name, String profileIconUrl) {
+    	user = new EntidadComunicable(number, name, profileIconUrl);        
+    	URL url;
+        userIconCached = null;
+        String profilePicUrl = BackendController.getUserIconUrl();
+		try {
+			url = new URL(profilePicUrl);
+			userIconCached = new ImageIcon(url);
+			
+	        if (userIconCached.getIconWidth() <= 0 && userIconCached.getIconHeight() <= 0) { // Verifica si la imagen no es válida         
+	            //System.out.println("Imagen inválida.");
+	        	userIconCached = new ImageIcon(UIController.class.getResource("/assets/ProfilePic.png"));
+	        }
+	        
+		} catch (MalformedURLException e) {
+			userIconCached = new ImageIcon(UIController.class.getResource("/assets/ProfilePic.png"));
+		}
+    }
+    
     public static void nuevoMensaje(long chatID, ModelMessage mensaje) {
         chatService.addMessage(chatID, mensaje);
         System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
