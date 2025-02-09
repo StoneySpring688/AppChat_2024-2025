@@ -69,17 +69,17 @@ public class ChatPanel extends PanelGrande {
 	    int batchSize = 5;
 	    List<ModelMessage> batch = new ArrayList<>();
 
-	    for (int i = msgs.size() - 1; i >= 0; i--) { // Iterar de final a inicio
+	    for (int i = msgs.size() - 1; i >= 0; i--) {
 	        ModelMessage msg = msgs.get(i);
 	        batch.add(msg);
 
-	        // Cuando el lote alcanza 5 mensajes o es el último mensaje, se renderiza
-	        if (batch.size() == batchSize || i == 0) {
+	        
+	        if (batch.size() == batchSize || i == 0) { // renderizar en lotes de máximo 5
 	            List<ModelMessage> finalBatch = new ArrayList<>(batch); // Copia para evitar modificaciones concurrentes
 	            
 	            this.chat.addChatBoxAtTop(finalBatch, finalBatch.get(0).getSender() == userNumber ? BoxType.RIGHT : BoxType.LEFT);
 
-	            batch.clear(); // Limpiar lote para el siguiente grupo de mensajes
+	            batch.clear(); // Limpiar lote para los siguientes mensajes
 	        }
 	    }
 	}

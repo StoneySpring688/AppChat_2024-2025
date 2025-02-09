@@ -101,7 +101,8 @@ public class GroupsList extends JPanel {
 				if (index >= 0) {
 					// Obtener el elemento clickeado
 					ElementoChatOGrupo elemento = groups.getElementAt(index);
-					System.out.println("Elemento clickeado: " + elemento.getGroupID()); ///TODO
+					UIController.changeChat(elemento);
+					//System.out.println("Elemento clickeado: " + elemento.getGroupID()); ///TODO
 				}
 			}
 		});
