@@ -16,7 +16,6 @@ import javax.swing.border.EmptyBorder;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
-import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class AppFrame extends JFrame {
@@ -85,22 +84,22 @@ public class AppFrame extends JFrame {
 		this.actualizadorUI.show(panelIntercambiable, "login");
 		
 		//gestion botones
-		login.getRegisterButton().addActionListener(e -> UIController.showRegister());
-		login.getLoginButton().addActionListener(e -> UIController.doLogin());
-		register.getBackButton().addMouseListener(new MouseAdapter() {
+			//login.getRegisterButton().addActionListener(e -> UIController.showRegister());
+			//login.getLoginButton().addActionListener(e -> UIController.doLogin());
+		/*register.getBackButton().addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
 		    	UIController.showLogin();
 		    	register.reset();
 		    }
-		});
+		});*/
 		
-		mainPanel.getLogoutBotton().addMouseListener(new MouseAdapter() {
+		/*mainPanel.getLogoutBotton().addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
 		    	UIController.doLogout();
 		    }
-		});
+		});*/
 		
 	}
 	
@@ -223,6 +222,10 @@ public class AppFrame extends JFrame {
 			if(arg2.isPresent() && arg2.get() instanceof ModelMessage && arg.isPresent() && arg.get() instanceof BoxType) {
 				this.mainPanel.accederMetodoNoVisible(9, arg2, arg);
 			}
+			break;
+		}
+		case 11: { // actualizar la fecha de expiración del premium en ui
+			this.mainPanel.accederMetodoNoVisible(10, Optional.empty(), Optional.empty());
 			break;
 		}
 		default:

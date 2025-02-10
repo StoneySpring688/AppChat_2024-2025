@@ -67,7 +67,7 @@ public class MainController {
     public static void onLoginSuccess() {
     	actualizarEstado(loggedIn);
     	BackendController.loadCurrentUser(new Usuario("StoneySpring", 111222333, null, null, "https://i.pinimg.com/736x/1c/ff/0b/1cff0b33f92ffd7f34f5cc80adbbf9af.jpg", null));//TODO cambiar a datos tras login
-    	UIController.showMainPanel();
+    	//UIController.showMainPanel();
     }
     
     protected static boolean anyadirContacto(String numero, String nombre) { 	

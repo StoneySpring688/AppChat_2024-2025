@@ -107,6 +107,13 @@ public class RegisterPanel extends JPanel {
 		backButton = new JLabel("");
 		backButton.setIcon(new ImageIcon(RegisterPanel.class.getResource("/assets/UI_Icon_RoleCombat_Com_Back.png")));
 		backButton.setBounds(0, 0, 42, 42);
+		backButton.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	UIController.showLogin();
+		    	reset();
+		    }
+		});
 		panel.add(backButton);
 		
 		JButton RegisterButton = new JButton("Register");

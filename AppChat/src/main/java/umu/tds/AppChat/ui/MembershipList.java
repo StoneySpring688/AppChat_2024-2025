@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
-import javax.swing.text.DateFormatter;
 
 import umu.tds.AppChat.backend.utils.Membership;
 import umu.tds.AppChat.backend.utils.Membership.MembershipType;
@@ -29,6 +28,8 @@ public class MembershipList extends JPanel{
 	private DefaultListModel<ElementoMembership> mships;
 	private JList<ElementoMembership> lista;
 	private JScrollPane scroll;
+	private JPanel expireDate;
+	private JLabel premiumExpireDate;
 	
 	private final Color darkPorDefecto = new Color(54, 57, 63);
 	
@@ -67,7 +68,7 @@ public class MembershipList extends JPanel{
 		this.add(this.scroll, BorderLayout.CENTER);
 		
 		//panel duración premium
-		JPanel expireDate = new JPanel();
+		expireDate = new JPanel();
 		expireDate.setLayout(null);
 		expireDate.setBackground(this.darkPorDefecto);
 		expireDate.setBounds(0, 0, 240, 60);
@@ -79,14 +80,19 @@ public class MembershipList extends JPanel{
 		expiresMsg.setBounds(12, 12, 126, 18);
 		expireDate.add(expiresMsg);
 		
-		JLabel premiumExpireDate = new JLabel();
-		Optional<LocalDate> expireLocalDate = BackendController.getEndPremium();
-		premiumExpireDate.setText(expireLocalDate.isPresent() ? expireLocalDate.get().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).toString() : "not premium user");
+		premiumExpireDate = new JLabel("");
 		premiumExpireDate.setForeground(Color.WHITE);
 		premiumExpireDate.setBounds(89, 30, 139, 18);
 		expireDate.add(premiumExpireDate);
 		
-		
+	}
+	
+	public void loadPremiumExpireDate() {
+		Optional<LocalDate> expireLocalDate = BackendController.getEndPremium();
+		//TODO pasar a método el calculo fecha expiración
+		premiumExpireDate.setText(expireLocalDate.isPresent() ? expireLocalDate.get().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).toString() : "not premium user");
+		this.expireDate.repaint();
+		this.expireDate.revalidate();
 		
 	}
 	

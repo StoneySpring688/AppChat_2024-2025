@@ -61,6 +61,7 @@ public class UIController {
     
     public static void prepareMainPanel() {
         appFrame.setUserInfo(BackendController.getUserName(), BackendController.getUserIcon() );
+        appFrame.llamarMetodo(11, Optional.empty(), Optional.empty()); // actualizar la fecha de expiración del premium en ui
     }
     
     public static void showPanelIntermedio() {

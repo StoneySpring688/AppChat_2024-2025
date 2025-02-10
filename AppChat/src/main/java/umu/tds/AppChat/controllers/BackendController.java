@@ -39,7 +39,7 @@ public class BackendController {
     }
     
     public static Optional<LocalDate> getEndPremium(){
-    	return user == null ? Optional.empty() : user.getEndPremiumDate();
+    	return user.getEndPremiumDate();
     }
     
     public static String getUserName() {

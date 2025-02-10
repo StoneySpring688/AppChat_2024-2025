@@ -12,6 +12,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import umu.tds.AppChat.controllers.UIController;
+
 
 public class LoginPanel extends JPanel {
 
@@ -85,12 +87,14 @@ public class LoginPanel extends JPanel {
 		LoginButton.setForeground(Color.WHITE);
 		LoginButton.setBackground(new Color(241, 57, 83));
 		LoginButton.setBounds(370, 360, 120, 35); // x = 370+(285/2)-(187/2)
+		LoginButton.addActionListener(e -> UIController.doLogin());
 		this.add(LoginButton);
 		
 		RegisterButton = new JButton("Register");
 		RegisterButton.setForeground(Color.WHITE);
 		RegisterButton.setBackground(new Color(241, 57, 83));
 		RegisterButton.setBounds(535, 360, 120, 35);
+		RegisterButton.addActionListener(e -> UIController.showRegister());
 		this.add(RegisterButton);
 		
 		textFieldPhone = new JTextField();

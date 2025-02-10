@@ -3,6 +3,8 @@ package umu.tds.AppChat.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Optional;
 
@@ -209,6 +211,12 @@ public class MainPanel extends JPanel {
 		
 		lblLogout = new JLabel("");
 		lblLogout.setIcon(new ImageIcon(getClass().getResource("/assets/Exit_Door_Reescalada.png")));
+		lblLogout.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	UIController.doLogout();
+		    }
+		});
 		UIController.addHoverEffect(lblLogout, 30, 32);
 		panelMenuPerfil.add(lblLogout,"cell 2 0, height 35, width 35");
 		
@@ -311,6 +319,10 @@ public class MainPanel extends JPanel {
 			if(arg2.isPresent() && arg2.get() instanceof ModelMessage && arg.isPresent() && arg.get() instanceof BoxType) {
 				this.searchPanel.previewMessage((ModelMessage)arg2.get(), (BoxType)arg.get());
 			}
+			break;
+		}
+		case 10: { // actualizar la fecha de expiración del premium en ui
+			this.mshipsList.loadPremiumExpireDate();
 			break;
 		}
 		default:
