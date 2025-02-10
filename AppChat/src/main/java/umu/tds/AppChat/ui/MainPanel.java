@@ -1,6 +1,8 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,6 +120,12 @@ public class MainPanel extends JPanel {
 		buttonChats.setBounds(10, 0, 100, 100);
 		buttonChats.setFocusPainted(false);
 		UIController.addHoverEffect(buttonChats);
+		buttonChats.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UIController.setActualChatOptimization(0);
+			}
+		});
 		this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
 		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
 		//this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
@@ -132,6 +140,12 @@ public class MainPanel extends JPanel {
 		buttonGroups.setBounds(10, 120, 100, 100);
 		buttonGroups.setFocusPainted(false);
 		UIController.addHoverEffect(buttonGroups);
+		buttonGroups.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UIController.setActualChatOptimization(0);
+			}
+		});
 		this.showMenu("porDefecto", buttonGroups, this.actualizadorUiPrincipal, principal);
 		this.showMenu("groups", buttonGroups, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonGroups);
@@ -145,6 +159,12 @@ public class MainPanel extends JPanel {
 		buttonShop.setBounds(10, 240, 100, 100);
 		buttonShop.setFocusPainted(false);
 		UIController.addHoverEffect(buttonShop);
+		buttonShop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UIController.setActualChatOptimization(0);
+			}
+		});
 		this.showMenu("porDefecto", buttonShop, this.actualizadorUiPrincipal, principal);
 		this.showMenu("porDefecto", buttonShop, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonShop);
@@ -158,6 +178,12 @@ public class MainPanel extends JPanel {
 		buttonSearch.setBounds(10, 600, 100, 100);
 		buttonSearch.setFocusPainted(false);
 		UIController.addHoverEffect(buttonSearch);
+		buttonSearch.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UIController.setActualChatOptimization(0);
+			}
+		});
 		this.showMenu("search", buttonSearch, this.actualizadorUiPrincipal, principal);
 		this.showMenu("messages", buttonSearch, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonSearch);

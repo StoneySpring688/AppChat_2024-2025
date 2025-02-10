@@ -89,10 +89,8 @@ public class ChatPanel extends PanelGrande {
 	}
 	
 	public void changeChat(ElementoChatOGrupo chat) {
-		if(! chat.equals(this.chat.getCurrentChat())) {
 			this.chat.clearChatBox();
 			this.chat.setCurrentChat(chat);
-		}
 		
 	}
 

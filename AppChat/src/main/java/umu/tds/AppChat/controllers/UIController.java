@@ -41,6 +41,10 @@ public class UIController {
     	UIController.showLogin();
     }
     
+    public static void setActualChatOptimization(long actualChat) {
+    	actualChatOptimization = actualChat;
+    }
+    
     // ### show methods
     public static void showLogin() {
         appFrame.showLoginPanel();
@@ -149,10 +153,10 @@ public class UIController {
     public static void changeChat(ElementoChatOGrupo chat) {
     	
     	if(actualChatOptimization != (chat.isGrupo() ? chat.getGroupID() : chat.getNumero())) {
-    		actualChatOptimization = chat.isGrupo() ? chat.getGroupID() : chat.getNumero();
         	appFrame.llamarMetodo(7, Optional.of(chat), Optional.empty());
         	appFrame.showChatPanel();
         	MainController.loadChat(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
+        	setActualChatOptimization(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
     	}
 
     }
