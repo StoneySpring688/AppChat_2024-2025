@@ -14,8 +14,8 @@ public class MainController {
     
     // estados
     private static Byte actualState;
-    private final static Byte loggedOut = 0;
-    private final static Byte loggedIn = 1;
+    private final static byte loggedOut = 0;
+    private final static byte loggedIn = 1;
     
     // gestión de hilos
     private static ExecutorService executor;
@@ -54,8 +54,13 @@ public class MainController {
     }
     
     protected static void doLogin() {
-    	//TODO hacer comprobaciones de las credenciales proporcionadas
+    	// TODO hacer comprobaciones de las credenciales proporcionadas
     	onLoginSuccess();
+    }
+    
+    protected static void doLogout() {
+    	// TODO
+    	actualizarEstado((byte) 0);
     }
     
     public static void onLoginSuccess() {

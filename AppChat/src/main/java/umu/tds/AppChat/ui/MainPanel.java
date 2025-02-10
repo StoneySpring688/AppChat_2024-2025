@@ -13,6 +13,7 @@ import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.Button;
+import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 import umu.tds.AppChat.ui.chatInterface.ChatPanel;
 
 import javax.swing.ImageIcon;
@@ -273,6 +274,12 @@ public class MainPanel extends JPanel {
 			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof Integer) {
 				this.chat.addMessageAtTop((List<ModelMessage>)arg.get(), (int)arg2.get());
 				this.chat.resetText();
+			}
+			break;
+		}
+		case 9: { // preview search message
+			if(arg2.isPresent() && arg2.get() instanceof ModelMessage && arg.isPresent() && arg.get() instanceof BoxType) {
+				this.searchPanel.previewMessage((ModelMessage)arg2.get(), (BoxType)arg.get());
 			}
 			break;
 		}

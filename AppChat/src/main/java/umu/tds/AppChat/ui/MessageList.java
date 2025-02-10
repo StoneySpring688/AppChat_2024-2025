@@ -2,13 +2,21 @@ package umu.tds.AppChat.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Optional;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
+
+import umu.tds.AppChat.backend.utils.ModelMessage;
+import umu.tds.AppChat.controllers.UIController;
 
 public class MessageList extends JPanel {
 
@@ -25,16 +33,30 @@ public class MessageList extends JPanel {
 		this.setBounds(120, 0, 240, 660);
 		this.messages = new DefaultListModel<>();
 		
-		//Para probar
+		// TODO Para probar
 		for(int i=0 ;i<20 ;i++) {
-			messages.addElement(new ElementoMessage("mensaje de prueba", "User1", "User2"));
+			//messages.addElement(new ElementoMessage("mensaje de prueba", "User1", "User2"));
+			ElementoMessage emsg =  new ElementoMessage(new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USER_DESCONOCIDO", "dd / MM / yyyy", 123456789+i , 1234567890 , Optional.of("Mensaje de contacto"), Optional.empty()));
+			messages.addElement(emsg);
 		}
 		
 		
 		this.lista = new JList<>(messages);
 		this.lista.setCellRenderer(new ElementoMessageRender(this.lista));
 		this.lista.setBackground(this.darkPorDefecto);
-		
+		this.lista.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                // Obtener el índice del elemento clickeado
+                int index = lista.locationToIndex(evt.getPoint());
+                if (index >= 0) {
+                    // Obtener el elemento clickeado
+                    ModelMessage elemento = new ModelMessage(messages.getElementAt(index).getMsg());
+                    System.out.println("[DEBUG] " + '\n' + elemento);
+                    UIController.previewMessage(elemento);
+                }
+            }
+        });
 		
 		this.scroll = new JScrollPane(lista);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

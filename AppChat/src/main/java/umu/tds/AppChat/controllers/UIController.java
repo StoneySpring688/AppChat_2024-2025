@@ -20,6 +20,7 @@ import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
+import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class UIController {
     private static AppFrame appFrame;
@@ -40,7 +41,7 @@ public class UIController {
     	UIController.showLogin();
     }
     
-    
+    // ### show methods
     public static void showLogin() {
         appFrame.showLoginPanel();
         appFrame.setVisible(true);
@@ -72,6 +73,8 @@ public class UIController {
     	appFrame.showCrearGrupoPanel();
     }
     
+    // ### gestión errores
+    
  	public static void registerErrors(byte code) {
  		//System.out.println("[DEBUG] registerErrors" + code);
      	appFrame.llamarMetodo(3, Optional.of((byte) code), Optional.empty());
@@ -90,6 +93,8 @@ public class UIController {
     	return MainController.doRegister(nombre, numero, passwd, birthDate, url, signature);
     }
     
+    // ### login/logout
+    
     public static void doLogin() {
     	MainController.doLogin(); // TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
     	showPanelIntermedio();
@@ -99,19 +104,20 @@ public class UIController {
     }
     
     public static void doLogout() {
-    	//TODO gestionar el logout con el MainController
     	showPanelIntermedio();
     	appFrame.resizeForLoginPanel();
     	showLogin();
+    	MainController.doLogout();
     }
+    
+    // ### add contacts
     
     public static void anyadirContacto() {
     	showPanelAnyadirContacto();
-    	
     }
     
 	public static boolean verificarContactoYAnyadirContacto(String numero, String nombre) {
-    	//TODO verificar los datos con la persistencia
+    	// TODO verificar los datos con la persistencia
     	return MainController.anyadirContacto(numero, nombre);
 
     }
@@ -120,6 +126,8 @@ public class UIController {
     	EntidadComunicable ent = MainController.getContacto(number);
 		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(ent));
     }
+    
+    // ### add groups
     
 	public static boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
 		return MainController.makeGroup(nombre, profilepPicUrl, miembros);
@@ -130,9 +138,13 @@ public class UIController {
 		appFrame.llamarMetodo(6, Optional.empty(), Optional.of(gp));
 	}
 	
+	// ### message render
+	
     public static void renderMessage(List<ModelMessage> msgs) {
     	appFrame.llamarMetodo(8, Optional.of(BackendController.getUserNumber()), Optional.of(msgs));
     }
+    
+	// ### chats change and load algorithm
     
     public static void changeChat(ElementoChatOGrupo chat) {
     	
@@ -148,6 +160,8 @@ public class UIController {
     protected static void loadChat(List<ModelMessage> msgs) {
     		appFrame.llamarMetodo(9, Optional.of(BackendController.getUserNumber()), Optional.of(msgs));
     }
+    
+    // ### send messages
     
     public static void sendMessage(long reciver, Optional<String> message, Optional<Integer> emoji) {
 		SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
@@ -183,8 +197,15 @@ public class UIController {
 		msgs.add(msg);
 		renderMessage(msgs);
     }
-     
-    //efectos
+    
+    // ### search messages methods
+    
+    public static void previewMessage(ModelMessage msg) {
+    	appFrame.llamarMetodo(10, Optional.of(msg), Optional.of(BackendController.getUserNumber() == msg.getSender() ? BoxType.RIGHT : BoxType.LEFT));
+    }
+    
+    // ### efectos
+    
     public static void addHoverEffect(JButton button) {
 	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
 	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));

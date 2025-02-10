@@ -3,6 +3,7 @@ package umu.tds.AppChat.backend.utils;
 import java.util.Optional;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 public class ModelMessage {
 	
@@ -27,8 +28,21 @@ public class ModelMessage {
     public ModelMessage() {
     }
     
-    public Icon getIcon() {
-        return icon;
+    public ModelMessage(ModelMessage msg) {
+        this.icon = msg.getIcon();
+        this.name = msg.getName();
+        this.date = msg.getDate();
+        this.sender = msg.getSender();
+        this.reciver = msg.getReciver();
+        this.message = msg.getMessage();
+        this.emoji = msg.getEmoji();
+	}
+
+	public Icon getIcon() {
+		if (icon instanceof ImageIcon) {
+	        return new ImageIcon(((ImageIcon) icon).getImage());
+	    }
+	    return icon;
     }
 
     public void setIcon(Icon icon) {

@@ -15,7 +15,9 @@ import javax.swing.border.EmptyBorder;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
+import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.controllers.UIController;
+import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class AppFrame extends JFrame {
 
@@ -214,6 +216,12 @@ public class AppFrame extends JFrame {
 		case 9: { // renderizar mensaje, orden inverso
 			if(arg.isPresent() && arg.get() instanceof List <?> && arg2.isPresent() && arg2.get() instanceof Integer) {
 				this.mainPanel.accederMetodoNoVisible(8, Optional.of(arg2.get()) ,Optional.of(arg.get()));
+			}
+			break;
+		}
+		case 10: { // preview search message
+			if(arg2.isPresent() && arg2.get() instanceof ModelMessage && arg.isPresent() && arg.get() instanceof BoxType) {
+				this.mainPanel.accederMetodoNoVisible(9, arg2, arg);
 			}
 			break;
 		}
