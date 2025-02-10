@@ -1,6 +1,8 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -109,10 +111,21 @@ public class SearchPanel extends PanelGrande {
 	
 	public void previewMessage(ModelMessage message, BoxType type) {
 		int values = scrollBody.getVerticalScrollBar().getValue();
+		ChatBox msg = new  ChatBox(type, message);
+		// Agregar evento de eliminación al hacer clic
+		msg.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            messagePreviewPanel.remove(msg);
+	            messagePreviewPanel.revalidate();
+	            messagePreviewPanel.repaint();
+	        }
+	    });
+
         if (type == ChatBox.BoxType.LEFT) {
-            messagePreviewPanel.add(new ChatBox(type, message), "width ::80%");
+            messagePreviewPanel.add(msg, "width ::80%");
         } else {
-        	messagePreviewPanel.add(new ChatBox(type, message), "al right,width ::80%");
+        	messagePreviewPanel.add(msg, "al right,width ::80%");
         }
         SwingUtilities.invokeLater(new Runnable() {
             @Override
