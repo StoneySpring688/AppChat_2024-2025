@@ -149,12 +149,14 @@ public class SearchPanel extends PanelGrande {
 		int values = scrollBody.getVerticalScrollBar().getValue();
 		ChatBox msg = new ChatBox(type, message);
 		
-		msg.addMouseListener(new MouseAdapter() { // Eliminar el msg al hacer clic
+		msg.addMouseListener(new MouseAdapter() { // Eliminar el msg al hacer doble clic
 	        @Override
 	        public void mouseClicked(MouseEvent e) {
-	            messagePreviewPanel.remove(msg);
-	            messagePreviewPanel.revalidate();
-	            messagePreviewPanel.repaint();
+	        	if (e.getClickCount() == 2) {
+	                messagePreviewPanel.remove(msg);
+	                messagePreviewPanel.revalidate();
+	                messagePreviewPanel.repaint();
+	            }
 	        }
 	    });
 

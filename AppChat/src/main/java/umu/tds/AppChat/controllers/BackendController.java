@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.ImageIcon;
 
@@ -20,7 +21,7 @@ import umu.tds.AppChat.backend.services.ChatsAndGroupsRepository;
 public class BackendController {
     private static ChatService chatService;
     private static ChatsAndGroupsRepository chatsRepository;
-    private static EntidadComunicable user;
+    private static Usuario user;
     private static ImageIcon userIconCached;
 
     public BackendController() {
@@ -37,6 +38,10 @@ public class BackendController {
     	return user.getNumero();
     }
     
+    public static Optional<LocalDate> getEndPremium(){
+    	return user == null ? Optional.empty() : user.getEndPremiumDate();
+    }
+    
     public static String getUserName() {
     	return new String(user.getNombre());
     }
@@ -49,8 +54,8 @@ public class BackendController {
     	return new ImageIcon(userIconCached.getImage());
     }
 
-    public static void loadCurrentUser(int number, String name, String profileIconUrl) {
-    	user = new EntidadComunicable(number, name, profileIconUrl);        
+    public static void loadCurrentUser(Usuario usuario) {
+    	user = new Usuario(usuario, true);        
     	URL url;
         userIconCached = null;
         String profilePicUrl = BackendController.getUserIconUrl();

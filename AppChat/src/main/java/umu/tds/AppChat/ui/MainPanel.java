@@ -47,6 +47,8 @@ public class MainPanel extends JPanel {
 	private CardLayout actualizadorMenu1;
 	private ChatsList chatslist;
 	private GroupsList groupslist;
+	private MessageList messageList;
+	private MembershipList mshipsList;
 
 	public MainPanel() {
 		setBackground(Color.WHITE);
@@ -98,8 +100,10 @@ public class MainPanel extends JPanel {
 		panelMenu1.add(chatslist, "chats");
 		groupslist = new GroupsList();
 		panelMenu1.add(groupslist, "groups");
-		MessageList messageList = new MessageList();
+		messageList = new MessageList();
 		panelMenu1.add(messageList,"messages");
+		mshipsList = new MembershipList();
+		panelMenu1.add(mshipsList,"mships");
 		
 		actualizadorMenu1.show(panelMenu1, "porDefecto");
 		
@@ -166,7 +170,7 @@ public class MainPanel extends JPanel {
 			}
 		});
 		this.showMenu("porDefecto", buttonShop, this.actualizadorUiPrincipal, principal);
-		this.showMenu("porDefecto", buttonShop, actualizadorMenu1, panelMenu1);
+		this.showMenu("mships", buttonShop, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonShop);
 		
 		buttonSearch = new Button();
