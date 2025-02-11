@@ -47,8 +47,8 @@ cd AppChat_2024-2025
 
 ```bash
 cd AppChat
-mvn install:install-file -Dfile=libs/gradient-icon-font.jar -DgroupId=umu.tds -DartifactId=gradient-icon-font -Dversion=1.0 -Dpackaging=jar
-mvn install:install‐file –Dfile=libs/DriverPersistencia.jar ‐DpomFile=libs/driverPersistencia‐2.0.pom
+mvn install:install-file -Dfile=lib/gradient-icon-font.jar -DgroupId=umu.tds -DartifactId=gradient-icon-font -Dversion=1.0 -Dpackaging=jar
+mvn install:install-file -Dfile=lib/DriverPersistencia.jar -DgroupId=umu.tds -DartifactId=driverPersistencia -Dversion=2.0 -Dpackaging=jar
 mvn clean install
 cd ..
 ```
