@@ -92,13 +92,14 @@ public class MembershipList extends JPanel{
 	
 	public void loadPremiumExpireDate() {
 		Optional<LocalDate> expireLocalDate = BackendController.getEndPremium();
-		premiumExpireDate.setText(expireLocalDate.isPresent() ? expireLocalDate.get().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).toString() : "not premium user");
+		premiumExpireDate.setText(expireLocalDate.isPresent() ? expireLocalDate.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString() : "not premium user");
 		this.expireDate.repaint();
 		this.expireDate.revalidate();
 		
 	}
 	
 	public void loadMships(List<Membership> ofertas) {
+		this.mships.clear();
 		for(Membership mship : ofertas) this.mships.addElement(new ElementoMembership(mship));
 			
 	}

@@ -139,6 +139,11 @@ public class AppFrame extends JFrame {
     public void showShopPanel() {
     	this.mainPanel.changePanelPrincipal("shop");
     }
+    
+    public void showDefaultPanel() {
+    	this.mainPanel.changePanelPrincipal("porDefecto");
+    }
+    
 
     public void resizeForMainPanel() {
         setSize(1280, 720);
