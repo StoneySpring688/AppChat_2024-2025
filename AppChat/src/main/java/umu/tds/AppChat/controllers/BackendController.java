@@ -96,7 +96,7 @@ public class BackendController {
     
     public static void nuevoMensaje(long chatID, ModelMessage mensaje) {
         chatService.addMessage(chatID, mensaje);
-        System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
+        //System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
     }
     
     public static List<ModelMessage> obtenerMensajesChat() {

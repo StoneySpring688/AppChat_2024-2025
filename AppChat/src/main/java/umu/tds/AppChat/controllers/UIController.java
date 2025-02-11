@@ -224,6 +224,7 @@ public class UIController {
     	Optional<LocalDate> expireDate = BackendController.getEndPremium();
     	if(expireDate.isEmpty() || LocalDate.now().isAfter(expireDate.get())) {
     		MainController.makePremiumUser();
+    		appFrame.showDefaultPanel();
     	}
     }
     
