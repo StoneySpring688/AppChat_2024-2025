@@ -13,6 +13,8 @@ public class Grupo  {
 	
 	//long numeroAleatorio = ThreadLocalRandom.current().nextLong(1_000_000_000L, 10_000_000_000L);
 		
+	private int DBID; // id asignado por la bd
+	
 	private long groupID;
 	private String nombre;
 	private String iconUrl;
@@ -38,7 +40,11 @@ public class Grupo  {
 		this.iconUrl = grupo.getIconUrl();
 		this.integrantes = grupo.getIntegrantes();
 	}
-
+	
+	public int getDBID() {
+		return DBID;
+	}
+	
 	public long getID() {
 		return this.groupID;
 	}
@@ -50,7 +56,11 @@ public class Grupo  {
 	public String getIconUrl() {
 		return new String(this.iconUrl);
 	}
-
+	
+	public void setDBID(int dBID) {
+		DBID = dBID;
+	}
+	
 	public void setGroupID(long groupID) {
 		this.groupID = groupID;
 	}

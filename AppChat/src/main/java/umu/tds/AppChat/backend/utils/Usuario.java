@@ -20,6 +20,15 @@ public class Usuario extends EntidadComunicable {
 		this.endPremium = Optional.empty();
 	}
 	
+	public Usuario(String name, int number, String passwd, LocalDate birthDate, String profilePicUrl, String signature, boolean premium, LocalDate endPremium) {
+		super(number, name, profilePicUrl);
+		this.passwd = passwd;
+		this.signature = signature;
+		this.birthDate = birthDate;
+		this.premium = premium;
+		this.endPremium = Optional.of(endPremium);
+	}
+	
 	public Usuario(Usuario user, boolean backend) {
 		super(user.getNumero(), user.getNombre(), user.getIconUrl());
 		this.passwd = backend ? null : user.getPasswd();

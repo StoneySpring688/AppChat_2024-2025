@@ -31,6 +31,7 @@ public class MainController {
     public static void startApp() {
     	actualizarEstado(loggedOut);
     	executor = new ThreadPoolExecutor(2, 20, 30, TimeUnit.SECONDS, new SynchronousQueue<>()); //min hilos, max hilos, tiempo hasta eliminar hilo, unidades, cola de espera
+    	DAOController.initAdapters();
     	BackendController.iniciar();
     	
     	ArrayList<Membership> ofertas = new ArrayList<Membership>(); // TODO esta es la parte quue se cargaría con información del servidor par reflejar este tipo de añadidos

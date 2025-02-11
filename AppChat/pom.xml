@@ -73,8 +73,13 @@
     	<artifactId>swing-datetime-picker</artifactId>
     	<version>2.0.0</version>
 	</dependency>
-
-    
+	<!-- Driver de persistencia -->
+	<dependency>
+		<groupId>umu.tds</groupId>
+		<artifactId>driverPersistencia</artifactId>
+		<version>2.0</version>
+	</dependency>
+	 
   </dependencies>
 
   <build>
