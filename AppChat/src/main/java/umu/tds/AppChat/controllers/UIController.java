@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
+import umu.tds.AppChat.backend.utils.Membership.MembershipType;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
@@ -61,7 +63,9 @@ public class UIController {
     
     public static void prepareMainPanel() {
         appFrame.setUserInfo(BackendController.getUserName(), BackendController.getUserIcon() );
-        appFrame.llamarMetodo(11, Optional.empty(), Optional.empty()); // actualizar la fecha de expiración del premium en ui
+        actualizarPremiumExpireDate();
+        appFrame.llamarMetodo(13, Optional.of(BackendController.getOfertas()), Optional.empty());
+        
     }
     
     public static void showPanelIntermedio() {
@@ -207,6 +211,24 @@ public class UIController {
     
     public static void previewMessage(ModelMessage msg) {
     	appFrame.llamarMetodo(10, Optional.of(msg), Optional.of(BackendController.getUserNumber() == msg.getSender() ? BoxType.RIGHT : BoxType.LEFT));
+    }
+    
+    // ### shop methods
+    
+    public static void changeMembershipShop(double precio, MembershipType type) {
+    	appFrame.llamarMetodo(12, Optional.of(precio), Optional.of(type));
+    	appFrame.showShopPanel();
+    }
+    
+    public static void buyPremium() {
+    	Optional<LocalDate> expireDate = BackendController.getEndPremium();
+    	if(expireDate.isEmpty() || LocalDate.now().isAfter(expireDate.get())) {
+    		MainController.makePremiumUser();
+    	}
+    }
+    
+    public static void actualizarPremiumExpireDate() {
+    	appFrame.llamarMetodo(11, Optional.empty(), Optional.empty()); // actualizar la fecha de expiración del premium en ui
     }
     
     // ### efectos

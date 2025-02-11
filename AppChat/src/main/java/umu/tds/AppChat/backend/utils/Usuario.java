@@ -27,11 +27,17 @@ public class Usuario extends EntidadComunicable {
 		this.birthDate = backend ? null : user.getBirthDate();
 		this.premium = user.isPremium();
 		this.endPremium = user.isPremium() ? Optional.of(user.endPremium.get()) : Optional.empty();
+		isPremium(); // actualiza el estado de premium si es necesario
 	}
 
 	public boolean isPremium() {
-		return premium;
+	    if (endPremium.isPresent() && endPremium.get().isBefore(LocalDate.now())) {
+	        premium = false;
+	        endPremium = Optional.empty();
+	    }
+	    return premium;
 	}
+
 	
 	public Optional<LocalDate> getEndPremiumDate() {
 		return this.endPremium;

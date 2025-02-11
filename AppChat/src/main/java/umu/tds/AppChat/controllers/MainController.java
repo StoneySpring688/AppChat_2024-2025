@@ -1,5 +1,6 @@
 package umu.tds.AppChat.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
@@ -8,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
+import umu.tds.AppChat.backend.utils.Membership;
+import umu.tds.AppChat.backend.utils.Membership.MembershipType;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Usuario;
 
@@ -29,6 +32,13 @@ public class MainController {
     	actualizarEstado(loggedOut);
     	executor = new ThreadPoolExecutor(2, 20, 30, TimeUnit.SECONDS, new SynchronousQueue<>()); //min hilos, max hilos, tiempo hasta eliminar hilo, unidades, cola de espera
     	BackendController.iniciar();
+    	
+    	ArrayList<Membership> ofertas = new ArrayList<Membership>(); // TODO esta es la parte quue se cargaría con información del servidor par reflejar este tipo de añadidos
+    	ofertas.add(new Membership(MembershipType.STANDAR, "Standar", 9.99));
+    	ofertas.add(new Membership(MembershipType.SPECIAL, "High Social Credit", 1.99));
+    	ofertas.add(new Membership(MembershipType.CELEBRATION, "Snake Year", 4.99));
+    	BackendController.loadOfertas(ofertas);
+    	
     	UIController.iniciarUI();
     }
     
@@ -42,6 +52,8 @@ public class MainController {
 
     }
     
+    // ### estados
+    
     public static void actualizarEstado(Byte newState) {
     	actualState = newState;
     }
@@ -50,9 +62,13 @@ public class MainController {
     	return Byte.valueOf(actualState);
     }    
     
+    // ### registro
+    
     protected static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
     	return BackendController.doRegister(nombre, numero, passwd, birthDate, url, signature);
     }
+    
+    // ### login/logout
     
     protected static void doLogin() {
     	// TODO hacer comprobaciones de las credenciales proporcionadas
@@ -70,6 +86,16 @@ public class MainController {
     	//UIController.showMainPanel();
     }
     
+    // ### usuario
+    
+    protected static void makePremiumUser() {
+    	// TODO actualizar  usuario en la bd
+    	BackendController.makePremiumUser();
+    	UIController.actualizarPremiumExpireDate();
+    }
+    
+    // ### contactos
+    
     protected static boolean anyadirContacto(String numero, String nombre) { 	
     	return BackendController.addContact(numero, nombre); //TODO comprobar con la persistencia  	
     }
@@ -82,6 +108,8 @@ public class MainController {
     	return BackendController.getListaContactos();
     }
     
+    // ### grupos
+    
     public static boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
 		return BackendController.makeGroup(nombre, profilepPicUrl, miembros);
     }
@@ -93,6 +121,8 @@ public class MainController {
     protected static List<Grupo> getGrupos(){
     	return BackendController.getGrupos();
     }
+    
+    // ### mensajes
     
     protected static void sendMessage(ModelMessage msg) {
     	// TODO escribir en la bd

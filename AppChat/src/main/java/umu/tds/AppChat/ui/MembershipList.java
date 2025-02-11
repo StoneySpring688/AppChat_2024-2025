@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.BorderFactory;
@@ -18,8 +19,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 
 import umu.tds.AppChat.backend.utils.Membership;
-import umu.tds.AppChat.backend.utils.Membership.MembershipType;
 import umu.tds.AppChat.controllers.BackendController;
+import umu.tds.AppChat.controllers.UIController;
 
 public class MembershipList extends JPanel{
 
@@ -39,11 +40,11 @@ public class MembershipList extends JPanel{
 		this.setBounds(120, 0, 240, 660);
 		this.mships = new DefaultListModel<>();
 		
-		// TODO Para probar
+		/*
 		for(int i=0 ;i<20 ;i++) {
 			ElementoMembership emship = new ElementoMembership(new Membership(MembershipType.SPECIAL, "test "+i, 1.99+i));
 			mships.addElement(emship);
-		}
+		}*/
 		
 		this.lista = new JList<>(mships);
 		this.lista.setCellRenderer(new ElementoMembershipRender(this.lista));
@@ -54,7 +55,9 @@ public class MembershipList extends JPanel{
                 // Obtener el índice del elemento clickeado
                 int index = lista.locationToIndex(evt.getPoint());
                 if (index >= 0) {
-                   // TODO cambio panel al de esta oferta o al estandar
+                	ElementoMembership element =  mships.get(index);
+                	//System.out.println(element.getMship().getName());
+                	UIController.changeMembershipShop(element.getMship().getPrice(), element.getMship().getType());
                 }
             }
         });
@@ -89,11 +92,15 @@ public class MembershipList extends JPanel{
 	
 	public void loadPremiumExpireDate() {
 		Optional<LocalDate> expireLocalDate = BackendController.getEndPremium();
-		//TODO pasar a método el calculo fecha expiración
 		premiumExpireDate.setText(expireLocalDate.isPresent() ? expireLocalDate.get().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")).toString() : "not premium user");
 		this.expireDate.repaint();
 		this.expireDate.revalidate();
 		
+	}
+	
+	public void loadMships(List<Membership> ofertas) {
+		for(Membership mship : ofertas) this.mships.addElement(new ElementoMembership(mship));
+			
 	}
 	
 }

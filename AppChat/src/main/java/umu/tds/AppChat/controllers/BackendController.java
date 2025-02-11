@@ -5,6 +5,7 @@ import java.net.URL;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import javax.swing.ImageIcon;
 import umu.tds.AppChat.backend.utils.Emoji;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
+import umu.tds.AppChat.backend.utils.Membership;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Usuario;
 import umu.tds.AppChat.backend.services.ChatService;
@@ -23,6 +25,7 @@ public class BackendController {
     private static ChatsAndGroupsRepository chatsRepository;
     private static Usuario user;
     private static ImageIcon userIconCached;
+    private static List<Membership> ofertas;
 
     public BackendController() {
         
@@ -33,7 +36,19 @@ public class BackendController {
         chatsRepository = new ChatsAndGroupsRepository();
         Emoji.cargarEmojis();
     }
-
+    
+    // ### ofertas
+    
+    public static List<Membership> getOfertas() {
+    	return new ArrayList<Membership>(ofertas);
+    }
+    
+    public static void loadOfertas(List<Membership> listOfertas) {
+    	ofertas = new ArrayList<Membership>(listOfertas);
+    }
+    
+    // ### usuario
+    
     public static int getUserNumber() {
     	return user.getNumero();
     }
@@ -52,6 +67,10 @@ public class BackendController {
     
     public static ImageIcon getUserIcon() {
     	return new ImageIcon(userIconCached.getImage());
+    }
+    
+    public static void makePremiumUser() {
+    	user.mekePremium();
     }
 
     public static void loadCurrentUser(Usuario usuario) {
@@ -73,6 +92,8 @@ public class BackendController {
 		}
     }
     
+    // ### mensajes
+    
     public static void nuevoMensaje(long chatID, ModelMessage mensaje) {
         chatService.addMessage(chatID, mensaje);
         System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
@@ -85,6 +106,8 @@ public class BackendController {
     public static List<ModelMessage> getChat(long chatID){
     	return chatService.getLRUChat(chatID);
     }
+    
+    // ### contactos
     
     public static EntidadComunicable getContacto(int numero) {
     	return chatsRepository.getContacto(numero);
@@ -136,6 +159,8 @@ public class BackendController {
     	
     }
     
+    // ### grupos
+    
     public static Grupo getGrupo(long id) {
     	return chatsRepository.getGrupo(id);
     }
@@ -167,6 +192,8 @@ public class BackendController {
 		return success;
 		
     }
+    
+    // ### registro
     
     protected static boolean doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {
 		//System.out.println("[DEBUG] doRegister BackendControoller");

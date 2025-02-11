@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
+import umu.tds.AppChat.backend.utils.Membership.MembershipType;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
@@ -134,6 +136,10 @@ public class AppFrame extends JFrame {
     public void showChatPanel() {
     	this.mainPanel.changePanelPrincipal("chat");
     }
+    
+    public void showShopPanel() {
+    	this.mainPanel.changePanelPrincipal("shop");
+    }
 
     public void resizeForMainPanel() {
         setSize(1280, 720);
@@ -225,7 +231,19 @@ public class AppFrame extends JFrame {
 			break;
 		}
 		case 11: { // actualizar la fecha de expiración del premium en ui
-			this.mainPanel.accederMetodoNoVisible(10, Optional.empty(), Optional.empty());
+				this.mainPanel.accederMetodoNoVisible(10, Optional.empty(), Optional.empty());
+			break;
+		}
+		case 12: { // cambiar el panel de la tienda
+			if(arg2.isPresent() && arg2.get() instanceof Double && arg.isPresent() && arg.get() instanceof MembershipType) {
+				this.mainPanel.accederMetodoNoVisible(11, arg2, arg);
+			}
+			break;
+		}
+		case 13: { // cargar las ofertas en la lista
+			if(arg2.isPresent() && arg2.get() instanceof List<?>) {
+				this.mainPanel.accederMetodoNoVisible(12, arg2, Optional.empty());
+			}
 			break;
 		}
 		default:

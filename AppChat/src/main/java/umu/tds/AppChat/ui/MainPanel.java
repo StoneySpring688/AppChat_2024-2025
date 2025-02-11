@@ -15,6 +15,8 @@ import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.ModelMessage;
+import umu.tds.AppChat.backend.utils.Membership;
+import umu.tds.AppChat.backend.utils.Membership.MembershipType;
 import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.chatInterface.Button;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
@@ -34,6 +36,7 @@ public class MainPanel extends JPanel {
 	private JPanel panelMenuPerfil;
 	private JPanel principal;
 	private SearchPanel searchPanel;
+	private PremiumShopPanel shopPanel;
 	private AddContactPanel panelAnyadirContacto;
 	private CreateGroupPanel panelCrearGrupo;
 	private ChatPanel chat;
@@ -72,12 +75,14 @@ public class MainPanel extends JPanel {
 		fondoPorDefecto.setBounds(0, 60, 920, 660);
 		PanelGrandePorDefecto.add(fondoPorDefecto);
 		searchPanel = new SearchPanel();
+		shopPanel = new PremiumShopPanel();
 		panelAnyadirContacto = new AddContactPanel();
 		panelCrearGrupo = new CreateGroupPanel();
 		chat = new ChatPanel();
 		
 		principal.add(PanelGrandePorDefecto, "porDefecto");
 		principal.add(searchPanel, "search");
+		principal.add(shopPanel, "shop");
 		principal.add(panelAnyadirContacto, "anyadirContacto");
 		principal.add(panelCrearGrupo, "crearGrupo");
 		principal.add(chat, "chat");
@@ -173,6 +178,7 @@ public class MainPanel extends JPanel {
 		});
 		this.showMenu("porDefecto", buttonShop, this.actualizadorUiPrincipal, principal);
 		this.showMenu("mships", buttonShop, actualizadorMenu1, panelMenu1);
+		
 		panelBotonera.add(buttonShop);
 		
 		buttonSearch = new Button();
@@ -323,6 +329,18 @@ public class MainPanel extends JPanel {
 		}
 		case 10: { // actualizar la fecha de expiración del premium en ui
 			this.mshipsList.loadPremiumExpireDate();
+			break;
+		}
+		case 11: { // cambiar el panel de la tienda
+			if(arg2.isPresent() && arg2.get() instanceof Double && arg.isPresent() && arg.get() instanceof MembershipType) {
+				this.shopPanel.showShop((double)arg2.get(), (MembershipType)arg.get());
+			}
+			break;
+		}
+		case 12: { // cargar las ofertas en la lista
+			if(arg2.isPresent() && arg2.get() instanceof List<?>) {
+				this.mshipsList.loadMships((List<Membership>)arg2.get());
+			}
 			break;
 		}
 		default:
