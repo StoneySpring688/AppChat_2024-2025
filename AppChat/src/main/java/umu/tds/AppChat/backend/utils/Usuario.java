@@ -26,7 +26,7 @@ public class Usuario extends EntidadComunicable {
 		this.signature = signature;
 		this.birthDate = birthDate;
 		this.premium = premium;
-		this.endPremium = Optional.of(endPremium);
+		this.endPremium = endPremium == null ? Optional.empty() : Optional.of(endPremium);
 	}
 	
 	public Usuario(Usuario user, boolean backend) {

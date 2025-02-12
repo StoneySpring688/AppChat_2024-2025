@@ -54,7 +54,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 		String premium = servPersistencia.recuperarPropiedadEntidad(eUser, PREMIUM);
 		String endPremiumDate = servPersistencia.recuperarPropiedadEntidad(eUser, ENDPREMIUMDATE); // TODO si está vacío, en el constructor es un Optiona.empty()
 		
-		Usuario user = new Usuario(nombre, Integer.parseInt(numero), passwd, LocalDate.parse(fechNacim, dateFormat), profileUrl, signature, Boolean.parseBoolean(premium), LocalDate.parse(endPremiumDate, dateFormat));
+		Usuario user = new Usuario(nombre, Integer.parseInt(numero), passwd, LocalDate.parse(fechNacim, dateFormat), profileUrl, signature, Boolean.parseBoolean(premium), (endPremiumDate.isBlank() ? null : LocalDate.parse(endPremiumDate, dateFormat)) );
 		return user;
 	}
 	
