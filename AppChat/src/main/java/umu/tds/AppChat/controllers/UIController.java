@@ -88,6 +88,10 @@ public class UIController {
  		//System.out.println("[DEBUG] registerErrors" + code);
      	appFrame.llamarMetodo(3, Optional.of((byte) code), Optional.empty());
      }
+ 	
+ 	public static void loginErrors(byte code) {
+ 		appFrame.loginErrors(code);
+ 	}
      
      public static void addContactErrors(byte code) {
      	appFrame.llamarMetodo(4, Optional.of((byte) code), Optional.empty());
@@ -99,15 +103,22 @@ public class UIController {
     
      // ### registro
      
-    public static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature){
+    public static void doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature){
     	//System.out.println("[DEBUG] doRegister UIController");
-    	return MainController.doRegister(nombre, numero, passwd, birthDate, url, signature);
+    	if(MainController.doRegister(nombre, numero, passwd, birthDate, url, signature)) {
+    		appFrame.registerReset();
+    		showLogin();
+    	}
     }
     
     // ### login/logout
     
-    public static void doLogin() {
-    	MainController.doLogin(); // TODO aquí se procesa (o no) y se llama al MainController para que el haga las comprobaciones, y ya solicite mostrar el panel principal si hace falta
+    public static void doLogin(int numero, String passwd) {
+    	MainController.doLogin(numero, passwd);
+    }
+    
+    public static void onLoginSuccess() {
+    	appFrame.loginReset();
     	showPanelIntermedio();
     	prepareMainPanel();
         appFrame.resizeForMainPanel();

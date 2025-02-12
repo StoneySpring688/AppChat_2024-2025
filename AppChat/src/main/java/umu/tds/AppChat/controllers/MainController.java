@@ -67,10 +67,10 @@ public class MainController {
     // ### registro
     
     protected static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
-    	System.out.println("[DEBUG] haciendo registro");
+    	//System.out.println("[DEBUG] haciendo registro");
     	Optional<Usuario> user = BackendController.doRegister(nombre, numero, passwd, birthDate, url, signature);
     	if(user.isPresent()) {
-    		System.out.println("[DEBUG] escribiendo usuario");
+    		//System.out.println("[DEBUG] escribiendo usuario");
     		DAOController.registerUser(user.get());
     		return true;
     	}
@@ -79,9 +79,14 @@ public class MainController {
     
     // ### login/logout
     
-    protected static void doLogin() {
-    	// TODO hacer comprobaciones de las credenciales proporcionadas
-    	onLoginSuccess();
+    protected static void doLogin(int numero, String passwd) {
+    	//Optional<Usuario> user = DAOController.recuperarUser(numero);
+    	if(!DAOController.checkLogin(numero, passwd)) {
+    		UIController.loginErrors((byte)4);
+    	}else {
+    		onLoginSuccess(numero);
+    	}
+    	
     }
     
     protected static void doLogout() {
@@ -89,10 +94,10 @@ public class MainController {
     	actualizarEstado((byte) 0);
     }
     
-    public static void onLoginSuccess() {
+    public static void onLoginSuccess(int numero) {
     	actualizarEstado(loggedIn);
-    	BackendController.loadCurrentUser(new Usuario("StoneySpring", 111222333, null, null, "https://i.pinimg.com/736x/1c/ff/0b/1cff0b33f92ffd7f34f5cc80adbbf9af.jpg", null));//TODO cambiar a datos tras login
-    	//UIController.showMainPanel();
+    	BackendController.loadCurrentUser(DAOController.recuperarUser(numero).get());//TODO cambiar a datos tras login
+    	UIController.onLoginSuccess();
     }
     
     // ### usuario

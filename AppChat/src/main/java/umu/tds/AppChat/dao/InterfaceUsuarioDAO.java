@@ -8,5 +8,6 @@ public interface InterfaceUsuarioDAO {
 	boolean delete(Usuario usuario);
 	void update(Usuario usuario);
 	Usuario get(int id);
+	boolean checkLogin(int id, String passwd);
 	
 }

@@ -165,6 +165,18 @@ public class AppFrame extends JFrame {
     	this.mainPanel.setUserInfo(name, profilePicUrl);
     }
     
+    public void loginErrors(byte code) {
+    	this.login.errors(code);
+    }
+    
+    public void loginReset() {
+    	this.login.reset();
+    }
+    
+    public void registerReset() {
+    	this.register.reset();
+    }
+    
     @SuppressWarnings("unchecked")
 	public void llamarMetodo(int numMetodo, Optional<Object> arg2, Optional<Object> arg) {
 		//System.out.println("[DEBUG] llamarMetodo" + (byte) arg2.get());

@@ -52,7 +52,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 		String signature = servPersistencia.recuperarPropiedadEntidad(eUser, SIGNATURE);
 		String fechNacim = servPersistencia.recuperarPropiedadEntidad(eUser, FECHA_NACIMIENTO);
 		String premium = servPersistencia.recuperarPropiedadEntidad(eUser, PREMIUM);
-		String endPremiumDate = servPersistencia.recuperarPropiedadEntidad(eUser, ENDPREMIUMDATE); // TODO si está vacío, en el constructor es un Optiona.empty()
+		String endPremiumDate = servPersistencia.recuperarPropiedadEntidad(eUser, ENDPREMIUMDATE);
 		
 		Usuario user = new Usuario(nombre, Integer.parseInt(numero), passwd, LocalDate.parse(fechNacim, dateFormat), profileUrl, signature, Boolean.parseBoolean(premium), (endPremiumDate.isBlank() ? null : LocalDate.parse(endPremiumDate, dateFormat)) );
 		return user;
@@ -122,10 +122,19 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	public Usuario get(int id) {
 		Entidad eUser = servPersistencia.recuperarEntidad(id);
 		
-		System.out.println(eUser);
+		//System.out.println(eUser);
 		
 		if(eUser == null) return null;
 		else return entidadToUser(eUser);
+	}
+	
+	public boolean checkLogin(int id, String passwd) {
+		
+		Usuario user = get(id);
+		if(user != null && user.getPasswd().equals(passwd)) return true;
+		else return false;
+		
+		
 	}
 
 }

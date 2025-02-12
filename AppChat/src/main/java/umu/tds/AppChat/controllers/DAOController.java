@@ -21,14 +21,20 @@ public class DAOController {
 	}
 	
 	public static void registerUser(Usuario user) {
-		if(recuperarUser(user).isEmpty())userAdapter.create(user);
+		if(recuperarUser(user.getNumero()).isEmpty())userAdapter.create(user);
 	}
 	
-	public static Optional<Usuario> recuperarUser(Usuario user){
-		Usuario userDevuelto = userAdapter.get(user.getNumero());
-		System.out.println("[DEBUG] usuario devuelto : "+userDevuelto );
+	/**
+	 * @return si no  existe el usuario devuelbe Optional.empty()*/
+	public static Optional<Usuario> recuperarUser(int id){
+		Usuario userDevuelto = userAdapter.get(id);
+		//System.out.println("[DEBUG] usuario devuelto : "+userDevuelto );
 		return userDevuelto != null ? Optional.of(userDevuelto) : Optional.empty();
 		
+	}
+	
+	public static boolean checkLogin(int id, String passwd) {
+		return userAdapter.checkLogin(id, passwd);
 	}
 	
 }
