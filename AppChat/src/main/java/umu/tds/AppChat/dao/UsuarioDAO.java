@@ -52,7 +52,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 		String signature = servPersistencia.recuperarPropiedadEntidad(eUser, SIGNATURE);
 		String fechNacim = servPersistencia.recuperarPropiedadEntidad(eUser, FECHA_NACIMIENTO);
 		String premium = servPersistencia.recuperarPropiedadEntidad(eUser, PREMIUM);
-		String endPremiumDate = servPersistencia.recuperarPropiedadEntidad(eUser, ENDPREMIUMDATE);
+		String endPremiumDate = servPersistencia.recuperarPropiedadEntidad(eUser, ENDPREMIUMDATE); // TODO si está vacío, en el constructor es un Optiona.empty()
 		
 		Usuario user = new Usuario(nombre, Integer.parseInt(numero), passwd, LocalDate.parse(fechNacim, dateFormat), profileUrl, signature, Boolean.parseBoolean(premium), LocalDate.parse(endPremiumDate, dateFormat));
 		return user;
@@ -70,7 +70,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 				new Propiedad(SIGNATURE, user.getSignature()),
 				new Propiedad(FECHA_NACIMIENTO, user.getBirthDate().format(dateFormat).toString()),
 				new Propiedad(PREMIUM, String.valueOf(user.isPremium())),
-				new Propiedad(ENDPREMIUMDATE, user.getEndPremiumDate().get().format(dateFormat).toString())
+				new Propiedad(ENDPREMIUMDATE, user.getEndPremiumDate().isPresent() ? user.getEndPremiumDate().get().format(dateFormat).toString() : "")
 				)));
 		
 		return eUser;
@@ -79,8 +79,9 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	@Override
 	public void create(Usuario usuario) {
 		Entidad eUser = this.userToEntidad(usuario);
+		eUser.setId(usuario.getNumero());
 		eUser = servPersistencia.registrarEntidad(eUser);
-		eUser.setId(usuario.getNumero()); // el número es el id, en los grupos no es posible porque usan long, por paralelismo con los grupos se mantiene la propiedad
+		 // el número es el id, en los grupos no es posible porque usan long, por paralelismo con los grupos se mantiene la propiedad
 		// usuario.setId(eUsuario.getId());
 	}
 
@@ -120,7 +121,11 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	@Override
 	public Usuario get(int id) {
 		Entidad eUser = servPersistencia.recuperarEntidad(id);
-		return entidadToUser(eUser);
+		
+		System.out.println(eUser);
+		
+		if(eUser == null) return null;
+		else return entidadToUser(eUser);
 	}
 
 }

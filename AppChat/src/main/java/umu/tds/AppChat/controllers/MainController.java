@@ -2,6 +2,7 @@ package umu.tds.AppChat.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -66,7 +67,14 @@ public class MainController {
     // ### registro
     
     protected static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
-    	return BackendController.doRegister(nombre, numero, passwd, birthDate, url, signature);
+    	System.out.println("[DEBUG] haciendo registro");
+    	Optional<Usuario> user = BackendController.doRegister(nombre, numero, passwd, birthDate, url, signature);
+    	if(user.isPresent()) {
+    		System.out.println("[DEBUG] escribiendo usuario");
+    		DAOController.registerUser(user.get());
+    		return true;
+    	}
+    	return false;
     }
     
     // ### login/logout

@@ -97,6 +97,8 @@ public class UIController {
       	appFrame.llamarMetodo(5, Optional.of((byte) code), Optional.empty());
       }
     
+     // ### registro
+     
     public static boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature){
     	//System.out.println("[DEBUG] doRegister UIController");
     	return MainController.doRegister(nombre, numero, passwd, birthDate, url, signature);

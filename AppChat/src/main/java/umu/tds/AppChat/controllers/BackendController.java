@@ -195,7 +195,7 @@ public class BackendController {
     
     // ### registro
     
-    protected static boolean doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {
+    protected static Optional <Usuario> doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {
 		//System.out.println("[DEBUG] doRegister BackendControoller");
 		boolean success = true;
     	
@@ -220,18 +220,23 @@ public class BackendController {
     		success = false;
     	}
     	
-    	try {
-			int numero = Integer.parseInt(number);
-			LocalDate BirthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-			Usuario newUser = new Usuario(name, numero, passwd, BirthDate, profilePicUrl, signature);
-			//TODO escribir newUser en la BD
-			
-		} catch (Exception e) {
-    		//System.out.println("[DEBUG] doRegister BackendControoller 6");
-			UIController.registerErrors((byte) 4);
-			success = false;
-		}
-    	return success;
+    	if(success) {
+        	try {
+    			int numero = Integer.parseInt(number);
+    			LocalDate BirthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    			Usuario newUser = new Usuario(name, numero, passwd, BirthDate, profilePicUrl, signature);
+    			return Optional.of(newUser);
+    			
+    		} catch (Exception e) {
+        		//System.out.println("[DEBUG] doRegister BackendControoller 6");
+    			UIController.registerErrors((byte) 4);
+    			success = false;
+    			return Optional.empty();
+    		}
+    	}
+    	
+    	return Optional.empty();
+    	
     }
     
 }
