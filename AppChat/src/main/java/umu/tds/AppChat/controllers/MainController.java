@@ -39,6 +39,7 @@ public class MainController {
     	ofertas.add(new Membership(MembershipType.STANDAR, "Standar", 9.99));
     	ofertas.add(new Membership(MembershipType.SPECIAL, "High Social Credit", 1.99));
     	ofertas.add(new Membership(MembershipType.CELEBRATION, "Snake Year", 4.99));
+    	
     	BackendController.loadOfertas(ofertas);
     	
     	UIController.iniciarUI();
@@ -90,28 +91,67 @@ public class MainController {
     }
     
     protected static void doLogout() {
-    	// TODO
+    	BackendController.removeCurrentUser();
     	actualizarEstado((byte) 0);
     }
     
     public static void onLoginSuccess(int numero) {
     	actualizarEstado(loggedIn);
-    	BackendController.loadCurrentUser(DAOController.recuperarUser(numero).get());//TODO cambiar a datos tras login
+    	BackendController.loadCurrentUser(DAOController.recuperarUser(numero).get());
+    	BackendController.loadContactList(DAOController.getListaContactos(BackendController.getUserNumber()));
     	UIController.onLoginSuccess();
     }
     
     // ### usuario
     
     protected static void makePremiumUser() {
-    	// TODO actualizar  usuario en la bd
     	BackendController.makePremiumUser();
+    	DAOController.makePremium(BackendController.getCurrentUser());
     	UIController.actualizarPremiumExpireDate();
     }
     
     // ### contactos
     
-    protected static boolean anyadirContacto(String numero, String nombre) { 	
-    	return BackendController.addContact(numero, nombre); //TODO comprobar con la persistencia  	
+    protected static boolean anyadirContacto(String numero, String nombre) {
+    	
+    	boolean success = true;
+    	int number = 0;
+    	
+    	try {
+		    number = Integer.parseInt(numero);
+		} catch (NumberFormatException e) {
+		    UIController.addContactErrors((byte) 1);
+			success = false;
+		}
+    		
+    	if(number != 0 && (int) (Math.log10(Math.abs(number)) + 1) != 9) {
+    		UIController.addContactErrors((byte) 1);
+    		success = false;
+    	}if(nombre.length() == 0) {
+    		UIController.addContactErrors((byte) 3);
+    		success = false;
+    	}else if(BackendController.getUserNumber() == number) {
+    		UIController.addContactErrors((byte) 1);
+    		success = false;
+    	}else if(BackendController.isContact(number)) {
+    		UIController.addContactErrors((byte) 2);
+    		success = false;
+    	}if(nombre.length() == 0) {
+    		UIController.addContactErrors((byte) 3);
+    		success = false;
+    	}
+    	
+    	if(success) {
+    		
+    		EntidadComunicable contact =  new EntidadComunicable(number, nombre);
+    		EntidadComunicable contacto = DAOController.addContact(contact);
+        	
+        	if(contacto != null) {
+        		BackendController.addContact(contacto);
+        		UIController.addChat(contacto);
+        	}
+    	}
+    	return success;
     }
     
     protected static EntidadComunicable getContacto(int numero) {

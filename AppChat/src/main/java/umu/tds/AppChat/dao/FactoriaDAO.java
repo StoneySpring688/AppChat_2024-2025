@@ -14,4 +14,9 @@ public class FactoriaDAO extends AbstractFactoriaDAO {
 		return UsuarioDAO.getUnicaInstancia(); 
 	}
 
+	@Override
+	public InterfaceContactoDAO getContactoDAO() {
+		return ContactoDAO.getUnicaInstancia();
+	}
+
 }

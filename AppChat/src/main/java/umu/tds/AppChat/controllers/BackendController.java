@@ -92,6 +92,15 @@ public class BackendController {
 		}
     }
     
+    public static Usuario getCurrentUser() {
+    	return new Usuario(user, false);
+    }
+    
+    public static void removeCurrentUser() {
+    	user = null;
+    	userIconCached = null;
+    }
+    
     // ### mensajes
     
     public static void nuevoMensaje(long chatID, ModelMessage mensaje) {
@@ -109,6 +118,10 @@ public class BackendController {
     
     // ### contactos
     
+    public static void loadContactList(List<EntidadComunicable> contactList) {
+    	chatsRepository.loadContactList(contactList);
+    }
+    
     public static EntidadComunicable getContacto(int numero) {
     	return chatsRepository.getContacto(numero);
     }
@@ -117,46 +130,12 @@ public class BackendController {
     	return chatsRepository.getContactos();
     }
     
-    public static boolean addContact(String numero, String nombre) {
-    	
-    	boolean success = true;
-    	int number = 0;
-    	
-    	try {
-		    number = Integer.parseInt(numero);
-		} catch (NumberFormatException e) {
-		    UIController.addContactErrors((byte) 1);
-			success = false;
-		}
-    	
-    	//TODO comprobar que no sea el número del usuario
-    	
-    	if(number != 0 && (int) (Math.log10(Math.abs(number)) + 1) != 9) {
-    		UIController.addContactErrors((byte) 1);
-    		success = false;
-    	}else if(chatsRepository.isContact(number)) {
-    		UIController.addContactErrors((byte) 2);
-    		success = false;
-    	}if(nombre.length() == 0) {
-    		UIController.addContactErrors((byte) 3);
-    		success = false;
-    	}
-    	
-    	if(success) {
-    		String url = "/assets/ProfilePic.png"; //TODO ir a persistencia por la url de la imagen
-        	EntidadComunicable contacto = new EntidadComunicable(number, nombre, url);
-        	
-        	boolean bdOk = true; //TODO comprobar con la persistencia
-        	
-        	if(bdOk) {
-        		chatsRepository.addContact(contacto);
-        		UIController.addChat(number);
-        	}
-        	
-    	}
-    	
-    	return success;
-    	
+    public static boolean isContact(int numero) {
+    	return chatsRepository.isContact(numero);
+    }
+    
+    public static void addContact(EntidadComunicable contact) { 	
+        		chatsRepository.addContact(contact);
     }
     
     // ### grupos

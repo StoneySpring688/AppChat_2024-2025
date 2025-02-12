@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 
 public class EntidadComunicable {
 	
+	private int id; // id bd
 	private int numero;
 	private String nombre;
 	private String iconUrl;
@@ -15,12 +16,22 @@ public class EntidadComunicable {
 		this.iconUrl = iconUrl;
 	}
 	
+	public EntidadComunicable(int numero, String nombre){
+		this.numero = numero;
+		this.nombre = nombre;
+		this.iconUrl = null;
+	}
+	
 	public EntidadComunicable(EntidadComunicable ent){
 		this.numero = ent.getNumero();
 		this.nombre = ent.getNombre();
 		this.iconUrl = ent.getIconUrl();
 	}
 
+	public int getId() {
+		return id;
+	}
+	
 	public int getNumero() {
 		return this.numero;
 	}
@@ -33,6 +44,10 @@ public class EntidadComunicable {
 		return new String(this.iconUrl);
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}

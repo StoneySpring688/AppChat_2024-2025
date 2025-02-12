@@ -1,6 +1,6 @@
 package umu.tds.AppChat.backend.services;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
@@ -9,11 +9,11 @@ public class ContactsList {
 	private List<EntidadComunicable> listaContactos;
 	
 	public ContactsList() {
-		this.listaContactos =  new ArrayList<EntidadComunicable>();
+		this.listaContactos = new LinkedList<EntidadComunicable>();
 	}
 	
-	public ContactsList(ArrayList<EntidadComunicable> listaContactos) {
-		this.listaContactos =  new  ArrayList<EntidadComunicable>(listaContactos);
+	public ContactsList(LinkedList<EntidadComunicable> listaContactos) {
+		this.listaContactos = new LinkedList<EntidadComunicable>(listaContactos);
 	}
 	
 	public void addContact(EntidadComunicable contacto) {

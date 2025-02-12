@@ -63,9 +63,9 @@ public class UIController {
     
     public static void prepareMainPanel() {
         appFrame.setUserInfo(BackendController.getUserName(), BackendController.getUserIcon() );
+        addChats();
         actualizarPremiumExpireDate();
-        appFrame.llamarMetodo(13, Optional.of(BackendController.getOfertas()), Optional.empty());
-        
+        appFrame.llamarMetodo(13, Optional.of(BackendController.getOfertas()), Optional.empty());        
     }
     
     public static void showPanelIntermedio() {
@@ -126,10 +126,10 @@ public class UIController {
     }
     
     public static void doLogout() {
+    	MainController.doLogout();
     	showPanelIntermedio();
     	appFrame.resizeForLoginPanel();
     	showLogin();
-    	MainController.doLogout();
     }
     
     // ### add contacts
@@ -139,14 +139,18 @@ public class UIController {
     }
     
 	public static boolean verificarContactoYAnyadirContacto(String numero, String nombre) {
-    	// TODO verificar los datos con la persistencia
     	return MainController.anyadirContacto(numero, nombre);
-
     }
     
-    public static void addChat(int number) {
-    	EntidadComunicable ent = MainController.getContacto(number);
-		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(ent));
+    public static void addChat(EntidadComunicable ent) {
+    	//EntidadComunicable ent = MainController.getContacto(number);
+		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(new EntidadComunicable(ent)));
+    }
+    
+    public static void addChats(){
+    	for(EntidadComunicable ent : BackendController.getListaContactos()) {
+    		addChat(ent);
+    	}
     }
     
     // ### add groups

@@ -4,16 +4,21 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import beans.Entidad;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Usuario;
+import umu.tds.AppChat.controllers.BackendController;
 
 public class UsuarioDAO implements InterfaceUsuarioDAO{
 	
-	private static UsuarioDAO unicaInstancia = null;
+
 
 	// entidad
 	private static final String USUARIO = "Usuario";
@@ -27,12 +32,16 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
 	private static final String PREMIUM = "premium";
 	private static final String ENDPREMIUMDATE = "endPremiumDate";
+	private static final String LISTACONTACTOS = "listaContactos";
 	
 	// utils
 	private ServicioPersistencia servPersistencia;
 	private DateTimeFormatter dateFormat;
 	
-	public static UsuarioDAO getUnicaInstancia() { // patron singleton
+	// singleton
+	private static UsuarioDAO unicaInstancia = null;
+	
+	public static UsuarioDAO getUnicaInstancia() {
 		if (unicaInstancia == null)
 			return new UsuarioDAO();
 		else
@@ -70,7 +79,8 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 				new Propiedad(SIGNATURE, user.getSignature()),
 				new Propiedad(FECHA_NACIMIENTO, user.getBirthDate().format(dateFormat).toString()),
 				new Propiedad(PREMIUM, String.valueOf(user.isPremium())),
-				new Propiedad(ENDPREMIUMDATE, user.getEndPremiumDate().isPresent() ? user.getEndPremiumDate().get().format(dateFormat).toString() : "")
+				new Propiedad(ENDPREMIUMDATE, user.getEndPremiumDate().isPresent() ? user.getEndPremiumDate().get().format(dateFormat).toString() : ""),
+				new Propiedad(LISTACONTACTOS, "")
 				)));
 		
 		return eUser;
@@ -81,7 +91,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 		Entidad eUser = this.userToEntidad(usuario);
 		eUser.setId(usuario.getNumero());
 		eUser = servPersistencia.registrarEntidad(eUser);
-		 // el número es el id, en los grupos no es posible porque usan long, por paralelismo con los grupos se mantiene la propiedad
+		// el número es el id, en los grupos no es posible porque usan long, por paralelismo con los grupos se mantiene la propiedad
 		// usuario.setId(eUsuario.getId());
 	}
 
@@ -112,6 +122,9 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 				prop.setValor(String.valueOf(usuario.isPremium()));
 			}else if(prop.getNombre().equals(ENDPREMIUMDATE)) {
 				prop.setValor(usuario.getEndPremiumDate().get().format(dateFormat).toString());
+			}else if(prop.getNombre().equals(LISTACONTACTOS)) {
+				String contactList = obtenerIDsContactos(BackendController.getListaContactos());
+				prop.setValor(contactList);
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
@@ -133,8 +146,65 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 		Usuario user = get(id);
 		if(user != null && user.getPasswd().equals(passwd)) return true;
 		else return false;
+	}
+	
+	public void addContacto(int number, EntidadComunicable contact) {
+		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS);
+		//System.out.println("[DEBUG] lista antes : "+ listaContactos);
+		//System.out.println("[DEBUG se debería anyadir : "+contact.getId());
+		if(listaContactos.isBlank()||listaContactos == null) {
+			listaContactos += "" + contact.getId();
+		}else {
+			listaContactos += " " + contact.getId();
+		}
 		
+		System.out.println("[DEBUG] db lista contactos : " + listaContactos);
 		
+		for(Propiedad prop : servPersistencia.recuperarEntidad(number).getPropiedades()) {
+			if(prop.getNombre().equals(LISTACONTACTOS)) {
+				prop.setValor(listaContactos);
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+		System.out.println("[DEBUG] comprobación lista de contactos : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS));
+	}
+	
+	public void eliminarContacto(int number, EntidadComunicable contact) {
+		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS);
+		List<EntidadComunicable> list = obtenerListaContactosFomIDs(listaContactos);
+		list.remove(contact);
+		listaContactos = obtenerIDsContactos(list);
+		Entidad eUser = servPersistencia.recuperarEntidad(number);
+		for(Propiedad prop : eUser.getPropiedades()) {
+			if(prop.getNombre().equals(LISTACONTACTOS)) {
+				prop.setValor(listaContactos);
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+	}
+	
+	public List<EntidadComunicable> obtenerListaContactos(int numero){
+		return obtenerListaContactosFomIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(numero), LISTACONTACTOS));
+	}
+	
+	// ### funciónes auxiliares
+	private String obtenerIDsContactos(List<EntidadComunicable> lista) {
+		String contactos = "";
+		for (EntidadComunicable contacto : lista) {
+			contactos += contacto.getId() + " ";
+		}
+		return contactos.trim();
+	}
+	
+	public List<EntidadComunicable> obtenerListaContactosFomIDs(String lista) { 
+		List<EntidadComunicable> contactList = new LinkedList<EntidadComunicable>();
+		if(lista.isBlank())return contactList;
+		StringTokenizer strTok = new StringTokenizer(lista, " ");
+		ContactoDAO adaptadorContacto = ContactoDAO.getUnicaInstancia();
+		while(strTok.hasMoreTokens()) {
+			contactList.add(adaptadorContacto.get(Integer.valueOf((String)strTok.nextElement())));
+		}
+		return contactList;
 	}
 
 }

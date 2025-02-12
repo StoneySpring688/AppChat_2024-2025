@@ -1,5 +1,6 @@
 package umu.tds.AppChat.backend.services;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
@@ -35,6 +36,10 @@ public class ChatsAndGroupsRepository {
 	
 	public List<EntidadComunicable> getContactos(){
 		return this.listaContactos.getContactos();
+	}
+	
+	public void loadContactList(List<EntidadComunicable> contactList) {
+		this.listaContactos = new ContactsList((LinkedList<EntidadComunicable>)contactList);
 	}
 	
 	//no contactos

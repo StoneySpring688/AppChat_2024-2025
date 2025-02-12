@@ -36,5 +36,6 @@ public abstract class AbstractFactoriaDAO {
 	
 	// Metodos factoria para obtener adaptadores
 	
-	public abstract InterfaceUsuarioDAO getUsuarioDAO();	
+	public abstract InterfaceUsuarioDAO getUsuarioDAO();
+	public abstract InterfaceContactoDAO getContactoDAO();
 }
