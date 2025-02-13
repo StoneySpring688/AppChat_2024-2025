@@ -18,20 +18,20 @@ public class Grupo  {
 	private long groupID;
 	private String nombre;
 	private String iconUrl;
-	private List<Integer> integrantes;
+	private List<EntidadComunicable> integrantes;
 		
 	public Grupo(long groupID, String nombre, String iconUrl){
 		this.groupID = groupID;
 		this.nombre = nombre;
 		this.iconUrl = iconUrl;
-		this.integrantes =  new ArrayList<Integer>();
+		this.integrantes =  new ArrayList<EntidadComunicable>();
 	}
 	
-	public Grupo(long groupID, String nombre, String iconUrl, List<Integer> miembros){
+	public Grupo(long groupID, String nombre, String iconUrl, List<EntidadComunicable> miembros){
 		this.groupID = groupID;
 		this.nombre = nombre;
 		this.iconUrl = iconUrl;
-		this.integrantes =  new ArrayList<Integer>(miembros);
+		this.integrantes =  new ArrayList<EntidadComunicable>(miembros);
 	}
 
 	public Grupo(Grupo grupo) {
@@ -85,8 +85,8 @@ public class Grupo  {
 		return this.integrantes.stream().anyMatch(k -> k.equals(numero));
 	}
 	
-	public List<Integer> getIntegrantes(){
-		return new ArrayList<Integer>(this.integrantes);
+	public List<EntidadComunicable> getIntegrantes(){
+		return new ArrayList<EntidadComunicable>(this.integrantes);
 	}
 
 	public ImageIcon actualizarImagenFromUrl() {

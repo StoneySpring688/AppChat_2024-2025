@@ -165,7 +165,26 @@ public class MainController {
     // ### grupos
     
     public static boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
-		return BackendController.makeGroup(nombre, profilepPicUrl, miembros);
+    	
+    	boolean success = true;
+		
+		if(nombre.isBlank() || nombre.isEmpty()) {
+			UIController.makeGroupErrors((byte) 1);
+			success = false;
+		}if(miembros == null || miembros.isEmpty()) {
+			UIController.makeGroupErrors((byte) 2);
+			success = false;
+		}
+    	
+		if(success) {
+			List<EntidadComunicable> miembrosGrupo = new ArrayList<EntidadComunicable>();
+			for(int numero : miembros) miembrosGrupo.add(DAOController.recuperarContacto(numero));
+			long gID = BackendController.makeGroup(nombre, profilepPicUrl, miembrosGrupo); 
+			UIController.addGroup(gID);
+		}
+		
+		return success;
+		
     }
     
     protected static Grupo getGrupo(long id) {

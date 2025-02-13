@@ -148,27 +148,16 @@ public class BackendController {
     	return chatsRepository.getGrupos();
     }
     
-    public static boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
-		boolean success = true;
+    public static long makeGroup(String nombre, String profilepPicUrl, List<EntidadComunicable> miembros) {
 		
-		if(nombre.isBlank() || nombre.isEmpty()) {
-			UIController.makeGroupErrors((byte) 1);
-			success = false;
-		}if(miembros == null || miembros.isEmpty()) {
-			UIController.makeGroupErrors((byte) 2);
-			success = false;
-		}
+	   SecureRandom secureRandom = new SecureRandom();
+	   long idAleatorio;
+	   //TODO añadir la comprobación con la BD
+	   do{idAleatorio = 1_000_000_000L + (long) (secureRandom.nextDouble() * 9_000_000_000L);}while(chatsRepository.isGroup(idAleatorio));
+	   chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros));
+	   
 		
-		if(success) {
-	        SecureRandom secureRandom = new SecureRandom();
-	        long idAleatorio;
-	        //TODO añadir la comprobación con la BD
-	        do{idAleatorio = 1_000_000_000L + (long) (secureRandom.nextDouble() * 9_000_000_000L);}while(chatsRepository.isGroup(idAleatorio));
-			chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros));
-			UIController.addGroup(idAleatorio);
-		}
-		
-		return success;
+		return idAleatorio;
 		
     }
     
