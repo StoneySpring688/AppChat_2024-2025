@@ -157,6 +157,13 @@ public class AppFrame extends JFrame {
         this.movilidad.setSize(684, 22);
     }
     
+    public void resetMainPanel() {
+    	this.mainPanel = new MainPanel();
+    	this.mainPanel.repaint();
+    	this.mainPanel.revalidate();
+    	this.panelIntercambiable.add(mainPanel, "mainPanel");
+    }
+    
     public void changePanel(String panel) {
     	this.actualizadorUI.show(panelIntercambiable, panel);
     }

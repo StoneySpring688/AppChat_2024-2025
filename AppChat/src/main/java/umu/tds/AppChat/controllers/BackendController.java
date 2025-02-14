@@ -37,6 +37,12 @@ public class BackendController {
         Emoji.cargarEmojis();
     }
     
+    protected static void doLogout() {
+    	chatService = new ChatService(15);
+    	chatsRepository = new ChatsAndGroupsRepository();
+    	removeCurrentUser();
+    } 
+    
     // ### ofertas
     
     public static List<Membership> getOfertas() {
@@ -90,6 +96,9 @@ public class BackendController {
 		} catch (MalformedURLException e) {
 			userIconCached = new ImageIcon(UIController.class.getResource("/assets/ProfilePic.png"));
 		}
+		
+		System.out.println("[DEBUG] " + "BackendController " + "usuario cargado : " + usuario.getNombre() +" , " + usuario.getNumero());
+		
     }
     
     public static Usuario getCurrentUser() {

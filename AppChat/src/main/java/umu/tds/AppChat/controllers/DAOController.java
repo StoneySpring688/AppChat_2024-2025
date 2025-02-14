@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
+import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Usuario;
 import umu.tds.AppChat.dao.AbstractFactoriaDAO;
 import umu.tds.AppChat.dao.DAOException;
@@ -29,6 +30,7 @@ public class DAOController {
 		userAdapter = factoria.getUsuarioDAO();
 		contactAdapter = factoria.getContactoDAO();
 		groupAdapter = factoria.getGrupoDAO();
+		noContactAdapter = factoria.getNoContactoDAO();
 	}
 	
 	// ### users
@@ -152,16 +154,40 @@ public class DAOController {
 	
 	// ### noContactos
 	
-	public static EntidadComunicable addNoContact(EntidadComunicable noContact) {				
+	public static EntidadComunicable addNoContact(EntidadComunicable noContact, int userToAddNoContact) {				
 		noContactAdapter.create(noContact);
 		//System.out.println("[DEBUG] el  id del no contacto es : "+ contact.getId());
 		EntidadComunicable noContacto = noContactAdapter.get(noContact.getId());
 		noContacto.setId(noContact.getId());
 		System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo no contacto id : " + noContacto.getId() );
-		userAdapter.addNoContacto(BackendController.getUserNumber(), noContacto);
+		userAdapter.addNoContacto(userToAddNoContact, noContacto);
 		return noContacto;
 	}
 	
+	public static boolean isNoContact(int numeroNoContacto, int userToTest) {
+		return userAdapter.isNoContact(numeroNoContacto, userToTest);
+	}
 	
+	// ### message
+	
+	public static void sendMessage(ModelMessage msg) { // TODO terminar
+		int reciver = (int) msg.getReciver();
+		int userNum = msg.getSender();
+		if(isContact(userNum, reciver)) {
+			// TODO enviar mensaje al contacto y añadirlo en su entidad contacto
+			System.out.println("[DEBUG]" + "DAOConttroller" + " es contacto : " + userNum + " de : " + reciver);
+			return;
+		}else if(isNoContact(userNum, reciver)) {
+			// TODO enviar mensaje al contacto y añadirlo en su entidad no contacto
+			System.out.println("[DEBUG]" + "DAOConttroller" + " es no contacto : " + userNum + " de : " + reciver);
+			return;
+		}else {
+			addNoContact(new EntidadComunicable(userNum, ""), reciver);
+			System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo no contacto : " + userNum + " a : " + reciver);
+			//userAdapter.addNoContacto(reciver,newNoContact); // solo neccesita el numero (clave ajena) el resto lo calcula  el adaptador
+			System.out.println("[DEBUG]" + "DAOConttroller" + " no contacto aniadido a :" + reciver + " nueva lista no contactos : " + getListaNoContactos(reciver));
+			// TODO enviar mensaje al no contacto (no hacer llamada recursiva, hace bucle infinito)
+		}
+	}
 	
 }

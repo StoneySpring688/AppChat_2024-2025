@@ -127,8 +127,9 @@ public class UIController {
     }
     
     public static void doLogout() {
-    	MainController.doLogout();
+    	MainController.doLogout();    	
     	showPanelIntermedio();
+    	appFrame.resetMainPanel();
     	appFrame.resizeForLoginPanel();
     	showLogin();
     }

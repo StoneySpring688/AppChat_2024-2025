@@ -82,19 +82,24 @@ public class MainController {
     
     protected static void doLogin(int numero, String passwd) {
     	//Optional<Usuario> user = DAOController.recuperarUser(numero);
-    	if (!DAOController.isUser(numero)) {
-    		UIController.loginErrors((byte)4);
-    	}else if(!DAOController.checkLogin(numero, passwd)) {
-    		UIController.loginErrors((byte)4);
-    	}else {
-    		onLoginSuccess(numero);
+    	if(getEstadoActual() == loggedOut) {
+        	if (!DAOController.isUser(numero)) {
+        		UIController.loginErrors((byte)4);
+        	}else if(!DAOController.checkLogin(numero, passwd)) {
+        		UIController.loginErrors((byte)4);
+        	}else {
+        		onLoginSuccess(numero);
+        	}
     	}
-    	
+
     }
     
     protected static void doLogout() {
-    	BackendController.removeCurrentUser();
-    	actualizarEstado((byte) 0);
+    	if(getEstadoActual() == loggedIn) {
+    		BackendController.doLogout();
+        	actualizarEstado(loggedOut);
+    	}
+    	
     }
     
     public static void onLoginSuccess(int numero) {
@@ -216,8 +221,8 @@ public class MainController {
     // ### mensajes
     
     protected static void sendMessage(ModelMessage msg) {
-    	// TODO escribir en la bd
-    	executor.submit(() -> BackendController.nuevoMensaje(msg.getReciver(), msg));
+    	DAOController.sendMessage(msg);
+    	executor.submit(() -> { BackendController.nuevoMensaje(msg.getReciver(), msg);});
     }
     
     protected static void loadChat(long chatID) {

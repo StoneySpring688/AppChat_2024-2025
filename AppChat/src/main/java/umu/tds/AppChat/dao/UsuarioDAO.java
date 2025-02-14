@@ -199,8 +199,10 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	
 	public boolean isContact(int numeroContacto, int userToTest) {
 		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(userToTest), LISTACONTACTOS);
-		String numToTest = Integer.toString(numeroContacto);
-		return listaContactos.contains(numToTest);
+		//String numToTest = Integer.toString(numeroContacto);
+		List<EntidadComunicable> lista = obtenerListaContactosFomIDs(listaContactos);
+		
+		return lista.stream().anyMatch(e -> e.getNumero() == numeroContacto);
 	}
 	
 	// ### lista grupos
@@ -287,8 +289,10 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	
 	public boolean isNoContact(int numeroNoContacto, int userToTest) {
 		String listaNoContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(userToTest), LISTANOCONTACTOS);
-		String numToTest = Integer.toString(numeroNoContacto);
-		return listaNoContactos.contains(numToTest);
+		//String numToTest = Integer.toString(numeroNoContacto);
+		List<EntidadComunicable> lista = obtenerListaNoContactosFomIDs(listaNoContactos);
+		
+		return lista.stream().anyMatch(e -> e.getNumero() == numeroNoContacto);
 	}
 	
 	// ### funciónes auxiliares
