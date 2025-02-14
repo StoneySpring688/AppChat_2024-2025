@@ -23,5 +23,10 @@ public class FactoriaDAO extends AbstractFactoriaDAO {
 	public InterfaceGrupoDAO getGrupoDAO() {
 		return GrupoDAO.getUnicaInstancia();
 	}
+
+	@Override
+	public InterfaceNoContactoDAO getNoContactoDAO() {
+		return NoContactoDAO.getUnicaInstancia();
+	}
 	
 }

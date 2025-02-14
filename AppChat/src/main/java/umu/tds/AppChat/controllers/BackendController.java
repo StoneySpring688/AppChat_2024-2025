@@ -135,7 +135,33 @@ public class BackendController {
     }
     
     public static void addContact(EntidadComunicable contact) { 	
-        		chatsRepository.addContact(contact);
+        	chatsRepository.addContact(contact);
+    }
+    
+    // ### noContactos
+    
+    public static void loadNoContactList(List<EntidadComunicable> noContactList) {
+    	chatsRepository.loadNoContactList(noContactList);
+    }
+    
+    public static EntidadComunicable getNoContacto(int numero) {
+    	return chatsRepository.getNotContact(numero);
+    }
+    
+    public static List<EntidadComunicable> getListaNoContactos(){
+    	return chatsRepository.getUsuariosNoContactos();
+    }
+    
+    public static boolean isNoContact(int numero) {
+    	return chatsRepository.isNotContact(numero);
+    }
+    
+    public static void addNoContact(EntidadComunicable noContact) {
+    	chatsRepository.addNoContact(noContact);
+    }
+    
+    public static void makeContactFromNoContact(int numero) {
+    	chatsRepository.makeContact(numero);
     }
     
     // ### grupos

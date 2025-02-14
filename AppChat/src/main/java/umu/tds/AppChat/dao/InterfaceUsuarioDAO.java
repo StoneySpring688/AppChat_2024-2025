@@ -16,7 +16,12 @@ public interface InterfaceUsuarioDAO {
 	void addContacto(int number, EntidadComunicable contact);
 	void eliminarContacto(int number, EntidadComunicable contact);
 	List<EntidadComunicable> obtenerListaContactos(int numero);
+	public boolean isContact(int numeroContacto, int userToTest);
 	void addGrupoToUser(int number, Grupo grupo);
 	void eliminarGrupoFromUser(int number, Grupo grupo);
 	List<Grupo> obtenerListaGruposFromUser(int numero);
+	void addNoContacto(int number, EntidadComunicable noContact);
+	void eliminarNoContacto(int number, EntidadComunicable noContact);
+	List<EntidadComunicable> obtenerListaNoContactos(int numero);
+	boolean isNoContact(int numeroNoContacto, int userToTest);
 }

@@ -64,7 +64,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		eContact = servPersistencia.registrarEntidad(eContact);
 		contacto.setId(eContact.getId());
 		
-		System.out.println("[DEBUG]" + "ContactoDAO" + "  entidad id : "+eContact.getId() +" parametro id : "+contacto.getId());
+		System.out.println("[DEBUG]" + "ContactoDAO" + " entidad id : "+eContact.getId() +" parametro id : "+contacto.getId());
 
 	}
 

@@ -73,6 +73,10 @@ public class ChatsAndGroupsRepository {
 		}
 	}
 	
+	public void loadNoContactList(List<EntidadComunicable> noContactList) {
+		this.usuariosNoContactos = new ContactsList((LinkedList<EntidadComunicable>) noContactList);
+	}
+	
 	//grupos
 	public void addGroup(Grupo grupo) {
 		this.listaGrupos.addGroup(grupo);

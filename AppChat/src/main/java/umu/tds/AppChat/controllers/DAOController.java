@@ -10,12 +10,14 @@ import umu.tds.AppChat.dao.AbstractFactoriaDAO;
 import umu.tds.AppChat.dao.DAOException;
 import umu.tds.AppChat.dao.InterfaceContactoDAO;
 import umu.tds.AppChat.dao.InterfaceGrupoDAO;
+import umu.tds.AppChat.dao.InterfaceNoContactoDAO;
 import umu.tds.AppChat.dao.InterfaceUsuarioDAO;
 
 public class DAOController {
 	private static InterfaceUsuarioDAO userAdapter;
 	private static InterfaceContactoDAO contactAdapter;
 	private static InterfaceGrupoDAO groupAdapter;
+	private static InterfaceNoContactoDAO noContactAdapter;
 	
 	protected static void initAdapters() {
 		AbstractFactoriaDAO factoria = null;
@@ -72,6 +74,10 @@ public class DAOController {
 		return userAdapter.obtenerListaGruposFromUser(numero);
 	}
 	
+	public static List<EntidadComunicable> getListaNoContactos(int numero){
+		return userAdapter.obtenerListaNoContactos(numero);
+	}
+	
 	// ### contacts
 	
 	public static EntidadComunicable addContact(EntidadComunicable contact) {				
@@ -99,6 +105,10 @@ public class DAOController {
 	
 	public static void actualizarContacto(EntidadComunicable contact) {
 		contactAdapter.update(contact);
+	}
+	
+	public static boolean isContact(int numeroContacto, int userToTest) {
+		return userAdapter.isContact(numeroContacto, userToTest);
 	}
 	
 	// ### groups
@@ -139,5 +149,19 @@ public class DAOController {
 		groupAdapter.eliminarMiembro(id, miembro);
 		userAdapter.eliminarGrupoFromUser(miembro.getNumero(), groupAdapter.get(id));
 	}
+	
+	// ### noContactos
+	
+	public static EntidadComunicable addNoContact(EntidadComunicable noContact) {				
+		noContactAdapter.create(noContact);
+		//System.out.println("[DEBUG] el  id del no contacto es : "+ contact.getId());
+		EntidadComunicable noContacto = noContactAdapter.get(noContact.getId());
+		noContacto.setId(noContact.getId());
+		System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo no contacto id : " + noContacto.getId() );
+		userAdapter.addNoContacto(BackendController.getUserNumber(), noContacto);
+		return noContacto;
+	}
+	
+	
 	
 }

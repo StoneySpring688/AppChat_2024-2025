@@ -133,7 +133,7 @@ public class UIController {
     	showLogin();
     }
     
-    // ### add contacts
+    // ### add contacts and noContacts
     
     public static void anyadirContacto() {
     	showPanelAnyadirContacto();
@@ -150,6 +150,9 @@ public class UIController {
     
     public static void addChats(){
     	for(EntidadComunicable ent : BackendController.getListaContactos()) {
+    		addChat(ent);
+    	}
+    	for(EntidadComunicable ent : BackendController.getListaNoContactos()) {
     		addChat(ent);
     	}
     }

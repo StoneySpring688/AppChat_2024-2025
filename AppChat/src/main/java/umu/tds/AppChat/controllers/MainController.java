@@ -102,6 +102,7 @@ public class MainController {
     	BackendController.loadCurrentUser(DAOController.recuperarUser(numero).get());
     	BackendController.loadContactList(DAOController.getListaContactos(BackendController.getUserNumber()));
     	BackendController.loadGroupList(DAOController.getListaGrupos(BackendController.getUserNumber()));
+    	BackendController.loadNoContactList(DAOController.getListaNoContactos(BackendController.getUserNumber()));
     	UIController.onLoginSuccess();
     }
     
