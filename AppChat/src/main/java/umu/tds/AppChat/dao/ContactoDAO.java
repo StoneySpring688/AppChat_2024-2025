@@ -64,7 +64,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		eContact = servPersistencia.registrarEntidad(eContact);
 		contacto.setId(eContact.getId());
 		
-		System.out.println("[DEBUG] entidad id : "+eContact.getId() +" parametro id : "+contacto.getId());
+		System.out.println("[DEBUG]" + "ContactoDAO" + "  entidad id : "+eContact.getId() +" parametro id : "+contacto.getId());
 
 	}
 
@@ -92,7 +92,11 @@ public class ContactoDAO implements InterfaceContactoDAO {
 	public EntidadComunicable get(int id) {
 		Entidad eContact = servPersistencia.recuperarEntidad(id);
 		if(eContact == null)return null;
-		else return entidadToContacto(eContact);
+		else {
+			EntidadComunicable contacto = entidadToContacto(eContact);
+			contacto.setId(eContact.getId());
+			return contacto;
+		}
 	}
 
 }

@@ -140,6 +140,10 @@ public class BackendController {
     
     // ### grupos
     
+    public static void loadGroupList(List<Grupo> groupList) {
+    	chatsRepository.loadGroupList(groupList);
+    }
+    
     public static Grupo getGrupo(long id) {
     	return chatsRepository.getGrupo(id);
     }
@@ -152,13 +156,21 @@ public class BackendController {
 		
 	   SecureRandom secureRandom = new SecureRandom();
 	   long idAleatorio;
-	   //TODO añadir la comprobación con la BD
+	   // como no es una bd hecha a medida no se puede comprobar el id de forma eficiente, se seguirá usando porque está hecha la implementación, pero si no se migra a otra bd su uso será solo parcial
 	   do{idAleatorio = 1_000_000_000L + (long) (secureRandom.nextDouble() * 9_000_000_000L);}while(chatsRepository.isGroup(idAleatorio));
 	   chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros));
 	   
 		
 		return idAleatorio;
 		
+    }
+    
+    public static void addMiembroToGrupo(long id, EntidadComunicable miembro) {
+    	chatsRepository.getGrupo(id).addIntegrante(miembro);
+    }
+    
+    public static void removeMiembroFromGrupo(long id, EntidadComunicable miembro) {
+    	chatsRepository.getGrupo(id).removeIntegrante(miembro);
     }
     
     // ### registro
@@ -179,7 +191,7 @@ public class BackendController {
     		//System.out.println("[DEBUG] doRegister BackendControoller 3");
     		UIController.registerErrors((byte) 3);
     		success = false;
-    	} if(number.isBlank() || number.isEmpty()){
+    	} if(number.isBlank() || number.isEmpty() || number.length() != 9){
     		//System.out.println("[DEBUG] doRegister BackendControoller 4");
     		UIController.registerErrors((byte) 4);
     	} if(birthDate == null || birthDate.isBlank() || birthDate.isEmpty()) {

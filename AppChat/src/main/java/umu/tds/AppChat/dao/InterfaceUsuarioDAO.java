@@ -3,6 +3,7 @@ package umu.tds.AppChat.dao;
 import java.util.List;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.Usuario;
 
 public interface InterfaceUsuarioDAO {
@@ -15,4 +16,7 @@ public interface InterfaceUsuarioDAO {
 	void addContacto(int number, EntidadComunicable contact);
 	void eliminarContacto(int number, EntidadComunicable contact);
 	List<EntidadComunicable> obtenerListaContactos(int numero);
+	void addGrupoToUser(int number, Grupo grupo);
+	void eliminarGrupoFromUser(int number, Grupo grupo);
+	List<Grupo> obtenerListaGruposFromUser(int numero);
 }

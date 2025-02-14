@@ -73,16 +73,16 @@ public class Grupo  {
 		this.iconUrl = iconUrl;
 	}
 	
-	public void addIntegrante(int numero) {
-		if(!this.isIntegrante(numero)) this.addIntegrante(numero);
+	public void addIntegrante(EntidadComunicable miembro) {
+		if(!this.isIntegrante(miembro)) this.integrantes.add(miembro);
 	}
 	
-	public void removeIntegrante(int numero) {
-		this.integrantes.removeIf(k -> k.equals(numero));
+	public void removeIntegrante(EntidadComunicable miembro) {
+		this.integrantes.removeIf(k -> k.equals(miembro));
 	}
 	
-	public boolean isIntegrante(int numero) {
-		return this.integrantes.stream().anyMatch(k -> k.equals(numero));
+	public boolean isIntegrante(EntidadComunicable miembro) {
+		return this.integrantes.stream().anyMatch(k -> k.equals(miembro));
 	}
 	
 	public List<EntidadComunicable> getIntegrantes(){

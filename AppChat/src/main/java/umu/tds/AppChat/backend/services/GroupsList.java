@@ -1,6 +1,6 @@
 package umu.tds.AppChat.backend.services;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import umu.tds.AppChat.backend.utils.Grupo;
 
@@ -8,11 +8,11 @@ public class GroupsList {
 	private List<Grupo> listaGrupos;
 	
 	public GroupsList() {
-		this.listaGrupos =  new ArrayList<Grupo>();
+		this.listaGrupos =  new LinkedList<Grupo>();
 	}
 	
-	public GroupsList(ArrayList<Grupo> listaGrupos) {
-		this.listaGrupos =  new  ArrayList<Grupo>(listaGrupos);
+	public GroupsList(LinkedList<Grupo> listaGrupos) {
+		this.listaGrupos =  new  LinkedList<Grupo>(listaGrupos);
 	}
 	
 	public void addGroup(Grupo grupo) {

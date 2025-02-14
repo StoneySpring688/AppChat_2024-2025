@@ -64,8 +64,9 @@ public class UIController {
     public static void prepareMainPanel() {
         appFrame.setUserInfo(BackendController.getUserName(), BackendController.getUserIcon() );
         addChats();
+        addGroups();
         actualizarPremiumExpireDate();
-        appFrame.llamarMetodo(13, Optional.of(BackendController.getOfertas()), Optional.empty());        
+        appFrame.llamarMetodo(13, Optional.of(BackendController.getOfertas()), Optional.empty()); // cargar ofertas    
     }
     
     public static void showPanelIntermedio() {
@@ -162,6 +163,12 @@ public class UIController {
 	public static void addGroup(long id) {
 		Grupo gp = MainController.getGrupo(id);
 		appFrame.llamarMetodo(6, Optional.empty(), Optional.of(gp));
+	}
+	
+	public static void addGroups() {
+		for(Grupo grupo : BackendController.getGrupos()) {
+			addGroup(grupo.getID());
+		}
 	}
 	
 	// ### message render

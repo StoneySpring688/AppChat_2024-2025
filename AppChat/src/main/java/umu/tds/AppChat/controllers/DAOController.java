@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.Usuario;
 import umu.tds.AppChat.dao.AbstractFactoriaDAO;
 import umu.tds.AppChat.dao.DAOException;
@@ -55,6 +56,22 @@ public class DAOController {
 		userAdapter.update(user);
 	}
 	
+	public static void addGrupoToUser(int number, Grupo grupo) {
+		userAdapter.addGrupoToUser(number, grupo);
+	}
+	
+	public static void eliminarGrupoFromUser(int numero, Grupo grupo) {
+		userAdapter.eliminarGrupoFromUser(numero, grupo);
+	}
+	
+	public static List<EntidadComunicable> getListaContactos(int numero){
+		return userAdapter.obtenerListaContactos(numero);
+	}
+	
+	public static List<Grupo> getListaGrupos(int numero){
+		return userAdapter.obtenerListaGruposFromUser(numero);
+	}
+	
 	// ### contacts
 	
 	public static EntidadComunicable addContact(EntidadComunicable contact) {				
@@ -64,7 +81,7 @@ public class DAOController {
 			//System.out.println("[DEBUG] el  id del contacto es : "+ contact.getId());
 			EntidadComunicable contacto = contactAdapter.get(contact.getId());
 			contacto.setId(contact.getId());
-			System.out.println("[DEBUG]  anyadiendo contacto id : " + contacto.getId() );
+			System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo contacto id : " + contacto.getId() );
 			userAdapter.addContacto(BackendController.getUserNumber(), contacto);
 			return contacto;
 		}
@@ -84,10 +101,43 @@ public class DAOController {
 		contactAdapter.update(contact);
 	}
 	
-	public static List<EntidadComunicable> getListaContactos(int numero){
-		return userAdapter.obtenerListaContactos(numero);
+	// ### groups
+	
+	public static Grupo addGroup(Grupo grupo) {
+		groupAdapter.create(grupo);
+		System.out.println("[DEBUG]" + "DAOConttroller" + " grupo anyadido : " + grupo.getDBID());
+		Grupo nuevoGrupo = groupAdapter.get(grupo.getDBID());
+		// nuevoGrupo.setDBID(grupo.getDBID());
+		System.out.println("[DEBUG]" + "DAOConttroller" + " se va a devolver el grupo : " + nuevoGrupo.getDBID());
+		return nuevoGrupo;
 	}
 	
-	// ### groups
+	public static Grupo recuperarGrupo(int id) {
+		return groupAdapter.get(id);
+	}
+	
+	public static void removeGroup(Grupo grupo) {
+		groupAdapter.obtenerListaMiembros(grupo.getDBID()).forEach(u -> eliminarGrupoFromUser(u.getNumero(), grupo)); // elimina el grupo de los usuarios
+		groupAdapter.delete(grupo);
+	}
+	
+	public static void actualizarGrupo(Grupo grupo) {
+		groupAdapter.update(grupo);
+	}
+	
+	public static EntidadComunicable addMiembroToGrupo(int id, EntidadComunicable miembro) {
+		contactAdapter.create(miembro);
+		System.out.println("[DEBUG]" + "DAOConttroller" + " el id del nuevo miembro es : "+ miembro.getId());
+		EntidadComunicable newMiembro = contactAdapter.get(miembro.getId());
+		System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo miembro id : " + newMiembro.getId() );
+		groupAdapter.addMiembro(id, newMiembro);
+		userAdapter.addGrupoToUser(newMiembro.getNumero(), groupAdapter.get(id));
+		return newMiembro;
+	}
+	
+	public static void removeMiembroFromGrupo(int id, EntidadComunicable miembro) {
+		groupAdapter.eliminarMiembro(id, miembro);
+		userAdapter.eliminarGrupoFromUser(miembro.getNumero(), groupAdapter.get(id));
+	}
 	
 }

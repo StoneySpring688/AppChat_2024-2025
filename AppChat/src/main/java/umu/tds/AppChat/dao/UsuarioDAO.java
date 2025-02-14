@@ -13,6 +13,7 @@ import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.Usuario;
 import umu.tds.AppChat.controllers.BackendController;
 
@@ -33,6 +34,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	private static final String PREMIUM = "premium";
 	private static final String ENDPREMIUMDATE = "endPremiumDate";
 	private static final String LISTACONTACTOS = "listaContactos";
+	private static final String LISTAGRUPOS = "listaGrupos";
 	
 	// utils
 	private ServicioPersistencia servPersistencia;
@@ -80,7 +82,8 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 				new Propiedad(FECHA_NACIMIENTO, user.getBirthDate().format(dateFormat).toString()),
 				new Propiedad(PREMIUM, String.valueOf(user.isPremium())),
 				new Propiedad(ENDPREMIUMDATE, user.getEndPremiumDate().isPresent() ? user.getEndPremiumDate().get().format(dateFormat).toString() : ""),
-				new Propiedad(LISTACONTACTOS, "")
+				new Propiedad(LISTACONTACTOS, ""),
+				new Propiedad(LISTAGRUPOS, "")
 				)));
 		
 		return eUser;
@@ -141,12 +144,16 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 		else return entidadToUser(eUser);
 	}
 	
+	// ### login
+	
 	public boolean checkLogin(int id, String passwd) {
 		
 		Usuario user = get(id);
 		if(user != null && user.getPasswd().equals(passwd)) return true;
 		else return false;
 	}
+	
+	// ### lista contactos
 	
 	public void addContacto(int number, EntidadComunicable contact) {
 		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS);
@@ -158,7 +165,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			listaContactos += " " + contact.getId();
 		}
 		
-		System.out.println("[DEBUG] db lista contactos : " + listaContactos);
+		System.out.println("[DEBUG]" + "UsuarioDAO" + " db lista contactos : " + listaContactos);
 		
 		for(Propiedad prop : servPersistencia.recuperarEntidad(number).getPropiedades()) {
 			if(prop.getNombre().equals(LISTACONTACTOS)) {
@@ -166,7 +173,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
-		System.out.println("[DEBUG] comprobación lista de contactos : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS));
+		System.out.println("[DEBUG]" + "UsuarioDAO" + " comprobación lista de contactos : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS));
 	}
 	
 	public void eliminarContacto(int number, EntidadComunicable contact) {
@@ -187,6 +194,47 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 		return obtenerListaContactosFomIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(numero), LISTACONTACTOS));
 	}
 	
+	// ### lista grupos
+	
+	public void addGrupoToUser(int number, Grupo grupo) {
+		String listaGrupos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTAGRUPOS);
+		//System.out.println("[DEBUG] lista antes : "+ listaContactos);
+		//System.out.println("[DEBUG se debería anyadir : "+contact.getId());
+		if(listaGrupos.isBlank()||listaGrupos == null) {
+			listaGrupos += "" + grupo.getDBID();
+		}else {
+			listaGrupos += " " + grupo.getDBID();
+		}
+		
+		System.out.println("[DEBUG]" + "UsuarioDAO" + " db lista grupos del usuario : " + listaGrupos);
+		
+		for(Propiedad prop : servPersistencia.recuperarEntidad(number).getPropiedades()) {
+			if(prop.getNombre().equals(LISTAGRUPOS)) {
+				prop.setValor(listaGrupos);
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+		System.out.println("[DEBUG]" + "UsuarioDAO" + " comprobación lista de grupos del usuario : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTAGRUPOS));
+	}
+	
+	public void eliminarGrupoFromUser(int number, Grupo grupo) {
+		String listaGrupos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTAGRUPOS);
+		List<Grupo> list = obtenerListaGruposFromIDs(listaGrupos);
+		list.remove(grupo);
+		listaGrupos = obtenerIDsGrupos(list);
+		Entidad eUser = servPersistencia.recuperarEntidad(number);
+		for(Propiedad prop : eUser.getPropiedades()) {
+			if(prop.getNombre().equals(LISTAGRUPOS)) {
+				prop.setValor(listaGrupos);
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+	}
+	
+	public List<Grupo> obtenerListaGruposFromUser(int numero){
+		return obtenerListaGruposFromIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(numero), LISTAGRUPOS));
+	}
+	
 	// ### funciónes auxiliares
 	private String obtenerIDsContactos(List<EntidadComunicable> lista) {
 		String contactos = "";
@@ -205,6 +253,25 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			contactList.add(adaptadorContacto.get(Integer.valueOf((String)strTok.nextElement())));
 		}
 		return contactList;
+	}
+	
+	private String obtenerIDsGrupos(List<Grupo> lista) {
+		String grupos = "";
+		for (Grupo grupo : lista) {
+			grupos += grupo.getDBID() + " ";
+		}
+		return grupos.trim();
+	}
+	
+	public List<Grupo> obtenerListaGruposFromIDs(String lista){
+		List<Grupo> groupList = new LinkedList<Grupo>();
+		if(lista.isBlank()) return groupList;
+		StringTokenizer strTok = new StringTokenizer(lista, " ");
+		GrupoDAO adaptadorGrupo = GrupoDAO.getUnicaInstancia();
+		while(strTok.hasMoreTokens()) {
+			groupList.add(adaptadorGrupo.get(Integer.valueOf((String)strTok.nextElement())));
+		}
+		return groupList;
 	}
 
 }

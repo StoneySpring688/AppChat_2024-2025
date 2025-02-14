@@ -82,7 +82,9 @@ public class MainController {
     
     protected static void doLogin(int numero, String passwd) {
     	//Optional<Usuario> user = DAOController.recuperarUser(numero);
-    	if(!DAOController.checkLogin(numero, passwd)) {
+    	if (!DAOController.isUser(numero)) {
+    		UIController.loginErrors((byte)4);
+    	}else if(!DAOController.checkLogin(numero, passwd)) {
     		UIController.loginErrors((byte)4);
     	}else {
     		onLoginSuccess(numero);
@@ -99,6 +101,7 @@ public class MainController {
     	actualizarEstado(loggedIn);
     	BackendController.loadCurrentUser(DAOController.recuperarUser(numero).get());
     	BackendController.loadContactList(DAOController.getListaContactos(BackendController.getUserNumber()));
+    	BackendController.loadGroupList(DAOController.getListaGrupos(BackendController.getUserNumber()));
     	UIController.onLoginSuccess();
     }
     
@@ -178,8 +181,22 @@ public class MainController {
     	
 		if(success) {
 			List<EntidadComunicable> miembrosGrupo = new ArrayList<EntidadComunicable>();
-			for(int numero : miembros) miembrosGrupo.add(DAOController.recuperarContacto(numero));
-			long gID = BackendController.makeGroup(nombre, profilepPicUrl, miembrosGrupo); 
+			
+			long gID = BackendController.makeGroup(nombre, profilepPicUrl, miembrosGrupo);
+			Grupo newGrupo = DAOController.addGroup(new Grupo(gID, nombre, profilepPicUrl));
+			
+			for(int numero : miembros) { // hacer contactos para el grupo y añadirlos
+				Usuario userAux = DAOController.recuperarUser(numero).get();
+				EntidadComunicable entAux = new EntidadComunicable(userAux);
+				miembrosGrupo.add(DAOController.addMiembroToGrupo(newGrupo.getDBID(), entAux));
+				BackendController.addMiembroToGrupo(newGrupo.getID(), entAux);
+			} 
+			
+			Usuario userAux = DAOController.recuperarUser(BackendController.getUserNumber()).get(); // anyadir al usuario al grupo
+			EntidadComunicable entAux = new EntidadComunicable(userAux);
+			miembrosGrupo.add(DAOController.addMiembroToGrupo(newGrupo.getDBID(), entAux));
+			BackendController.addMiembroToGrupo(newGrupo.getID(), entAux);
+			
 			UIController.addGroup(gID);
 		}
 		

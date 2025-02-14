@@ -5,7 +5,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.MalformedURLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -207,7 +206,7 @@ public class LoginPanel extends JPanel {
 			success = false;
 		}
 		
-		if(number != 0 && (int) (Math.log10(Math.abs(number)) + 1) != 9) {
+		if(number == 0 || (int) (Math.log10(Math.abs(number)) + 1) != 9) {
 			this.errors((byte)1);
 			success = false;
 		} if(passwd ==  null) {

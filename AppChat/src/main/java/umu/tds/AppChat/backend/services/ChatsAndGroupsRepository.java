@@ -94,4 +94,8 @@ public class ChatsAndGroupsRepository {
 		return this.listaGrupos.getGrupos();
 	}
 	
+	public void loadGroupList(List<Grupo> groupList) {
+		this.listaGrupos = new GroupsList((LinkedList<Grupo>)groupList);
+	}
+	
 }
