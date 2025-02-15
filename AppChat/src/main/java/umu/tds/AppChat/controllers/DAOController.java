@@ -177,10 +177,19 @@ public class DAOController {
 	public static void sendMessage(ModelMessage msg) {
 		int reciver = (int) msg.getReciver();
 		int userNum = msg.getSender();
+		
+		System.out.println("[DEBUG]" + "DAOConttroller" +" sender : " + userNum +" , reciver : " + reciver);
+		
 		if(isContact(userNum, reciver)) {
 			
 			EntidadComunicable contactoDestino = userAdapter.obtenerListaContactos(reciver).stream().filter(e -> e.getNumero() == userNum).findFirst().get();
-			EntidadComunicable contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			EntidadComunicable contactoOrgigen = null;
+			
+			if(isContact(reciver, userNum)) {
+				contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			}else {
+				contactoOrgigen = userAdapter.obtenerListaNoContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			}
 			
 			contactAdapter.addMsg(contactoDestino.getId(), msg);
 			contactAdapter.addMsg(contactoOrgigen.getId(), msg);
@@ -190,7 +199,13 @@ public class DAOController {
 		}else if(isNoContact(userNum, reciver)) {
 			
 			EntidadComunicable contactoDestino = userAdapter.obtenerListaNoContactos(reciver).stream().filter(e -> e.getNumero() == userNum).findFirst().get();
-			EntidadComunicable contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			EntidadComunicable contactoOrgigen = null;
+			
+			if(isContact(reciver, userNum)) {
+				contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			}else {
+				contactoOrgigen = userAdapter.obtenerListaNoContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			}
 			
 			noContactAdapter.addMsg(contactoDestino.getId(), msg);
 			contactAdapter.addMsg(contactoOrgigen.getId(), msg);
@@ -204,7 +219,13 @@ public class DAOController {
 			System.out.println("[DEBUG]" + "DAOConttroller" + " no contacto aniadido a :" + reciver + " nueva lista no contactos : " + getListaNoContactos(reciver));
 			
 			EntidadComunicable contactoDestino = userAdapter.obtenerListaNoContactos(reciver).stream().filter(e -> e.getNumero() == userNum).findFirst().get();
-			EntidadComunicable contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			EntidadComunicable contactoOrgigen = null;
+			
+			if(isContact(reciver, userNum)) {
+				contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			}else {
+				contactoOrgigen = userAdapter.obtenerListaNoContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			}
 			
 			noContactAdapter.addMsg(contactoDestino.getId(), msg);
 			contactAdapter.addMsg(contactoOrgigen.getId(), msg);

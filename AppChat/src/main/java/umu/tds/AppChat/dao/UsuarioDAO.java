@@ -197,7 +197,11 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	public boolean isContact(int numeroContacto, int userToTest) {
 		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(userToTest), LISTACONTACTOS);
 		//String numToTest = Integer.toString(numeroContacto);
+		System.out.println("[DEBUG]" + " UsuarioDAO" + " lista de IDs de contactos : " + listaContactos);
+		
 		List<EntidadComunicable> lista = obtenerListaContactosFomIDs(listaContactos);
+		
+		System.out.println("[DEBUG]" + " UsuarioDAO" + " numero de contactos : " + lista.size());
 		
 		return lista.stream().anyMatch(e -> e.getNumero() == numeroContacto);
 	}
