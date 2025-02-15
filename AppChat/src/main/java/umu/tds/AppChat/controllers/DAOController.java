@@ -1,5 +1,6 @@
 package umu.tds.AppChat.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import umu.tds.AppChat.dao.AbstractFactoriaDAO;
 import umu.tds.AppChat.dao.DAOException;
 import umu.tds.AppChat.dao.InterfaceContactoDAO;
 import umu.tds.AppChat.dao.InterfaceGrupoDAO;
+import umu.tds.AppChat.dao.InterfaceMensajeDAO;
 import umu.tds.AppChat.dao.InterfaceNoContactoDAO;
 import umu.tds.AppChat.dao.InterfaceUsuarioDAO;
 
@@ -19,6 +21,7 @@ public class DAOController {
 	private static InterfaceContactoDAO contactAdapter;
 	private static InterfaceGrupoDAO groupAdapter;
 	private static InterfaceNoContactoDAO noContactAdapter;
+	private static InterfaceMensajeDAO msgAdapter;
 	
 	protected static void initAdapters() {
 		AbstractFactoriaDAO factoria = null;
@@ -31,6 +34,7 @@ public class DAOController {
 		contactAdapter = factoria.getContactoDAO();
 		groupAdapter = factoria.getGrupoDAO();
 		noContactAdapter = factoria.getNoContactoDAO();
+		msgAdapter = factoria.getMensajeDAO();
 	}
 	
 	// ### users
@@ -170,24 +174,63 @@ public class DAOController {
 	
 	// ### message
 	
-	public static void sendMessage(ModelMessage msg) { // TODO terminar
+	public static void sendMessage(ModelMessage msg) {
 		int reciver = (int) msg.getReciver();
 		int userNum = msg.getSender();
 		if(isContact(userNum, reciver)) {
-			// TODO enviar mensaje al contacto y añadirlo en su entidad contacto
+			
+			EntidadComunicable contactoDestino = userAdapter.obtenerListaContactos(reciver).stream().filter(e -> e.getNumero() == userNum).findFirst().get();
+			EntidadComunicable contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			
+			contactAdapter.addMsg(contactoDestino.getId(), msg);
+			contactAdapter.addMsg(contactoOrgigen.getId(), msg);
+			
 			System.out.println("[DEBUG]" + "DAOConttroller" + " es contacto : " + userNum + " de : " + reciver);
-			return;
+			//return;
 		}else if(isNoContact(userNum, reciver)) {
-			// TODO enviar mensaje al contacto y añadirlo en su entidad no contacto
+			
+			EntidadComunicable contactoDestino = userAdapter.obtenerListaNoContactos(reciver).stream().filter(e -> e.getNumero() == userNum).findFirst().get();
+			EntidadComunicable contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			
+			noContactAdapter.addMsg(contactoDestino.getId(), msg);
+			contactAdapter.addMsg(contactoOrgigen.getId(), msg);
+			
 			System.out.println("[DEBUG]" + "DAOConttroller" + " es no contacto : " + userNum + " de : " + reciver);
-			return;
+			//return;
 		}else {
 			addNoContact(new EntidadComunicable(userNum, ""), reciver);
 			System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo no contacto : " + userNum + " a : " + reciver);
 			//userAdapter.addNoContacto(reciver,newNoContact); // solo neccesita el numero (clave ajena) el resto lo calcula  el adaptador
 			System.out.println("[DEBUG]" + "DAOConttroller" + " no contacto aniadido a :" + reciver + " nueva lista no contactos : " + getListaNoContactos(reciver));
-			// TODO enviar mensaje al no contacto (no hacer llamada recursiva, hace bucle infinito)
+			
+			EntidadComunicable contactoDestino = userAdapter.obtenerListaNoContactos(reciver).stream().filter(e -> e.getNumero() == userNum).findFirst().get();
+			EntidadComunicable contactoOrgigen = userAdapter.obtenerListaContactos(userNum).stream().filter(e -> e.getNumero() == reciver).findFirst().get();
+			
+			noContactAdapter.addMsg(contactoDestino.getId(), msg);
+			contactAdapter.addMsg(contactoOrgigen.getId(), msg);
+			//return;
 		}
+	}
+	
+	public static List<ModelMessage> getMessageFromAChat(EntidadComunicable contacto, int startLote, Optional<Integer> lastMsgId){
+		List<ModelMessage> lote = contactAdapter.obtenerLoteMsg(contacto.getId(), 10, startLote);
+		
+		System.out.println("[DEBUG]" + " DAOConttroller" + " se ha recuperado un lote de tamaño : " +lote.size());
+		
+		if(lastMsgId.isPresent()) { // recuperación de mensajes recientes por diferencia respecto a caché
+			List<ModelMessage> lista = new ArrayList<ModelMessage>();
+			//lote = contactAdapter.obtenerLoteMsg(contacto.getId(), 10, startLote);
+			int a =  lote.get(lote.size()).getBDID();
+			for(int i = lote.size(); a!= lastMsgId.get() && i>0; i--) {
+				lista.add(0, lote.get(i));
+				a = i > 0 ? lote.get(i).getBDID() : lote.get(i-1).getBDID();
+			}
+			lista.add(0, lote.get(lote.size()-lista.size()-1)); // añade el último elemento o la colisión con la caché
+			return lista;
+		}
+		
+		return lote;
+		
 	}
 	
 }

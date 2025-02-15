@@ -7,7 +7,9 @@ import javax.swing.ImageIcon;
 
 public class ModelMessage {
 	
-	private Icon icon;
+	private int BDID;
+	
+	private Icon icon; // tomar la url de la imagen del usuario que lo envia
 	private int sender;
 	private long reciver;
     private String name;
@@ -38,6 +40,10 @@ public class ModelMessage {
         this.emoji = msg.getEmoji();
 	}
 
+	public int getBDID() {
+		return BDID;
+	}
+    
 	public Icon getIcon() {
 		if (icon instanceof ImageIcon) {
 	        return new ImageIcon(((ImageIcon) icon).getImage());
@@ -69,6 +75,10 @@ public class ModelMessage {
 		return sender;
 	}
 
+	public void setBDID(int bDID) {
+		BDID = bDID;
+	}
+    
 	public void setSender(int sender) {
 		this.sender = sender;
 	}
@@ -111,6 +121,5 @@ public class ModelMessage {
                ", emoji=" + (emoji.isPresent() ? emoji.get() : "No emoji") + '\n' +
                " }";
     }
-
     
 }

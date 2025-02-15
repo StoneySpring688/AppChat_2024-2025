@@ -225,9 +225,75 @@ public class MainController {
     	executor.submit(() -> { BackendController.nuevoMensaje(msg.getReciver(), msg);});
     }
     
-    protected static void loadChat(long chatID) {
-    	// TODO Comprobar si está en caché y/o cargar de la bd de forma asincrona en lotes de 10
-    	executor.submit(() -> UIController.loadChat(BackendController.getChat(chatID)));
+    protected static void loadChat(Optional<EntidadComunicable> contacto, Optional<Grupo> grupo) {
+    	
+    	System.out.println("[DEBUG]" + " MainController" + " cargando mensajes");
+    	
+        if (contacto.isPresent()) {
+            List<ModelMessage> listaCaché = BackendController.getChat((long) contacto.get().getNumero());
+            Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
+            
+            System.out.println("[DEBUG]" + " MainController" + " es contacto");
+            
+            int startLote = 0;
+            
+            if (lastMsgId.isPresent()) {
+            	
+            	System.out.println("[DEBUG]" + " MainController" + " lastMsgLastId : " + lastMsgId);
+            	
+                List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), 0, lastMsgId);
+                startLote = lista.size();
+                List<ModelMessage> listaCachéAux = new ArrayList<>();
+                
+                while (!lista.isEmpty() && lista.get(0).getBDID() != lastMsgId.get()) {
+                	
+                	System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes nuevos");
+                	
+                    listaCachéAux.addAll(0, lista); // Agregar nuevos mensajes al inicio para mantener orden
+                    lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
+                    startLote += lista.size();
+                }
+                
+                System.out.println("[DEBUG]" + " MainController" + " añadiendo el lote de la colisión");
+                
+                listaCachéAux.addAll(0, lista); // Añadir el último conjunto de mensajes
+                listaCachéAux.remove(0); // Eliminar colisión
+                
+                System.out.println("[DEBUG]" + " MainController" + " renderizando los mensajes nuevos");
+                
+                BackendController.nuevosMensajes((long) contacto.get().getNumero(), listaCachéAux); // Guardar los nuevos mensajes en la caché del BackendController
+                
+                executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero()))); // Enviar los mensajes actualizados a la UI
+            }
+            
+            List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
+            for(ModelMessage msg : lista) System.out.println("[DEBUG]" + " mensaje a cargar : " + '\n' + msg.toString()); 
+            
+            executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
+            
+            System.out.println("[DEBUG]" + " MainController" + " cargando mensajes");
+            
+            while(UIController.getActualChatOptimization() == contacto.get().getNumero() && lista.size() > 0) {
+            	
+            	System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes");
+            	
+            	BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
+            	
+            	System.out.println("[DEBUG]" + " MainController" + " solicitando otro lote");
+            	
+            	lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
+            	startLote += lista.size();
+            	
+            	System.out.println("[DEBUG]" + " MainController" + " renderizando los mensajes");
+            	
+            	executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
+            }
+            
+            System.out.println("[DEBUG]" + " MainController" + " carga finalizada");
+            
+        }
     }
+
+
     
 }

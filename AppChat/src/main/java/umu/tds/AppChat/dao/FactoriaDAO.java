@@ -28,5 +28,10 @@ public class FactoriaDAO extends AbstractFactoriaDAO {
 	public InterfaceNoContactoDAO getNoContactoDAO() {
 		return NoContactoDAO.getUnicaInstancia();
 	}
+
+	@Override
+	public InterfaceMensajeDAO getMensajeDAO() {
+		return MensajeDAO.getUnicaInstancia();
+	}
 	
 }

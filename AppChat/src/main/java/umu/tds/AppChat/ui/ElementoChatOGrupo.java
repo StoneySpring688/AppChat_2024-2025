@@ -90,6 +90,14 @@ public class ElementoChatOGrupo extends JPanel {
 
     }
     
+    public Optional<EntidadComunicable> getContacto(){
+    	return this.contacto == null || this.contacto.isEmpty() ? Optional.empty() : this.contacto;
+    }
+    
+    public Optional<Grupo> getGrupo() {
+    	return this.grupo == null || this.grupo.isEmpty() ? Optional.empty() : this.grupo;
+    }
+    
     public String getNombre() {
         return !this.isGrupo ? this.contacto.get().getNombre() : this.grupo.get().getNombre();
     }

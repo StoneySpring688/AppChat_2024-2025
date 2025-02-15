@@ -117,6 +117,31 @@ public class BackendController {
         //System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
     }
     
+    public static void nuevosMensajes(long chatID, List<ModelMessage> mensajes) {
+    	for(ModelMessage mensaje : mensajes) {
+    		nuevoMensaje(chatID, mensaje);
+    	}   
+        //System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
+    }
+    
+    public static void nuevosMensajesAlInicio(long chatID, List<ModelMessage> mensajes) {
+        if (mensajes == null || mensajes.isEmpty()) {
+            return;
+        }
+        
+        List<ModelMessage> mensajesEnCache = chatService.getLRUChat(chatID);
+        
+        if (mensajesEnCache.isEmpty()) {
+            nuevosMensajes(chatID, mensajes); // Si la caché está vacía, simplemente añadimos los mensajes
+        } else {
+            List<ModelMessage> nuevaLista = new ArrayList<>(mensajes);
+            nuevaLista.addAll(mensajesEnCache); // Añadir los mensajes existentes al final de los nuevos
+            
+            nuevosMensajes(chatID, nuevaLista); // Guardar la lista actualizada
+        }
+    }
+
+    
     public static List<ModelMessage> obtenerMensajesChat() {
         return chatService.getMsgChatActual();
     }

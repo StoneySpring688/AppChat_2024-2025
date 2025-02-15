@@ -40,4 +40,5 @@ public abstract class AbstractFactoriaDAO {
 	public abstract InterfaceContactoDAO getContactoDAO();
 	public abstract InterfaceGrupoDAO getGrupoDAO();
 	public abstract InterfaceNoContactoDAO getNoContactoDAO();
+	public abstract InterfaceMensajeDAO getMensajeDAO();
 }

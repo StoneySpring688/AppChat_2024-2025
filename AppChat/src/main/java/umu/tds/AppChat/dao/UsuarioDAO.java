@@ -18,8 +18,6 @@ import umu.tds.AppChat.backend.utils.Usuario;
 
 public class UsuarioDAO implements InterfaceUsuarioDAO{
 	
-
-
 	// entidad
 	private static final String USUARIO = "Usuario";
 	
@@ -86,7 +84,6 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 				new Propiedad(LISTAGRUPOS, ""),
 				new Propiedad(LISTANOCONTACTOS, "")
 				)));
-		
 		return eUser;
 	}
 	
