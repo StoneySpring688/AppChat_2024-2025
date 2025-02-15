@@ -26,6 +26,7 @@ public class EntidadComunicable {
 		this.numero = ent.getNumero();
 		this.nombre = ent.getNombre();
 		this.iconUrl = ent.getIconUrl();
+		this.id = ent.getId();
 	}
 
 	public int getId() {

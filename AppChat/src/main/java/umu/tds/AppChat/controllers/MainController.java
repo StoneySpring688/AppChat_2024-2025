@@ -267,8 +267,10 @@ public class MainController {
             }
             
             List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
+            
             for(ModelMessage msg : lista) System.out.println("[DEBUG]" + " mensaje a cargar : " + '\n' + msg.toString()); 
             
+            BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
             executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
             
             System.out.println("[DEBUG]" + " MainController" + " cargando mensajes");
