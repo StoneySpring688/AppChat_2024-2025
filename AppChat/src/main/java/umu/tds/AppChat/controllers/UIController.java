@@ -131,9 +131,12 @@ public class UIController {
     }
     
     public static void doLogout() {
-    	MainController.doLogout();    	
-    	showPanelIntermedio();
+    	setActualChatOptimization(0);
+    	MainController.doLogout(); 
     	appFrame.resetMainPanel();
+    	
+    	showPanelIntermedio();
+    	
     	appFrame.resizeForLoginPanel();
     	showLogin();
     }
@@ -155,9 +158,11 @@ public class UIController {
     
     public static void addChats(){
     	for(EntidadComunicable ent : BackendController.getListaContactos()) {
+    		System.out.println("cuenta contacto");
     		addChat(ent);
     	}
     	for(EntidadComunicable ent : BackendController.getListaNoContactos()) {
+    		System.out.println("cuenta noContacto");
     		addChat(ent);
     	}
     }
@@ -208,6 +213,7 @@ public class UIController {
     // ### send messages
     
     public static void sendMessage(long reciver, Optional<String> message, Optional<Integer> emoji) {
+    	System.out.println("[DEBUG]" + " UIController " + "sendMessage");
 		SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
 		String fecha =fechaAux.format(new Date());
 		String nombre = BackendController.getUserName();
@@ -221,11 +227,11 @@ public class UIController {
 			
 	        if (icono.getIconWidth() <= 0 && icono.getIconHeight() <= 0) { // Verifica si la imagen no es válida         
 	            //System.out.println("Imagen inválida.");
-	            icono = new ImageIcon(MainController.class.getResource("/assets/ProfilePic.png"));
+	            icono = new ImageIcon(UIController.class.getResource("/assets/ProfilePic.png"));
 	        }
 	        
 		} catch (MalformedURLException e) {
-            icono = new ImageIcon(MainController.class.getResource("/assets/ProfilePic.png"));
+            icono = new ImageIcon(UIController.class.getResource("/assets/ProfilePic.png"));
 		}
 		
 		int sender = BackendController.getUserNumber();

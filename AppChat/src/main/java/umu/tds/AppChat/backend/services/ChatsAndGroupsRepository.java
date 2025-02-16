@@ -102,4 +102,12 @@ public class ChatsAndGroupsRepository {
 		this.listaGrupos = new GroupsList((LinkedList<Grupo>)groupList);
 	}
 	
+	//utils
+	
+	public void reset() {
+		this.listaContactos = new ContactsList();
+		this.usuariosNoContactos = new ContactsList();
+		this.listaGrupos = new GroupsList();
+	}
+	
 }

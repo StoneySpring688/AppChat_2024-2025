@@ -145,13 +145,13 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
 		
 		List<Integer> lote = obtenerLoteIDsMsg(msgs, batchSize, origin); //mensajes de más reciente a más antiguo (en ese orden)
-		for(Integer msg : lote) System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msg);
+		//for(Integer msg : lote) System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msg);
 		//System.out.println("[DEBUG]" + " ContactDAO" + " se han recuperado : " + lote.size() + " IDs");
 		
 		for(int i = 0; i < lote.size(); i++) {
 			lista.add(adaptadorMsg.get(lote.get(i)));
 		}
-		for(ModelMessage msg : lista) System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msg.toString());
+		//for(ModelMessage msg : lista) System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msg.toString());
 		return lista;
 	}
 	

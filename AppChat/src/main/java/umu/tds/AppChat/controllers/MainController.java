@@ -105,9 +105,9 @@ public class MainController {
     public static void onLoginSuccess(int numero) {
     	actualizarEstado(loggedIn);
     	BackendController.loadCurrentUser(DAOController.recuperarUser(numero).get());
-    	BackendController.loadContactList(DAOController.getListaContactos(BackendController.getUserNumber()));
-    	BackendController.loadGroupList(DAOController.getListaGrupos(BackendController.getUserNumber()));
-    	BackendController.loadNoContactList(DAOController.getListaNoContactos(BackendController.getUserNumber()));
+    	BackendController.loadContactList(DAOController.getListaContactos(numero));
+    	BackendController.loadGroupList(DAOController.getListaGrupos(numero));
+    	BackendController.loadNoContactList(DAOController.getListaNoContactos(numero));
     	UIController.onLoginSuccess();
     }
     
@@ -233,21 +233,21 @@ public class MainController {
             List<ModelMessage> listaCaché = BackendController.getChat((long) contacto.get().getNumero());
             Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
             
-            System.out.println("[DEBUG]" + " MainController" + " es contacto");
+            //System.out.println("[DEBUG]" + " MainController" + " es contacto");
             
             int startLote = 0;
+            List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), 0, lastMsgId);
             
-            if (lastMsgId.isPresent()) {
+            if (lastMsgId.isPresent() && lista.get(0).getBDID() != lastMsgId.get()) {
             	
-            	System.out.println("[DEBUG]" + " MainController" + " lastMsgLastId : " + lastMsgId);
+            	//System.out.println("[DEBUG]" + " MainController" + " lastMsgLastId : " + lastMsgId);
             	
-                List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), 0, lastMsgId);
                 startLote = lista.size();
                 List<ModelMessage> listaCachéAux = new ArrayList<>();
                 
                 while (!lista.isEmpty() && lista.get(0).getBDID() != lastMsgId.get()) {
                 	
-                	System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes nuevos");
+                	//System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes nuevos");
                 	
                     listaCachéAux.addAll(0, lista); // Agregar nuevos mensajes al inicio para mantener orden
                     lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
@@ -259,27 +259,35 @@ public class MainController {
                 listaCachéAux.addAll(0, lista); // Añadir el último conjunto de mensajes
                 listaCachéAux.remove(0); // Eliminar colisión
                 
+                
                 lastMsgId = Optional.empty(); // ya se han restaurado ppor lo tanto ya no debe tener valor asignado
                 //System.out.println("[DEBUG]" + " MainController" + " renderizando los mensajes nuevos");
                 
                 BackendController.nuevosMensajes((long) contacto.get().getNumero(), listaCachéAux); // Guardar los nuevos mensajes en la caché del BackendController
-                //executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero()))); // Enviar los mensajes actualizados a la UI
+                //executor.submit(() -> UIController.renderMessage(listaCachéAux)); // Enviar los mensajes actualizados a la UI
+                //System.out.println("[DEBUG]" + " MainController" + " nuevos mensajes cargados" + " ###################################");
+                
+            }else if(lastMsgId.isEmpty()) {
+            	//System.out.println("[DEBUG]" + " MainController" + " cargando caché por primera vez" + " ###################################" );
+            	BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
             }
-            
-            List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
-            
-            for(ModelMessage msg : lista) System.out.println("[DEBUG]" + "MainController" + " mensaje a cargar : " + '\n' + msg.toString()); 
-            
-            BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
             executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
+            
+            lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
+            
+            //for(ModelMessage msg : lista) System.out.println("[DEBUG]" + "MainController" + " mensaje a cargar : " + '\n' + msg.toString()); 
+            
+            //BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
+            //executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
             
             //System.out.println("[DEBUG]" + " MainController" + " cargando mensajes");
             
-            while(UIController.getActualChatOptimization() == contacto.get().getNumero() && lista.size() > 0) {
+            
+            while(UIController.getActualChatOptimization() == (long)contacto.get().getNumero() && lista.size() > 0) {
             	
             	//System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes");
             	
-            	BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
+            	//BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
             	
             	//System.out.println("[DEBUG]" + " MainController" + " solicitando otro lote");
             	
@@ -291,7 +299,7 @@ public class MainController {
             	executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
             }
             
-            //System.out.println("[DEBUG]" + " MainController" + " carga finalizada");
+            //System.out.println("[DEBUG]" + " MainController" + " carga finalizada" + " ###################################");
             
         }
     }

@@ -38,8 +38,11 @@ public class BackendController {
     }
     
     protected static void doLogout() {
+    	
+    	System.out.println("backend do logout");
+    	
     	chatService = new ChatService(15);
-    	chatsRepository = new ChatsAndGroupsRepository();
+    	chatsRepository.reset();
     	removeCurrentUser();
     } 
     
@@ -147,6 +150,9 @@ public class BackendController {
     }
     
     public static List<ModelMessage> getChat(long chatID){
+    	List<ModelMessage> lista = chatService.getLRUChat(chatID);
+    	System.out.println("[DEBUG]" + " backendController " + "lista de : " + lista.size() + " chats");
+    	
     	return chatService.getLRUChat(chatID);
     }
     
@@ -161,6 +167,7 @@ public class BackendController {
     }
     
     public static List<EntidadComunicable> getListaContactos() {
+    	System.out.println("num contactos : " + chatsRepository.getContactos().size());
     	return chatsRepository.getContactos();
     }
     
@@ -183,6 +190,7 @@ public class BackendController {
     }
     
     public static List<EntidadComunicable> getListaNoContactos(){
+    	System.out.println("num no contactos : " + chatsRepository.getUsuariosNoContactos().size());
     	return chatsRepository.getUsuariosNoContactos();
     }
     

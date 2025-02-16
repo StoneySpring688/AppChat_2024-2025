@@ -26,22 +26,38 @@ public class ChatPanel extends PanelGrande {
 		this.fondo = new Background();
 		this.fondo.setBounds(0, 60, 920, 660);
 		this.add(fondo);
-		this.emojiPanel = this.emojiPanel==null ? new EmojiPanel() : this.emojiPanel;
-		this.emojiPanel.addEmojiClickListener(new EmojiClickListener() {
-			
-			@Override
-			public void emojiClicked(ImageIcon emoji, int id) {
-				UIController.sendMessage(chat.getCurrentChatID() ,Optional.empty(), Optional.of(id));
-			}
-		});
+		
+		//this.emojiPanel = this.emojiPanel==null ? new EmojiPanel() : this.emojiPanel;
+		
+		this.emojiPanel = new EmojiPanel();
 		
 		this.chat = new ChatArea(this.emojiPanel);
 		this.chat.setBounds(5, 5, 915, 655);
 		this.fondo.add(chat);
+		
+		this.emojiPanel.addEmojiClickListener(new EmojiClickListener() {
+			
+			@Override
+			public void emojiClicked(ImageIcon emoji, int id) {
+
+				 if (chat == null) {
+		                System.out.println("[ERROR] No hay chat activo en este ChatPanel");
+		                return;
+		            }
+				
+				System.out.println("[DEBUG]" + " ChatPanel " + "enviando emoji a : " + chat.getCurrentChatID());
+				
+				UIController.sendMessage(chat.getCurrentChatID() ,Optional.empty(), Optional.of(id));
+			}
+		});
+
 		this.chat.addChatEvent(new ChatEvent() {
 			
 			@Override
 			public void mousePressedSendButton(ActionEvent evt) {
+				
+				System.out.println("[DEBUG]" + " ChatPanel " + "enviando mensaje a : " + chat.getCurrentChatID());
+				
 				String mensaje = chat.getText().trim();
 				UIController.sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
 			}
@@ -89,6 +105,9 @@ public class ChatPanel extends PanelGrande {
 	}
 	
 	public void changeChat(ElementoChatOGrupo chat) {
+		
+		System.out.println("[DEBUG]" + " ChatPanel " + "cambiando chat a : " + chat.getNumero());
+		
 			this.chat.clearChatBox();
 			this.chat.setCurrentChat(chat);
 		

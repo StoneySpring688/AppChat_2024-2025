@@ -110,5 +110,13 @@ public class ChatsList extends JPanel {
 	public void addChat(EntidadComunicable contacto) {
 		this.chats.addElement(new ElementoChatOGrupo(Optional.of(contacto), Optional.empty()));
 	}
+	
+	public void reset() {
+	    this.chats.clear();
+	    this.lista.setModel(this.chats);
+	    this.lista.revalidate();
+	    this.lista.repaint();
+	}
+
 
 }

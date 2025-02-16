@@ -158,10 +158,7 @@ public class AppFrame extends JFrame {
     }
     
     public void resetMainPanel() {
-    	this.mainPanel = new MainPanel();
-    	this.mainPanel.repaint();
-    	this.mainPanel.revalidate();
-    	this.panelIntercambiable.add(mainPanel, "mainPanel");
+    	this.mainPanel.reset();
     }
     
     public void changePanel(String panel) {

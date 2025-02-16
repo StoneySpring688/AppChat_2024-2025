@@ -60,6 +60,17 @@ public class MainPanel extends JPanel {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		
+		//panelesPrincipales
+		PanelGrande PanelGrandePorDefecto = new PanelGrande();
+		Background fondoPorDefecto = new Background();
+		fondoPorDefecto.setBounds(0, 60, 920, 660);
+		PanelGrandePorDefecto.add(fondoPorDefecto);
+		this.searchPanel = new SearchPanel();
+		this.shopPanel = new PremiumShopPanel();
+		this.panelAnyadirContacto = new AddContactPanel();
+		this.panelCrearGrupo = new CreateGroupPanel();
+		this.chat = new ChatPanel();
+		
 		//panelPrincipal
 		principal = new JPanel();
 		principal.setBounds(360, 0, 920, 720);
@@ -68,17 +79,6 @@ public class MainPanel extends JPanel {
 		//actualizador principal
 		actualizadorUiPrincipal = new CardLayout();
 		principal.setLayout(this.actualizadorUiPrincipal);
-		
-		//panelesPrincipales
-		PanelGrande PanelGrandePorDefecto = new PanelGrande();
-		Background fondoPorDefecto = new Background();
-		fondoPorDefecto.setBounds(0, 60, 920, 660);
-		PanelGrandePorDefecto.add(fondoPorDefecto);
-		searchPanel = new SearchPanel();
-		shopPanel = new PremiumShopPanel();
-		panelAnyadirContacto = new AddContactPanel();
-		panelCrearGrupo = new CreateGroupPanel();
-		chat = new ChatPanel();
 		
 		principal.add(PanelGrandePorDefecto, "porDefecto");
 		principal.add(searchPanel, "search");
@@ -261,6 +261,15 @@ public class MainPanel extends JPanel {
 		
 		
 		this.yourAvatar.setImage(profilePic);
+	}
+	
+	public void reset() {
+		this.actualizadorMenu1.show(this.panelMenu1, "porDefecto");
+		changePanelPrincipal("porDefecto");
+		
+		this.chatslist.reset();
+		this.repaint();
+		this.revalidate();
 	}
 	
 	@SuppressWarnings("unchecked")

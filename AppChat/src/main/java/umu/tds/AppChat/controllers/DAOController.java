@@ -236,7 +236,7 @@ public class DAOController {
 	public static List<ModelMessage> getMessageFromAChat(EntidadComunicable contacto, int startLote, Optional<Integer> lastMsgId){
 		List<ModelMessage> lote = contactAdapter.obtenerLoteMsg(contacto.getId(), 10, startLote);
 		
-		for(ModelMessage msg : lote) System.out.println("[DEBUG]" + " DaoController" + " mensaje a cargar : " + '\n' + msg.toString()); 
+		//for(ModelMessage msg : lote) System.out.println("[DEBUG]" + " DaoController" + " mensaje a cargar : " + '\n' + msg.toString()); 
 		//System.out.println("[DEBUG]" + " DAOConttroller" + " se ha recuperado un lote de tamaño : " +lote.size());
 		
 		if(lastMsgId.isPresent()) { // recuperación de mensajes recientes por diferencia respecto a caché
@@ -245,7 +245,7 @@ public class DAOController {
 			int a =  lote.get(lote.size()-1).getBDID();
 				
 				for(int i = lote.size(); a!= lastMsgId.get() && i>0; i--) {
-					System.out.println("[DEBUG]" + " DaoController" + " actualizando mensajes con los recientes"); 
+					//System.out.println("[DEBUG]" + " DaoController" + " actualizando mensajes con los recientes"); 
 					lista.add(0, lote.get(i));
 					a = i > 0 ? lote.get(i).getBDID() : lote.get(i-1).getBDID();
 				}
