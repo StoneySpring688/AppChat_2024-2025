@@ -28,6 +28,7 @@ import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.ImageAvatar;
+import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class ChatArea extends JPanel {
 
@@ -246,10 +247,13 @@ public class ChatArea extends JPanel {
         scrollToBottom();
     }
     
-    public void addChatBoxAtTop(List<ModelMessage> msgs, ChatBox.BoxType type) {
+    public void addChatBoxAtTop(List<ModelMessage> msgs, int userNumber) {
         //int scrollMax = scrollBody.getVerticalScrollBar().getMaximum(); no daba tiempo a calcular
 
+    	ChatBox.BoxType type = null;
+    	
         for(ModelMessage msg : msgs) {
+        	type = msg.getSender() == userNumber ? BoxType.RIGHT : BoxType.LEFT;
         	if (type == ChatBox.BoxType.LEFT) {
                 body.add(new ChatBox(type, msg), "width ::80%", 0); // Agrega el mensaje en la primera posición
             } else {

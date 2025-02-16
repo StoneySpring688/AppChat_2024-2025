@@ -165,7 +165,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			listaContactos += " " + contact.getId();
 		}
 		
-		System.out.println("[DEBUG]" + "UsuarioDAO" + " db lista contactos : " + listaContactos);
+		//System.out.println("[DEBUG]" + "UsuarioDAO" + " db lista contactos : " + listaContactos);
 		
 		for(Propiedad prop : servPersistencia.recuperarEntidad(number).getPropiedades()) {
 			if(prop.getNombre().equals(LISTACONTACTOS)) {
@@ -173,7 +173,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
-		System.out.println("[DEBUG]" + "UsuarioDAO" + " comprobación lista de contactos : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS));
+		//System.out.println("[DEBUG]" + "UsuarioDAO" + " comprobación lista de contactos : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS));
 	}
 	
 	public void eliminarContacto(int number, EntidadComunicable contact) {
@@ -197,11 +197,11 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	public boolean isContact(int numeroContacto, int userToTest) {
 		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(userToTest), LISTACONTACTOS);
 		//String numToTest = Integer.toString(numeroContacto);
-		System.out.println("[DEBUG]" + " UsuarioDAO" + " lista de IDs de contactos : " + listaContactos);
+		//System.out.println("[DEBUG]" + " UsuarioDAO" + " lista de IDs de contactos : " + listaContactos);
 		
 		List<EntidadComunicable> lista = obtenerListaContactosFomIDs(listaContactos);
 		
-		System.out.println("[DEBUG]" + " UsuarioDAO" + " numero de contactos : " + lista.size());
+		//System.out.println("[DEBUG]" + " UsuarioDAO" + " numero de contactos : " + lista.size());
 		
 		return lista.stream().anyMatch(e -> e.getNumero() == numeroContacto);
 	}
@@ -218,7 +218,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			listaGrupos += " " + grupo.getDBID();
 		}
 		
-		System.out.println("[DEBUG]" + "UsuarioDAO" + " db lista grupos del usuario : " + listaGrupos);
+		//System.out.println("[DEBUG]" + "UsuarioDAO" + " db lista grupos del usuario : " + listaGrupos);
 		
 		for(Propiedad prop : servPersistencia.recuperarEntidad(number).getPropiedades()) {
 			if(prop.getNombre().equals(LISTAGRUPOS)) {
@@ -226,7 +226,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
-		System.out.println("[DEBUG]" + "UsuarioDAO" + " comprobación lista de grupos del usuario : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTAGRUPOS));
+		//System.out.println("[DEBUG]" + "UsuarioDAO" + " comprobación lista de grupos del usuario : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTAGRUPOS));
 	}
 	
 	public void eliminarGrupoFromUser(int number, Grupo grupo) {
@@ -259,7 +259,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			listaNoContactos += " " + noContact.getId();
 		}
 		
-		System.out.println("[DEBUG]" + "UsuarioDAO" + " db lista no contactos : " + listaNoContactos);
+		//System.out.println("[DEBUG]" + "UsuarioDAO" + " db lista no contactos : " + listaNoContactos);
 		
 		for(Propiedad prop : servPersistencia.recuperarEntidad(number).getPropiedades()) {
 			if(prop.getNombre().equals(LISTANOCONTACTOS)) {
@@ -267,7 +267,7 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
-		System.out.println("[DEBUG]" + "UsuarioDAO" + " comprobación lista de no contactos : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTANOCONTACTOS));
+		//System.out.println("[DEBUG]" + "UsuarioDAO" + " comprobación lista de no contactos : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTANOCONTACTOS));
 	}
 	
 	public void eliminarNoContacto(int number, EntidadComunicable noContact) {

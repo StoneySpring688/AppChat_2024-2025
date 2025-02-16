@@ -97,7 +97,7 @@ public class BackendController {
 			userIconCached = new ImageIcon(UIController.class.getResource("/assets/ProfilePic.png"));
 		}
 		
-		System.out.println("[DEBUG] " + "BackendController " + "usuario cargado : " + usuario.getNombre() +" , " + usuario.getNumero());
+		//System.out.println("[DEBUG] " + "BackendController " + "usuario cargado : " + usuario.getNombre() +" , " + usuario.getNumero());
 		
     }
     

@@ -13,6 +13,7 @@ import beans.Entidad;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.controllers.DAOController;
 import umu.tds.AppChat.ui.RegisterPanel;
@@ -75,9 +76,11 @@ public class MensajeDAO implements InterfaceMensajeDAO {
 	private Entidad msgToEntidad(ModelMessage msg) {
 		Entidad eUser = new Entidad();
 		eUser.setNombre(MSG);
+		EntidadComunicable sender = DAOController.recuperarUser(msg.getSender()).get();
 		
 		eUser.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
-				new Propiedad(ICONURL, DAOController.recuperarUser(msg.getSender()).get().getIconUrl()),
+				new Propiedad(ICONURL, sender.getIconUrl()),
+				new Propiedad(SENDERNAME, sender.getNombre()),
 				new Propiedad(SENDER, Integer.toString(msg.getSender())),
 				new Propiedad(RECIVER, Long.toString(msg.getReciver())),
 				new Propiedad(SENDDATE, msg.getDate()),

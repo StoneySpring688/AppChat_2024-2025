@@ -193,11 +193,7 @@ public class UIController {
         	appFrame.llamarMetodo(7, Optional.of(chat), Optional.empty());
         	appFrame.showChatPanel();
         	
-        	System.out.println("[DEBUG]" + " UIController" + " cambiando de chat");
-        	
-        	if(chat.getContacto().isPresent()) {
-        		System.out.println("[DEBUG]" + " UIController" + " isPresent");
-        	}
+        	//System.out.println("[DEBUG]" + " UIController" + " cambiando de chat");
         	
         	MainController.loadChat(chat.getContacto(), chat.getGrupo());
         	setActualChatOptimization(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());

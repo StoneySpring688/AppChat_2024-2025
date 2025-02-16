@@ -69,7 +69,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		eContact = servPersistencia.registrarEntidad(eContact);
 		contacto.setId(eContact.getId());
 		
-		System.out.println("[DEBUG]" + "ContactoDAO" + " entidad id : "+eContact.getId() +" parametro id : "+contacto.getId());
+		//System.out.println("[DEBUG]" + "ContactoDAO" + " entidad id : "+eContact.getId() +" parametro id : "+contacto.getId());
 
 	}
 
@@ -121,7 +121,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		}else {
 			msgs += " " + msg.getBDID();
 		}
-		System.out.println("[DEBUG]" + "ContactoDAO" + " db lista mensajes : " + msgs);
+		//System.out.println("[DEBUG]" + "ContactoDAO" + " db lista mensajes : " + msgs);
 		
 		for(Propiedad prop : servPersistencia.recuperarEntidad(id).getPropiedades()) {
 			if(prop.getNombre().equals(LISTAMSG)) {
@@ -129,7 +129,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
-		System.out.println("[DEBUG]" + "ContactoDAO" + " comprobación lista de mensajes : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
+		//System.out.println("[DEBUG]" + "ContactoDAO" + " comprobación lista de mensajes : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
 	}
 	
 	public List<ModelMessage> obtenerListaMsg(int id){
@@ -139,18 +139,19 @@ public class ContactoDAO implements InterfaceContactoDAO {
 	public List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin){
 		List<ModelMessage> lista = new ArrayList<ModelMessage>();
 		String msgs = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG);
-		
-		System.out.println("[DEBUG]" + " ContactDAO" + " contacto : " + id + " lista de IDs : " + msgs);
+		System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msgs);
+		//System.out.println("[DEBUG]" + " ContactDAO" + " contacto : " + id + " lista de IDs : " + msgs);
 		
 		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
 		
 		List<Integer> lote = obtenerLoteIDsMsg(msgs, batchSize, origin); //mensajes de más reciente a más antiguo (en ese orden)
-		
-		System.out.println("[DEBUG]" + " ContactDAO" + " se han recuperado : " + lote.size() + " IDs");
+		for(Integer msg : lote) System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msg);
+		//System.out.println("[DEBUG]" + " ContactDAO" + " se han recuperado : " + lote.size() + " IDs");
 		
 		for(int i = 0; i < lote.size(); i++) {
 			lista.add(adaptadorMsg.get(lote.get(i)));
 		}
+		for(ModelMessage msg : lista) System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msg.toString());
 		return lista;
 	}
 	
@@ -214,7 +215,8 @@ public class ContactoDAO implements InterfaceContactoDAO {
 	    
 	    // Obtener batchSize mensajes o hasta que se acaben los disponibles
 	    for (int i = 0; i < batchSize && startIndex - i >= 0; i++) {
-	        lote.add(Integer.parseInt(tokens[startIndex - i]));
+	    	//System.out.println("[DEBUG]" + " ContactoDAO " + " ID procesado : " + Integer.parseInt(tokens[startIndex - i]));
+	        lote.add(0, Integer.parseInt(tokens[startIndex - i]));
 	    }
 	    
 	    return lote;

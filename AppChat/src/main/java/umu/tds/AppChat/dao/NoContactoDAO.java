@@ -68,7 +68,7 @@ public class NoContactoDAO implements InterfaceNoContactoDAO {
 		eNoContact = servPersistencia.registrarEntidad(eNoContact);
 		noContacto.setId(eNoContact.getId());
 		
-		System.out.println("[DEBUG]" + "noContactoDAO" + " entidad id : "+eNoContact.getId() +" parametro id : "+noContacto.getId());
+		//System.out.println("[DEBUG]" + "noContactoDAO" + " entidad id : "+eNoContact.getId() +" parametro id : "+noContacto.getId());
 
 	}
 
@@ -77,11 +77,6 @@ public class NoContactoDAO implements InterfaceNoContactoDAO {
 		Entidad eNoContact;
 		eNoContact = servPersistencia.recuperarEntidad(noContacto.getId());
 		return servPersistencia.borrarEntidad(eNoContact);
-	}
-
-	@Override
-	public void update(EntidadComunicable noContacto) {
-		// se deja para seguir la misma estructura, pero el número es la referencia(clave ajena), y este no cambia nunca
 	}
 
 	@Override
@@ -108,7 +103,7 @@ public class NoContactoDAO implements InterfaceNoContactoDAO {
 		}else {
 			msgs += " " + msg.getBDID();
 		}
-		System.out.println("[DEBUG]" + "ContactoDAO" + " db lista mensajes : " + msgs);
+		//System.out.println("[DEBUG]" + "ContactoDAO" + " db lista mensajes : " + msgs);
 		
 		for(Propiedad prop : servPersistencia.recuperarEntidad(id).getPropiedades()) {
 			if(prop.getNombre().equals(LISTAMSG)) {
@@ -116,7 +111,7 @@ public class NoContactoDAO implements InterfaceNoContactoDAO {
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
-		System.out.println("[DEBUG]" + "ContactoDAO" + " comprobación lista de mensajes : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
+		//System.out.println("[DEBUG]" + "ContactoDAO" + " comprobación lista de mensajes : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
 	}
 	
 	public List<ModelMessage> obtenerListaMsg(int id){
@@ -133,6 +128,7 @@ public class NoContactoDAO implements InterfaceNoContactoDAO {
 		for(int i = 0; i < lote.size(); i++) {
 			lista.add(adaptadorMsg.get(lote.get(i)));
 		}
+		for(ModelMessage msg : lista) System.out.println("[DEBUG]" + " NoContactoDAO" + " mensaje a cargar : " + '\n' + msg.toString());
 		return lista;
 	}
 	

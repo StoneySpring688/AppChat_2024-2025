@@ -77,7 +77,7 @@ public class ChatPanel extends PanelGrande {
 	        if (batch.size() == batchSize || i == 0) { // renderizar en lotes de máximo 5
 	            List<ModelMessage> finalBatch = new ArrayList<>(batch); // Copia para evitar modificaciones concurrentes
 	            
-	            this.chat.addChatBoxAtTop(finalBatch, finalBatch.get(0).getSender() == userNumber ? BoxType.RIGHT : BoxType.LEFT);
+	            this.chat.addChatBoxAtTop(finalBatch, userNumber);
 
 	            batch.clear(); // Limpiar lote para los siguientes mensajes
 	        }
