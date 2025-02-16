@@ -139,7 +139,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 	public List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin){
 		List<ModelMessage> lista = new ArrayList<ModelMessage>();
 		String msgs = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG);
-		System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msgs);
+		//System.out.println("[DEBUG]" + " ContactoDAO" + " mensaje a cargar : " + '\n' + msgs);
 		//System.out.println("[DEBUG]" + " ContactDAO" + " contacto : " + id + " lista de IDs : " + msgs);
 		
 		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();

@@ -233,13 +233,13 @@ public class MainController {
             List<ModelMessage> listaCaché = BackendController.getChat((long) contacto.get().getNumero());
             Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
             
-            //System.out.println("[DEBUG]" + " MainController" + " es contacto");
+            System.out.println("[DEBUG]" + " MainController" + " es contacto");
             
             int startLote = 0;
             
             if (lastMsgId.isPresent()) {
             	
-            	//System.out.println("[DEBUG]" + " MainController" + " lastMsgLastId : " + lastMsgId);
+            	System.out.println("[DEBUG]" + " MainController" + " lastMsgLastId : " + lastMsgId);
             	
                 List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), 0, lastMsgId);
                 startLote = lista.size();
@@ -247,7 +247,7 @@ public class MainController {
                 
                 while (!lista.isEmpty() && lista.get(0).getBDID() != lastMsgId.get()) {
                 	
-                	//System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes nuevos");
+                	System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes nuevos");
                 	
                     listaCachéAux.addAll(0, lista); // Agregar nuevos mensajes al inicio para mantener orden
                     lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
@@ -259,10 +259,11 @@ public class MainController {
                 listaCachéAux.addAll(0, lista); // Añadir el último conjunto de mensajes
                 listaCachéAux.remove(0); // Eliminar colisión
                 
+                lastMsgId = Optional.empty(); // ya se han restaurado ppor lo tanto ya no debe tener valor asignado
                 //System.out.println("[DEBUG]" + " MainController" + " renderizando los mensajes nuevos");
                 
                 BackendController.nuevosMensajes((long) contacto.get().getNumero(), listaCachéAux); // Guardar los nuevos mensajes en la caché del BackendController
-                executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero()))); // Enviar los mensajes actualizados a la UI
+                //executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero()))); // Enviar los mensajes actualizados a la UI
             }
             
             List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);

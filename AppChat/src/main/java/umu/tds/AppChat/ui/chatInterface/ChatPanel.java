@@ -30,7 +30,7 @@ public class ChatPanel extends PanelGrande {
 		this.emojiPanel.addEmojiClickListener(new EmojiClickListener() {
 			
 			@Override
-			public void emojiClicked(ImageIcon emoji, int id) { //TODO construir el mennsaje con toda  la información en el controlador  principal
+			public void emojiClicked(ImageIcon emoji, int id) {
 				UIController.sendMessage(chat.getCurrentChatID() ,Optional.empty(), Optional.of(id));
 			}
 		});
@@ -41,7 +41,7 @@ public class ChatPanel extends PanelGrande {
 		this.chat.addChatEvent(new ChatEvent() {
 			
 			@Override
-			public void mousePressedSendButton(ActionEvent evt) { //TODO construir el mennsaje con toda  la información en el controlador  principal
+			public void mousePressedSendButton(ActionEvent evt) {
 				String mensaje = chat.getText().trim();
 				UIController.sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
 			}
