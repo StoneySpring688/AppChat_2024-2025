@@ -33,6 +33,10 @@ public class ChatService {
 		this.setChatActualID(chatID);
 	}
 	
+	public void addMessageAlInicio(long id, List<ModelMessage> msgs) {
+		this.cacheMensajes.getMessages(id).addAll(0, msgs);
+	}
+	
 	/**
      * Obtiene la lista de mensajes del chat actual.
      * 

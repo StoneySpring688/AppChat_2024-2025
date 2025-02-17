@@ -131,7 +131,7 @@ public class BackendController {
         if (mensajes == null || mensajes.isEmpty()) {
             return;
         }
-        
+        /*
         List<ModelMessage> mensajesEnCache = chatService.getLRUChat(chatID);
         
         if (mensajesEnCache.isEmpty()) {
@@ -141,7 +141,8 @@ public class BackendController {
             nuevaLista.addAll(mensajesEnCache); // Añadir los mensajes existentes al final de los nuevos
             
             nuevosMensajes(chatID, nuevaLista); // Guardar la lista actualizada
-        }
+        }*/
+        chatService.addMessageAlInicio(chatID, mensajes);
     }
 
     

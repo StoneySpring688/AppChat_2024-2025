@@ -237,118 +237,145 @@ public class MainController {
     	
     	//System.out.println("[DEBUG]" + " MainController" + " cargando mensajes");
     	
-        if (contacto.isPresent()) {
-            List<ModelMessage> listaCaché = BackendController.getChat((long) contacto.get().getNumero());
-            Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
-            
-            //System.out.println("[DEBUG]" + " MainController" + " es contacto");
-            
-            int startLote = 0;
-            List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), 0, lastMsgId);
-            
-            if (lastMsgId.isPresent() && lista.get(0).getBDID() != lastMsgId.get()) {
-            	
-            	//System.out.println("[DEBUG]" + " MainController" + " lastMsgLastId : " + lastMsgId);
-            	
-                startLote = lista.size();
-                List<ModelMessage> listaCachéAux = new ArrayList<>();
+        executor.submit(() -> {
+        	if (contacto.isPresent()) {
+                List<ModelMessage> listaCaché = BackendController.getChat((long) contacto.get().getNumero());
+                Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
                 
-                while (!lista.isEmpty() && lista.get(0).getBDID() != lastMsgId.get()) {
+                //System.out.println("[DEBUG]" + " MainController" + " es contacto");
+                
+                int startLote = 0;
+                List<ModelMessage> lista = DAOController.getMessageFromAChat(contacto.get(), 0, lastMsgId);
+                
+                if (lastMsgId.isPresent() && lista.get(0).getBDID() != lastMsgId.get()) {
                 	
-                	//System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes nuevos");
+                	System.out.println("[DEBUG]" + " MainController" + " lastMsgLastId : " + lastMsgId);
                 	
-                    listaCachéAux.addAll(0, lista); // Agregar nuevos mensajes al inicio para mantener orden
-                    lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
-                    startLote += lista.size();
+                    startLote = lista.size();
+                    List<ModelMessage> listaCachéAux = new ArrayList<>();
+                    
+                    while (!lista.isEmpty() && lista.get(0).getBDID() != lastMsgId.get()) {
+                    	
+                    	System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes nuevos");
+                    	
+                        listaCachéAux.addAll(0, lista); // Agregar nuevos mensajes al inicio para mantener orden
+                        lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
+                        startLote += lista.size();
+                    }
+                    
+                    //System.out.println("[DEBUG]" + " MainController" + " añadiendo el lote de la colisión");
+                    
+                    listaCachéAux.addAll(0, lista); // Añadir el último conjunto de mensajes
+                    listaCachéAux.remove(0); // Eliminar colisión
+                    
+                    
+                    lastMsgId = Optional.empty(); // ya se han restaurado ppor lo tanto ya no debe tener valor asignado
+                    //System.out.println("[DEBUG]" + " MainController" + " renderizando los mensajes nuevos");
+                    
+                    BackendController.nuevosMensajes((long) contacto.get().getNumero(), listaCachéAux); // Guardar los nuevos mensajes en la caché del BackendController
+                    //executor.submit(() -> UIController.renderMessage(listaCachéAux)); // Enviar los mensajes actualizados a la UI
+                    System.out.println("[DEBUG]" + " MainController" + " nuevos mensajes cargados" + " ###################################");
+                    
+                }else if(lastMsgId.isEmpty()) {
+                	System.out.println("[DEBUG]" + " MainController" + " cargando caché por primera vez" + " ###################################" );
+                	System.out.println("añadiendo : " + lista.size() + " mensajes a cahé");
+                	BackendController.nuevosMensajes((long) contacto.get().getNumero(), lista);
+                }
+                lastMsgId = Optional.empty();
+                List <ModelMessage> mensajesCache = BackendController.getChat(contacto.get().getNumero());
+                
+                //for(ModelMessage msg : mensajesCache) System.out.println("[DEBUG]" + " MainController " + "mensaje de caché : " + '\n' + msg);
+                
+                UIController.loadChat(mensajesCache);
+                startLote = mensajesCache.size();
+                
+                lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
+                System.out.println("añadiendo : " + lista.size() + " mensajes a cahé");
+                BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
+                
+                startLote += lista.size();
+                System.out.println("tamano lista : " + lista.size());
+                
+                UIController.loadChat(lista);
+                
+                //for(ModelMessage msg : lista) System.out.println("[DEBUG]" + "MainController" + " mensaje a cargar : " + '\n' + msg.toString()); 
+                
+                //BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
+                //executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
+                
+                //System.out.println("[DEBUG]" + " MainController" + " cargando mensajes");
+                
+               System.out.println(UIController.getActualChatOptimization()); 
+                while(UIController.getActualChatOptimization() == (long)contacto.get().getNumero() && lista.size() > 0) {
+                	
+                	//System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes");
+                	//for(ModelMessage msg : lista) System.out.println("[DEBUG]" + " MainController " + "mensaje en el bucle : " + '\n' + msg);
+                	//BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
+                	//System.out.println("[DEBUG]" + " MainController" + " solicitando otro lote");
+                	
+                	lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
+                	startLote += lista.size();
+                	
+                	//System.out.println("[DEBUG]" + " MainController" + " renderizando los mensajes");
+                	//System.out.println("añadiendo : " + lista.size() + " mensajes a cahé");
+                	BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
+                	UIController.loadChat(lista);
                 }
                 
-                //System.out.println("[DEBUG]" + " MainController" + " añadiendo el lote de la colisión");
+                //System.out.println("[DEBUG]" + " MainController" + " carga finalizada" + " ###################################");
                 
-                listaCachéAux.addAll(0, lista); // Añadir el último conjunto de mensajes
-                listaCachéAux.remove(0); // Eliminar colisión
-                
-                
-                lastMsgId = Optional.empty(); // ya se han restaurado ppor lo tanto ya no debe tener valor asignado
-                //System.out.println("[DEBUG]" + " MainController" + " renderizando los mensajes nuevos");
-                
-                BackendController.nuevosMensajes((long) contacto.get().getNumero(), listaCachéAux); // Guardar los nuevos mensajes en la caché del BackendController
-                //executor.submit(() -> UIController.renderMessage(listaCachéAux)); // Enviar los mensajes actualizados a la UI
-                //System.out.println("[DEBUG]" + " MainController" + " nuevos mensajes cargados" + " ###################################");
-                
-            }else if(lastMsgId.isEmpty()) {
-            	//System.out.println("[DEBUG]" + " MainController" + " cargando caché por primera vez" + " ###################################" );
-            	BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
-            }
-            executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
-            
-            lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
-            
-            //for(ModelMessage msg : lista) System.out.println("[DEBUG]" + "MainController" + " mensaje a cargar : " + '\n' + msg.toString()); 
-            
-            //BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
-            //executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
-            
-            //System.out.println("[DEBUG]" + " MainController" + " cargando mensajes");
-            
-            
-            while(UIController.getActualChatOptimization() == (long)contacto.get().getNumero() && lista.size() > 0) {
-            	
-            	//System.out.println("[DEBUG]" + "  MainController" + " cargando : " + lista.size() + " mensajes");
-            	//BackendController.nuevosMensajesAlInicio((long) contacto.get().getNumero(), lista);
-            	//System.out.println("[DEBUG]" + " MainController" + " solicitando otro lote");
-            	
-            	lista = DAOController.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
-            	startLote += lista.size();
-            	
-            	//System.out.println("[DEBUG]" + " MainController" + " renderizando los mensajes");
-            	
-            	executor.submit(() -> UIController.loadChat(BackendController.getChat(contacto.get().getNumero())));
-            }
-            
-            //System.out.println("[DEBUG]" + " MainController" + " carga finalizada" + " ###################################");
-            
-        }if(grupo.isPresent()) {
-        	 List<ModelMessage> listaCaché = BackendController.getChat((long) grupo.get().getID());
-             Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
-             
-             int startLote = 0;
-             List<ModelMessage> lista = DAOController.getMessageFromAGroup(grupo.get(), 0, lastMsgId);
-             
-             if (lastMsgId.isPresent() && lista.get(0).getBDID() != lastMsgId.get()) {
-             	
-                 startLote = lista.size();
-                 List<ModelMessage> listaCachéAux = new ArrayList<>();
+            }if(grupo.isPresent()) {
+            	 List<ModelMessage> listaCaché = BackendController.getChat((long) grupo.get().getID());
+                 Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
                  
-                 while (!lista.isEmpty() && lista.get(0).getBDID() != lastMsgId.get()) {
+                 int startLote = 0;
+                 List<ModelMessage> lista = DAOController.getMessageFromAGroup(grupo.get(), 0, lastMsgId);
+                 
+                 if (lastMsgId.isPresent() && lista.get(0).getBDID() != lastMsgId.get()) {
                  	
-                     listaCachéAux.addAll(0, lista); // Agregar nuevos mensajes al inicio para mantener orden
-                     lista = DAOController.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
-                     startLote += lista.size();
+                     startLote = lista.size();
+                     List<ModelMessage> listaCachéAux = new ArrayList<>();
+                     
+                     while (!lista.isEmpty() && lista.get(0).getBDID() != lastMsgId.get()) {
+                     	
+                         listaCachéAux.addAll(0, lista); // Agregar nuevos mensajes al inicio para mantener orden
+                         lista = DAOController.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
+                         startLote += lista.size();
+                     }
+                     
+                     listaCachéAux.addAll(0, lista); // Añadir el último conjunto de mensajes
+                     listaCachéAux.remove(0); // Eliminar colisión
+                     
+                     
+                     lastMsgId = Optional.empty(); // ya se han restaurado ppor lo tanto ya no debe tener valor asignado
+                     
+                     BackendController.nuevosMensajes((long) grupo.get().getID(), listaCachéAux); // Guardar los nuevos mensajes en la caché del BackendController
+                     
+                 }else if(lastMsgId.isEmpty()) {
+                 	BackendController.nuevosMensajesAlInicio((long) grupo.get().getID(), lista);
                  }
+                 lastMsgId = Optional.empty();
+                 List <ModelMessage> mensajesCache = BackendController.getChat(grupo.get().getID());
                  
-                 listaCachéAux.addAll(0, lista); // Añadir el último conjunto de mensajes
-                 listaCachéAux.remove(0); // Eliminar colisión
+                 UIController.loadChat(mensajesCache);
+                 startLote = mensajesCache.size();
                  
+                 lista = DAOController.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
+                 BackendController.nuevosMensajesAlInicio((long) grupo.get().getID(), lista);
                  
-                 lastMsgId = Optional.empty(); // ya se han restaurado ppor lo tanto ya no debe tener valor asignado
+                 startLote += lista.size();
+                 UIController.loadChat(lista);
                  
-                 BackendController.nuevosMensajes((long) grupo.get().getID(), listaCachéAux); // Guardar los nuevos mensajes en la caché del BackendController
-                 
-             }else if(lastMsgId.isEmpty()) {
-             	BackendController.nuevosMensajesAlInicio((long) grupo.get().getID(), lista);
-             }
-             executor.submit(() -> UIController.loadChat(BackendController.getChat(grupo.get().getID())));
-             
-             lista = DAOController.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
-             
-             while(UIController.getActualChatOptimization() == (long)grupo.get().getID() && lista.size() > 0) { // OJO el id del grupo es distinto del id que le asigna la BD (grupo.getDBID)
-             	
-            	lista = DAOController.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
-             	startLote += lista.size();
-             	
-             	executor.submit(() -> UIController.loadChat(BackendController.getChat(grupo.get().getID())));
-             }
-        }
+                 while(UIController.getActualChatOptimization() == (long)grupo.get().getID() && lista.size() > 0) { // OJO el id del grupo es distinto del id que le asigna la BD (grupo.getDBID)
+                 	
+                	lista = DAOController.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
+                 	startLote += lista.size();
+                 	
+                 	BackendController.nuevosMensajesAlInicio((long) grupo.get().getID(), lista);
+                 	UIController.loadChat(lista);
+                 }
+            }
+        });
     }
 
 

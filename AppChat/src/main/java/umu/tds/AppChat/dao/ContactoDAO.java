@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import beans.Entidad;
+import beans.Mensaje;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
@@ -38,6 +39,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		
 	public ContactoDAO() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
+		
 	}
 	
 	private EntidadComunicable entidadToContacto(Entidad eContact) {

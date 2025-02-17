@@ -195,13 +195,14 @@ public class UIController {
     public static void changeChat(ElementoChatOGrupo chat) {
     	
     	if(actualChatOptimization != (chat.isGrupo() ? chat.getGroupID() : chat.getNumero())) {
+    		setActualChatOptimization(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
         	appFrame.llamarMetodo(7, Optional.of(chat), Optional.empty());
         	appFrame.showChatPanel();
         	
         	//System.out.println("[DEBUG]" + " UIController" + " cambiando de chat");
         	
         	MainController.loadChat(chat.getContacto(), chat.getGrupo());
-        	setActualChatOptimization(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
+        	
     	}
 
     }

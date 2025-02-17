@@ -59,7 +59,8 @@ public class ChatPanel extends PanelGrande {
 				System.out.println("[DEBUG]" + " ChatPanel " + "enviando mensaje a : " + chat.getCurrentChatID());
 				
 				String mensaje = chat.getText().trim();
-				UIController.sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
+				if(!mensaje.isBlank()) UIController.sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
+				
 			}
 			
 			@Override
@@ -86,6 +87,7 @@ public class ChatPanel extends PanelGrande {
 	    List<ModelMessage> batch = new ArrayList<>();
 
 	    for (int i = msgs.size() - 1; i >= 0; i--) {
+	    	System.out.println("[DEBUG]" + " chatPanel " + " cargando mensaje");
 	        ModelMessage msg = msgs.get(i);
 	        batch.add(msg);
 
