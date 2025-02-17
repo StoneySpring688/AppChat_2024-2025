@@ -104,4 +104,12 @@ public class MembershipList extends JPanel{
 			
 	}
 	
+	public void reset() {
+	    this.mships.clear();
+	    this.lista.setModel(this.mships);
+	    this.lista.revalidate();
+	    this.lista.repaint();
+	}
+
+	
 }

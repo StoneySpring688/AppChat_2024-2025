@@ -4,6 +4,7 @@ import java.util.List;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
+import umu.tds.AppChat.backend.utils.ModelMessage;
 
 public interface InterfaceGrupoDAO {
 	void create(Grupo grupo);
@@ -13,4 +14,9 @@ public interface InterfaceGrupoDAO {
 	void addMiembro(int id, EntidadComunicable miembro);
 	void eliminarMiembro(int id, EntidadComunicable miembro);
 	List<EntidadComunicable> obtenerListaMiembros(int id);
+	public boolean isMiembro(int numeroUser, int groupID);
+	void addMsg(int id, ModelMessage msg);
+	List<ModelMessage> obtenerListaMsg(int id);
+	List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin);
+	void eliminarMsgs(int id);
 }

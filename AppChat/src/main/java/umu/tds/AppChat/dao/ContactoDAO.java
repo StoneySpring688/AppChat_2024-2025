@@ -80,7 +80,6 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		
 		if(eContact == null) return false;
 		
-		eliminarMsgs(eContact.getId());
 		return servPersistencia.borrarEntidad(eContact);
 	}
 
@@ -178,7 +177,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 	                adaptadorMsg.delete(mensaje); // elimina el mensaje si no se ha eliminado antes
 	            }
 	        } catch (NumberFormatException e) {
-	            System.err.println("[ERROR]" + "eliminarMsgs : " + "Token inválido en LISTAMSG -> " + token);
+	            System.err.println("[ERROR]" + " ContactoDAO " + "eliminarMsgs : " + "Token inválido en LISTAMSG -> " + token);
 	        }
 			
 		}

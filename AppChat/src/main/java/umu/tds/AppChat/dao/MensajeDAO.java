@@ -69,7 +69,7 @@ public class MensajeDAO implements InterfaceMensajeDAO {
 		Optional<String> messageMsg = message.isBlank() ? Optional.empty() : Optional.of(message);
 		Optional<Integer> emoojiMSG = emoji.isBlank() ? Optional.empty() : Optional.of(Integer.parseInt(emoji));
 		
-		ModelMessage msg = new ModelMessage(icon, senderName, sendDate, Integer.parseInt(sender), Integer.parseInt(reciver), messageMsg, emoojiMSG);
+		ModelMessage msg = new ModelMessage(icon, senderName, sendDate, Integer.parseInt(sender), Long.parseLong(reciver), messageMsg, emoojiMSG);
 		return msg;
 	}
 	

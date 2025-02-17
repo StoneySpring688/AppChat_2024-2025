@@ -106,8 +106,6 @@ public class ChatPanel extends PanelGrande {
 	
 	public void changeChat(ElementoChatOGrupo chat) {
 		
-		System.out.println("[DEBUG]" + " ChatPanel " + "cambiando chat a : " + chat.getNumero());
-		
 			this.chat.clearChatBox();
 			this.chat.setCurrentChat(chat);
 		

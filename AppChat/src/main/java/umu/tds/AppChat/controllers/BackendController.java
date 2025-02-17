@@ -233,6 +233,10 @@ public class BackendController {
 		
     }
     
+    public static boolean isGroup(long groupID) {
+    	return chatsRepository.isGroup(groupID);
+    }
+    
     public static void addMiembroToGrupo(long id, EntidadComunicable miembro) {
     	chatsRepository.getGrupo(id).addIntegrante(miembro);
     }

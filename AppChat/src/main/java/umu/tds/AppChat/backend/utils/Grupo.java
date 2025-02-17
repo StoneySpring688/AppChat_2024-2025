@@ -39,6 +39,7 @@ public class Grupo  {
 		this.nombre = grupo.getNombre();
 		this.iconUrl = grupo.getIconUrl();
 		this.integrantes = grupo.getIntegrantes();
+		this.DBID = grupo.getDBID();
 	}
 	
 	public int getDBID() {

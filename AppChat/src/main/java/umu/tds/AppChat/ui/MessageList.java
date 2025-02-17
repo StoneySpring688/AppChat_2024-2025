@@ -75,5 +75,13 @@ public class MessageList extends JPanel {
 		buttonAnyadirUser.setBorder(new MatteBorder(0, 0, 1, 0, new Color(40, 40, 40)));
 		this.add(buttonAnyadirUser);
 	}
+	
+	public void reset() {
+	    this.messages.clear();
+	    this.lista.setModel(this.messages);
+	    this.lista.revalidate();
+	    this.lista.repaint();
+	}
+
 
 }

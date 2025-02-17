@@ -104,8 +104,9 @@ public class DAOController {
 		return contactAdapter.get(id);
 	}
 	
-	public static void removeContact(EntidadComunicable contact) {
-		userAdapter.eliminarContacto(BackendController.getUserNumber(), contact);
+	public static void removeContact(int user, EntidadComunicable contact) {
+		userAdapter.eliminarContacto(user, contact);
+		if(!isContact(user, contact.getNumero())) contactAdapter.eliminarMsgs(contact.getId());
 		contactAdapter.delete(contact);
 	}
 	
@@ -156,6 +157,10 @@ public class DAOController {
 		userAdapter.eliminarGrupoFromUser(miembro.getNumero(), groupAdapter.get(id));
 	}
 	
+	public static boolean isMiembro(int numeroUser, int groupID) {
+		return groupAdapter.isMiembro(numeroUser, groupID);
+	}
+	
 	// ### noContactos
 	
 	public static EntidadComunicable addNoContact(EntidadComunicable noContact, int userToAddNoContact) {				
@@ -174,11 +179,11 @@ public class DAOController {
 	
 	// ### message
 	
-	public static void sendMessage(ModelMessage msg) {
+	public static void sendMessageToContact(ModelMessage msg) {
 		int reciver = (int) msg.getReciver();
 		int userNum = msg.getSender();
 		
-		System.out.println("[DEBUG]" + "DAOConttroller" +" sender : " + userNum +" , reciver : " + reciver);
+		//System.out.println("[DEBUG]" + "DAOConttroller" +" sender : " + userNum +" , reciver : " + reciver);
 		
 		if(isContact(userNum, reciver)) {
 			
@@ -194,7 +199,7 @@ public class DAOController {
 			contactAdapter.addMsg(contactoDestino.getId(), msg);
 			contactAdapter.addMsg(contactoOrgigen.getId(), msg);
 			
-			System.out.println("[DEBUG]" + "DAOConttroller" + " es contacto : " + userNum + " de : " + reciver);
+			//System.out.println("[DEBUG]" + "DAOConttroller" + " es contacto : " + userNum + " de : " + reciver);
 			//return;
 		}else if(isNoContact(userNum, reciver)) {
 			
@@ -210,13 +215,13 @@ public class DAOController {
 			noContactAdapter.addMsg(contactoDestino.getId(), msg);
 			contactAdapter.addMsg(contactoOrgigen.getId(), msg);
 			
-			System.out.println("[DEBUG]" + "DAOConttroller" + " es no contacto : " + userNum + " de : " + reciver);
+			//System.out.println("[DEBUG]" + "DAOConttroller" + " es no contacto : " + userNum + " de : " + reciver);
 			//return;
 		}else {
 			addNoContact(new EntidadComunicable(userNum, ""), reciver);
-			System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo no contacto : " + userNum + " a : " + reciver);
+			//System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo no contacto : " + userNum + " a : " + reciver);
 			//userAdapter.addNoContacto(reciver,newNoContact); // solo neccesita el numero (clave ajena) el resto lo calcula  el adaptador
-			System.out.println("[DEBUG]" + "DAOConttroller" + " no contacto aniadido a :" + reciver + " nueva lista no contactos : " + getListaNoContactos(reciver));
+			//System.out.println("[DEBUG]" + "DAOConttroller" + " no contacto aniadido a :" + reciver + " nueva lista no contactos : " + getListaNoContactos(reciver));
 			
 			EntidadComunicable contactoDestino = userAdapter.obtenerListaNoContactos(reciver).stream().filter(e -> e.getNumero() == userNum).findFirst().get();
 			EntidadComunicable contactoOrgigen = null;
@@ -230,6 +235,15 @@ public class DAOController {
 			noContactAdapter.addMsg(contactoDestino.getId(), msg);
 			contactAdapter.addMsg(contactoOrgigen.getId(), msg);
 			//return;
+		}
+	}
+	
+	public static void sendMessageToGroup(ModelMessage msg, int groupID) {
+		int userNum = msg.getSender();
+		
+		if(isMiembro(userNum, groupID)) {
+			groupAdapter.addMsg(groupID, msg);
+			//System.out.println("[DEBUG]" + "DAOConttroller" + " es miembro : " + userNum + " de : " + groupID);
 		}
 	}
 	
@@ -256,6 +270,28 @@ public class DAOController {
 		
 		return lote;
 		
+	}
+	
+	public static List<ModelMessage> getMessageFromAGroup(Grupo grupo, int startLote, Optional<Integer> lastMsgId){
+		List<ModelMessage> lote = groupAdapter.obtenerLoteMsg(grupo.getDBID(), 10, startLote);
+		for(ModelMessage msg : lote) System.out.println("[DEBUG]" + " DaoController" + " mensaje a cargar : " + '\n' + msg.toString()); 
+		
+		if(lastMsgId.isPresent()) { // recuperación de mensajes recientes por diferencia respecto a caché
+			List<ModelMessage> lista = new ArrayList<ModelMessage>();
+			//lote = contactAdapter.obtenerLoteMsg(contacto.getId(), 10, startLote);
+			int a =  lote.get(lote.size()-1).getBDID();
+				
+				for(int i = lote.size(); a!= lastMsgId.get() && i>0; i--) {
+					//System.out.println("[DEBUG]" + " DaoController" + " actualizando mensajes con los recientes"); 
+					lista.add(0, lote.get(i));
+					a = i > 0 ? lote.get(i).getBDID() : lote.get(i-1).getBDID();
+				}
+			
+			lista.add(0, lote.get(lote.size()-lista.size()-1)); // añade el último elemento o la colisión con la caché
+			return lista;
+		}
+		
+		return lote;
 	}
 	
 }

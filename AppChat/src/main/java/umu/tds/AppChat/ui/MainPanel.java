@@ -268,6 +268,9 @@ public class MainPanel extends JPanel {
 		changePanelPrincipal("porDefecto");
 		
 		this.chatslist.reset();
+		this.groupslist.reset();
+		this.messageList.reset();
+		this.mshipsList.reset();
 		this.repaint();
 		this.revalidate();
 	}

@@ -112,5 +112,13 @@ public class GroupsList extends JPanel {
 	public void addGroup(Grupo grupo) {
 		this.groups.addElement(new ElementoChatOGrupo(Optional.empty(), Optional.of(grupo)));
 	}
+	
+	public void reset() {
+	    this.groups.clear();
+	    this.lista.setModel(this.groups);
+	    this.lista.revalidate();
+	    this.lista.repaint();
+	}
+
 
 }

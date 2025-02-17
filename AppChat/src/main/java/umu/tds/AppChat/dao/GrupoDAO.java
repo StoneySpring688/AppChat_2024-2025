@@ -12,6 +12,7 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
+import umu.tds.AppChat.backend.utils.ModelMessage;
 
 public class GrupoDAO implements InterfaceGrupoDAO{
 	
@@ -23,6 +24,7 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 	private static final String NOMBRE = "nombre";
 	private static final String ICONURL = "iconUrl";
 	private static final String MIEMBROS = "miembros";
+	private static final String LISTAMSG = "listaMsg";
 	
 	// utils
 	private ServicioPersistencia servPersistencia;
@@ -61,7 +63,8 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 				new Propiedad(GRUPOID, Long.toString(grupo.getID())),
 				new Propiedad(NOMBRE, grupo.getNombre()),
 				new Propiedad(ICONURL, grupo.getIconUrl()),
-				new Propiedad(MIEMBROS, obtenerIDsMiembros(grupo.getIntegrantes()))
+				new Propiedad(MIEMBROS, obtenerIDsMiembros(grupo.getIntegrantes())),
+				new Propiedad(LISTAMSG, "")
 				)));
 		
 		return eGrupo;
@@ -78,6 +81,7 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 	public boolean delete(Grupo grupo) {
 		Entidad eGrupo;
 		eGrupo = servPersistencia.recuperarEntidad(grupo.getDBID());
+		// TODO eliminar mensajes del grupo
 		return servPersistencia.borrarEntidad(eGrupo);
 	}
 
@@ -153,8 +157,94 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 	public List<EntidadComunicable> obtenerListaMiembros(int id){
 		return obtenerMiembrosFomIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), MIEMBROS));
 	}
+	
+	public boolean isMiembro(int numeroUser, int groupID) {	
+		List<EntidadComunicable> lista = obtenerListaMiembros(groupID);
+		
+		//System.out.println("[DEBUG]" + " UsuarioDAO" + " numero de contactos : " + lista.size());
+		
+		return lista.stream().anyMatch(e -> e.getNumero() == numeroUser);
+	}
+	
+	// ### lista mensajes
 
+	public void addMsg(int id, ModelMessage msg) {
+		String msgs = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG);
+		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
+		
+		adaptadorMsg.create(msg);
+		
+		if(msgs.isBlank() || msgs ==  null) {
+			msgs += "" + msg.getBDID();
+		}else {
+			msgs += " " + msg.getBDID();
+		}
+		//System.out.println("[DEBUG]" + "GrupoDAO" + " db lista mensajes : " + msgs);
+		
+		for(Propiedad prop : servPersistencia.recuperarEntidad(id).getPropiedades()) {
+			if(prop.getNombre().equals(LISTAMSG)) {
+				prop.setValor(msgs);
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+		//System.out.println("[DEBUG]" + "GrupoDAO" + " comprobación lista de mensajes : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
+	}
+	
+	public List<ModelMessage> obtenerListaMsg(int id){
+		return obtenerListaMsgFromIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
+	}
+	
+	public List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin){
+		List<ModelMessage> lista = new ArrayList<ModelMessage>();
+		String msgs = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG);
+		//System.out.println("[DEBUG]" + " GrupoDAO" + " mensaje a cargar : " + '\n' + msgs);
+		System.out.println("[DEBUG]" + " GrupoDAO" + " grupo : " + id + " lista de IDs : " + msgs);
+		
+		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
+		
+		List<Integer> lote = obtenerLoteIDsMsg(msgs, batchSize, origin); //mensajes de más reciente a más antiguo (en ese orden)
+		//for(Integer msg : lote) System.out.println("[DEBUG]" + " GrupoDAO" + " mensaje a cargar : " + '\n' + msg);
+		//System.out.println("[DEBUG]" + " GrupoDAO" + " se han recuperado : " + lote.size() + " IDs");
+		
+		for(int i = 0; i < lote.size(); i++) {
+			lista.add(adaptadorMsg.get(lote.get(i)));
+		}
+		//for(ModelMessage msg : lista) System.out.println("[DEBUG]" + " GrupoDAO" + " mensaje a cargar : " + '\n' + msg.toString());
+		return lista;
+	}
+	
+	public void eliminarMsgs(int id) {
+		Entidad eContact = servPersistencia.recuperarEntidad(id);
+		
+		if(eContact == null) return;
+		
+		String msgs= servPersistencia.recuperarPropiedadEntidad(eContact, LISTAMSG);
+		
+		if(msgs == null || msgs.isBlank()) return;
+		
+		StringTokenizer strTok = new StringTokenizer(msgs, " ");
+		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
+		
+		while(strTok.hasMoreTokens()) {
+			String token = strTok.nextToken();
+			
+			try {
+	            Integer msgId = Integer.valueOf(token);
+	            ModelMessage mensaje = adaptadorMsg.get(msgId);
+	            
+	            if (mensaje != null) {
+	                adaptadorMsg.delete(mensaje); // elimina el mensaje si no se ha eliminado antes
+	            }
+	        } catch (NumberFormatException e) {
+	            System.err.println("[ERROR]" + " GrupoDAO " + "eliminarMsgs : " + "Token inválido en LISTAMSG -> " + token);
+	        }
+			
+		}
+		
+	}
+	
 	// ### funciónes auxiliares
+	
 	private String obtenerIDsMiembros(List<EntidadComunicable> lista) {
 		String miembros = "";
 		for (EntidadComunicable miembro : lista) {
@@ -173,6 +263,41 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 			memberList.add(new EntidadComunicable(miembroAux.getNumero(), miembroAux.getNombre(), miembroAux.getIconUrl()));
 		}
 		return memberList;
+	}
+	
+	public List<ModelMessage> obtenerListaMsgFromIDs(String lista){
+		List<ModelMessage> msgs = new ArrayList<ModelMessage>();
+		if(lista.isBlank())return msgs;
+		StringTokenizer strTok = new StringTokenizer(lista, " ");
+		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
+		while(strTok.hasMoreTokens()) {
+			msgs.add(adaptadorMsg.get(Integer.valueOf((String)strTok.nextElement())));
+		}
+		return msgs;
+	}
+	
+	public List<Integer> obtenerLoteIDsMsg(String msgs, int batchSize, int origin) {
+	    List<Integer> lote = new ArrayList<>();
+	    if (msgs == null || msgs.isBlank()) {
+	        return lote;
+	    }
+	    
+	    String[] tokens = msgs.split(" "); // Divide la cadena en tokens
+	    int totalMsgs = tokens.length;
+	    int startIndex = totalMsgs - 1 - origin; // Determina la posición inicial desde el final
+	    
+	    // Validación de límites
+	    if (startIndex < 0) {
+	        return lote; // No hay suficientes mensajes para empezar desde "origin"
+	    }
+	    
+	    // Obtener batchSize mensajes o hasta que se acaben los disponibles
+	    for (int i = 0; i < batchSize && startIndex - i >= 0; i++) {
+	    	//System.out.println("[DEBUG]" + " ContactoDAO " + " ID procesado : " + Integer.parseInt(tokens[startIndex - i]));
+	        lote.add(0, Integer.parseInt(tokens[startIndex - i]));
+	    }
+	    
+	    return lote;
 	}
 	
 }
