@@ -203,6 +203,7 @@ public class MainController {
 			miembrosGrupo.add(DAOController.addMiembroToGrupo(newGrupo.getDBID(), entAux));
 			BackendController.addMiembroToGrupo(newGrupo.getID(), entAux);
 			
+			BackendController.getGrupo(gID).setDBID(newGrupo.getDBID());
 			UIController.addGroup(gID);
 		}
 		
@@ -324,7 +325,7 @@ public class MainController {
                 
                 //System.out.println("[DEBUG]" + " MainController" + " carga finalizada" + " ###################################");
                 
-            }if(grupo.isPresent()) {
+            }else if(grupo.isPresent()) {
             	 List<ModelMessage> listaCaché = BackendController.getChat((long) grupo.get().getID());
                  Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
                  
@@ -352,10 +353,13 @@ public class MainController {
                      BackendController.nuevosMensajes((long) grupo.get().getID(), listaCachéAux); // Guardar los nuevos mensajes en la caché del BackendController
                      
                  }else if(lastMsgId.isEmpty()) {
-                 	BackendController.nuevosMensajesAlInicio((long) grupo.get().getID(), lista);
+                	System.out.println("tamaño lista : " + lista.size());
+                 	BackendController.nuevosMensajes( grupo.get().getID(), lista);
                  }
                  lastMsgId = Optional.empty();
                  List <ModelMessage> mensajesCache = BackendController.getChat(grupo.get().getID());
+                 
+                 for(ModelMessage msg : lista) System.out.println("[DEBUG]" + "MainController" + " mensaje a cargar : " + '\n' + msg.toString()); 
                  
                  UIController.loadChat(mensajesCache);
                  startLote = mensajesCache.size();

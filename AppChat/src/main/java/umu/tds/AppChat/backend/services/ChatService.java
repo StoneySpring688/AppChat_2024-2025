@@ -34,6 +34,7 @@ public class ChatService {
 	}
 	
 	public void addMessageAlInicio(long id, List<ModelMessage> msgs) {
+		System.out.println(msgs.size() + "," + id);
 		this.cacheMensajes.getMessages(id).addAll(0, msgs);
 	}
 	

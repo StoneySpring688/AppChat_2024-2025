@@ -198,7 +198,7 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 		List<ModelMessage> lista = new ArrayList<ModelMessage>();
 		String msgs = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG);
 		//System.out.println("[DEBUG]" + " GrupoDAO" + " mensaje a cargar : " + '\n' + msgs);
-		System.out.println("[DEBUG]" + " GrupoDAO" + " grupo : " + id + " lista de IDs : " + msgs);
+		//System.out.println("[DEBUG]" + " GrupoDAO" + " grupo : " + id + " lista de IDs : " + msgs);
 		
 		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
 		
