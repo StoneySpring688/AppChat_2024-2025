@@ -12,7 +12,6 @@ import umu.tds.AppChat.dao.AbstractFactoriaDAO;
 import umu.tds.AppChat.dao.DAOException;
 import umu.tds.AppChat.dao.InterfaceContactoDAO;
 import umu.tds.AppChat.dao.InterfaceGrupoDAO;
-import umu.tds.AppChat.dao.InterfaceMensajeDAO;
 import umu.tds.AppChat.dao.InterfaceNoContactoDAO;
 import umu.tds.AppChat.dao.InterfaceUsuarioDAO;
 
@@ -21,7 +20,7 @@ public class DAOController {
 	private static InterfaceContactoDAO contactAdapter;
 	private static InterfaceGrupoDAO groupAdapter;
 	private static InterfaceNoContactoDAO noContactAdapter;
-	private static InterfaceMensajeDAO msgAdapter;
+	//private static InterfaceMensajeDAO msgAdapter;
 	
 	protected static void initAdapters() {
 		AbstractFactoriaDAO factoria = null;
@@ -34,7 +33,7 @@ public class DAOController {
 		contactAdapter = factoria.getContactoDAO();
 		groupAdapter = factoria.getGrupoDAO();
 		noContactAdapter = factoria.getNoContactoDAO();
-		msgAdapter = factoria.getMensajeDAO();
+		//msgAdapter = factoria.getMensajeDAO();
 	}
 	
 	// ### users
