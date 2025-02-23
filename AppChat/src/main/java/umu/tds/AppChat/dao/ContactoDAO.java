@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import beans.Entidad;
-import beans.Mensaje;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
