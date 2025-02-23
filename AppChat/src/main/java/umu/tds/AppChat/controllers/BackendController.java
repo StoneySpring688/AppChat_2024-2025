@@ -180,6 +180,10 @@ public class BackendController {
         	chatsRepository.addContact(contact);
     }
     
+    public static void removeUser(int numero) {
+    	chatsRepository.removeContact(numero);
+    }
+    
     // ### noContactos
     
     public static void loadNoContactList(List<EntidadComunicable> noContactList) {
@@ -191,7 +195,7 @@ public class BackendController {
     }
     
     public static List<EntidadComunicable> getListaNoContactos(){
-    	System.out.println("num no contactos : " + chatsRepository.getUsuariosNoContactos().size());
+    	//System.out.println("num no contactos : " + chatsRepository.getUsuariosNoContactos().size());
     	return chatsRepository.getUsuariosNoContactos();
     }
     

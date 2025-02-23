@@ -41,11 +41,11 @@ public class ChatPanel extends PanelGrande {
 			public void emojiClicked(ImageIcon emoji, int id) {
 
 				 if (chat == null) {
-		                System.out.println("[ERROR] No hay chat activo en este ChatPanel");
+		                //System.out.println("[ERROR] No hay chat activo en este ChatPanel");
 		                return;
 		            }
 				
-				System.out.println("[DEBUG]" + " ChatPanel " + "enviando emoji a : " + chat.getCurrentChatID());
+				//System.out.println("[DEBUG]" + " ChatPanel " + "enviando emoji a : " + chat.getCurrentChatID());
 				
 				UIController.sendMessage(chat.getCurrentChatID() ,Optional.empty(), Optional.of(id));
 			}
@@ -56,7 +56,7 @@ public class ChatPanel extends PanelGrande {
 			@Override
 			public void mousePressedSendButton(ActionEvent evt) {
 				
-				System.out.println("[DEBUG]" + " ChatPanel " + "enviando mensaje a : " + chat.getCurrentChatID());
+				//System.out.println("[DEBUG]" + " ChatPanel " + "enviando mensaje a : " + chat.getCurrentChatID());
 				
 				String mensaje = chat.getText().trim();
 				if(!mensaje.isBlank()) UIController.sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
@@ -87,7 +87,7 @@ public class ChatPanel extends PanelGrande {
 	    List<ModelMessage> batch = new ArrayList<>();
 
 	    for (int i = msgs.size() - 1; i >= 0; i--) {
-	    	System.out.println("[DEBUG]" + " chatPanel " + " cargando mensaje");
+	    	//System.out.println("[DEBUG]" + " chatPanel " + " cargando mensaje");
 	        ModelMessage msg = msgs.get(i);
 	        batch.add(msg);
 

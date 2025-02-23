@@ -40,6 +40,7 @@ public class MainPanel extends JPanel {
 	private AddContactPanel panelAnyadirContacto;
 	private CreateGroupPanel panelCrearGrupo;
 	private ChatPanel chat;
+	private OptionsPane options;
 	private JLabel lblYourname;
 	private ImageAvatar yourAvatar;
 	private JLabel lblLogout;
@@ -60,7 +61,7 @@ public class MainPanel extends JPanel {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
 		
-		//panelesPrincipales
+		// ### panelesPrincipales
 		PanelGrande PanelGrandePorDefecto = new PanelGrande();
 		Background fondoPorDefecto = new Background();
 		fondoPorDefecto.setBounds(0, 60, 920, 660);
@@ -70,13 +71,14 @@ public class MainPanel extends JPanel {
 		this.panelAnyadirContacto = new AddContactPanel();
 		this.panelCrearGrupo = new CreateGroupPanel();
 		this.chat = new ChatPanel();
+		this.options = new OptionsPane();
 		
-		//panelPrincipal
+		// ### panelPrincipal
 		principal = new JPanel();
 		principal.setBounds(360, 0, 920, 720);
 		this.add(principal);
 		
-		//actualizador principal
+		// ### actualizador principal
 		actualizadorUiPrincipal = new CardLayout();
 		principal.setLayout(this.actualizadorUiPrincipal);
 		
@@ -86,10 +88,11 @@ public class MainPanel extends JPanel {
 		principal.add(panelAnyadirContacto, "anyadirContacto");
 		principal.add(panelCrearGrupo, "crearGrupo");
 		principal.add(chat, "chat");
+		principal.add(options, "options");
 		
 		this.actualizadorUiPrincipal.show(principal, "porDefecto");
 		
-		//configuración del menu1
+		// ### configuración del menu1
 		panelMenu1 = new JPanel();
 		//panelMenu1.setBackground(new Color(54,57,63));
 		panelMenu1.setBounds(120, 0, 240, 660);
@@ -97,7 +100,7 @@ public class MainPanel extends JPanel {
 		actualizadorMenu1 = new CardLayout(0, 0);
 		panelMenu1.setLayout(actualizadorMenu1);
 		
-		//gestionar paneles menu1
+		// ### gestionar paneles menu1
 		JPanel panelPorDefectoMenu1 = new JPanel();
 		//panelPorDefectoMenu1.setBackground(new Color(54,57,63));
 		panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
@@ -114,7 +117,7 @@ public class MainPanel extends JPanel {
 		
 		actualizadorMenu1.show(panelMenu1, "porDefecto");
 		
-		//botonera
+		// ### botonera
 		panelBotonera = new JPanel();
 		//panelBotonera.setBackground(new Color(54,57,63));
 		panelBotonera.setBounds(0, 0, 120, 720);
@@ -200,7 +203,7 @@ public class MainPanel extends JPanel {
 		this.showMenu("messages", buttonSearch, actualizadorMenu1, panelMenu1);
 		panelBotonera.add(buttonSearch);
 		
-		//panel del perfil
+		// ### panel del perfil
 		panelMenuPerfil = new JPanel(new MigLayout("align left, insets 5","[][]20[]10[]"));
 		panelMenuPerfil.setBounds(120, 660, 240, 60);
 		this.add(panelMenuPerfil);
@@ -229,9 +232,16 @@ public class MainPanel extends JPanel {
 		lblsettingGear = new JLabel("");
 		lblsettingGear.setIcon(new ImageIcon(getClass().getResource("/assets/SettingsGear.png")));
 		UIController.addHoverEffect(lblsettingGear, 30, 30);
+		lblsettingGear.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	UIController.showSettingsPanel();
+		    }
+		});
 		panelMenuPerfil.add(lblsettingGear,"cell 3 0, height 35, width 35");
 		
-		//configuración de colores
+		
+		// ### configuración de colores
 		this.setBackground(new Color(64, 68, 75));      // Gris claro para el fondo principal
 		panelBotonera.setBackground(new Color(40, 43, 48));    // Gris muy oscuro para la botonera   15, 15, 17 -> 32, 34, 37 -> 40, 43, 48
 		panelMenuPerfil.setBackground(new Color(47, 49, 54));  // Gris oscuro para el perfil
@@ -242,6 +252,12 @@ public class MainPanel extends JPanel {
 	
 	private void showMenu(String menu, JButton button, CardLayout actualizador, JPanel panelObjetivo) {
 		button.addActionListener(e -> actualizador.show(panelObjetivo, menu));
+	}
+	
+	public void showSettings(List<EntidadComunicable> contactos, List<Grupo> grupos) {
+		this.options.loadContactsAndGroups(contactos, grupos);
+		actualizadorUiPrincipal.show(principal, "options");
+    	actualizadorMenu1.show(panelMenu1, "porDefecto");
 	}
 	
 	public void changePanelPrincipal(String panel) {
@@ -257,9 +273,7 @@ public class MainPanel extends JPanel {
 	}
 	
 	public void setUserInfo(String name, ImageIcon profilePic) {
-		this.lblYourname.setText(name);
-		
-		
+		this.lblYourname.setText(name);	
 		this.yourAvatar.setImage(profilePic);
 	}
 	
@@ -352,6 +366,18 @@ public class MainPanel extends JPanel {
 		case 12: { // cargar las ofertas en la lista
 			if(arg2.isPresent() && arg2.get() instanceof List<?>) {
 				this.mshipsList.loadMships((List<Membership>)arg2.get());
+			}
+			break;
+		}
+		case 13: { // gestionar los errores en el formulario para editar contactos
+			if (arg.isPresent() && arg.get() instanceof Byte) {
+				this.options.contactSettingsErrors((byte) arg.get());
+			}
+			break;
+		}
+		case 14: { // resetear la lista de chats
+			if (arg.isEmpty() && arg2.isEmpty()) {
+				this.chatslist.reset();
 			}
 			break;
 		}

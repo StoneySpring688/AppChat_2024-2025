@@ -87,6 +87,10 @@ public class UIController {
     	appFrame.showCrearGrupoPanel();
     }
     
+    public static void showSettingsPanel() {
+    	appFrame.llamarMetodo(14, Optional.of(MainController.getGrupos()), Optional.of(MainController.getListaContactos()));
+    }
+    
     // ### gestión errores
     
  	public static void registerErrors(byte code) {
@@ -105,6 +109,10 @@ public class UIController {
      public static void makeGroupErrors(byte code) {
       	appFrame.llamarMetodo(5, Optional.of((byte) code), Optional.empty());
       }
+     
+     public static void ContactSettingsErrors(byte code) {
+    	 appFrame.llamarMetodo(15, Optional.of((byte) code), Optional.empty());
+     }
     
      // ### registro
      
@@ -150,7 +158,17 @@ public class UIController {
 	public static boolean verificarContactoYAnyadirContacto(String numero, String nombre) {
     	return MainController.anyadirContacto(numero, nombre);
     }
+	
+	public static boolean verificarContactoYEditarContacto(String phone, String nombreContacto) {
+		if(phone.isBlank() || nombreContacto.isBlank()) return false;
+		boolean success = MainController.editContact(phone, nombreContacto);
+		appFrame.llamarMetodo(16, Optional.empty(), Optional.empty());
+		addChats(); // actualizar la lista de chats con las ediciones
+		return success;
+	}
     
+	// ### chats
+	
     public static void addChat(EntidadComunicable ent) {
     	//EntidadComunicable ent = MainController.getContacto(number);
 		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(new EntidadComunicable(ent)));
@@ -158,11 +176,11 @@ public class UIController {
     
     public static void addChats(){
     	for(EntidadComunicable ent : BackendController.getListaContactos()) {
-    		System.out.println("cuenta contacto");
+    		//System.out.println("cuenta contacto");
     		addChat(ent);
     	}
     	for(EntidadComunicable ent : BackendController.getListaNoContactos()) {
-    		System.out.println("cuenta noContacto");
+    		//System.out.println("cuenta noContacto");
     		addChat(ent);
     	}
     }

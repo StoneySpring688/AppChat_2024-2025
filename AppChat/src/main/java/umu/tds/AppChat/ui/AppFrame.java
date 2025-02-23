@@ -266,6 +266,24 @@ public class AppFrame extends JFrame {
 			}
 			break;
 		}
+		case 14: { //cargar contactos y grupos en el panel de ajustes
+			if (arg.isPresent() && arg.get() instanceof List<?> && arg2.isPresent() && arg2.get() instanceof List<?>) {
+				this.mainPanel.showSettings((List<EntidadComunicable>)arg.get(), (List<Grupo>)arg2.get());
+			}
+			break;
+		}
+		case 15: { // gestionar los errores en el formulario para editar contactos
+			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
+				this.mainPanel.accederMetodoNoVisible(13, Optional.empty() ,Optional.of(arg2.get()));
+			}
+			break;
+		}
+		case 16: { // resetear la lista de chats
+			if (arg.isEmpty() && arg2.isEmpty()) {
+				this.mainPanel.accederMetodoNoVisible(14, arg2, arg);
+			}
+			break;
+		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + numMetodo);
 		}
