@@ -43,6 +43,7 @@ public class OptionsPane extends PanelGrande {
 	private JTextField textFieldPhone;
 	private JTextField textNombreContacto;
 	private JButton editButton;
+	private JButton deleteContactButton;
 	
 	// groups settings
 	private DefaultListModel<ElementoChatOGrupo> grupos;
@@ -144,6 +145,22 @@ public class OptionsPane extends PanelGrande {
 		
 		this.fondo.add(editButton);
 		
+		deleteContactButton = new JButton("Remove");
+		deleteContactButton.setForeground(Color.WHITE);
+		deleteContactButton.setBackground(new Color(241, 57, 83));
+		deleteContactButton.setBounds(459, 365, 187, 35); // x = 370+(285/2)-(187/2)
+		deleteContactButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//numero inexistente o ya en contactos
+				if(removeContact()) {
+					resetContactSettings();
+				}
+			}
+		});
+		
+		this.fondo.add(deleteContactButton);
+		
 		contactsPreview = new JPanel();
 		contactsPreview.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contactsPreview.setBounds(10, 80, 285, 385);
@@ -207,6 +224,10 @@ public class OptionsPane extends PanelGrande {
 	
 	private boolean editContact() {
 	    return UIController.verificarContactoYEditarContacto(getNumero(), getNombre());		
+	}
+	
+	private boolean removeContact() {
+		return UIController.removeContact(getNumero());
 	}
 	
 	private void resetContactSettings() {

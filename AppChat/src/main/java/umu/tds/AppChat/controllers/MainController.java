@@ -202,6 +202,38 @@ public class MainController {
     	return success;
     }
     
+    public static boolean removeContact(String numero) {
+    	boolean success = true;
+    	int number = 0;
+    	
+    	try {
+		    number = Integer.parseInt(numero);
+		} catch (NumberFormatException e) {
+		    UIController.ContactSettingsErrors((byte) 1);
+			success = false;
+		}
+    	
+    	if(number != 0 && (int) (Math.log10(Math.abs(number)) + 1) != 9) {
+    		UIController.ContactSettingsErrors((byte) 1);
+    		success = false;
+    	}else if(BackendController.getUserNumber() == number) {
+    		UIController.ContactSettingsErrors((byte) 1);
+    		success = false;
+    	}else if(!BackendController.isContact(number)) {
+    		UIController.ContactSettingsErrors((byte) 2);
+    		success = false;
+    	}
+    	
+    	if(success) {
+    		EntidadComunicable contactAux = BackendController.getContacto(number);
+    		BackendController.removeUser(number);
+    		DAOController.removeContact(BackendController.getUserNumber(), contactAux);
+    	}
+    	
+    	return success;
+    	
+    }
+    
     protected static EntidadComunicable getContacto(int numero) {
     	return BackendController.getContacto(numero);
     }

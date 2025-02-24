@@ -166,6 +166,14 @@ public class UIController {
 		addChats(); // actualizar la lista de chats con las ediciones
 		return success;
 	}
+	
+	public static boolean removeContact(String numero) {
+		if(numero.isBlank()) return false;
+		boolean success = MainController.removeContact(numero);
+		appFrame.llamarMetodo(16, Optional.empty(), Optional.empty());
+		addChats(); // actualizar la lista de chats con las ediciones
+		return success;
+	}
     
 	// ### chats
 	
