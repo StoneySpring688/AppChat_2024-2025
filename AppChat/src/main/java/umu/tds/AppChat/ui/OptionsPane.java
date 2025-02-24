@@ -1,6 +1,7 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -56,16 +57,18 @@ public class OptionsPane extends PanelGrande {
 	public OptionsPane() {
 
 		this.fondo = new Background();
-		this.fondo.setBounds(0, 60, 920, 660);
+		this.fondo.setBounds(0, 60, 920, 1200);
+		this.fondo.setPreferredSize(new Dimension(920, 1200));
 		
-		this.scrollPanel = new JScrollPane(this.fondo);
+		this.scrollPanel = new JScrollPane();
+		this.scrollPanel.setViewportView(this.fondo);
 		this.scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.scrollPanel.setVerticalScrollBar(new ScrollBar());
 		this.scrollPanel.setBorder(BorderFactory.createEmptyBorder());
 		this.scrollPanel.setBackground(this.Gray);
 		this.scrollPanel.setBounds(0, 60, 920, 660);
 		
-		this.add(scrollPanel);this.add(scrollPanel);
+		this.add(scrollPanel);
 		
 		// ### header
 		JLabel lblOptions = new JLabel("Options");
@@ -179,6 +182,7 @@ public class OptionsPane extends PanelGrande {
 		listaContactos.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
+		    	listaContactos.requestFocusInWindow();
 		        int selectedIndex = listaContactos.getSelectedIndex();
 		        if (selectedIndex != -1) {
 		            // Obtener el elemento seleccionado
@@ -192,9 +196,7 @@ public class OptionsPane extends PanelGrande {
 		        }
 		    }
 		});
-		
-
-		
+			
 		// ### groups settings
 		JLabel lblGroups = new JLabel("Groups Settings");
 		lblGroups.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -222,7 +224,7 @@ public class OptionsPane extends PanelGrande {
 		listaGrupos.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		        int selectedIndex = listaContactos.getSelectedIndex();
+		        int selectedIndex = listaGrupos.getSelectedIndex();
 		        if (selectedIndex != -1) {
 		            // Obtener el elemento seleccionado
 		            ElementoChatOGrupo selectedGroup = grupos.getElementAt(selectedIndex);  
@@ -245,6 +247,11 @@ public class OptionsPane extends PanelGrande {
 		this.contactos.clear();
 		contactos.forEach(e -> this.contactos.addElement(new ElementoChatOGrupo(Optional.of(e), Optional.empty())));
 	    this.listaContactos.setModel(this.contactos);
+	    
+	    this.grupos.clear();
+	    grupos.forEach(e -> this.grupos.addElement(new ElementoChatOGrupo(Optional.empty(), Optional.of(e))));
+	    this.listaGrupos.setModel(this.grupos);
+	    
 	    this.repaint();
 	    this.revalidate();
 		
