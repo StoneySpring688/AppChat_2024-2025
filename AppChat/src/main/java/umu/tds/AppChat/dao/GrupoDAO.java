@@ -24,6 +24,7 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 	private static final String NOMBRE = "nombre";
 	private static final String ICONURL = "iconUrl";
 	private static final String MIEMBROS = "miembros";
+	private static final String ADMINS = "admins";
 	private static final String LISTAMSG = "listaMsg";
 	
 	// utils
@@ -48,9 +49,10 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 		String nombre = servPersistencia.recuperarPropiedadEntidad(eGroup, NOMBRE);
 		String iconUrl = servPersistencia.recuperarPropiedadEntidad(eGroup, ICONURL);
 		String miembros = servPersistencia.recuperarPropiedadEntidad(eGroup, MIEMBROS);
+		String admins = servPersistencia.recuperarPropiedadEntidad(eGroup, ADMINS);
 		
 		long gId = Long.parseLong(grupoId);
-		Grupo grupo = new Grupo(gId, nombre, iconUrl, obtenerMiembrosFomIDs(miembros));
+		Grupo grupo = new Grupo(gId, nombre, iconUrl, obtenerMiembrosFomIDs(miembros), obtenerAdminsFomIDs(admins));
 		
 		return grupo;
 	}
@@ -64,6 +66,7 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 				new Propiedad(NOMBRE, grupo.getNombre()),
 				new Propiedad(ICONURL, grupo.getIconUrl()),
 				new Propiedad(MIEMBROS, obtenerIDsMiembros(grupo.getIntegrantes())),
+				new Propiedad(ADMINS, ""),
 				new Propiedad(LISTAMSG, "")
 				)));
 		
@@ -81,7 +84,8 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 	public boolean delete(Grupo grupo) {
 		Entidad eGrupo;
 		eGrupo = servPersistencia.recuperarEntidad(grupo.getDBID());
-		// TODO eliminar mensajes del grupo
+		MensajeDAO adaptadorMensaje = MensajeDAO.getUnicaInstancia();
+		for(ModelMessage msg  : obtenerListaMsg(grupo.getDBID())) adaptadorMensaje.delete(msg);
 		return servPersistencia.borrarEntidad(eGrupo);
 	}
 
@@ -121,8 +125,7 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 	
 	public void addMiembro(int id, EntidadComunicable miembro) {
 		String listMiembros= servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), MIEMBROS);
-		//System.out.println("[DEBUG] lista antes : "+ listaContactos);
-		//System.out.println("[DEBUG se debería anyadir : "+contact.getId());
+		
 		if(listMiembros.isBlank()||listMiembros == null) {
 			listMiembros += "" + miembro.getId();
 		}else {
@@ -143,7 +146,8 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 	public void eliminarMiembro(int id, EntidadComunicable miembro) {
 		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), MIEMBROS);
 		List<EntidadComunicable> list = obtenerMiembrosFomIDs(listaContactos);
-		list.remove(miembro);
+		EntidadComunicable miembrotAux = list.stream().filter(e -> e.getId() == miembro.getId()).findFirst().get() ;
+		list.remove(miembrotAux);
 		listaContactos = obtenerIDsMiembros(list);
 		Entidad eUser = servPersistencia.recuperarEntidad(id);
 		for(Propiedad prop : eUser.getPropiedades()) {
@@ -160,10 +164,52 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 	
 	public boolean isMiembro(int numeroUser, int groupID) {	
 		List<EntidadComunicable> lista = obtenerListaMiembros(groupID);
-		
-		//System.out.println("[DEBUG]" + " UsuarioDAO" + " numero de contactos : " + lista.size());
-		
 		return lista.stream().anyMatch(e -> e.getNumero() == numeroUser);
+	}
+	
+	// ### lista admins
+	
+	public void addAdmin(int id, int admin) {
+		String listMiembros= servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), ADMINS);
+		if(listMiembros.isBlank()||listMiembros == null) {
+			listMiembros += "" + admin;
+		}else {
+			listMiembros += " " + admin;
+		}
+		
+		System.out.println("[DEBUG]" + "GrupoDAO" + " db lista admins : " + listMiembros);
+		
+		for(Propiedad prop : servPersistencia.recuperarEntidad(id).getPropiedades()) {
+			if(prop.getNombre().equals(ADMINS)) {
+				prop.setValor(listMiembros);
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+		System.out.println("[DEBUG]" + "GrupoDAO" + " comprobación lista de admins : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), MIEMBROS));
+	}
+	
+	public void eliminarAdmin(int id, int admin) {
+		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), ADMINS);
+		List<Integer> list = obtenerAdminsFomIDs(listaContactos);
+		int miembrotAux = list.stream().filter(e -> e == admin).findFirst().get() ;
+		list.remove(miembrotAux);
+		listaContactos = obtenerIDsAdmins(list);
+		Entidad eUser = servPersistencia.recuperarEntidad(id);
+		for(Propiedad prop : eUser.getPropiedades()) {
+			if(prop.getNombre().equals(ADMINS)) {
+				prop.setValor(listaContactos);
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+	}
+	
+	public List<Integer> obtenerListaAdmins(int id){
+		return obtenerAdminsFomIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), ADMINS));
+	}
+	
+	public boolean isAdmin(int numeroUser, int groupID) {	
+		List<Integer> lista = obtenerListaAdmins(groupID);
+		return lista.stream().anyMatch(e -> e == numeroUser);
 	}
 	
 	// ### lista mensajes
@@ -251,6 +297,26 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 			miembros += miembro.getId() + " ";
 		}
 		return miembros.trim();
+	}
+	
+	public List<Integer> obtenerAdminsFomIDs(String lista) {
+		List<Integer> adminList = new LinkedList<Integer>();
+		if(lista.isBlank())return adminList;
+		StringTokenizer strTok = new StringTokenizer(lista, " ");
+		//ContactoDAO adaptadorContacto = ContactoDAO.getUnicaInstancia();
+		while(strTok.hasMoreTokens()) {
+			int adminAux = Integer.valueOf((String)strTok.nextElement());
+			adminList.add(adminAux);
+		}
+		return adminList;
+	}
+	
+	private String obtenerIDsAdmins(List<Integer> lista) {
+		String admins = "";
+		for (int admin : lista) {
+			admins += admin + " ";
+		}
+		return admins.trim();
 	}
 	
 	public List<EntidadComunicable> obtenerMiembrosFomIDs(String lista) { 

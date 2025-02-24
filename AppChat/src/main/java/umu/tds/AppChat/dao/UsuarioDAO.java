@@ -178,13 +178,10 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	
 	public void eliminarContacto(int number, EntidadComunicable contact) {
 		String listaContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTACONTACTOS);
-		System.out.println("[DEBUG]" + " UsuarioDAO" + " lista de IDs de contactos antes : " + listaContactos);
 		List<EntidadComunicable> list = obtenerListaContactosFomIDs(listaContactos);
-		System.out.println("[DEBUG]" + " UsuarioDAO" + " lista de IDs de contactos antes : " + list.toString());
 		EntidadComunicable contactAux = list.stream().filter(e -> e.getId() == contact.getId()).findFirst().get() ;
 		list.remove(contactAux);
 		listaContactos = obtenerIDsContactos(list);
-		System.out.println("[DEBUG]" + " UsuarioDAO" + " lista de IDs de contactos después : " + listaContactos);
 		Entidad eUser = servPersistencia.recuperarEntidad(number);
 		for(Propiedad prop : eUser.getPropiedades()) {
 			if(prop.getNombre().equals(LISTACONTACTOS)) {
@@ -236,7 +233,8 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	public void eliminarGrupoFromUser(int number, Grupo grupo) {
 		String listaGrupos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTAGRUPOS);
 		List<Grupo> list = obtenerListaGruposFromIDs(listaGrupos);
-		list.remove(grupo);
+		Grupo grupoAux = list.stream().filter(e -> e.getDBID() == grupo.getDBID()).findFirst().get() ;
+		list.remove(grupoAux);
 		listaGrupos = obtenerIDsGrupos(list);
 		Entidad eUser = servPersistencia.recuperarEntidad(number);
 		for(Propiedad prop : eUser.getPropiedades()) {
@@ -277,7 +275,8 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 	public void eliminarNoContacto(int number, EntidadComunicable noContact) {
 		String listaNoContactos = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(number), LISTANOCONTACTOS);
 		List<EntidadComunicable> list = obtenerListaNoContactosFomIDs(listaNoContactos);
-		list.remove(noContact);
+		EntidadComunicable contactAux = list.stream().filter(e -> e.getId() == noContact.getId()).findFirst().get() ;
+		list.remove(contactAux);
 		listaNoContactos = obtenerIDsNoContactos(list);
 		Entidad eUser = servPersistencia.recuperarEntidad(number);
 		for(Propiedad prop : eUser.getPropiedades()) {

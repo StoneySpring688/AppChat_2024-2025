@@ -231,8 +231,9 @@ public class BackendController {
 	   long idAleatorio;
 	   // como no es una bd hecha a medida no se puede comprobar el id de forma eficiente, se seguirá usando porque está hecha la implementación, pero si no se migra a otra bd su uso será solo parcial
 	   do{idAleatorio = 1_000_000_000L + (long) (secureRandom.nextDouble() * 9_000_000_000L);}while(chatsRepository.isGroup(idAleatorio));
-	   chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros));
-	   
+	   List<Integer> admins = new ArrayList<Integer>();
+	   admins.add(getUserNumber());
+	   chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros, admins));
 		
 		return idAleatorio;
 		

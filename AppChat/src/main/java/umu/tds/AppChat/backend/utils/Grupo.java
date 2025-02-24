@@ -19,19 +19,22 @@ public class Grupo  {
 	private String nombre;
 	private String iconUrl;
 	private List<EntidadComunicable> integrantes;
+	private List<Integer> admins;
 		
 	public Grupo(long groupID, String nombre, String iconUrl){
 		this.groupID = groupID;
 		this.nombre = nombre;
 		this.iconUrl = iconUrl;
 		this.integrantes =  new ArrayList<EntidadComunicable>();
+		this.admins = new ArrayList<Integer>();
 	}
 	
-	public Grupo(long groupID, String nombre, String iconUrl, List<EntidadComunicable> miembros){
+	public Grupo(long groupID, String nombre, String iconUrl, List<EntidadComunicable> miembros, List<Integer> admins){
 		this.groupID = groupID;
 		this.nombre = nombre;
 		this.iconUrl = iconUrl;
 		this.integrantes =  new ArrayList<EntidadComunicable>(miembros);
+		this.admins = new ArrayList<Integer>(admins);
 	}
 
 	public Grupo(Grupo grupo) {
@@ -39,6 +42,7 @@ public class Grupo  {
 		this.nombre = grupo.getNombre();
 		this.iconUrl = grupo.getIconUrl();
 		this.integrantes = grupo.getIntegrantes();
+		this.admins = grupo.getAdmins();
 		this.DBID = grupo.getDBID();
 	}
 	
@@ -56,6 +60,14 @@ public class Grupo  {
 		
 	public String getIconUrl() {
 		return new String(this.iconUrl);
+	}
+	
+	public List<EntidadComunicable> getIntegrantes(){
+		return new ArrayList<EntidadComunicable>(this.integrantes);
+	}
+	
+	public List<Integer> getAdmins(){
+		return new ArrayList<Integer>(this.admins);
 	}
 	
 	public void setDBID(int dBID) {
@@ -86,8 +98,16 @@ public class Grupo  {
 		return this.integrantes.stream().anyMatch(k -> k.equals(miembro));
 	}
 	
-	public List<EntidadComunicable> getIntegrantes(){
-		return new ArrayList<EntidadComunicable>(this.integrantes);
+	public void addAdmin(int numero) {
+		if(!this.isAdmin(numero)) this.admins.add(numero);
+	}
+	
+	public void removeAdmin(int numero) {
+		this.admins.removeIf(k -> k.equals(numero));
+	}
+	
+	public boolean isAdmin(int numero) {
+		return this.admins.stream().anyMatch(k -> k.equals(numero));
 	}
 
 	public ImageIcon actualizarImagenFromUrl() {
