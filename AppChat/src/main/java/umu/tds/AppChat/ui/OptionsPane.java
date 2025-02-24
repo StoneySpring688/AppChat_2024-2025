@@ -50,7 +50,6 @@ public class OptionsPane extends PanelGrande {
 	private JList<ElementoChatOGrupo> listaGrupos;
 	private JPanel groupsPreview;
 	
-	
 	private final Color Gray = new Color(64, 68, 75);
 	private final Color darkPorDefecto = new Color(54, 57, 63);
 	
@@ -203,6 +202,35 @@ public class OptionsPane extends PanelGrande {
 		lblGroups.setForeground(Color.WHITE);
 		
 		this.fondo.add(lblGroups);
+		
+		groupsPreview = new JPanel();
+		groupsPreview.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		groupsPreview.setBounds(10, 560, 285, 385);
+		this.fondo.add(groupsPreview);
+		
+		this.grupos = new DefaultListModel<ElementoChatOGrupo>();
+		groupsPreview.setLayout(new BoxLayout(groupsPreview, BoxLayout.X_AXIS));
+		this.listaGrupos = new JList<>(grupos);
+		this.listaGrupos.setCellRenderer(new ElementoChatOGrupoRender(this.listaGrupos));
+		this.listaGrupos.setBackground(this.darkPorDefecto);
+		JScrollPane scrollListaGrupos = new JScrollPane(this.listaGrupos);
+		scrollListaGrupos.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollListaGrupos.setVerticalScrollBar(new ScrollBar());
+		scrollListaGrupos.setBorder(BorderFactory.createEmptyBorder());
+		scrollListaGrupos.setBackground(this.darkPorDefecto);
+		groupsPreview.add(scrollListaGrupos);
+		listaGrupos.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        int selectedIndex = listaContactos.getSelectedIndex();
+		        if (selectedIndex != -1) {
+		            // Obtener el elemento seleccionado
+		            ElementoChatOGrupo selectedGroup = grupos.getElementAt(selectedIndex);  
+		            System.out.println(selectedGroup.getNombre() + " ," + selectedGroup.getGroupID());
+		        }
+		    }
+		});
+		
 	}
 	
 	public String getNumero() {
