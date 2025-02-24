@@ -15,6 +15,10 @@ public interface InterfaceGrupoDAO {
 	void eliminarMiembro(int id, EntidadComunicable miembro);
 	List<EntidadComunicable> obtenerListaMiembros(int id);
 	public boolean isMiembro(int numeroUser, int groupID);
+	public void addAdmin(int id, int admin);
+	public void eliminarAdmin(int id, int admin);
+	public List<Integer> obtenerListaAdmins(int id);
+	public boolean isAdmin(int numeroUser, int groupID);
 	void addMsg(int id, ModelMessage msg);
 	List<ModelMessage> obtenerListaMsg(int id);
 	List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin);

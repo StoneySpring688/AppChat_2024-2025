@@ -274,6 +274,10 @@ public class MainController {
 			miembrosGrupo.add(DAOController.addMiembroToGrupo(newGrupo.getDBID(), entAux));
 			BackendController.addMiembroToGrupo(newGrupo.getID(), entAux);
 			
+			// añadir al usuario como admin del grupo
+			DAOController.addAdminToGrupo(newGrupo.getDBID(), BackendController.getUserNumber());
+			BackendController.addAdminToGrupo(newGrupo.getID(), BackendController.getUserNumber());
+			
 			BackendController.getGrupo(gID).setDBID(newGrupo.getDBID());
 			UIController.addGroup(gID);
 		}

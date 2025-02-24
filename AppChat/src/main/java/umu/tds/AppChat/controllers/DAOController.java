@@ -160,6 +160,19 @@ public class DAOController {
 		return groupAdapter.isMiembro(numeroUser, groupID);
 	}
 	
+	public static void addAdminToGrupo(int idGrupo, int numeroAdmin) {
+		System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo admin : " + numeroAdmin );
+		groupAdapter.addAdmin(idGrupo, numeroAdmin);
+	}
+	
+	public static void removeAdminFromGrupo(int idGrupo, int numeroAdmin) {
+		groupAdapter.eliminarAdmin(idGrupo, numeroAdmin);
+	}
+	
+	public static boolean isAdmin(int numeroAdmin, int groupID) {
+		return groupAdapter.isAdmin(numeroAdmin, groupID);
+	}
+	
 	// ### noContactos
 	
 	public static EntidadComunicable addNoContact(EntidadComunicable noContact, int userToAddNoContact) {				

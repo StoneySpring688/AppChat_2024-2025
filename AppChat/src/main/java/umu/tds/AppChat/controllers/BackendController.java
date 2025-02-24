@@ -232,11 +232,15 @@ public class BackendController {
 	   // como no es una bd hecha a medida no se puede comprobar el id de forma eficiente, se seguirá usando porque está hecha la implementación, pero si no se migra a otra bd su uso será solo parcial
 	   do{idAleatorio = 1_000_000_000L + (long) (secureRandom.nextDouble() * 9_000_000_000L);}while(chatsRepository.isGroup(idAleatorio));
 	   List<Integer> admins = new ArrayList<Integer>();
-	   admins.add(getUserNumber());
+	   ///admins.add(getUserNumber());
 	   chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros, admins));
 		
 		return idAleatorio;
 		
+    }
+    
+    public static boolean isAdmin(long groupID, int numero) {
+    	return getGrupo(groupID).isAdmin(numero);
     }
     
     public static boolean isGroup(long groupID) {
@@ -249,6 +253,14 @@ public class BackendController {
     
     public static void removeMiembroFromGrupo(long id, EntidadComunicable miembro) {
     	chatsRepository.getGrupo(id).removeIntegrante(miembro);
+    }
+    
+    public static void addAdminToGrupo(long groupId, int numeroAdmin) {
+    	getGrupo(groupId).addAdmin(numeroAdmin);
+    }
+    
+    public static void removeAdminFromGrupo(long groupId, int numeroAdmin) {
+    	getGrupo(groupId).removeAdmin(numeroAdmin);
     }
     
     // ### registro

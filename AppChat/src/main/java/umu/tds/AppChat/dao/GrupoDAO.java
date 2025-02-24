@@ -185,7 +185,7 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
-		System.out.println("[DEBUG]" + "GrupoDAO" + " comprobación lista de admins : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), MIEMBROS));
+		System.out.println("[DEBUG]" + "GrupoDAO" + " comprobación lista de admins : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), ADMINS));
 	}
 	
 	public void eliminarAdmin(int id, int admin) {
@@ -207,7 +207,7 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 		return obtenerAdminsFomIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), ADMINS));
 	}
 	
-	public boolean isAdmin(int numeroUser, int groupID) {	
+	public boolean isAdmin(int numeroUser, int groupID) {
 		List<Integer> lista = obtenerListaAdmins(groupID);
 		return lista.stream().anyMatch(e -> e == numeroUser);
 	}
