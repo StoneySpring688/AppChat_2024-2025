@@ -2,6 +2,7 @@ package umu.tds.AppChat.ui.chatInterface;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -46,7 +47,8 @@ public class ChatArea extends JPanel {
     private TextField textMessage;
     private JScrollPane scrollBody;
     private Button floatingButton;
-    private JPanel floatingPanel;
+    private JPanel floatingPanelAddNoContact;
+    private boolean isFloatingPanelVisible;
     private JLabel headerUserName;
     private ImageAvatar headerAvatar;
     private EmojiPanel emojiPanel;
@@ -108,8 +110,12 @@ public class ChatArea extends JPanel {
             }
         });
         floatingButton = createFloatingButton();
+        floatingPanelAddNoContact = createFloatingButtonAddNoContact();
         layeredPane.setLayer(floatingButton, JLayeredPane.POPUP_LAYER);
+        layeredPane.setLayer(floatingPanelAddNoContact, JLayeredPane.POPUP_LAYER);
         layeredPane.add(floatingButton, "pos 100%-50 100%,h 40,w 40");
+        layeredPane.add(floatingPanelAddNoContact, "pos 0%+10 100%-60, h 50, w 100");
+        hideAddNoContactPanel();
         layeredPane.add(scrollBody);
         principal.setLayout(layout);
         principal.add(header);
@@ -211,12 +217,43 @@ public class ChatArea extends JPanel {
     }
 
     private JPanel createFloatingButtonAddNoContact() {
-    	JPanel floatingPanel = new JPanel();
+    	RoundPanel floatingPanel = new RoundPanel();
     	floatingPanel.setLayout(null);
+    	floatingPanel.setRound(20);
+    	floatingPanel.setBackground(new Color(100, 100, 100, 100));
+    	floatingPanel.setSize(100, 50);
     	
-    	Button button = new Button();
-    	button.setBorder(null);
-    	FontAwesomeIcon icon = new FontAwesomeIcon();
+    	Button deleteButton = new Button();
+    	deleteButton.setBounds(78, 0, 22, 22);
+    	deleteButton.setBorder(null);
+		ImageIcon deleteIcon = new ImageIcon(new ImageIcon(getClass().getResource("/assets/Btn_FairyBook_Cancel.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH) );
+		deleteButton.setIcon(deleteIcon);
+		deleteButton.setPaintBackground(false);
+		deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	if (isFloatingPanelVisible) hideAddNoContactPanel();
+            }
+        });
+		floatingPanel.add(deleteButton);
+		
+		Button addContactButton = new Button();
+		addContactButton.setText("add contact");
+		addContactButton.setBorder(null);
+		addContactButton.setRound(20);
+		addContactButton.setBackground(new Color(241, 57, 83));
+		addContactButton.setPaintBackground(true);
+		addContactButton.setForeground(Color.WHITE);
+		addContactButton.setBounds(10, 25, 80, 20);
+		addContactButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO llamar al método de UIController para hacer un contacto de un noContacto
+				
+			}
+		});
+		floatingPanel.add(addContactButton);
     	
     	return floatingPanel;
     }
@@ -327,6 +364,22 @@ public class ChatArea extends JPanel {
     protected void showHideEmojiPanel() {
     	this.setEmojiPanelVisibility(!this.getEmojiPanelVisibility());
     }
+    
+    private void showAddNoContactPanel() {
+    	if (!isFloatingPanelVisible) {
+            floatingPanelAddNoContact.setVisible(true);
+            isFloatingPanelVisible = true;
+            floatingPanelAddNoContact.revalidate();
+            floatingPanelAddNoContact.repaint();
+        }
+    }
+    
+    private void hideAddNoContactPanel() {
+        if (isFloatingPanelVisible) {
+            floatingPanelAddNoContact.setVisible(false);
+            isFloatingPanelVisible = false;
+        }
+    }
 
     public String getText() {
         return textMessage.getText();
@@ -383,6 +436,11 @@ public class ChatArea extends JPanel {
     
     protected void setCurrentChat(ElementoChatOGrupo chat) {
     	this.currentChat = chat;
+    	
+    	System.out.println("[DEBUG]" + " chatArea " + isNoContact());
+    	
+    	if(isNoContact()) showAddNoContactPanel(); // si es un no contacto mostrar el panel para añadirlo
+    	else hideAddNoContactPanel();
     	
     	ImageIcon headerIcon = new ImageIcon(chat.getProfilePic().getImage());
         setUserAvatar(headerIcon);      
