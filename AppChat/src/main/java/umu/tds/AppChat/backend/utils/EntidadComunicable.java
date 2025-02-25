@@ -9,17 +9,20 @@ public class EntidadComunicable {
 	private int numero;
 	private String nombre;
 	private String iconUrl;
+	private boolean isNoContact;
 	
 	public EntidadComunicable(int numero, String nombre, String iconUrl){
 		this.numero = numero;
 		this.nombre = nombre;
 		this.iconUrl = iconUrl;
+		this.isNoContact = false;
 	}
 	
 	public EntidadComunicable(int numero, String nombre){
 		this.numero = numero;
 		this.nombre = nombre;
 		this.iconUrl = null;
+		this.isNoContact = false;
 	}
 	
 	public EntidadComunicable(EntidadComunicable ent){
@@ -27,6 +30,7 @@ public class EntidadComunicable {
 		this.nombre = ent.getNombre();
 		this.iconUrl = ent.getIconUrl();
 		this.id = ent.getId();
+		this.isNoContact = ent.isNoContact;
 	}
 
 	public int getId() {
@@ -44,6 +48,10 @@ public class EntidadComunicable {
 	public String getIconUrl() {
 		return new String(this.iconUrl);
 	}
+	
+	public boolean isNoContact() {
+		return this.isNoContact;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -59,6 +67,10 @@ public class EntidadComunicable {
 	
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
+	}
+	
+	public void setIsNoContact(boolean isNoContact) {
+		this.isNoContact = isNoContact;
 	}
 
 	public ImageIcon actualizarImagenFromUrl() {

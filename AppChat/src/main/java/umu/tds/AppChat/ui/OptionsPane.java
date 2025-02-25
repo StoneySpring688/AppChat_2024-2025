@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
 
+import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.controllers.BackendController;
@@ -50,6 +51,7 @@ public class OptionsPane extends PanelGrande {
 	private DefaultListModel<ElementoChatOGrupo> grupos;
 	private JList<ElementoChatOGrupo> listaGrupos;
 	private JPanel groupsPreview;
+	private JPanel groupPreview;
 	
 	private final Color Gray = new Color(64, 68, 75);
 	private final Color darkPorDefecto = new Color(54, 57, 63);
@@ -228,10 +230,18 @@ public class OptionsPane extends PanelGrande {
 		        if (selectedIndex != -1) {
 		            // Obtener el elemento seleccionado
 		            ElementoChatOGrupo selectedGroup = grupos.getElementAt(selectedIndex);  
-		            System.out.println(selectedGroup.getNombre() + " ," + selectedGroup.getGroupID());
+		            //System.out.println(selectedGroup.getNombre() + " ," + selectedGroup.getGroupID());
+		            groupPreview(selectedGroup);
 		        }
 		    }
 		});
+		
+	this.groupPreview = new JPanel();
+	this.groupPreview.setLayout(new MigLayout("fill, insets 0, gap 0"));
+	this.groupPreview.setBounds(10, 965, 240, 65);
+	this.groupPreview.setBackground(darkPorDefecto);
+	this.groupPreview.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+	this.fondo.add(groupPreview);
 		
 	}
 	
@@ -255,6 +265,13 @@ public class OptionsPane extends PanelGrande {
 	    this.repaint();
 	    this.revalidate();
 		
+	}
+	
+	private void groupPreview(ElementoChatOGrupo group) {
+		this.groupPreview.removeAll();
+		this.groupPreview.add(new ElementoChatOGrupo(Optional.empty(), group.getGrupo()), "wrap");
+		this.groupPreview.repaint();
+		this.groupPreview.revalidate();
 	}
 	
 	private boolean editContact() {

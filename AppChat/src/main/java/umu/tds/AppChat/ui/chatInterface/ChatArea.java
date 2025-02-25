@@ -46,6 +46,7 @@ public class ChatArea extends JPanel {
     private TextField textMessage;
     private JScrollPane scrollBody;
     private Button floatingButton;
+    private JPanel floatingPanel;
     private JLabel headerUserName;
     private ImageAvatar headerAvatar;
     private EmojiPanel emojiPanel;
@@ -209,6 +210,17 @@ public class ChatArea extends JPanel {
         return layer;
     }
 
+    private JPanel createFloatingButtonAddNoContact() {
+    	JPanel floatingPanel = new JPanel();
+    	floatingPanel.setLayout(null);
+    	
+    	Button button = new Button();
+    	button.setBorder(null);
+    	FontAwesomeIcon icon = new FontAwesomeIcon();
+    	
+    	return floatingPanel;
+    }
+    
     private Button createFloatingButton() {
         Button button = new Button();
         button.setBorder(null);
@@ -359,6 +371,10 @@ public class ChatArea extends JPanel {
     
     protected Icon getUserAvatar() {
     	return this.headerAvatar.getImage();
+    }
+    
+    private boolean isNoContact() { // si es un contacto devuelve si es o no un noContact, si es un grupo devuelve false directamente
+    	return this.currentChat.getContacto().isPresent() ? this.currentChat.getContacto().get().isNoContact() : false;
     }
     
     protected void setUserAvatar(ImageIcon image) {

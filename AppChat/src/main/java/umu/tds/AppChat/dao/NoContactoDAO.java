@@ -47,6 +47,7 @@ public class NoContactoDAO implements InterfaceNoContactoDAO {
 		Usuario userAux = DAOController.recuperarUser(number).get();
 		
 		EntidadComunicable noContacto = new EntidadComunicable(number, userAux.getNombre(), userAux.getIconUrl());
+		noContacto.setIsNoContact(true);
 		return noContacto;
 	}
 	
