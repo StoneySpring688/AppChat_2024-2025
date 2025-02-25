@@ -132,6 +132,15 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		//System.out.println("[DEBUG]" + "ContactoDAO" + " comprobación lista de mensajes : "+servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
 	}
 	
+	public void addMsgs(int  id, String msgs) {
+		for(Propiedad prop : servPersistencia.recuperarEntidad(id).getPropiedades()) {
+			if(prop.getNombre().equals(LISTAMSG)) {
+				prop.setValor(msgs);
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
+	}
+	
 	public List<ModelMessage> obtenerListaMsg(int id){
 		return obtenerListaMsgFromIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
 	}

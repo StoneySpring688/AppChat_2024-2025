@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.ModelMessage;
+import umu.tds.AppChat.controllers.UIController;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.ImageAvatar;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
@@ -115,7 +116,7 @@ public class ChatArea extends JPanel {
         layeredPane.setLayer(floatingPanelAddNoContact, JLayeredPane.POPUP_LAYER);
         layeredPane.add(floatingButton, "pos 100%-50 100%,h 40,w 40");
         layeredPane.add(floatingPanelAddNoContact, "pos 0%+10 100%-60, h 50, w 100");
-        hideAddNoContactPanel();
+        isFloatingPanelVisible = true;
         layeredPane.add(scrollBody);
         principal.setLayout(layout);
         principal.add(header);
@@ -249,7 +250,10 @@ public class ChatArea extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO llamar al método de UIController para hacer un contacto de un noContacto
+				if(UIController.addContactFromNoContact(getCurrentChat())) {
+					hideAddNoContactPanel();
+					
+				}
 				
 			}
 		});
@@ -436,8 +440,6 @@ public class ChatArea extends JPanel {
     
     protected void setCurrentChat(ElementoChatOGrupo chat) {
     	this.currentChat = chat;
-    	
-    	System.out.println("[DEBUG]" + " chatArea " + isNoContact());
     	
     	if(isNoContact()) showAddNoContactPanel(); // si es un no contacto mostrar el panel para añadirlo
     	else hideAddNoContactPanel();

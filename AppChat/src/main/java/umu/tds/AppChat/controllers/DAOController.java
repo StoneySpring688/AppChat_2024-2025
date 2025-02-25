@@ -92,7 +92,7 @@ public class DAOController {
 			//System.out.println("[DEBUG] el  id del contacto es : "+ contact.getId());
 			EntidadComunicable contacto = contactAdapter.get(contact.getId());
 			contacto.setId(contact.getId());
-			System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo contacto id : " + contacto.getId() );
+			//System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo contacto id : " + contacto.getId() );
 			userAdapter.addContacto(BackendController.getUserNumber(), contacto);
 			return contacto;
 		}
@@ -105,7 +105,7 @@ public class DAOController {
 	
 	public static void removeContact(int user, EntidadComunicable contact) {
 		userAdapter.eliminarContacto(user, contact);
-		if(!isContact(user, contact.getNumero())) contactAdapter.eliminarMsgs(contact.getId());
+		if(!isContact(user, contact.getNumero())) contactAdapter.eliminarMsgs(contact.getId()); // si el usuario no es contacto del otro usuario, elimina los mensajes
 		contactAdapter.delete(contact);
 	}
 	
@@ -121,10 +121,10 @@ public class DAOController {
 	
 	public static Grupo addGroup(Grupo grupo) {
 		groupAdapter.create(grupo);
-		System.out.println("[DEBUG]" + "DAOConttroller" + " grupo anyadido : " + grupo.getDBID());
+		//System.out.println("[DEBUG]" + "DAOConttroller" + " grupo anyadido : " + grupo.getDBID());
 		Grupo nuevoGrupo = groupAdapter.get(grupo.getDBID());
 		// nuevoGrupo.setDBID(grupo.getDBID());
-		System.out.println("[DEBUG]" + "DAOConttroller" + " se va a devolver el grupo : " + nuevoGrupo.getDBID());
+		//System.out.println("[DEBUG]" + "DAOConttroller" + " se va a devolver el grupo : " + nuevoGrupo.getDBID());
 		return nuevoGrupo;
 	}
 	
@@ -143,9 +143,9 @@ public class DAOController {
 	
 	public static EntidadComunicable addMiembroToGrupo(int id, EntidadComunicable miembro) {
 		contactAdapter.create(miembro);
-		System.out.println("[DEBUG]" + "DAOConttroller" + " el id del nuevo miembro es : "+ miembro.getId());
+		//System.out.println("[DEBUG]" + "DAOConttroller" + " el id del nuevo miembro es : "+ miembro.getId());
 		EntidadComunicable newMiembro = contactAdapter.get(miembro.getId());
-		System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo miembro id : " + newMiembro.getId() );
+		//System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo miembro id : " + newMiembro.getId() );
 		groupAdapter.addMiembro(id, newMiembro);
 		userAdapter.addGrupoToUser(newMiembro.getNumero(), groupAdapter.get(id));
 		return newMiembro;
@@ -180,13 +180,29 @@ public class DAOController {
 		//System.out.println("[DEBUG] el  id del no contacto es : "+ contact.getId());
 		EntidadComunicable noContacto = noContactAdapter.get(noContact.getId());
 		noContacto.setId(noContact.getId());
-		System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo no contacto id : " + noContacto.getId() );
+		//System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo no contacto id : " + noContacto.getId() );
 		userAdapter.addNoContacto(userToAddNoContact, noContacto);
 		return noContacto;
 	}
 	
 	public static boolean isNoContact(int numeroNoContacto, int userToTest) {
 		return userAdapter.isNoContact(numeroNoContacto, userToTest);
+	}
+	
+	public static Optional<EntidadComunicable> makeContactFromNoContact(EntidadComunicable noContact) {
+		boolean success = true;
+		
+		String msgsAux = noContactAdapter.obtenerListaIDsMsgs(noContact.getId());
+		userAdapter.eliminarNoContacto(BackendController.getUserNumber(), noContact);
+		success = noContactAdapter.delete(noContact);
+		if(success) {
+			EntidadComunicable contactAux = addContact(noContact);
+			contactAdapter.addMsgs(contactAux.getId(), msgsAux);
+			return Optional.of(contactAux);
+		}else {
+			userAdapter.addNoContacto(BackendController.getUserNumber(), noContact); // si no se puede elimiar se restaura la referencia al nocontacto
+		}
+		return Optional.empty();
 	}
 	
 	// ### message

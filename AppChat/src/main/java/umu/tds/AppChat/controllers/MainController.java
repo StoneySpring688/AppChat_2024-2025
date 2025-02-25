@@ -234,6 +234,20 @@ public class MainController {
     	
     }
     
+    public static boolean makeContactFromNoContact(EntidadComunicable noContacto) {
+    	boolean success = true;
+    	
+    	Optional<EntidadComunicable> contactAux = DAOController.makeContactFromNoContact(noContacto);
+    	success = contactAux.isPresent() ? true : false;
+    	if(success) {
+    		BackendController.makeContactFromNoContact(noContacto.getNumero());
+    		BackendController.getContacto(noContacto.getNumero()).setId(contactAux.get().getId());
+    		BackendController.getContacto(noContacto.getNumero()).setIsNoContact(false);
+    	}
+    	
+    	return success;
+    }
+    
     protected static EntidadComunicable getContacto(int numero) {
     	return BackendController.getContacto(numero);
     }

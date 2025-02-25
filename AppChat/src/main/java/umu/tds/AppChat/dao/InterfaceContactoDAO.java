@@ -11,6 +11,7 @@ public interface InterfaceContactoDAO {
 	void update(EntidadComunicable contacto);
 	EntidadComunicable get(int id);
 	void addMsg(int id, ModelMessage msg);
+	void addMsgs(int  id, String msgs);
 	List<ModelMessage> obtenerListaMsg(int id);
 	List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin);
 	void eliminarMsgs(int id);

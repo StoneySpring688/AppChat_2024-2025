@@ -192,6 +192,17 @@ public class UIController {
     		addChat(ent);
     	}
     }
+
+    public static boolean addContactFromNoContact(ElementoChatOGrupo noContact) {
+    	boolean success = MainController.makeContactFromNoContact(noContact.getContacto().get());
+    	if(success) {
+    		noContact.getContacto().get().setIsNoContact(false);
+    		appFrame.llamarMetodo(16, Optional.empty(), Optional.empty());
+    		addChats();
+    	}
+    	
+    	return success; 
+    }
     
     // ### add groups
     

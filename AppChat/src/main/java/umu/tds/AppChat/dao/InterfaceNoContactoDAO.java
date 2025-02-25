@@ -12,6 +12,7 @@ public interface InterfaceNoContactoDAO {
 	EntidadComunicable get(int id);
 	void addMsg(int id, ModelMessage msg);
 	List<ModelMessage> obtenerListaMsg(int id);
+	String obtenerListaIDsMsgs(int id);
 	List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin);
 	void eliminarMsgs(int id);
 }

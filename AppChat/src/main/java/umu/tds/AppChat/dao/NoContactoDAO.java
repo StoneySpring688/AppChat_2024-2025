@@ -119,6 +119,10 @@ public class NoContactoDAO implements InterfaceNoContactoDAO {
 		return obtenerListaMsgFromIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
 	}
 	
+	public String obtenerListaIDsMsgs(int id) {
+		return servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG);
+	}
+	
 	public List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin){
 		List<ModelMessage> lista = new ArrayList<ModelMessage>();
 		String msgs = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG);
