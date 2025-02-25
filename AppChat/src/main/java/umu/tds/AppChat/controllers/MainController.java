@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
@@ -72,8 +73,8 @@ public class MainController {
     	Optional<Usuario> user = BackendController.doRegister(nombre, numero, passwd, birthDate, url, signature);
     	if(user.isPresent()) {
     		//System.out.println("[DEBUG] escribiendo usuario");
-    		DAOController.registerUser(user.get());
-    		return true;
+    		return DAOController.registerUser(user.get());
+    		
     	}
     	return false;
     }
@@ -298,6 +299,59 @@ public class MainController {
 		
 		return success;
 		
+    }
+    
+    protected static boolean editGroup(String urlProfileIcon, String nombreGrupo, List<Integer> miembros, long groupID) {
+    	boolean success = true;
+    		
+    	if(nombreGrupo.length() == 0) {
+    		UIController.groupSettingsErrors((byte) 1);
+    		success = false;
+    	}if(miembros.size() < 1) {
+    		UIController.groupSettingsErrors((byte)2);
+    		success = false;
+		}
+    	
+    	if(success) {
+    		
+    		// actualizar lista de usuarios
+    		Grupo grupoAux = BackendController.getGrupo(groupID);
+    		List<EntidadComunicable> listAux = grupoAux.getIntegrantes(); // lista anterior de integrantes
+    		List<Integer> eliminados = (listAux.stream() // lista de usuarios que ya no forman parte del grupo
+    			    .filter(e -> !miembros.contains(e.getNumero()))
+    			    .map(EntidadComunicable::getNumero)
+    			    .collect(Collectors.toList()));
+    		
+    		List<EntidadComunicable> nuevosUsuarios = (listAux.stream() // lista sin los usurios eliminados
+    			    .filter(e -> !eliminados.contains(e.getNumero()))
+    			    .collect(Collectors.toList()));
+    		
+    		List<Integer> usersToAdd = (miembros.stream() // lista de miembros a añadir
+    				.filter(e -> !nuevosUsuarios.stream().map(EntidadComunicable::getNumero).collect(Collectors.toList()).contains(e))
+    				.collect(Collectors.toList()));
+    		
+    		for(int numero : usersToAdd) {
+    			Usuario userAux = DAOController.recuperarUser(numero).get();
+				EntidadComunicable entAux = new EntidadComunicable(userAux);
+				nuevosUsuarios.add(DAOController.addMiembroToGrupo(BackendController.getGrupo(groupID).getDBID(), entAux));
+				BackendController.addMiembroToGrupo(groupID, entAux);
+    		}
+    		
+    		for(int numero : eliminados) {
+    			EntidadComunicable contactAux = listAux.stream().filter(e -> e.getNumero() == numero).findFirst().get();
+    			//System.out.println(contactAux.getNumero() + "," + contactAux.getId());
+    			DAOController.removeMiembroFromGrupo(BackendController.getGrupo(groupID).getDBID(), contactAux);
+    			BackendController.removeMiembroFromGrupo(groupID, contactAux);
+    		}
+    		
+    		// actualizar nombre e imagen
+    		BackendController.getGrupo(groupID).setIconUrl(urlProfileIcon);
+    		BackendController.getGrupo(groupID).setNombre(nombreGrupo);
+    		//BackendController.getGrupo(groupID).setIntegrantes(listAux);
+    		DAOController.actualizarGrupo(BackendController.getGrupo(groupID));
+    		
+    	}
+    	return success;
     }
     
     protected static Grupo getGrupo(long id) {

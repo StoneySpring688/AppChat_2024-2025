@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
@@ -22,12 +24,16 @@ import umu.tds.AppChat.controllers.BackendController;
 import umu.tds.AppChat.controllers.UIController;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +50,7 @@ public class OptionsPane extends PanelGrande {
 	private JPanel contactsPreview;
 	private JTextField textFieldPhone;
 	private JTextField textNombreContacto;
-	private JButton editButton;
+	private JButton editContactButton;
 	private JButton deleteContactButton;
 	
 	// groups settings
@@ -52,7 +58,26 @@ public class OptionsPane extends PanelGrande {
 	private JList<ElementoChatOGrupo> listaGrupos;
 	private JPanel groupsPreview;
 	private JPanel groupPreview;
+	private JPanel editarGrupoPanelContactos;
+	private DefaultListModel<ElementoChatOGrupo> editarGrupoContactos;
+	private JList<ElementoChatOGrupo> editarGrupoListaContactos;
+	private JPanel editarGrupoPanelMiembros;
+	private DefaultListModel<ElementoChatOGrupo> editarGrupoMiembros;
+	private JList<ElementoChatOGrupo> editarGrupoListaMiembros;
+	private JTextField textNombreGrupo;
+	private JTextField urlField;
+	private ImageAvatar lblProfile;
+	private JButton editGroupButton;
+	private JButton deleteGroupButton;
+	private JButton leaveGroupButton;
+	private long selectedGroupID;
+	private boolean validImage;
 	
+	// utils
+	private final static String defaultProfileImage = "/assets/ProfilePic.png";
+	private final static String defaultGroupUrl = "https://github.com/StoneySpring688/AppChat_2024-2025/blob/main/AppChat/src/main/resources/assets/ProfilePic.png?raw=true";
+	
+	// colors
 	private final Color Gray = new Color(64, 68, 75);
 	private final Color darkPorDefecto = new Color(54, 57, 63);
 	
@@ -133,11 +158,11 @@ public class OptionsPane extends PanelGrande {
         });
 		this.fondo.add(textNombreContacto);
 		
-		editButton = new JButton("Edit");
-		editButton.setForeground(Color.WHITE);
-		editButton.setBackground(new Color(241, 57, 83));
-		editButton.setBounds(459, 310, 187, 35); // x = 370+(285/2)-(187/2)
-		editButton.addActionListener(new ActionListener() {
+		editContactButton = new JButton("Edit");
+		editContactButton.setForeground(Color.WHITE);
+		editContactButton.setBackground(new Color(241, 57, 83));
+		editContactButton.setBounds(459, 310, 187, 35); // x = 370+(285/2)-(187/2)
+		editContactButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//numero inexistente o ya en contactos
@@ -147,7 +172,7 @@ public class OptionsPane extends PanelGrande {
 			}
 		});
 		
-		this.fondo.add(editButton);
+		this.fondo.add(editContactButton);
 		
 		deleteContactButton = new JButton("Remove");
 		deleteContactButton.setForeground(Color.WHITE);
@@ -232,25 +257,274 @@ public class OptionsPane extends PanelGrande {
 		            ElementoChatOGrupo selectedGroup = grupos.getElementAt(selectedIndex);  
 		            //System.out.println(selectedGroup.getNombre() + " ," + selectedGroup.getGroupID());
 		            groupPreview(selectedGroup);
+		            prepareEditGroup(selectedGroup);
+		            
 		        }
 		    }
 		});
 		
-	this.groupPreview = new JPanel();
-	this.groupPreview.setLayout(new MigLayout("fill, insets 0, gap 0"));
-	this.groupPreview.setBounds(10, 965, 240, 65);
-	this.groupPreview.setBackground(darkPorDefecto);
-	this.groupPreview.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-	this.fondo.add(groupPreview);
+		this.groupPreview = new JPanel();
+		this.groupPreview.setLayout(new MigLayout("fill, insets 0, gap 0"));
+		this.groupPreview.setBounds(33, 965, 240, 65); // b  = a + (w_1/2) - (w_2/2)
+		this.groupPreview.setBackground(darkPorDefecto);
+		this.groupPreview.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.fondo.add(groupPreview);
+		
+		//lista de contactos
+		JLabel lblContactosGrupo = new JLabel("Contactos");
+		lblContactosGrupo.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblContactosGrupo.setBounds(315, 540, 120, 20); //this.fondo.getWidth()/2-lblOptions.getWidth()/2
+		lblContactosGrupo.setForeground(Color.WHITE);
+		
+		this.fondo.add(lblContactosGrupo);
+		
+		editarGrupoPanelContactos = new JPanel();
+		editarGrupoPanelContactos.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		editarGrupoPanelContactos.setBounds(315, 560, 285, 385);
+		this.fondo.add(editarGrupoPanelContactos);
+		
+		this.editarGrupoContactos = new DefaultListModel<>();
+		editarGrupoPanelContactos.setLayout(new BoxLayout(editarGrupoPanelContactos, BoxLayout.X_AXIS));
+		this.editarGrupoListaContactos = new JList<>(editarGrupoContactos);
+		this.editarGrupoListaContactos.setCellRenderer(new ElementoChatOGrupoRender(this.editarGrupoListaContactos));
+		this.editarGrupoListaContactos.setBackground(this.darkPorDefecto);
+		JScrollPane editarGrupoScrollListaContactos = new JScrollPane(this.editarGrupoListaContactos);
+		editarGrupoScrollListaContactos.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		editarGrupoScrollListaContactos.setVerticalScrollBar(new ScrollBar());
+		editarGrupoScrollListaContactos.setBorder(BorderFactory.createEmptyBorder());
+		editarGrupoScrollListaContactos.setBackground(this.darkPorDefecto);
+		editarGrupoPanelContactos.add(editarGrupoScrollListaContactos);
+		editarGrupoListaContactos.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        int selectedIndex = editarGrupoListaContactos.getSelectedIndex();
+		        if (selectedIndex != -1) {
+		            // Obtener el elemento seleccionado
+		            ElementoChatOGrupo selectedContact = editarGrupoContactos.getElementAt(selectedIndex);
+	
+		            // Removerlo de la lista de contactos y añadirlo a la lista de miembros
+		            editarGrupoContactos.removeElementAt(selectedIndex);
+		            editarGrupoMiembros.add(0, selectedContact);
+		            
+		            if(((TitledBorder) editarGrupoPanelMiembros.getBorder()).getTitleColor() == Color.RED) {
+		            	editarGrupoPanelMiembros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		            }
+		        }
+		    }
+		});
+		
+		//lista de miembros
+		JLabel lblMiembrosGrupo = new JLabel("Miembros");
+		lblMiembrosGrupo.setFont(new Font("Dialog", Font.PLAIN, 12));
+		lblMiembrosGrupo.setBounds(620, 540, 120, 20); //this.fondo.getWidth()/2-lblOptions.getWidth()/2
+		lblMiembrosGrupo.setForeground(Color.WHITE);
+		
+		this.fondo.add(lblMiembrosGrupo);
+		
+		editarGrupoPanelMiembros = new JPanel();
+		editarGrupoPanelMiembros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		editarGrupoPanelMiembros.setBounds(620, 560, 285, 385);
+		this.fondo.add(editarGrupoPanelMiembros);
+		
+		this.editarGrupoMiembros = new DefaultListModel<>();
+		editarGrupoPanelMiembros.setLayout(new BoxLayout(editarGrupoPanelMiembros, BoxLayout.X_AXIS));
+		this.editarGrupoListaMiembros = new JList<>(editarGrupoMiembros);
+		this.editarGrupoListaMiembros.setCellRenderer(new ElementoChatOGrupoRender(this.editarGrupoListaMiembros));
+		this.editarGrupoListaMiembros.setBackground(this.darkPorDefecto);
+		JScrollPane editarGrupoScrollListaMiembros = new JScrollPane(this.editarGrupoListaMiembros);
+		editarGrupoScrollListaMiembros.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		editarGrupoScrollListaMiembros.setVerticalScrollBar(new ScrollBar());
+		editarGrupoScrollListaMiembros.setBorder(BorderFactory.createEmptyBorder());
+		editarGrupoScrollListaMiembros.setBackground(this.darkPorDefecto);
+		editarGrupoPanelMiembros.add(editarGrupoScrollListaMiembros);
+		editarGrupoListaMiembros.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        int selectedIndex = editarGrupoListaMiembros.getSelectedIndex();
+		        if (selectedIndex != -1) {
+		            // Obtener el elemento seleccionado
+		            ElementoChatOGrupo selectedContact = editarGrupoMiembros.getElementAt(selectedIndex);
+	
+		            // Removerlo de la lista de contactos y añadirlo a la lista de miembros
+		            editarGrupoMiembros.removeElementAt(selectedIndex);
+		            editarGrupoContactos.add(0, selectedContact);
+		            
+		            if(((TitledBorder) editarGrupoPanelContactos.getBorder()).getTitleColor() == Color.RED) {
+		            	editarGrupoPanelContactos.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		            }
+		        }
+		    }
+		});
+		
+		//campo para el nombre del grupo
+		JLabel lblGrupo = new JLabel("Nombre Grupo");
+		lblGrupo.setBounds(315, 965, 120, 20);
+		lblGrupo.setForeground(Color.WHITE);
+		this.fondo.add(lblGrupo);
+		
+		textNombreGrupo = new JTextField();
+		textNombreGrupo.setBounds(315, 985, 285, 30);
+		textNombreGrupo.setBackground(this.Gray);
+		textNombreGrupo.setCaretColor(Color.WHITE);
+		textNombreGrupo.setForeground(Color.WHITE);
+		//textNombreGrupo.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		textNombreGrupo.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textNombreGrupo.getForeground().equals(Color.RED)) {
+                	textNombreGrupo.setText(""); // Borrar el mensaje de error
+                	textNombreGrupo.setForeground(Color.WHITE); // Restaurar color normal
+                }
+            }
+        });
+		this.fondo.add(textNombreGrupo);
+		textNombreGrupo.setColumns(10);
+		
+		// label para ver la imagen del grupo
+		lblProfile = new ImageAvatar();
+		ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+		lblProfile.setImage(image);
+		lblProfile.setBorderSize(1);
+		lblProfile.setBorderSpace(1);
+		lblProfile.setBounds(620, 965, 44, 44);
+		this.fondo.add(lblProfile);
+		
+		//campo para la url de la imagen del grupo
+		JLabel lblUrlImage = new JLabel("ImageUrl");
+		lblUrlImage.setBounds(674, 962, 60, 20);
+		lblUrlImage.setForeground(Color.WHITE);
+		this.fondo.add(lblUrlImage);
+		
+		this.validImage = false;
+		
+		urlField = new JTextField();
+		urlField.setBackground(this.Gray);
+		urlField.setCaretColor(Color.WHITE);
+		urlField.setForeground(Color.WHITE);
+		//urlField.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		urlField.setBounds(674, 982, 202, 30);
+		this.fondo.add(urlField);
+		
+		//boton para borra directamente la url
+		JLabel buttonDeleteUrl = new JLabel();
+		ImageIcon deleteIcon = new ImageIcon(new ImageIcon(getClass().getResource("/assets/Btn_FairyBook_Cancel.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH) );
+		buttonDeleteUrl.setIcon(deleteIcon);
+		buttonDeleteUrl.setBounds(832, 1012, 22, 22);
+		buttonDeleteUrl.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				urlField.setText(""); //eliminar el texto en la url
+				try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
+				}
+				}
+			});		
+		UIController.addHoverEffect(buttonDeleteUrl, 20, 20);
+		this.fondo.add(buttonDeleteUrl);
+		
+		//boton para actualizar la imagen
+		JLabel buttonUpdateImage = new JLabel();
+		ImageIcon updateProfileIcon = new ImageIcon(new ImageIcon(getClass().getResource("/assets/UI_MarkPoint_Sign_Inside.png")).getImage().getScaledInstance(22, 22,  Image.SCALE_SMOOTH));
+		buttonUpdateImage.setIcon(updateProfileIcon);
+		buttonUpdateImage.setBounds(855, 1012, 22, 22);
+		buttonUpdateImage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					actualizarImagen();
+				} catch (MalformedURLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		UIController.addHoverEffect(buttonUpdateImage, 20, 20);
+		this.fondo.add(buttonUpdateImage);
+		
+		editGroupButton = new JButton("Edit");
+		editGroupButton.setForeground(Color.WHITE);
+		editGroupButton.setBackground(new Color(241, 57, 83));
+		editGroupButton.setBounds(364, 1045, 187, 35);
+		editGroupButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//numero inexistente o ya en contactos
+				if(editGrupo(getIDEditGroup())) {
+					resetGroupSettings();
+				}
+			}
+		});
+		
+		this.fondo.add(editGroupButton);
+		
+		leaveGroupButton = new JButton("Leave");
+		leaveGroupButton.setForeground(Color.WHITE);
+		leaveGroupButton.setBackground(new Color(241, 57, 83));  
+		leaveGroupButton.setBounds(60, 1045, 187, 35);
+		leaveGroupButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//numero inexistente o ya en contactos
+				if(editGrupo(getIDEditGroup())) {
+					resetGroupSettings();
+				}
+			}
+		});
+		
+		this.fondo.add(leaveGroupButton);
+		
+		deleteGroupButton = new JButton("Delete");
+		deleteGroupButton.setForeground(Color.WHITE);
+		deleteGroupButton.setBackground(new Color(241, 57, 83));
+		deleteGroupButton.setBounds(669, 1045, 187, 35);
+		deleteGroupButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//numero inexistente o ya en contactos
+				if(editGrupo(getIDEditGroup())) {
+					resetGroupSettings();
+				}
+			}
+		});
+		
+		this.fondo.add(deleteGroupButton);
 		
 	}
 	
-	public String getNumero() {
+	public String getNumeroEditContact() {
 		return textFieldPhone.getForeground().equals(Color.RED) ? "" : this.textFieldPhone.getText();
 	}
 	
-	public String getNombre() {
+	public String getNombreEditContact() {
 		return textNombreContacto.getForeground().equals(Color.RED) ? "" : this.textNombreContacto.getText();
+	}
+	
+	public static String getDefaultProfileImage() {
+		return new String(defaultGroupUrl);
+	}
+	
+	public String getProfilePicUrlEditGroup() {
+		return this.validImage == true ? this.urlField.getText() : getDefaultProfileImage();
+	}
+	
+	public String getNombreEditGroup() {
+		return textNombreGrupo.getText();
+	}
+	
+	public long getIDEditGroup() {
+		return this.selectedGroupID;
+	}
+	
+	public List<Integer> getListaMiembrosEditGroup(){
+		int size = this.editarGrupoMiembros.size();
+		List<Integer> lista = new ArrayList<Integer>(size);
+		for (int i = 0; i < size; i++) {
+	        lista.add(this.editarGrupoMiembros.get(i).getNumero());
+	    }
+		lista.add(BackendController.getUserNumber()); // se añade el numero del usuario actual (se elimino de la visualización para evitar errores)
+		
+ 		return lista;
 	}
 	
 	public void loadContactsAndGroups(List<EntidadComunicable> contactos, List<Grupo> grupos) {
@@ -267,6 +541,39 @@ public class OptionsPane extends PanelGrande {
 		
 	}
 	
+	private void prepareEditGroup(ElementoChatOGrupo grupo) {
+		if(grupo.getGrupo().isPresent() && grupo.getGrupo().get().isAdmin(BackendController.getUserNumber())) {
+			loadEditGroup(BackendController.getListaContactos(), grupo.getGrupo().get().getIntegrantes());
+			this.textNombreGrupo.setText(grupo.getNombre());
+			this.urlField.setText(grupo.getGrupo().get().getIconUrl());
+			try {
+				actualizarImagen();
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+		}if(grupo.getGrupo().isPresent()) this.selectedGroupID = grupo.getGroupID();
+	}
+	
+	private void loadEditGroup(List<EntidadComunicable> listaContactos, List<EntidadComunicable> listaMiembros){
+		this.editarGrupoContactos.clear();
+		this.editarGrupoMiembros.clear();
+		List<EntidadComunicable> listContactos = new ArrayList<EntidadComunicable>(listaContactos);
+		List<EntidadComunicable> listMiembros = new ArrayList<EntidadComunicable>(listaMiembros);
+		// ojo, como se modifica la lista de contactos se trabajar con una copia
+		listContactos.removeIf(contacto -> listaMiembros.stream().anyMatch(e -> e.getNumero() == contacto.getNumero()));
+		// elimino el usuario actual de la lista de miembros que se muestra para  evitar errores
+		listMiembros.removeIf(e -> e.getNumero() == BackendController.getUserNumber());
+		
+		listContactos.forEach(e -> this.editarGrupoContactos.addElement(new ElementoChatOGrupo(Optional.of(e), Optional.empty())));
+		this.editarGrupoListaContactos.setModel(this.editarGrupoContactos);
+		
+		listMiembros.forEach(e -> this.editarGrupoMiembros.addElement(new ElementoChatOGrupo(Optional.of(e), Optional.empty())));
+		this.editarGrupoListaMiembros.setModel(this.editarGrupoMiembros);
+		
+		this.repaint();
+	    this.revalidate();
+	}
+	
 	private void groupPreview(ElementoChatOGrupo group) {
 		this.groupPreview.removeAll();
 		this.groupPreview.add(new ElementoChatOGrupo(Optional.empty(), group.getGrupo()), "wrap");
@@ -274,12 +581,17 @@ public class OptionsPane extends PanelGrande {
 		this.groupPreview.revalidate();
 	}
 	
+	public void reset() {
+		resetContactSettings();
+		resetGroupSettings();
+	}
+	
 	private boolean editContact() {
-	    return UIController.verificarContactoYEditarContacto(getNumero(), getNombre());		
+	    return UIController.verificarContactoYEditarContacto(getNumeroEditContact(), getNombreEditContact());		
 	}
 	
 	private boolean removeContact() {
-		return UIController.removeContact(getNumero());
+		return UIController.removeContact(getNumeroEditContact());
 	}
 	
 	private void resetContactSettings() {
@@ -294,6 +606,31 @@ public class OptionsPane extends PanelGrande {
 		this.contactos.clear();
 		BackendController.getListaContactos().forEach(e -> this.contactos.addElement(new ElementoChatOGrupo(Optional.of(e), Optional.empty())));
 	    this.listaContactos.setModel(this.contactos);
+	    this.repaint();
+	    this.revalidate();
+		
+	}
+	
+	private boolean editGrupo(long grupID) {
+		if(grupID == 0) return false;
+		return UIController.verificarContactoYEditarGrupo(getProfilePicUrlEditGroup(),getNombreEditGroup() , getListaMiembrosEditGroup(), grupID);
+	}
+	
+	protected void resetGroupSettings() {
+		this.textNombreGrupo.setText("");
+		this.urlField.setText("");
+		this.editarGrupoPanelMiembros.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		try {
+			actualizarImagen();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		this.editarGrupoMiembros = new DefaultListModel<>();
+		this.editarGrupoListaMiembros.setModel(this.editarGrupoMiembros);
+		
+		this.grupos.clear();
+		BackendController.getGrupos().forEach(e -> this.grupos.addElement(new ElementoChatOGrupo(Optional.empty(), Optional.of(e))));
+	    this.listaGrupos.setModel(this.grupos);
 	    this.repaint();
 	    this.revalidate();
 		
@@ -325,5 +662,70 @@ public class OptionsPane extends PanelGrande {
 			throw new IllegalArgumentException("Unexpected value: " + code);
 		}
 	}
+	
+	public void groupSettingsErrors(byte code) {
+		//System.out.println("[DEBUG] Errors" + code);
+		switch (code) {
+		case 1: {
+			this.textNombreGrupo.setForeground(Color.RED);
+			this.textNombreGrupo.setText("invalid name");
+			break;
+		}
+		case 2: {
+			editarGrupoPanelMiembros.setBorder(new TitledBorder(new LineBorder(Color.RED, 1), null, TitledBorder.LEADING, TitledBorder.BELOW_TOP, null, Color.RED));
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + code);
+		}
+	}
 
+    private void actualizarImagen() throws MalformedURLException {
+        String urlText = urlField.getText();
+        URL url;
+        
+		try {
+			url = new URL(urlText);
+			ImageIcon icono = new ImageIcon(url);
+			
+	        if (icono.getIconWidth() > 0 && icono.getIconHeight() > 0) { // Verifica que la imagen sea válida
+	            Image imagenEscalada = icono.getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH);
+	            //image.setImage(imagenEscalada);
+	            lblProfile.setImage(new ImageIcon(imagenEscalada));
+	            lblProfile.revalidate();
+	            lblProfile.repaint();
+	            
+	            validImage = true;
+	            //System.out.println("Imagen cargada exitosamente.");
+	            
+	        } else {
+	            //System.out.println("Texto ingresado no contiene una imagen válida.");
+	            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+	    		lblProfile.setImage(image);
+	    		lblProfile.revalidate();
+	            lblProfile.repaint();
+	            validImage = false;
+	        }
+	        
+		} catch (MalformedURLException e) {
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+            validImage = false;
+		}catch (NullPointerException e){
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+            validImage = false;
+		} catch (Exception e) {
+            ImageIcon image = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
+            lblProfile.setImage(image);
+            lblProfile.revalidate();
+            lblProfile.repaint();
+            validImage = false;
+		}
+    }
+	
 }

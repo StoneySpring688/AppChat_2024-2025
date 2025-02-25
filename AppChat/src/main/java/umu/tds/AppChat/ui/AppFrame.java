@@ -284,6 +284,18 @@ public class AppFrame extends JFrame {
 			}
 			break;
 		}
+		case 17: { // gestionar los errores en el formulario para editar grupos
+			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
+				this.mainPanel.accederMetodoNoVisible(15, Optional.empty() ,Optional.of(arg2.get()));
+			}
+			break;
+		}
+		case 18: { // resetear la lista de grupos
+			if (arg.isEmpty() && arg2.isEmpty()) {
+				this.mainPanel.accederMetodoNoVisible(16, arg2, arg);
+			}
+			break;
+		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + numMetodo);
 		}

@@ -38,8 +38,13 @@ public class DAOController {
 	
 	// ### users
 	
-	public static void registerUser(Usuario user) {
-		if(!isUser(user.getNumero()))userAdapter.create(user);
+	public static boolean registerUser(Usuario user) {
+		boolean success = false;
+		if(!isUser(user.getNumero())) {
+			userAdapter.create(user);
+			success = true;
+		}else UIController.registerErrors((byte) 3);
+		return success;
 	}
 	
 	/**

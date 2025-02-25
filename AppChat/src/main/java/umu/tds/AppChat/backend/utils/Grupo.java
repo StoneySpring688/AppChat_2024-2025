@@ -86,6 +86,10 @@ public class Grupo  {
 		this.iconUrl = iconUrl;
 	}
 	
+	public void setIntegrantes(List<EntidadComunicable> list) {
+		this.integrantes = new ArrayList<EntidadComunicable>(list);
+	}
+	
 	public void addIntegrante(EntidadComunicable miembro) {
 		if(!this.isIntegrante(miembro)) this.integrantes.add(miembro);
 	}

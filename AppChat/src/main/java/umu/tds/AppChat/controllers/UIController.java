@@ -113,6 +113,10 @@ public class UIController {
      public static void ContactSettingsErrors(byte code) {
     	 appFrame.llamarMetodo(15, Optional.of((byte) code), Optional.empty());
      }
+     
+     public static void groupSettingsErrors(byte code) {
+    	 appFrame.llamarMetodo(17, Optional.of((byte) code), Optional.empty());
+     }
     
      // ### registro
      
@@ -175,6 +179,15 @@ public class UIController {
 		return success;
 	}
     
+	// ### groups
+	public static boolean verificarContactoYEditarGrupo(String urlProfileIcon, String nombreGrupo, List<Integer> miembros, long groupID) {
+		if(urlProfileIcon.isBlank() || nombreGrupo.isBlank()) return false;
+		boolean success = MainController.editGroup(urlProfileIcon, nombreGrupo, miembros, groupID);
+		appFrame.llamarMetodo(18, Optional.empty(), Optional.empty());
+		addGroups(); // actualizar la lista de chats con las ediciones
+		return success;
+	}
+	
 	// ### chats
 	
     public static void addChat(EntidadComunicable ent) {

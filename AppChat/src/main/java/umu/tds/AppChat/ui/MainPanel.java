@@ -285,6 +285,7 @@ public class MainPanel extends JPanel {
 		this.groupslist.reset();
 		this.messageList.reset();
 		this.mshipsList.reset();
+		this.options.reset();
 		this.repaint();
 		this.revalidate();
 	}
@@ -378,6 +379,18 @@ public class MainPanel extends JPanel {
 		case 14: { // resetear la lista de chats
 			if (arg.isEmpty() && arg2.isEmpty()) {
 				this.chatslist.reset();
+			}
+			break;
+		}
+		case 15: { // gestionar los errores en el formulario para editar grupos
+			if (arg.isPresent() && arg.get() instanceof Byte) {
+				this.options.groupSettingsErrors((byte) arg.get());
+			}
+			break;
+		}
+		case 16: { // resetear la lista de grupos
+			if (arg.isEmpty() && arg2.isEmpty()) {
+				this.groupslist.reset();
 			}
 			break;
 		}
