@@ -166,7 +166,7 @@ public class DAOController {
 	}
 	
 	public static void addAdminToGrupo(int idGrupo, int numeroAdmin) {
-		System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo admin : " + numeroAdmin );
+		//System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo admin : " + numeroAdmin );
 		groupAdapter.addAdmin(idGrupo, numeroAdmin);
 	}
 	

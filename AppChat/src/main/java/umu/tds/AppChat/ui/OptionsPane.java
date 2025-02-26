@@ -70,7 +70,7 @@ public class OptionsPane extends PanelGrande {
 	private JButton editGroupButton;
 	private JButton deleteGroupButton;
 	private JButton leaveGroupButton;
-	private long selectedGroupID;
+	private Grupo selectedGroup;
 	private boolean validImage;
 	
 	// utils
@@ -181,7 +181,6 @@ public class OptionsPane extends PanelGrande {
 		deleteContactButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//numero inexistente o ya en contactos
 				if(removeContact()) {
 					resetContactSettings();
 				}
@@ -444,13 +443,12 @@ public class OptionsPane extends PanelGrande {
 		
 		editGroupButton = new JButton("Edit");
 		editGroupButton.setForeground(Color.WHITE);
-		editGroupButton.setBackground(new Color(241, 57, 83));
+		editGroupButton.setBackground(Color.GRAY);
 		editGroupButton.setBounds(364, 1045, 187, 35);
 		editGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//numero inexistente o ya en contactos
-				if(editGrupo(getIDEditGroup())) {
+				if(selectedGroup.isAdmin(BackendController.getUserNumber()) && editGrupo(getEditGroup().getID())) {
 					resetGroupSettings();
 				}
 			}
@@ -460,15 +458,12 @@ public class OptionsPane extends PanelGrande {
 		
 		leaveGroupButton = new JButton("Leave");
 		leaveGroupButton.setForeground(Color.WHITE);
-		leaveGroupButton.setBackground(new Color(241, 57, 83));  
+		leaveGroupButton.setBackground(Color.GRAY);  
 		leaveGroupButton.setBounds(60, 1045, 187, 35);
 		leaveGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//numero inexistente o ya en contactos
-				if(editGrupo(getIDEditGroup())) {
-					resetGroupSettings();
-				}
+				// TODO
 			}
 		});
 		
@@ -476,13 +471,12 @@ public class OptionsPane extends PanelGrande {
 		
 		deleteGroupButton = new JButton("Delete");
 		deleteGroupButton.setForeground(Color.WHITE);
-		deleteGroupButton.setBackground(new Color(241, 57, 83));
+		deleteGroupButton.setBackground(Color.GRAY);
 		deleteGroupButton.setBounds(669, 1045, 187, 35);
 		deleteGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//numero inexistente o ya en contactos
-				if(editGrupo(getIDEditGroup())) {
+				if(selectedGroup.isAdmin(BackendController.getUserNumber()) && deleteGroup(getEditGroup())) {
 					resetGroupSettings();
 				}
 			}
@@ -512,8 +506,8 @@ public class OptionsPane extends PanelGrande {
 		return textNombreGrupo.getText();
 	}
 	
-	public long getIDEditGroup() {
-		return this.selectedGroupID;
+	public Grupo getEditGroup() {
+		return this.selectedGroup;
 	}
 	
 	public List<Integer> getListaMiembrosEditGroup(){
@@ -551,7 +545,67 @@ public class OptionsPane extends PanelGrande {
 			} catch (MalformedURLException e1) {
 				e1.printStackTrace();
 			}
-		}if(grupo.getGrupo().isPresent()) this.selectedGroupID = grupo.getGroupID();
+			
+			this.editGroupButton.setBackground(new Color(241, 57, 83));
+			/*this.editGroupButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(editGrupo(getEditGroup().getID())) {
+						resetGroupSettings();
+					}
+				}
+			});*/
+			
+			this.deleteGroupButton.setBackground(new Color(241, 57, 83));
+			/*this.deleteGroupButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(deleteGroup(getEditGroup())) {
+						resetGroupSettings();
+					}
+				}
+			});*/
+			
+			leaveGroupButton.setBackground(Color.GRAY);  
+			/*leaveGroupButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// no hace nada si es admin
+				}
+			});*/
+			
+			this.repaint();
+			this.revalidate();
+			
+		}else{
+			this.editGroupButton.setBackground(Color.GRAY);
+			/*this.editGroupButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// no hace nada si no es admin
+				}
+			});*/
+			
+			this.deleteGroupButton.setBackground(Color.GRAY);
+			/*this.deleteGroupButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// no hace nada si no es admin
+				}
+			});*/
+			
+			leaveGroupButton.setBackground(new Color(241, 57, 83));  
+			/*leaveGroupButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});*/
+			
+			this.repaint();
+			this.revalidate();
+			
+		}if(grupo.getGrupo().isPresent()) this.selectedGroup = grupo.getGrupo().get();
 	}
 	
 	private void loadEditGroup(List<EntidadComunicable> listaContactos, List<EntidadComunicable> listaMiembros){
@@ -616,6 +670,15 @@ public class OptionsPane extends PanelGrande {
 		return UIController.verificarContactoYEditarGrupo(getProfilePicUrlEditGroup(),getNombreEditGroup() , getListaMiembrosEditGroup(), grupID);
 	}
 	
+	private boolean deleteGroup(Grupo group) {
+		boolean success = false;
+		if(group != null) {
+			success = true;
+			UIController.removeGroup(group);
+		}
+		return success;
+	}
+	
 	protected void resetGroupSettings() {
 		this.textNombreGrupo.setText("");
 		this.urlField.setText("");
@@ -631,6 +694,9 @@ public class OptionsPane extends PanelGrande {
 		this.grupos.clear();
 		BackendController.getGrupos().forEach(e -> this.grupos.addElement(new ElementoChatOGrupo(Optional.empty(), Optional.of(e))));
 	    this.listaGrupos.setModel(this.grupos);
+	    
+	    this.editarGrupoContactos.clear();
+	    
 	    this.repaint();
 	    this.revalidate();
 		

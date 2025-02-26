@@ -180,12 +180,19 @@ public class UIController {
 	}
     
 	// ### groups
+	
 	public static boolean verificarContactoYEditarGrupo(String urlProfileIcon, String nombreGrupo, List<Integer> miembros, long groupID) {
 		if(urlProfileIcon.isBlank() || nombreGrupo.isBlank()) return false;
 		boolean success = MainController.editGroup(urlProfileIcon, nombreGrupo, miembros, groupID);
 		appFrame.llamarMetodo(18, Optional.empty(), Optional.empty());
 		addGroups(); // actualizar la lista de chats con las ediciones
 		return success;
+	}
+	
+	public static void removeGroup(Grupo group) {
+		MainController.removeGroup(group);
+		appFrame.llamarMetodo(18, Optional.empty(), Optional.empty());
+		addGroups();
 	}
 	
 	// ### chats
@@ -264,7 +271,7 @@ public class UIController {
     // ### send messages
     
     public static void sendMessage(long reciver, Optional<String> message, Optional<Integer> emoji) {
-    	System.out.println("[DEBUG]" + " UIController " + "sendMessage");
+    	//System.out.println("[DEBUG]" + " UIController " + "sendMessage");
 		SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
 		String fecha =fechaAux.format(new Date());
 		String nombre = BackendController.getUserName();

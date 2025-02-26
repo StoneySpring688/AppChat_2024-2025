@@ -263,6 +263,10 @@ public class BackendController {
     	getGrupo(groupId).removeAdmin(numeroAdmin);
     }
     
+    public static void removeGrupo(long id) {
+    	chatsRepository.removeGroup(id);
+    }
+    
     // ### registro
     
     protected static Optional <Usuario> doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {

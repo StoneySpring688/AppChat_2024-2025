@@ -354,6 +354,12 @@ public class MainController {
     	return success;
     }
     
+    public static void removeGroup(Grupo group) {
+    	//System.out.println("[DEBUG]" + " MainController " + "remove group : " + group.getDBID());
+    	DAOController.removeGroup(group);
+    	BackendController.removeGrupo(group.getID());
+    }
+    
     protected static Grupo getGrupo(long id) {
     	return BackendController.getGrupo(id);
     }
@@ -368,7 +374,7 @@ public class MainController {
     	
     	if(BackendController.isGroup(msg.getReciver())) {
     		int groupBDID = BackendController.getGrupo(msg.getReciver()).getDBID();
-    		System.out.println("[DEBUG]" + " MainController" + " añaddiendo mensaje a grupo : " + groupBDID);
+    		//System.out.println("[DEBUG]" + " MainController" + " añaddiendo mensaje a grupo : " + groupBDID);
     		DAOController.sendMessageToGroup(msg, groupBDID);
     	}else {
     		DAOController.sendMessageToContact(msg);
