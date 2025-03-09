@@ -360,6 +360,21 @@ public class MainController {
     	BackendController.removeGrupo(group.getID());
     }
     
+    protected static boolean leaveGroup(Grupo group) {
+    	boolean success = false;
+    	if(group.getIntegrantes().size() > 2) {
+    		success = true;
+    		
+	    	EntidadComunicable user = group.getIntegrantes().stream().filter(e  -> e.getNumero() == BackendController.getUserNumber()).findFirst().get();
+	    	DAOController.removeMiembroFromGrupo(group.getDBID(), user);
+	    	//DAOController.eliminarGrupoFromUser(BackendController.getUserNumber(), group);
+	    	
+	    	// no hace falta porque es la lista del usuario BackendController.removeMiembroFromGrupo(group.getID(), user);
+	    	BackendController.removeGrupo(group.getID());
+    	}
+    	return success;
+    }
+    
     protected static Grupo getGrupo(long id) {
     	return BackendController.getGrupo(id);
     }

@@ -463,7 +463,9 @@ public class OptionsPane extends PanelGrande {
 		leaveGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
+				if(!selectedGroup.isAdmin(BackendController.getUserNumber()) && leaveGroup(getEditGroup())) {
+					resetGroupSettings();
+				}
 			}
 		});
 		
@@ -668,6 +670,16 @@ public class OptionsPane extends PanelGrande {
 	private boolean editGrupo(long grupID) {
 		if(grupID == 0) return false;
 		return UIController.verificarContactoYEditarGrupo(getProfilePicUrlEditGroup(),getNombreEditGroup() , getListaMiembrosEditGroup(), grupID);
+	}
+	
+	private boolean leaveGroup(Grupo group) {
+		boolean success = false;
+		if(group != null) {
+			success = true;
+			UIController.leaveGroup(group);
+		}
+		
+		return success;
 	}
 	
 	private boolean deleteGroup(Grupo group) {

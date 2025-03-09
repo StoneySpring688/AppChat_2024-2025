@@ -189,6 +189,16 @@ public class UIController {
 		return success;
 	}
 	
+	public static boolean leaveGroup(Grupo group) {
+		boolean success = false;
+		if(MainController.leaveGroup(group)) {
+			success = true;
+			appFrame.llamarMetodo(18, Optional.empty(), Optional.empty());
+			addGroups();
+		}
+		return success;
+	}
+	
 	public static void removeGroup(Grupo group) {
 		MainController.removeGroup(group);
 		appFrame.llamarMetodo(18, Optional.empty(), Optional.empty());
