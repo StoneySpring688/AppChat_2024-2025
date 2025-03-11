@@ -448,7 +448,7 @@ public class OptionsPane extends PanelGrande {
 		editGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(selectedGroup.isAdmin(BackendController.getUserNumber()) && editGrupo(getEditGroup().getID())) {
+				if(selectedGroup != null && selectedGroup.isAdmin(BackendController.getUserNumber()) && editGrupo(getEditGroup().getID())) {
 					resetGroupSettings();
 				}
 			}
@@ -463,7 +463,7 @@ public class OptionsPane extends PanelGrande {
 		leaveGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!selectedGroup.isAdmin(BackendController.getUserNumber()) && leaveGroup(getEditGroup())) {
+				if(selectedGroup != null && !selectedGroup.isAdmin(BackendController.getUserNumber()) && leaveGroup(getEditGroup())) {
 					resetGroupSettings();
 				}
 			}
@@ -478,7 +478,7 @@ public class OptionsPane extends PanelGrande {
 		deleteGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(selectedGroup.isAdmin(BackendController.getUserNumber()) && deleteGroup(getEditGroup())) {
+				if(selectedGroup != null && selectedGroup.isAdmin(BackendController.getUserNumber()) && deleteGroup(getEditGroup())) {
 					resetGroupSettings();
 				}
 			}
@@ -549,60 +549,20 @@ public class OptionsPane extends PanelGrande {
 			}
 			
 			this.editGroupButton.setBackground(new Color(241, 57, 83));
-			/*this.editGroupButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(editGrupo(getEditGroup().getID())) {
-						resetGroupSettings();
-					}
-				}
-			});*/
 			
 			this.deleteGroupButton.setBackground(new Color(241, 57, 83));
-			/*this.deleteGroupButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(deleteGroup(getEditGroup())) {
-						resetGroupSettings();
-					}
-				}
-			});*/
 			
 			leaveGroupButton.setBackground(Color.GRAY);  
-			/*leaveGroupButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// no hace nada si es admin
-				}
-			});*/
 			
 			this.repaint();
 			this.revalidate();
 			
 		}else{
 			this.editGroupButton.setBackground(Color.GRAY);
-			/*this.editGroupButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// no hace nada si no es admin
-				}
-			});*/
 			
 			this.deleteGroupButton.setBackground(Color.GRAY);
-			/*this.deleteGroupButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// no hace nada si no es admin
-				}
-			});*/
 			
 			leaveGroupButton.setBackground(new Color(241, 57, 83));  
-			/*leaveGroupButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-				}
-			});*/
 			
 			this.repaint();
 			this.revalidate();
@@ -709,6 +669,17 @@ public class OptionsPane extends PanelGrande {
 	    
 	    this.editarGrupoContactos.clear();
 	    
+	    
+	    this.groupPreview.removeAll();
+		this.groupPreview.repaint();
+		this.groupPreview.revalidate();
+		
+		this.editGroupButton.setBackground(Color.GRAY);
+		this.deleteGroupButton.setBackground(Color.GRAY);
+		leaveGroupButton.setBackground(Color.GRAY);
+		
+		this.selectedGroup = null;
+		
 	    this.repaint();
 	    this.revalidate();
 		
