@@ -31,6 +31,7 @@ public class SearchPanel extends PanelGrande {
 	private JScrollPane scrollBody;
 	private JTextField textFieldPhone;
 	private JTextField textFieldContacto;
+	private JTextArea textFieldMessage;
 	private JButton SearchButton;
 	private JButton exportAllPDF;
 	private JButton exportListPDF;
@@ -71,7 +72,7 @@ public class SearchPanel extends PanelGrande {
 		lblContacto.setForeground(Color.WHITE);
 		this.fondo.add(lblContacto);
 		
-		JTextArea textFieldMessage = new JTextArea();
+		textFieldMessage = new JTextArea();
 		textFieldMessage.setBackground(this.Gray);
 		textFieldMessage.setCaretColor(Color.WHITE);
 		textFieldMessage.setForeground(Color.WHITE);
@@ -96,6 +97,7 @@ public class SearchPanel extends PanelGrande {
 		SearchButton.setForeground(Color.WHITE);
 		SearchButton.setBackground(new Color(241, 57, 83));
 		SearchButton.setBounds(69, 450, 187, 35); // x = 370+(285/2)-(187/2)
+		SearchButton.addActionListener(e->doSearch(getNum(), getContact(), getMsgSubString()));
 		this.fondo.add(SearchButton);
 		
 		messagePreviewPanel = new JPanel();
@@ -145,6 +147,27 @@ public class SearchPanel extends PanelGrande {
 		
 	}
 	
+	private int getNum() {
+		try {
+			return this.textFieldPhone.getText().isBlank() ? 0 : Integer.parseInt(this.textFieldPhone.getText());
+		} catch (Exception e) {
+			return 0;
+		}
+		
+	}
+	
+	private String getContact() {
+		return this.textFieldContacto.getText().isBlank() ? null : this.textFieldContacto.getText();
+	}
+	
+	private String getMsgSubString() {
+		return this.textFieldMessage.getText().isBlank() ? null : this.textFieldMessage.getText();
+	}
+	
+	private void doSearch(int num, String contact, String msg) {
+		UIController.doSearch(num, contact, msg);
+	}
+	
 	public void previewMessage(ModelMessage message, BoxType type) {
 		int values = scrollBody.getVerticalScrollBar().getValue();
 		ChatBox msg = new ChatBox(type, message);
@@ -176,6 +199,13 @@ public class SearchPanel extends PanelGrande {
         messagePreviewPanel.revalidate();
         scrollBody.revalidate();
     }
+	
+	public void reset() {
+		this.textFieldContacto.setText("");
+		this.textFieldMessage.setText("");
+		this.textFieldPhone.setText("");
+		this.messagePreviewPanel.removeAll();
+	}
 	
 	private void clearPreview() {
 		this.messagePreviewPanel.removeAll();

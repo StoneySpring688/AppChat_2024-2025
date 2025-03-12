@@ -27,9 +27,17 @@ import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 public class UIController {
     private static AppFrame appFrame;
     private static long actualChatOptimization = 0; // evitar usar el método cambiarChat para el chatActual
+    
+    // singleton
+ 	private static UIController unicaInstancia = null;
+ 			
+ 	public static UIController getUnicaInstancia() {
+ 		unicaInstancia = unicaInstancia == null ? new UIController() : unicaInstancia;
+ 		return unicaInstancia;
+ 	}
 
     public UIController() {  
-            
+            iniciarUI();
     }
 
     public static void iniciarUI() {
@@ -40,7 +48,7 @@ public class UIController {
     	
     	appFrame = new AppFrame();
     	
-    	UIController.showLogin();
+    	showLogin();
     }
     
     public static void setActualChatOptimization(long actualChat) {
@@ -320,6 +328,10 @@ public class UIController {
     
     public static void previewMessage(ModelMessage msg) {
     	appFrame.llamarMetodo(10, Optional.of(msg), Optional.of(BackendController.getUserNumber() == msg.getSender() ? BoxType.RIGHT : BoxType.LEFT));
+    }
+    
+    public static void doSearch(int num, String contact, String msg) {
+    	MainController.doSearch(num, contact, msg);
     }
     
     // ### shop methods

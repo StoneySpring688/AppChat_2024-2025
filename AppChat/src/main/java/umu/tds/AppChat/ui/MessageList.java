@@ -33,13 +33,13 @@ public class MessageList extends JPanel {
 		this.setBounds(120, 0, 240, 660);
 		this.messages = new DefaultListModel<>();
 		
-		// TODO Para probar
+		/*
 		for(int i=0 ;i<20 ;i++) {
 			//messages.addElement(new ElementoMessage("mensaje de prueba", "User1", "User2"));
 			ElementoMessage emsg =  new ElementoMessage(new ModelMessage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")), "USER_DESCONOCIDO "+i, "dd / MM / yyyy", 123456789+i , 1234567890 , Optional.of("Mensaje de contacto"), Optional.empty()));
 			messages.addElement(emsg);
 		}
-		
+		*/
 		
 		this.lista = new JList<>(messages);
 		this.lista.setCellRenderer(new ElementoMessageRender(this.lista));

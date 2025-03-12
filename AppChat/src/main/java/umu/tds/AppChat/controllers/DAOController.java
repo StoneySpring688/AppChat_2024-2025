@@ -327,4 +327,23 @@ public class DAOController {
 		return lote;
 	}
 	
+	public static List<ModelMessage> getAllMsgsFromAChat(EntidadComunicable contacto, boolean isContact, Optional<String> filter){
+		if(filter.isPresent()) {
+			
+		}else {
+			if(isContact)return contactAdapter.obtenerListaMsg(contacto.getId());
+			if(!isContact)return noContactAdapter.obtenerListaMsg(contacto.getId());
+		}
+		return null;
+	}
+	
+	public static List<ModelMessage> getAllMsgsFromAGroup(Grupo grupo, Optional<String> filter){
+		if(filter.isPresent()) {
+			
+		}else {
+			return groupAdapter.obtenerListaMsg(grupo.getDBID());
+		}
+		return null;
+	}
+	
 }

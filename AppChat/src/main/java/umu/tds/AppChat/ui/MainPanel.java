@@ -286,6 +286,7 @@ public class MainPanel extends JPanel {
 		this.messageList.reset();
 		this.mshipsList.reset();
 		this.options.reset();
+		this.searchPanel.reset();
 		this.repaint();
 		this.revalidate();
 	}
