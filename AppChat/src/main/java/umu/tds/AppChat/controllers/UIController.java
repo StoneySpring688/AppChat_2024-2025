@@ -22,6 +22,7 @@ import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Membership.MembershipType;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
+import umu.tds.AppChat.ui.MessageList;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class UIController {
@@ -37,7 +38,7 @@ public class UIController {
  	}
 
     public UIController() {  
-            iniciarUI();
+    	iniciarUI();
     }
 
     public static void iniciarUI() {
@@ -331,7 +332,9 @@ public class UIController {
     }
     
     public static void doSearch(int num, String contact, String msg) {
-    	MainController.doSearch(num, contact, msg);
+    	List<ModelMessage> list =  MainController.doSearch(num, contact, msg);
+    	MessageList.getUnicaInstancia().reset();
+    	MessageList.getUnicaInstancia().addMsgs(list);
     }
     
     // ### shop methods

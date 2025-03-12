@@ -21,6 +21,7 @@ public interface InterfaceGrupoDAO {
 	public boolean isAdmin(int numeroUser, int groupID);
 	void addMsg(int id, ModelMessage msg);
 	List<ModelMessage> obtenerListaMsg(int id);
+	List<ModelMessage> obtenerListaMsgFilter(int id, String filterMsg);
 	List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin);
 	void eliminarMsgs(int id);
 }

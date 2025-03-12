@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.BorderFactory;
@@ -25,6 +26,14 @@ public class MessageList extends JPanel {
 	private JList<ElementoMessage> lista;
 	private JScrollPane scroll;
 	private final Color darkPorDefecto = new Color(54, 57, 63);
+	
+    // singleton
+ 	private static MessageList unicaInstancia = null;
+ 			
+ 	public static MessageList getUnicaInstancia() {
+ 		unicaInstancia = unicaInstancia == null ? new MessageList() : unicaInstancia;
+ 		return unicaInstancia;
+ 	}
 	
 	public MessageList() {
 		setBackground(this.darkPorDefecto);
@@ -83,5 +92,8 @@ public class MessageList extends JPanel {
 	    this.lista.repaint();
 	}
 
+	public void addMsgs(List<ModelMessage> msgs) {
+		for(ModelMessage msg : msgs) messages.addElement(new ElementoMessage(msg));
+	}
 
 }

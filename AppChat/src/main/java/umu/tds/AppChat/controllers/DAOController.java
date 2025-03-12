@@ -328,22 +328,27 @@ public class DAOController {
 	}
 	
 	public static List<ModelMessage> getAllMsgsFromAChat(EntidadComunicable contacto, boolean isContact, Optional<String> filter){
+		List<ModelMessage> list = new ArrayList<ModelMessage>();
+		
 		if(filter.isPresent()) {
-			
+			if(isContact)list = contactAdapter.obtenerListaMsgFilter(contacto.getId(), filter.get());
+			if(!isContact)list = noContactAdapter.obtenerListaMsgFilter(contacto.getId(), filter.get());
 		}else {
-			if(isContact)return contactAdapter.obtenerListaMsg(contacto.getId());
-			if(!isContact)return noContactAdapter.obtenerListaMsg(contacto.getId());
+			if(isContact)list = contactAdapter.obtenerListaMsgFilter(contacto.getId(), "");
+			if(!isContact)list = noContactAdapter.obtenerListaMsgFilter(contacto.getId(), "");
 		}
-		return null;
+		return list;
 	}
 	
 	public static List<ModelMessage> getAllMsgsFromAGroup(Grupo grupo, Optional<String> filter){
+		List<ModelMessage> list = new ArrayList<ModelMessage>();
+		
 		if(filter.isPresent()) {
-			
+			list = groupAdapter.obtenerListaMsgFilter(grupo.getDBID(), filter.get());
 		}else {
-			return groupAdapter.obtenerListaMsg(grupo.getDBID());
+			list = groupAdapter.obtenerListaMsgFilter(grupo.getDBID(), "");
 		}
-		return null;
+		return list;
 	}
 	
 }

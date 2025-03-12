@@ -243,6 +243,10 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 		return obtenerListaMsgFromIDs(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG));
 	}
 	
+	public List<ModelMessage> obtenerListaMsgFilter(int id, String filterMsg){
+		return obtenerListaMsgFromIDsFilter(servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG), filterMsg);
+	}
+	
 	public List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin){
 		List<ModelMessage> lista = new ArrayList<ModelMessage>();
 		String msgs = servPersistencia.recuperarPropiedadEntidad(servPersistencia.recuperarEntidad(id), LISTAMSG);
@@ -342,6 +346,18 @@ public class GrupoDAO implements InterfaceGrupoDAO{
 		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
 		while(strTok.hasMoreTokens()) {
 			msgs.add(adaptadorMsg.get(Integer.valueOf((String)strTok.nextElement())));
+		}
+		return msgs;
+	}
+	
+	public List<ModelMessage> obtenerListaMsgFromIDsFilter(String lista, String filterMsg){
+		List<ModelMessage> msgs = new ArrayList<ModelMessage>();
+		if(lista.isBlank())return msgs;
+		StringTokenizer strTok = new StringTokenizer(lista, " ");
+		MensajeDAO adaptadorMsg = MensajeDAO.getUnicaInstancia();
+		while(strTok.hasMoreTokens()) {
+			ModelMessage aux = adaptadorMsg.get(Integer.valueOf((String)strTok.nextElement()));
+			if(aux.getMessage().isPresent() && aux.getMessage().get().contains(filterMsg)) msgs.add(aux);
 		}
 		return msgs;
 	}

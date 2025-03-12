@@ -518,7 +518,7 @@ public class MainController {
         });
     }
     
-    protected static void doSearch(int num, String contact, String msg) {
+    protected static List<ModelMessage> doSearch(int num, String contact, String msg) {
     	
     	List<ModelMessage> msgs = new ArrayList<ModelMessage>(); // lista de mensajes que coinciden con los filtros
     	
@@ -539,7 +539,8 @@ public class MainController {
     		ent = BackendController.getNoContacto(num);
     	}if(num!=0) {
     		for(Grupo grupo : grupos) {
-    			if(grupo.isIntegrante(ent)) gruposPertenece.add(grupo);
+    			Optional<EntidadComunicable> aux = grupo.getIntegrantes().stream().filter(e -> e.getNumero() == num).findFirst();
+        		if(aux.isPresent()) gruposPertenece.add(grupo);
     		}
     	}
     	
@@ -561,9 +562,34 @@ public class MainController {
     	
     	// tercer filtro
     	if(msg != null) {
-    		
+       		if(ent != null && ent2 != null && ent.getNumero() == ent2.getNumero()) { //  entidades coinciden
+    			if(ent.getNumero() == BackendController.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
+    				for(EntidadComunicable e : contactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, true, Optional.of(msg)));}
+    				for(EntidadComunicable e : noContactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, false, Optional.of(msg)));}
+    			}else {
+    				msgs.addAll(DAOController.getAllMsgsFromAChat(ent, BackendController.isContact(ent.getNumero()), Optional.of(msg)));
+    			}
+    		}else { // entidades no coinciden
+    			if(ent != null && ent.getNumero() == BackendController.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
+    				for(EntidadComunicable e : contactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, true, Optional.of(msg)));}
+    				for(EntidadComunicable e : noContactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, false, Optional.of(msg)));}
+    			}else if(ent != null){
+    				msgs.addAll(DAOController.getAllMsgsFromAChat(ent, BackendController.isContact(ent.getNumero()), Optional.of(msg)));
+    			}
+    			if(ent2 != null && ent2.getNumero() == BackendController.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
+    				for(EntidadComunicable e : contactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, true, Optional.of(msg)));}
+    				for(EntidadComunicable e : noContactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, false, Optional.of(msg)));}
+    			}else if(ent2 != null) {
+    				msgs.addAll(DAOController.getAllMsgsFromAChat(ent2, BackendController.isContact(ent.getNumero()), Optional.of(msg)));
+    			}
+    		}if(!gruposPertenece.isEmpty()) {
+    			int n1 = ent != null ? ent.getNumero() : 0;
+    			int n2  = ent2 != null ? ent.getNumero() : 0;
+    			for(Grupo grupo : grupos) msgs.addAll(DAOController.getAllMsgsFromAGroup(grupo, Optional.of(msg)).stream()
+    					.filter(e -> e.getSender() == n1 || e.getSender() == n2).toList());
+    		}
     	}else {
-    		if(ent.getNumero() == ent2.getNumero()) { //  entidades coinciden
+    		if(ent != null && ent2 != null && ent.getNumero() == ent2.getNumero()) { //  entidades coinciden
     			if(ent.getNumero() == BackendController.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
     				for(EntidadComunicable e : contactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, true, Optional.empty()));}
     				for(EntidadComunicable e : noContactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, false, Optional.empty()));}
@@ -571,22 +597,27 @@ public class MainController {
     				msgs.addAll(DAOController.getAllMsgsFromAChat(ent, BackendController.isContact(ent.getNumero()), Optional.empty()));
     			}
     		}else { // entidades no coinciden
-    			if(ent.getNumero() == BackendController.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
+    			if(ent != null && ent.getNumero() == BackendController.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
     				for(EntidadComunicable e : contactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, true, Optional.empty()));}
     				for(EntidadComunicable e : noContactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, false, Optional.empty()));}
-    			}else {
+    			}else if(ent != null){
     				msgs.addAll(DAOController.getAllMsgsFromAChat(ent, BackendController.isContact(ent.getNumero()), Optional.empty()));
     			}
-    			if(ent2.getNumero() == BackendController.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
+    			if(ent2 != null && ent2.getNumero() == BackendController.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
     				for(EntidadComunicable e : contactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, true, Optional.empty()));}
     				for(EntidadComunicable e : noContactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, false, Optional.empty()));}
-    			}else {
+    			}else if(ent2 != null){
     				msgs.addAll(DAOController.getAllMsgsFromAChat(ent2, BackendController.isContact(ent.getNumero()), Optional.empty()));
     			}
     		}if(!gruposPertenece.isEmpty()) {
-    			for(Grupo grupo : grupos) msgs.addAll(DAOController.getAllMsgsFromAGroup(grupo, Optional.empty()));
+    			int n1 = ent != null ? ent.getNumero() : 0;
+    			int n2  = ent2 != null ? ent.getNumero() : 0;
+    			for(Grupo grupo : grupos) msgs.addAll(DAOController.getAllMsgsFromAGroup(grupo, Optional.empty()).stream()
+    					.filter(e -> e.getSender() == n1 || e.getSender() == n2).toList());
     		}
     	}
+    	
+    	return msgs;
     	
     }
 }

@@ -13,6 +13,7 @@ public interface InterfaceContactoDAO {
 	void addMsg(int id, ModelMessage msg);
 	void addMsgs(int  id, String msgs);
 	List<ModelMessage> obtenerListaMsg(int id);
+	List<ModelMessage> obtenerListaMsgFilter(int id, String filterMsg);
 	List<ModelMessage> obtenerLoteMsg(int id,  int batchSize, int origin);
 	void eliminarMsgs(int id);
 }

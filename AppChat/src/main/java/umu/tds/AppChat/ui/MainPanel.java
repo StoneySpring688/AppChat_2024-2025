@@ -110,7 +110,7 @@ public class MainPanel extends JPanel {
 		panelMenu1.add(chatslist, "chats");
 		groupslist = new GroupsList();
 		panelMenu1.add(groupslist, "groups");
-		messageList = new MessageList();
+		messageList = MessageList.getUnicaInstancia(); //messageList = new MessageList();
 		panelMenu1.add(messageList,"messages");
 		mshipsList = new MembershipList();
 		panelMenu1.add(mshipsList,"mships");
