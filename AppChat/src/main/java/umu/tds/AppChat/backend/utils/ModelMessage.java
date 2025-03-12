@@ -1,5 +1,6 @@
 package umu.tds.AppChat.backend.utils;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.swing.Icon;
@@ -121,5 +122,22 @@ public class ModelMessage {
                ", emoji=" + (emoji.isPresent() ? emoji.get() : "No emoji") + '\n' +
                " }";
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ModelMessage that = (ModelMessage) obj;
+        return sender == that.sender &&
+               reciver == that.reciver &&
+               message.equals(that.message) &&
+               emoji.equals(that.emoji);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sender, reciver, message, emoji);
+    }
+
     
 }

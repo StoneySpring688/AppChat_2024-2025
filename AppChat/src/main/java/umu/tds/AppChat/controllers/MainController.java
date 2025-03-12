@@ -638,7 +638,8 @@ public class MainController {
     		}
     	}
     	
-    	return new ArrayList<>(msgs);
+    	return msgs.stream().distinct().toList();
+
     	
     }
 }
