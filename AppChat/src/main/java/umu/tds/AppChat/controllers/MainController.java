@@ -1,6 +1,7 @@
 package umu.tds.AppChat.controllers;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -520,7 +521,11 @@ public class MainController {
     
     protected static List<ModelMessage> doSearch(int num, String contact, String msg) {
     	
-    	List<ModelMessage> msgs = new ArrayList<ModelMessage>(); // lista de mensajes que coinciden con los filtros
+    	boolean f1 = false;
+    	boolean f2 = false;
+    	
+    	//List<ModelMessage> msgs = new ArrayList<ModelMessage>(); // lista de mensajes que coinciden con los filtros
+    	LinkedHashSet<ModelMessage> msgs = new LinkedHashSet<>();
     	
     	List<EntidadComunicable> contactos = BackendController.getListaContactos();
     	List<EntidadComunicable> noContactos = BackendController.getListaNoContactos();
@@ -533,12 +538,18 @@ public class MainController {
     	// filtro numero
     	if(num!=0 && BackendController.getUserNumber() == num) {
     		ent = BackendController.getCurrentUser();
+    		f1 = true;
     	}else if(num!=0 && BackendController.isContact(num)) {
     		ent = BackendController.getContacto(num);
     	}else if(num!=0 && BackendController.isNoContact(num)) {
     		ent = BackendController.getNoContacto(num);
-    	}if(num!=0) {
-    		for(Grupo grupo : grupos) {
+    	}if(num!=0 && f1) {
+    		for(Grupo grupo : BackendController.getGrupos()) {
+    			Optional<EntidadComunicable> aux = grupo.getIntegrantes().stream().filter(e -> e.getNumero() == num).findFirst();
+        		if(aux.isPresent()) gruposPertenece.add(grupo);
+    		}
+    	}else if(num!=0 && !f1 && ent != null) {
+    		for(Grupo grupo : DAOController.getListaGrupos(ent.getNumero())) {
     			Optional<EntidadComunicable> aux = grupo.getIntegrantes().stream().filter(e -> e.getNumero() == num).findFirst();
         		if(aux.isPresent()) gruposPertenece.add(grupo);
     		}
@@ -547,18 +558,26 @@ public class MainController {
     	// filtro contacto
     	if(contact != null && BackendController.getCurrentUser().getNombre().equals(contact)) {
     		ent2 = BackendController.getCurrentUser();
+    		f2 = true;
     	}else if(contact != null) {
     		Optional<EntidadComunicable> aux = contactos.stream().filter(e -> e.getNombre().equals(contact)).findFirst();
     		ent2 = aux.isEmpty() ? null : aux.get();
     	}if(contact != null && ent2 == null) {
     		Optional<EntidadComunicable> aux = noContactos.stream().filter(e -> e.getNombre().equals(contact)).findFirst();
     		ent2 = aux.isEmpty() ? null : aux.get();
-    	}if(contact != null) {
-    		for(Grupo grupo : grupos) {
+    	}if(contact != null && f2) {
+    		for(Grupo grupo : BackendController.getGrupos()) {
+    			Optional<EntidadComunicable> aux = grupo.getIntegrantes().stream().filter(e -> e.getNombre().equals(contact)).findFirst();
+        		if(aux.isPresent()) gruposPertenece.add(grupo);
+    		}
+    	}else if(contact != null && !f2 && ent2 != null) {
+    		for(Grupo grupo : DAOController.getListaGrupos(ent2.getNumero())) {
     			Optional<EntidadComunicable> aux = grupo.getIntegrantes().stream().filter(e -> e.getNombre().equals(contact)).findFirst();
         		if(aux.isPresent()) gruposPertenece.add(grupo);
     		}
     	}
+    	
+    	//System.out.println("[DEBUG]" + " MainController " + "ent2 : " + ent2.getNumero() + " numGrupos : " + gruposPertenece.size());
     	
     	// tercer filtro
     	if(msg != null) {
@@ -584,7 +603,7 @@ public class MainController {
     			}
     		}if(!gruposPertenece.isEmpty()) {
     			int n1 = ent != null ? ent.getNumero() : 0;
-    			int n2  = ent2 != null ? ent.getNumero() : 0;
+    			int n2  = ent2 != null ? ent2.getNumero() : 0;
     			for(Grupo grupo : grupos) msgs.addAll(DAOController.getAllMsgsFromAGroup(grupo, Optional.of(msg)).stream()
     					.filter(e -> e.getSender() == n1 || e.getSender() == n2).toList());
     		}
@@ -607,17 +626,19 @@ public class MainController {
     				for(EntidadComunicable e : contactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, true, Optional.empty()));}
     				for(EntidadComunicable e : noContactos) {msgs.addAll(DAOController.getAllMsgsFromAChat(e, false, Optional.empty()));}
     			}else if(ent2 != null){
-    				msgs.addAll(DAOController.getAllMsgsFromAChat(ent2, BackendController.isContact(ent.getNumero()), Optional.empty()));
+    				msgs.addAll(DAOController.getAllMsgsFromAChat(ent2, BackendController.isContact(ent2.getNumero()), Optional.empty()));
     			}
     		}if(!gruposPertenece.isEmpty()) {
     			int n1 = ent != null ? ent.getNumero() : 0;
-    			int n2  = ent2 != null ? ent.getNumero() : 0;
+    			int n2 = ent2 != null ? ent2.getNumero() : 0;
+    			//System.out.println("[DEBUG]" + " MainController " + "n1 : " + n1 + " n2 : " + n2);
+    			
     			for(Grupo grupo : grupos) msgs.addAll(DAOController.getAllMsgsFromAGroup(grupo, Optional.empty()).stream()
     					.filter(e -> e.getSender() == n1 || e.getSender() == n2).toList());
     		}
     	}
     	
-    	return msgs;
+    	return new ArrayList<>(msgs);
     	
     }
 }
