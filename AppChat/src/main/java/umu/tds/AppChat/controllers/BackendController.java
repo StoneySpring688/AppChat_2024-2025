@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 
 import umu.tds.AppChat.backend.utils.Emoji;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
+import umu.tds.AppChat.backend.utils.GeneradorPDF;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.Membership;
 import umu.tds.AppChat.backend.utils.ModelMessage;
@@ -317,5 +318,40 @@ public class BackendController {
     	
     }
     
+    // ### PDF
+    public static String exportarDatosPDF() {
+        List<EntidadComunicable> contactos = getListaContactos();
+        List<Grupo> grupos = getGrupos();
+        
+        List<String> contenido = new ArrayList<>();
+        contenido.add("Historial de Contactos y Grupos");
+        contenido.add("\n=====================================\n");
+
+        // Agregar información de contactos
+        contenido.add("🟢 Contactos:");
+        for (EntidadComunicable contacto : contactos) {
+            contenido.add("• " + contacto.getNombre() + " - " + contacto.getNumero());
+            //System.out.println("[DEBUG]" + " BackendController " + "exportarDatosPDF " + "id contacto : " + contacto.getId());
+            List<String> mensajes = DAOController.getMensajesDeUsuario(contacto);
+            if (!mensajes.isEmpty()) {
+                contenido.add("  Mensajes:");
+                contenido.addAll(mensajes);
+            }
+            contenido.add("\n-------------------------------------\n");
+        }
+
+        // Agregar información de grupos
+        contenido.add("\n🟣 Grupos:");
+        for (Grupo grupo : grupos) {
+            contenido.add("• Grupo: " + grupo.getNombre());
+            contenido.add("  Integrantes:");
+            List<String> integrantes = DAOController.getIntegrantesDeGrupo(grupo);
+            contenido.addAll(integrantes);
+            contenido.add("\n-------------------------------------\n");
+        }
+
+        return GeneradorPDF.generarPDF("Historial_AppChat", contenido);
+    }
+
 }
 

@@ -723,7 +723,7 @@ public class OptionsPane extends PanelGrande {
 	
 	// ### PDF
 	private void makePDF() {
-		UIController.makePdf();
+		UIController.makePDF();
 	}
 	
 	// ### errors

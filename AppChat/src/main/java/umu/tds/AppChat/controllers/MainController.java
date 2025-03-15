@@ -645,10 +645,13 @@ public class MainController {
     
     // ### PDF
     
-    protected static void makePDF() {
-    	if(BackendController.currentUserIsPremium()) {
-    		//TODO
-    	}
+    public static String makePDF() {
+        if (!BackendController.currentUserIsPremium()) {
+            System.out.println("[ERROR] No tienes acceso a esta función. Debes ser usuario Premium.");
+            return null;
+        }
+        return BackendController.exportarDatosPDF();
     }
+
     
 }

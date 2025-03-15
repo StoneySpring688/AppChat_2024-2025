@@ -362,9 +362,15 @@ public class UIController {
     
     // ### PDF
     
-    public static void makePdf() {
-    	//TODO
+    public static void makePDF() {
+        String ruta = MainController.makePDF();
+        if (ruta != null) {
+            System.out.println("[OK] PDF generado en: " + ruta);
+        } else {
+            System.out.println("[ERROR] No se pudo generar el PDF. Verifica si eres usuario Premium.");
+        }
     }
+
     
     // ### efectos
     

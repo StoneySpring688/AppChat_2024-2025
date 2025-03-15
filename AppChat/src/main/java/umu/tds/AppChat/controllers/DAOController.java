@@ -3,6 +3,7 @@ package umu.tds.AppChat.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
@@ -351,5 +352,21 @@ public class DAOController {
 		}
 		return list;
 	}
+	
+	// ### métodos para PDF
+	
+	public static List<String> getMensajesDeUsuario(EntidadComunicable contacto) {
+	    return getAllMsgsFromAChat(contacto, true, Optional.empty())
+	            .stream()
+	            .map(m -> "[" + m.getDate() + "] " + m.getName() + ": " + m.getMessage().orElse("[Emoji]"))
+	            .collect(Collectors.toList());
+	}
+
+	public static List<String> getIntegrantesDeGrupo(Grupo grupo) {
+	    return grupo.getIntegrantes().stream()
+	            .map(i -> i.getNumero() + " - " + i.getNombre())
+	            .collect(Collectors.toList());
+	}
+
 	
 }
