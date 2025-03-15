@@ -504,7 +504,7 @@ public class OptionsPane extends PanelGrande {
 		exportToPdfButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO
+				makePDF();
 			}
 		});
 		
@@ -719,6 +719,11 @@ public class OptionsPane extends PanelGrande {
 	    this.repaint();
 	    this.revalidate();
 		
+	}
+	
+	// ### PDF
+	private void makePDF() {
+		UIController.makePdf();
 	}
 	
 	// ### errors

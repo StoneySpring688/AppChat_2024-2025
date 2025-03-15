@@ -360,6 +360,12 @@ public class UIController {
     	appFrame.llamarMetodo(11, Optional.empty(), Optional.empty()); // actualizar la fecha de expiración del premium en ui
     }
     
+    // ### PDF
+    
+    public static void makePdf() {
+    	//TODO
+    }
+    
     // ### efectos
     
     public static void addHoverEffect(JButton button) {

@@ -642,4 +642,13 @@ public class MainController {
 
     	
     }
+    
+    // ### PDF
+    
+    protected static void makePDF() {
+    	if(BackendController.currentUserIsPremium()) {
+    		//TODO
+    	}
+    }
+    
 }
