@@ -353,10 +353,19 @@ public class DAOController {
 		return list;
 	}
 	
+	public static List<ModelMessage> getAllMsgsFromAChat(EntidadComunicable contacto, boolean isContact){
+		List<ModelMessage> list = new ArrayList<ModelMessage>();
+		
+		if(isContact)list = contactAdapter.obtenerListaMsg(contacto.getId());
+		if(!isContact)list = noContactAdapter.obtenerListaMsg(contacto.getId());
+		
+		return list;
+	}
+	
 	// ### métodos para PDF
 	
 	public static List<String> getMensajesDeUsuario(EntidadComunicable contacto) {
-	    return getAllMsgsFromAChat(contacto, true, Optional.empty())
+	    return getAllMsgsFromAChat(contacto, true)
 	            .stream()
 	            .map(m -> "[" + m.getDate() + "] " + m.getName() + ": " + m.getMessage().orElse("[Emoji]"))
 	            .collect(Collectors.toList());
