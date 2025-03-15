@@ -33,8 +33,8 @@ public class SearchPanel extends PanelGrande {
 	private JTextField textFieldContacto;
 	private JTextArea textFieldMessage;
 	private JButton SearchButton;
-	private JButton exportAllPDF;
-	private JButton exportListPDF;
+	//private JButton exportAllPDF;
+	//private JButton exportListPDF;
 
 	private final Color Gray = new Color(64, 68, 75);
 
@@ -114,17 +114,21 @@ public class SearchPanel extends PanelGrande {
         scrollBody.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
         fondo.add(scrollBody);
         
+        /*
         exportAllPDF = new JButton("export all chats to PDF");
         exportAllPDF.setForeground(Color.WHITE);
         exportAllPDF.setBackground(new Color(241, 57, 83));
         exportAllPDF.setBounds(69, 497, 187, 35); // x = 370+(285/2)-(187/2)
 		this.fondo.add(exportAllPDF);
-		
+		*/
+        
+		/*
 		exportListPDF = new JButton("export list to PDF");
 		exportListPDF.setForeground(Color.WHITE);
 		exportListPDF.setBackground(new Color(241, 57, 83));
 		exportListPDF.setBounds(568, 582, 187, 35); // x = (439/2-187/2)+442
 		this.fondo.add(exportListPDF);
+		*/
 		
 		//boton para limpiar la lista
 		JLabel lblButtonCleanList =  new JLabel("clean list");

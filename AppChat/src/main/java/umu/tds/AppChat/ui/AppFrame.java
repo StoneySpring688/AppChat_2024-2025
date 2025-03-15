@@ -74,7 +74,7 @@ public class AppFrame extends JFrame {
 		//paneles
 		login = new LoginPanel();
 		register = new RegisterPanel();
-		mainPanel = new MainPanel();
+		mainPanel = MainPanel.getUnicaInstancia();
 		intermedio = new PanelIntermedio();
 
 		//gestion paneles
@@ -266,12 +266,12 @@ public class AppFrame extends JFrame {
 			}
 			break;
 		}
-		case 14: { //cargar contactos y grupos en el panel de ajustes
+		/*case 14: { //cargar contactos y grupos en el panel de ajustes
 			if (arg.isPresent() && arg.get() instanceof List<?> && arg2.isPresent() && arg2.get() instanceof List<?>) {
 				this.mainPanel.showSettings((List<EntidadComunicable>)arg.get(), (List<Grupo>)arg2.get());
 			}
 			break;
-		}
+		}*/
 		case 15: { // gestionar los errores en el formulario para editar contactos
 			if(!arg.isPresent() && arg2.isPresent() && arg2.get() instanceof Byte) {
 				this.mainPanel.accederMetodoNoVisible(13, Optional.empty() ,Optional.of(arg2.get()));

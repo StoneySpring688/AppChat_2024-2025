@@ -65,6 +65,7 @@ public class DAOController {
 	}
 	
 	public static void makePremium(Usuario user) {
+		//System.out.println("[DEBUG]" + " DAOController " + "usuario a actualizar : \n" + user);
 		userAdapter.update(user);
 	}
 	

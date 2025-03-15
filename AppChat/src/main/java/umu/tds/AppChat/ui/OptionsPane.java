@@ -73,6 +73,9 @@ public class OptionsPane extends PanelGrande {
 	private Grupo selectedGroup;
 	private boolean validImage;
 	
+	//pdf
+	private JButton exportToPdfButton;
+	
 	// utils
 	private final static String defaultProfileImage = "/assets/ProfilePic.png";
 	private final static String defaultGroupUrl = "https://github.com/StoneySpring688/AppChat_2024-2025/blob/main/AppChat/src/main/resources/assets/ProfilePic.png?raw=true";
@@ -85,7 +88,7 @@ public class OptionsPane extends PanelGrande {
 
 		this.fondo = new Background();
 		this.fondo.setBounds(0, 60, 920, 1200);
-		this.fondo.setPreferredSize(new Dimension(920, 1200));
+		this.fondo.setPreferredSize(new Dimension(920, 1200+20));
 		
 		this.scrollPanel = new JScrollPane();
 		this.scrollPanel.setViewportView(this.fondo);
@@ -486,6 +489,27 @@ public class OptionsPane extends PanelGrande {
 		
 		this.fondo.add(deleteGroupButton);
 		
+		// ### PDF
+		JLabel lblPdf = new JLabel("make PDF for premium users");
+		lblPdf.setFont(new Font("Dialog", Font.BOLD, 12));
+		lblPdf.setBounds(10, 1130, 220, 20); //this.fondo.getWidth()/2-lblOptions.getWidth()/2
+		lblContacts.setForeground(Color.WHITE);
+		
+		this.fondo.add(lblPdf);
+		
+		exportToPdfButton = new JButton("Export to PDF");
+		exportToPdfButton.setForeground(Color.WHITE);
+		exportToPdfButton.setBackground(Color.GRAY);  
+		exportToPdfButton.setBounds(60, 1170, 187, 35);
+		exportToPdfButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO
+			}
+		});
+		
+		this.fondo.add(exportToPdfButton);
+		
 	}
 	
 	public String getNumeroEditContact() {
@@ -510,6 +534,14 @@ public class OptionsPane extends PanelGrande {
 	
 	public Grupo getEditGroup() {
 		return this.selectedGroup;
+	}
+	
+	// ### UiPreparation and reset
+	
+	public void prepareOptions(List<EntidadComunicable> contactos, List<Grupo> grupos, boolean isPremium) {
+		loadContactsAndGroups(contactos, grupos);
+		if(isPremium) this.exportToPdfButton.setBackground(new Color(241, 57, 83));
+		else this.exportToPdfButton.setBackground(Color.GRAY);
 	}
 	
 	public List<Integer> getListaMiembrosEditGroup(){
@@ -552,7 +584,7 @@ public class OptionsPane extends PanelGrande {
 			
 			this.deleteGroupButton.setBackground(new Color(241, 57, 83));
 			
-			leaveGroupButton.setBackground(Color.GRAY);  
+			this.leaveGroupButton.setBackground(Color.GRAY);  
 			
 			this.repaint();
 			this.revalidate();
@@ -602,6 +634,8 @@ public class OptionsPane extends PanelGrande {
 		resetGroupSettings();
 	}
 	
+	// ### contacts
+	
 	private boolean editContact() {
 	    return UIController.verificarContactoYEditarContacto(getNumeroEditContact(), getNombreEditContact());		
 	}
@@ -626,6 +660,8 @@ public class OptionsPane extends PanelGrande {
 	    this.revalidate();
 		
 	}
+	
+	// ### groups
 	
 	private boolean editGrupo(long grupID) {
 		if(grupID == 0) return false;
@@ -685,6 +721,8 @@ public class OptionsPane extends PanelGrande {
 		
 	}
 	
+	// ### errors
+	
 	public void contactSettingsErrors(byte code) {
 		switch (code) {
 		case 1: {
@@ -729,6 +767,8 @@ public class OptionsPane extends PanelGrande {
 		}
 	}
 
+	// ### utils
+	
     private void actualizarImagen() throws MalformedURLException {
         String urlText = urlField.getText();
         URL url;

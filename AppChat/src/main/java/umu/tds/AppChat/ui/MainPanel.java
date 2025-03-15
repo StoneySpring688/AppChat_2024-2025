@@ -56,6 +56,14 @@ public class MainPanel extends JPanel {
 	private MessageList messageList;
 	private MembershipList mshipsList;
 
+	// singleton
+	private static MainPanel unicaInstancia = null;
+	 			
+	public static MainPanel getUnicaInstancia() {
+		unicaInstancia = unicaInstancia == null ? new MainPanel() : unicaInstancia;
+	 	return unicaInstancia;
+	}
+	
 	public MainPanel() {
 		setBackground(Color.WHITE);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -254,8 +262,10 @@ public class MainPanel extends JPanel {
 		button.addActionListener(e -> actualizador.show(panelObjetivo, menu));
 	}
 	
-	public void showSettings(List<EntidadComunicable> contactos, List<Grupo> grupos) {
-		this.options.loadContactsAndGroups(contactos, grupos);
+	public void showSettings(List<EntidadComunicable> contactos, List<Grupo> grupos, boolean isPremium) {
+		this.options.reset();
+		this.options.prepareOptions(contactos, grupos, isPremium);
+		//this.options.loadContactsAndGroups(contactos, grupos);
 		actualizadorUiPrincipal.show(principal, "options");
     	actualizadorMenu1.show(panelMenu1, "porDefecto");
 	}

@@ -22,7 +22,9 @@ import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Membership.MembershipType;
 import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
+import umu.tds.AppChat.ui.MainPanel;
 import umu.tds.AppChat.ui.MessageList;
+import umu.tds.AppChat.ui.OptionsPane;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class UIController {
@@ -97,7 +99,9 @@ public class UIController {
     }
     
     public static void showSettingsPanel() {
-    	appFrame.llamarMetodo(14, Optional.of(MainController.getGrupos()), Optional.of(MainController.getListaContactos()));
+    	MainPanel.getUnicaInstancia().showSettings(MainController.getListaContactos(), MainController.getGrupos(),BackendController.currentUserIsPremium());
+    	//OptionsPane.getUnicaInstancia().prepareOptions(MainController.getListaContactos(), MainController.getGrupos(), BackendController.currentUserIsPremium());
+    	//appFrame.llamarMetodo(14, Optional.of(MainController.getGrupos()), Optional.of(MainController.getListaContactos()));
     }
     
     // ### gestión errores

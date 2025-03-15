@@ -83,7 +83,7 @@ public class BackendController {
     }
 
     public static void loadCurrentUser(Usuario usuario) {
-    	user = new Usuario(usuario, true);        
+    	user = new Usuario(usuario, false);        
     	URL url;
         userIconCached = null;
         String profilePicUrl = BackendController.getUserIconUrl();
@@ -102,6 +102,10 @@ public class BackendController {
 		
 		//System.out.println("[DEBUG] " + "BackendController " + "usuario cargado : " + usuario.getNombre() +" , " + usuario.getNumero());
 		
+    }
+    
+    public static boolean currentUserIsPremium() {
+    	return user.isPremium();
     }
     
     public static Usuario getCurrentUser() {

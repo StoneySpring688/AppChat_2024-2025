@@ -81,4 +81,17 @@ public class Usuario extends EntidadComunicable {
 		this.birthDate = birthDate;
 	}
 	
+	@Override
+	public String toString() {
+	    return "Usuario{" +
+	            "nombre='" + getNombre() + '\'' +
+	            ", numero=" + getNumero() +
+	            ", firma='" + signature + '\'' +
+	            ", fechaNacimiento=" + birthDate +
+	            ", premium=" + premium +
+	            ", finPremium=" + (endPremium.isPresent() ? endPremium.get() : "No aplica") +
+	            '}';
+	}
+
+	
 }
