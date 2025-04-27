@@ -40,7 +40,7 @@ import java.util.Optional;
 public class OptionsPane extends PanelGrande {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	private Background fondo;
 	private JScrollPane scrollPanel;
 	
@@ -83,13 +83,20 @@ public class OptionsPane extends PanelGrande {
 	// colors
 	private final Color Gray = new Color(64, 68, 75);
 	private final Color darkPorDefecto = new Color(54, 57, 63);
-	
-	public OptionsPane() {
 
+	public OptionsPane() {
+		crearBackgroundYScrollPanel();
+		crearHeader();
+		crearContactsSettings();
+		crearGroupsSettings();
+		crearPDFSettings();
+	}
+
+	private void crearBackgroundYScrollPanel() {
 		this.fondo = new Background();
 		this.fondo.setBounds(0, 60, 920, 1200);
-		this.fondo.setPreferredSize(new Dimension(920, 1200+20));
-		
+		this.fondo.setPreferredSize(new Dimension(920, 1200 + 20));
+
 		this.scrollPanel = new JScrollPane();
 		this.scrollPanel.setViewportView(this.fondo);
 		this.scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -97,17 +104,20 @@ public class OptionsPane extends PanelGrande {
 		this.scrollPanel.setBorder(BorderFactory.createEmptyBorder());
 		this.scrollPanel.setBackground(this.Gray);
 		this.scrollPanel.setBounds(0, 60, 920, 660);
-		
+
 		this.add(scrollPanel);
-		
+	}
+
+	private void crearHeader() {
 		// ### header
 		JLabel lblOptions = new JLabel("Options");
 		lblOptions.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 15));
-		lblOptions.setBounds(435, 5, 60, 20); //this.fondo.getWidth()/2-lblOptions.getWidth()/2
+		lblOptions.setBounds(435, 5, 60, 20);
 		lblOptions.setForeground(Color.WHITE);
-		
 		this.fondo.add(lblOptions);
-		
+	}
+
+	private void crearContactsSettings() {
 		// ### contacts settings
 		JLabel lblContacts = new JLabel("Contacts Settings");
 		lblContacts.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -225,7 +235,9 @@ public class OptionsPane extends PanelGrande {
 		        }
 		    }
 		});
-			
+	}
+
+	private void crearGroupsSettings() {
 		// ### groups settings
 		JLabel lblGroups = new JLabel("Groups Settings");
 		lblGroups.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -488,12 +500,14 @@ public class OptionsPane extends PanelGrande {
 		});
 		
 		this.fondo.add(deleteGroupButton);
-		
+	}
+
+	private void crearPDFSettings() {
 		// ### PDF
 		JLabel lblPdf = new JLabel("make PDF for premium users");
 		lblPdf.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblPdf.setBounds(10, 1130, 220, 20); //this.fondo.getWidth()/2-lblOptions.getWidth()/2
-		lblContacts.setForeground(Color.WHITE);
+		lblPdf.setForeground(Color.WHITE);
 		
 		this.fondo.add(lblPdf);
 		
@@ -509,9 +523,8 @@ public class OptionsPane extends PanelGrande {
 		});
 		
 		this.fondo.add(exportToPdfButton);
-		
 	}
-	
+
 	public String getNumeroEditContact() {
 		return textFieldPhone.getForeground().equals(Color.RED) ? "" : this.textFieldPhone.getText();
 	}
@@ -821,5 +834,4 @@ public class OptionsPane extends PanelGrande {
             validImage = false;
 		}
     }
-	
 }
