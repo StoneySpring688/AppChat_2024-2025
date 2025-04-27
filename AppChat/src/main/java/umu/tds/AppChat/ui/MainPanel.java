@@ -1,7 +1,6 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,238 +28,200 @@ import java.awt.CardLayout;
 
 public class MainPanel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	
-	private JPanel panelBotonera;
-	private JPanel panelMenu1;
-	private JPanel panelMenuPerfil;
-	private JPanel principal;
-	private SearchPanel searchPanel;
-	private PremiumShopPanel shopPanel;
-	private AddContactPanel panelAnyadirContacto;
-	private CreateGroupPanel panelCrearGrupo;
-	private ChatPanel chat;
-	private OptionsPane options;
-	private JLabel lblYourname;
-	private ImageAvatar yourAvatar;
-	private JLabel lblLogout;
-	private JLabel lblsettingGear;
-	private Button buttonGroups;
-	private Button buttonSearch;
-	private Button buttonChats;
-	private Button buttonShop;
-	private CardLayout actualizadorUiPrincipal;
-	private CardLayout actualizadorMenu1;
-	private ChatsList chatslist;
-	private GroupsList groupslist;
-	private MessageList messageList;
-	private MembershipList mshipsList;
+    private static final long serialVersionUID = 1L;
 
-	// singleton
-	private static MainPanel unicaInstancia = null;
-	 			
-	public static MainPanel getUnicaInstancia() {
-		unicaInstancia = unicaInstancia == null ? new MainPanel() : unicaInstancia;
-	 	return unicaInstancia;
-	}
-	
-	public MainPanel() {
-		setBackground(Color.WHITE);
-		setBorder(new EmptyBorder(5, 5, 5, 5));
-		setLayout(null);
-		
-		// ### panelesPrincipales
-		PanelGrande PanelGrandePorDefecto = new PanelGrande();
-		Background fondoPorDefecto = new Background();
-		fondoPorDefecto.setBounds(0, 60, 920, 660);
-		PanelGrandePorDefecto.add(fondoPorDefecto);
-		this.searchPanel = new SearchPanel();
-		this.shopPanel = new PremiumShopPanel();
-		this.panelAnyadirContacto = new AddContactPanel();
-		this.panelCrearGrupo = new CreateGroupPanel();
-		this.chat = new ChatPanel();
-		this.options = new OptionsPane();
-		
-		// ### panelPrincipal
-		principal = new JPanel();
-		principal.setBounds(360, 0, 920, 720);
-		this.add(principal);
-		
-		// ### actualizador principal
-		actualizadorUiPrincipal = new CardLayout();
-		principal.setLayout(this.actualizadorUiPrincipal);
-		
-		principal.add(PanelGrandePorDefecto, "porDefecto");
-		principal.add(searchPanel, "search");
-		principal.add(shopPanel, "shop");
-		principal.add(panelAnyadirContacto, "anyadirContacto");
-		principal.add(panelCrearGrupo, "crearGrupo");
-		principal.add(chat, "chat");
-		principal.add(options, "options");
-		
-		this.actualizadorUiPrincipal.show(principal, "porDefecto");
-		
-		// ### configuración del menu1
-		panelMenu1 = new JPanel();
-		//panelMenu1.setBackground(new Color(54,57,63));
-		panelMenu1.setBounds(120, 0, 240, 660);
-		this.add(panelMenu1);
-		actualizadorMenu1 = new CardLayout(0, 0);
-		panelMenu1.setLayout(actualizadorMenu1);
-		
-		// ### gestionar paneles menu1
-		JPanel panelPorDefectoMenu1 = new JPanel();
-		//panelPorDefectoMenu1.setBackground(new Color(54,57,63));
-		panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
-		panelMenu1.add(panelPorDefectoMenu1, "porDefecto");
-		
-		chatslist = new ChatsList();
-		panelMenu1.add(chatslist, "chats");
-		groupslist = new GroupsList();
-		panelMenu1.add(groupslist, "groups");
-		messageList = MessageList.getUnicaInstancia(); //messageList = new MessageList();
-		panelMenu1.add(messageList,"messages");
-		mshipsList = new MembershipList();
-		panelMenu1.add(mshipsList,"mships");
-		
-		actualizadorMenu1.show(panelMenu1, "porDefecto");
-		
-		// ### botonera
-		panelBotonera = new JPanel();
-		//panelBotonera.setBackground(new Color(54,57,63));
-		panelBotonera.setBounds(0, 0, 120, 720);
-		this.add(panelBotonera);
-		panelBotonera.setLayout(null);
-		
-		buttonChats = new Button();
-		buttonChats.setIcon(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Wanderer.png")));
-		buttonChats.setRound(100);
-		//buttonChats.applyEffectSettings(0.3f, 600, 1.5, new Color(173, 173, 173, 80), 0.3f, 0.3f);
-		buttonChats.setOpaque(false);
-		buttonChats.setContentAreaFilled(false);
-		buttonChats.setBorderPainted(false);
-		buttonChats.setBounds(10, 0, 100, 100);
-		buttonChats.setFocusPainted(false);
-		UIController.addHoverEffect(buttonChats);
-		buttonChats.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				UIController.setActualChatOptimization(0);
-			}
-		});
-		this.showMenu("porDefecto", buttonChats, this.actualizadorUiPrincipal, principal);
-		this.showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
-		//this.showMenu("chat", buttonChats, this.actualizadorUiPrincipal, principal);
-		panelBotonera.add(buttonChats);
-		
-		buttonGroups = new Button();
-		buttonGroups.setIcon(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Traveler.png")));
-		buttonGroups.setRound(100);
-		buttonGroups.setOpaque(false);
-		buttonGroups.setContentAreaFilled(false);
-		buttonGroups.setBorderPainted(false);
-		buttonGroups.setBounds(10, 120, 100, 100);
-		buttonGroups.setFocusPainted(false);
-		UIController.addHoverEffect(buttonGroups);
-		buttonGroups.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				UIController.setActualChatOptimization(0);
-			}
-		});
-		this.showMenu("porDefecto", buttonGroups, this.actualizadorUiPrincipal, principal);
-		this.showMenu("groups", buttonGroups, actualizadorMenu1, panelMenu1);
-		panelBotonera.add(buttonGroups);
-		
-		buttonShop = new Button();
-		buttonShop.setIcon(new ImageIcon(getClass().getResource("/assets/Ui_SystemOpenIcon_Shop.png")));
-		buttonShop.setRound(100);
-		buttonShop.setOpaque(false);
-		buttonShop.setContentAreaFilled(false);
-		buttonShop.setBorderPainted(false);
-		buttonShop.setBounds(10, 240, 100, 100);
-		buttonShop.setFocusPainted(false);
-		UIController.addHoverEffect(buttonShop);
-		buttonShop.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				UIController.setActualChatOptimization(0);
-			}
-		});
-		this.showMenu("porDefecto", buttonShop, this.actualizadorUiPrincipal, principal);
-		this.showMenu("mships", buttonShop, actualizadorMenu1, panelMenu1);
-		
-		panelBotonera.add(buttonShop);
-		
-		buttonSearch = new Button();
-		buttonSearch.setIcon(new ImageIcon(getClass().getResource("/assets/UI_ChapterIcon_Charlotte.png")));
-		buttonSearch.setRound(100);
-		buttonSearch.setOpaque(false);
-		buttonSearch.setContentAreaFilled(false);
-		buttonSearch.setBorderPainted(false);
-		buttonSearch.setBounds(10, 600, 100, 100);
-		buttonSearch.setFocusPainted(false);
-		UIController.addHoverEffect(buttonSearch);
-		buttonSearch.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				UIController.setActualChatOptimization(0);
-			}
-		});
-		this.showMenu("search", buttonSearch, this.actualizadorUiPrincipal, principal);
-		this.showMenu("messages", buttonSearch, actualizadorMenu1, panelMenu1);
-		panelBotonera.add(buttonSearch);
-		
-		// ### panel del perfil
-		panelMenuPerfil = new JPanel(new MigLayout("align left, insets 5","[][]20[]10[]"));
-		panelMenuPerfil.setBounds(120, 660, 240, 60);
-		this.add(panelMenuPerfil);
-		
-		yourAvatar = new ImageAvatar();
-		yourAvatar.setImage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
-		yourAvatar.setBorderSize(1);
-		yourAvatar.setBorderSpace(1);
-		panelMenuPerfil.add(yourAvatar,"cell 0 0, height 50, width 50");
-		
-		lblYourname = new JLabel("YourName");
-		lblYourname.setForeground(Color.WHITE);
-		panelMenuPerfil.add(lblYourname, "growx, wmax 100");
-		
-		lblLogout = new JLabel("");
-		lblLogout.setIcon(new ImageIcon(getClass().getResource("/assets/Exit_Door_Reescalada.png")));
-		lblLogout.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	UIController.doLogout();
-		    }
-		});
-		UIController.addHoverEffect(lblLogout, 30, 32);
-		panelMenuPerfil.add(lblLogout,"cell 2 0, height 35, width 35");
-		
-		lblsettingGear = new JLabel("");
-		lblsettingGear.setIcon(new ImageIcon(getClass().getResource("/assets/SettingsGear.png")));
-		UIController.addHoverEffect(lblsettingGear, 30, 30);
-		lblsettingGear.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	UIController.showSettingsPanel();
-		    }
-		});
-		panelMenuPerfil.add(lblsettingGear,"cell 3 0, height 35, width 35");
-		
-		
-		// ### configuración de colores
-		this.setBackground(new Color(64, 68, 75));      // Gris claro para el fondo principal
-		panelBotonera.setBackground(new Color(40, 43, 48));    // Gris muy oscuro para la botonera   15, 15, 17 -> 32, 34, 37 -> 40, 43, 48
-		panelMenuPerfil.setBackground(new Color(47, 49, 54));  // Gris oscuro para el perfil
-		panelMenu1.setBackground(new Color(54, 57, 63));       // Gris medio para el menú
-		panelPorDefectoMenu1.setBackground(new Color(54, 57, 63)); // Gris medio para el menú
+    private JPanel panelBotonera;
+    private JPanel panelMenu1;
+    private JPanel panelMenuPerfil;
+    private JPanel principal;
+    private SearchPanel searchPanel;
+    private PremiumShopPanel shopPanel;
+    private AddContactPanel panelAnyadirContacto;
+    private CreateGroupPanel panelCrearGrupo;
+    private ChatPanel chat;
+    private OptionsPane options;
+    private JLabel lblYourname;
+    private ImageAvatar yourAvatar;
+    private JLabel lblLogout;
+    private JLabel lblsettingGear;
+    private Button buttonGroups;
+    private Button buttonSearch;
+    private Button buttonChats;
+    private Button buttonShop;
+    private CardLayout actualizadorUiPrincipal;
+    private CardLayout actualizadorMenu1;
+    private ChatsList chatslist;
+    private GroupsList groupslist;
+    private MessageList messageList;
+    private MembershipList mshipsList;
 
-	}
-	
-	private void showMenu(String menu, JButton button, CardLayout actualizador, JPanel panelObjetivo) {
-		button.addActionListener(e -> actualizador.show(panelObjetivo, menu));
-	}
+    private static MainPanel unicaInstancia = null;
+
+    public static MainPanel getUnicaInstancia() {
+        unicaInstancia = unicaInstancia == null ? new MainPanel() : unicaInstancia;
+        return unicaInstancia;
+    }
+
+    public MainPanel() {
+        setBackground(Color.WHITE);
+        setBorder(new EmptyBorder(5, 5, 5, 5));
+        setLayout(null);
+
+        crearPanelPrincipal();
+        crearPanelMenu1();
+        crearPanelBotonera();
+        crearPanelPerfil();
+        configurarColores();
+    }
+
+    private void crearPanelPrincipal() {
+        principal = new JPanel();
+        principal.setBounds(360, 0, 920, 720);
+        add(principal);
+
+        actualizadorUiPrincipal = new CardLayout();
+        principal.setLayout(actualizadorUiPrincipal);
+
+        PanelGrande PanelGrandePorDefecto = new PanelGrande();
+        Background fondoPorDefecto = new Background();
+        fondoPorDefecto.setBounds(0, 60, 920, 660);
+        PanelGrandePorDefecto.add(fondoPorDefecto);
+
+        searchPanel = new SearchPanel();
+        shopPanel = new PremiumShopPanel();
+        panelAnyadirContacto = new AddContactPanel();
+        panelCrearGrupo = new CreateGroupPanel();
+        chat = new ChatPanel();
+        options = new OptionsPane();
+
+        principal.add(PanelGrandePorDefecto, "porDefecto");
+        principal.add(searchPanel, "search");
+        principal.add(shopPanel, "shop");
+        principal.add(panelAnyadirContacto, "anyadirContacto");
+        principal.add(panelCrearGrupo, "crearGrupo");
+        principal.add(chat, "chat");
+        principal.add(options, "options");
+
+        actualizadorUiPrincipal.show(principal, "porDefecto");
+    }
+
+    private void crearPanelMenu1() {
+        panelMenu1 = new JPanel();
+        panelMenu1.setBounds(120, 0, 240, 660);
+        add(panelMenu1);
+
+        actualizadorMenu1 = new CardLayout(0, 0);
+        panelMenu1.setLayout(actualizadorMenu1);
+
+        JPanel panelPorDefectoMenu1 = new JPanel();
+        panelPorDefectoMenu1.setBackground(new Color(54, 57, 63));
+        panelPorDefectoMenu1.setBounds(120, 0, 240, 660);
+        panelMenu1.add(panelPorDefectoMenu1, "porDefecto");
+
+        chatslist = new ChatsList();
+        panelMenu1.add(chatslist, "chats");
+
+        groupslist = new GroupsList();
+        panelMenu1.add(groupslist, "groups");
+
+        messageList = MessageList.getUnicaInstancia();
+        panelMenu1.add(messageList, "messages");
+
+        mshipsList = new MembershipList();
+        panelMenu1.add(mshipsList, "mships");
+
+        actualizadorMenu1.show(panelMenu1, "porDefecto");
+    }
+
+    private void crearPanelBotonera() {
+        panelBotonera = new JPanel();
+        panelBotonera.setBounds(0, 0, 120, 720);
+        add(panelBotonera);
+        panelBotonera.setLayout(null);
+
+        buttonChats = crearBoton("/assets/UI_ChapterIcon_Wanderer.png", 0, e -> UIController.setActualChatOptimization(0));
+        showMenu("porDefecto", buttonChats, actualizadorUiPrincipal, principal);
+        showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
+        panelBotonera.add(buttonChats);
+
+        buttonGroups = crearBoton("/assets/UI_ChapterIcon_Traveler.png", 120, e -> UIController.setActualChatOptimization(0));
+        showMenu("porDefecto", buttonGroups, actualizadorUiPrincipal, principal);
+        showMenu("groups", buttonGroups, actualizadorMenu1, panelMenu1);
+        panelBotonera.add(buttonGroups);
+
+        buttonShop = crearBoton("/assets/Ui_SystemOpenIcon_Shop.png", 240, e -> UIController.setActualChatOptimization(0));
+        showMenu("porDefecto", buttonShop, actualizadorUiPrincipal, principal);
+        showMenu("mships", buttonShop, actualizadorMenu1, panelMenu1);
+        panelBotonera.add(buttonShop);
+
+        buttonSearch = crearBoton("/assets/UI_ChapterIcon_Charlotte.png", 600, e -> UIController.setActualChatOptimization(0));
+        showMenu("search", buttonSearch, actualizadorUiPrincipal, principal);
+        showMenu("messages", buttonSearch, actualizadorMenu1, panelMenu1);
+        panelBotonera.add(buttonSearch);
+    }
+
+    private Button crearBoton(String iconPath, int y, ActionListener action) {
+        Button button = new Button();
+        button.setIcon(new ImageIcon(getClass().getResource(iconPath)));
+        button.setRound(100);
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setBounds(10, y, 100, 100);
+        button.setFocusPainted(false);
+        UIController.addHoverEffect(button);
+        button.addActionListener(action);
+        return button;
+    }
+
+    private void crearPanelPerfil() {
+        panelMenuPerfil = new JPanel(new MigLayout("align left, insets 5", "[][]20[]10[]"));
+        panelMenuPerfil.setBounds(120, 660, 240, 60);
+        add(panelMenuPerfil);
+
+        yourAvatar = new ImageAvatar();
+        yourAvatar.setImage(new ImageIcon(getClass().getResource("/assets/ProfilePic.png")));
+        yourAvatar.setBorderSize(1);
+        yourAvatar.setBorderSpace(1);
+        panelMenuPerfil.add(yourAvatar, "cell 0 0, height 50, width 50");
+
+        lblYourname = new JLabel("YourName");
+        lblYourname.setForeground(Color.WHITE);
+        panelMenuPerfil.add(lblYourname, "growx, wmax 100");
+
+        lblLogout = new JLabel();
+        lblLogout.setIcon(new ImageIcon(getClass().getResource("/assets/Exit_Door_Reescalada.png")));
+        lblLogout.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                UIController.doLogout();
+            }
+        });
+        UIController.addHoverEffect(lblLogout, 30, 32);
+        panelMenuPerfil.add(lblLogout, "cell 2 0, height 35, width 35");
+
+        lblsettingGear = new JLabel();
+        lblsettingGear.setIcon(new ImageIcon(getClass().getResource("/assets/SettingsGear.png")));
+        lblsettingGear.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                UIController.showSettingsPanel();
+            }
+        });
+        UIController.addHoverEffect(lblsettingGear, 30, 30);
+        panelMenuPerfil.add(lblsettingGear, "cell 3 0, height 35, width 35");
+    }
+
+    private void configurarColores() {
+        setBackground(new Color(64, 68, 75));
+        panelBotonera.setBackground(new Color(40, 43, 48));
+        panelMenuPerfil.setBackground(new Color(47, 49, 54));
+        panelMenu1.setBackground(new Color(54, 57, 63));
+    }
+
+    private void showMenu(String menu, JButton button, CardLayout actualizador, JPanel panelObjetivo) {
+        button.addActionListener(e -> actualizador.show(panelObjetivo, menu));
+    }
 	
 	public void showSettings(List<EntidadComunicable> contactos, List<Grupo> grupos, boolean isPremium) {
 		this.options.reset();
