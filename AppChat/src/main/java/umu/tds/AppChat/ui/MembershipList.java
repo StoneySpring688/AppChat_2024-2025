@@ -57,7 +57,7 @@ public class MembershipList extends JPanel{
                 if (index >= 0) {
                 	ElementoMembership element =  mships.get(index);
                 	//System.out.println(element.getMship().getName());
-                	UIController.changeMembershipShop(element.getMship().getPrice(), element.getMship().getType());
+                	UIController.getUnicaInstancia().changeMembershipShop(element.getMship().getPrice(), element.getMship().getType());
                 }
             }
         });
@@ -91,7 +91,7 @@ public class MembershipList extends JPanel{
 	}
 	
 	public void loadPremiumExpireDate() {
-		Optional<LocalDate> expireLocalDate = BackendController.getEndPremium();
+		Optional<LocalDate> expireLocalDate = BackendController.getUnicaInstancia().getEndPremium();
 		premiumExpireDate.setText(expireLocalDate.isPresent() ? expireLocalDate.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString() : "not premium user");
 		this.expireDate.repaint();
 		this.expireDate.revalidate();

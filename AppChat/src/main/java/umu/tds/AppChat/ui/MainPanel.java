@@ -139,22 +139,22 @@ public class MainPanel extends JPanel {
         add(panelBotonera);
         panelBotonera.setLayout(null);
 
-        buttonChats = crearBoton("/assets/UI_ChapterIcon_Wanderer.png", 0, e -> UIController.setActualChatOptimization(0));
+        buttonChats = crearBoton("/assets/UI_ChapterIcon_Wanderer.png", 0, e -> UIController.getUnicaInstancia().setActualChatOptimization(0));
         showMenu("porDefecto", buttonChats, actualizadorUiPrincipal, principal);
         showMenu("chats", buttonChats, actualizadorMenu1, panelMenu1);
         panelBotonera.add(buttonChats);
 
-        buttonGroups = crearBoton("/assets/UI_ChapterIcon_Traveler.png", 120, e -> UIController.setActualChatOptimization(0));
+        buttonGroups = crearBoton("/assets/UI_ChapterIcon_Traveler.png", 120, e -> UIController.getUnicaInstancia().setActualChatOptimization(0));
         showMenu("porDefecto", buttonGroups, actualizadorUiPrincipal, principal);
         showMenu("groups", buttonGroups, actualizadorMenu1, panelMenu1);
         panelBotonera.add(buttonGroups);
 
-        buttonShop = crearBoton("/assets/Ui_SystemOpenIcon_Shop.png", 240, e -> UIController.setActualChatOptimization(0));
+        buttonShop = crearBoton("/assets/Ui_SystemOpenIcon_Shop.png", 240, e -> UIController.getUnicaInstancia().setActualChatOptimization(0));
         showMenu("porDefecto", buttonShop, actualizadorUiPrincipal, principal);
         showMenu("mships", buttonShop, actualizadorMenu1, panelMenu1);
         panelBotonera.add(buttonShop);
 
-        buttonSearch = crearBoton("/assets/UI_ChapterIcon_Charlotte.png", 600, e -> UIController.setActualChatOptimization(0));
+        buttonSearch = crearBoton("/assets/UI_ChapterIcon_Charlotte.png", 600, e -> UIController.getUnicaInstancia().setActualChatOptimization(0));
         showMenu("search", buttonSearch, actualizadorUiPrincipal, principal);
         showMenu("messages", buttonSearch, actualizadorMenu1, panelMenu1);
         panelBotonera.add(buttonSearch);
@@ -169,7 +169,7 @@ public class MainPanel extends JPanel {
         button.setBorderPainted(false);
         button.setBounds(10, y, 100, 100);
         button.setFocusPainted(false);
-        UIController.addHoverEffect(button);
+        UIController.getUnicaInstancia().addHoverEffect(button);
         button.addActionListener(action);
         return button;
     }
@@ -194,10 +194,10 @@ public class MainPanel extends JPanel {
         lblLogout.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                UIController.doLogout();
+                UIController.getUnicaInstancia().doLogout();
             }
         });
-        UIController.addHoverEffect(lblLogout, 30, 32);
+        UIController.getUnicaInstancia().addHoverEffect(lblLogout, 30, 32);
         panelMenuPerfil.add(lblLogout, "cell 2 0, height 35, width 35");
 
         lblsettingGear = new JLabel();
@@ -205,10 +205,10 @@ public class MainPanel extends JPanel {
         lblsettingGear.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                UIController.showSettingsPanel();
+                UIController.getUnicaInstancia().showSettingsPanel();
             }
         });
-        UIController.addHoverEffect(lblsettingGear, 30, 30);
+        UIController.getUnicaInstancia().addHoverEffect(lblsettingGear, 30, 30);
         panelMenuPerfil.add(lblsettingGear, "cell 3 0, height 35, width 35");
     }
 

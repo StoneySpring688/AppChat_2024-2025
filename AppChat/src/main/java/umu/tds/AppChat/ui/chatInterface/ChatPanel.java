@@ -47,7 +47,7 @@ public class ChatPanel extends PanelGrande {
 				
 				//System.out.println("[DEBUG]" + " ChatPanel " + "enviando emoji a : " + chat.getCurrentChatID());
 				
-				UIController.sendMessage(chat.getCurrentChatID() ,Optional.empty(), Optional.of(id));
+				UIController.getUnicaInstancia().sendMessage(chat.getCurrentChatID() ,Optional.empty(), Optional.of(id));
 			}
 		});
 
@@ -59,7 +59,7 @@ public class ChatPanel extends PanelGrande {
 				//System.out.println("[DEBUG]" + " ChatPanel " + "enviando mensaje a : " + chat.getCurrentChatID());
 				
 				String mensaje = chat.getText().trim();
-				if(!mensaje.isBlank()) UIController.sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
+				if(!mensaje.isBlank()) UIController.getUnicaInstancia().sendMessage(chat.getCurrentChatID() ,Optional.of(mensaje), Optional.empty());
 				
 			}
 			

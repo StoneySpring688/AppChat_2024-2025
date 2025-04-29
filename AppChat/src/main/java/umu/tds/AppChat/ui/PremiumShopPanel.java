@@ -39,7 +39,7 @@ public class PremiumShopPanel extends PanelGrande {
 		this.buyButton.setBounds(395, 550, 130, 35);
 		this.buyButton.setForeground(Color.WHITE);
 		this.buyButton.setBackground(new Color(241, 57, 83));
-		this.buyButton.addActionListener(e -> UIController.buyPremium());
+		this.buyButton.addActionListener(e -> UIController.getUnicaInstancia().buyPremium());
 		this.fondo.add(buyButton);
 		
 		this.banner = new JLabel();

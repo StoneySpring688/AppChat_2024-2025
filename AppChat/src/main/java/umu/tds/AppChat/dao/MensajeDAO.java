@@ -76,7 +76,7 @@ public class MensajeDAO implements InterfaceMensajeDAO {
 	private Entidad msgToEntidad(ModelMessage msg) {
 		Entidad eUser = new Entidad();
 		eUser.setNombre(MSG);
-		EntidadComunicable sender = DAOController.recuperarUser(msg.getSender()).get();
+		EntidadComunicable sender = DAOController.getUnicaInstancia().recuperarUser(msg.getSender()).get();
 		
 		eUser.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
 				new Propiedad(ICONURL, sender.getIconUrl()),

@@ -17,13 +17,27 @@ import umu.tds.AppChat.dao.InterfaceNoContactoDAO;
 import umu.tds.AppChat.dao.InterfaceUsuarioDAO;
 
 public class DAOController {
-	private static InterfaceUsuarioDAO userAdapter;
-	private static InterfaceContactoDAO contactAdapter;
-	private static InterfaceGrupoDAO groupAdapter;
-	private static InterfaceNoContactoDAO noContactAdapter;
+	private InterfaceUsuarioDAO userAdapter;
+	private InterfaceContactoDAO contactAdapter;
+	private InterfaceGrupoDAO groupAdapter;
+	private InterfaceNoContactoDAO noContactAdapter;
 	//private static InterfaceMensajeDAO msgAdapter;
 	
-	protected static void initAdapters() {
+	// singleton
+	private static DAOController unicaInstancia = null;
+	
+	public static DAOController getUnicaInstancia() {
+        if (unicaInstancia == null) {
+            unicaInstancia = new DAOController();
+        }
+        return unicaInstancia;
+    }
+	
+	private DAOController() {
+        // initAdapters(); evita bucle
+    }
+	
+	protected void initAdapters() {
 		AbstractFactoriaDAO factoria = null;
 		try {
 			factoria = AbstractFactoriaDAO.getInstancia(AbstractFactoriaDAO.DAO_TDS);
@@ -39,60 +53,60 @@ public class DAOController {
 	
 	// ### users
 	
-	public static boolean registerUser(Usuario user) {
+	public boolean registerUser(Usuario user) {
 		boolean success = false;
 		if(!isUser(user.getNumero())) {
 			userAdapter.create(user);
 			success = true;
-		}else UIController.registerErrors((byte) 3);
+		}else UIController.getUnicaInstancia().registerErrors((byte) 3);
 		return success;
 	}
 	
 	/**
 	 * @return si no  existe el usuario devuelve Optional.empty()*/
-	public static Optional<Usuario> recuperarUser(int id){
+	public Optional<Usuario> recuperarUser(int id){
 		Usuario userDevuelto = userAdapter.get(id);
 		//System.out.println("[DEBUG] usuario devuelto : "+userDevuelto );
 		return userDevuelto != null ? Optional.of(userDevuelto) : Optional.empty();
 		
 	}
 	
-	public static boolean isUser(int id) {
+	public boolean isUser(int id) {
 		return recuperarUser(id).isEmpty() ? false : true;
 	}
 	
-	public static boolean checkLogin(int id, String passwd) {
+	public boolean checkLogin(int id, String passwd) {
 		return userAdapter.checkLogin(id, passwd);
 	}
 	
-	public static void makePremium(Usuario user) {
+	public void makePremium(Usuario user) {
 		//System.out.println("[DEBUG]" + " DAOController " + "usuario a actualizar : \n" + user);
 		userAdapter.update(user);
 	}
 	
-	public static void addGrupoToUser(int number, Grupo grupo) {
+	public void addGrupoToUser(int number, Grupo grupo) {
 		userAdapter.addGrupoToUser(number, grupo);
 	}
 	
-	public static void eliminarGrupoFromUser(int numero, Grupo grupo) {
+	public void eliminarGrupoFromUser(int numero, Grupo grupo) {
 		userAdapter.eliminarGrupoFromUser(numero, grupo);
 	}
 	
-	public static List<EntidadComunicable> getListaContactos(int numero){
+	public List<EntidadComunicable> getListaContactos(int numero){
 		return userAdapter.obtenerListaContactos(numero);
 	}
 	
-	public static List<Grupo> getListaGrupos(int numero){
+	public List<Grupo> getListaGrupos(int numero){
 		return userAdapter.obtenerListaGruposFromUser(numero);
 	}
 	
-	public static List<EntidadComunicable> getListaNoContactos(int numero){
+	public List<EntidadComunicable> getListaNoContactos(int numero){
 		return userAdapter.obtenerListaNoContactos(numero);
 	}
 	
 	// ### contacts
 	
-	public static EntidadComunicable addContact(EntidadComunicable contact) {				
+	public EntidadComunicable addContact(EntidadComunicable contact) {				
 		if(isUser(contact.getNumero())) {
 			//System.out.println("[DEBUG] es usuario");
 			contactAdapter.create(contact);
@@ -100,33 +114,33 @@ public class DAOController {
 			EntidadComunicable contacto = contactAdapter.get(contact.getId());
 			contacto.setId(contact.getId());
 			//System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo contacto id : " + contacto.getId() );
-			userAdapter.addContacto(BackendController.getUserNumber(), contacto);
+			userAdapter.addContacto(BackendController.getUnicaInstancia().getUserNumber(), contacto);
 			return contacto;
 		}
 		return null;
 	}
 	
-	public static EntidadComunicable recuperarContacto(int id) {
+	public EntidadComunicable recuperarContacto(int id) {
 		return contactAdapter.get(id);
 	}
 	
-	public static void removeContact(int user, EntidadComunicable contact) {
+	public void removeContact(int user, EntidadComunicable contact) {
 		userAdapter.eliminarContacto(user, contact);
 		if(!isContact(user, contact.getNumero())) contactAdapter.eliminarMsgs(contact.getId()); // si el usuario no es contacto del otro usuario, elimina los mensajes
 		contactAdapter.delete(contact);
 	}
 	
-	public static void actualizarContacto(EntidadComunicable contact) {
+	public void actualizarContacto(EntidadComunicable contact) {
 		contactAdapter.update(contact);
 	}
 	
-	public static boolean isContact(int numeroContacto, int userToTest) {
+	public boolean isContact(int numeroContacto, int userToTest) {
 		return userAdapter.isContact(numeroContacto, userToTest);
 	}
 	
 	// ### groups
 	
-	public static Grupo addGroup(Grupo grupo) {
+	public Grupo addGroup(Grupo grupo) {
 		groupAdapter.create(grupo);
 		//System.out.println("[DEBUG]" + "DAOConttroller" + " grupo anyadido : " + grupo.getDBID());
 		Grupo nuevoGrupo = groupAdapter.get(grupo.getDBID());
@@ -135,20 +149,20 @@ public class DAOController {
 		return nuevoGrupo;
 	}
 	
-	public static Grupo recuperarGrupo(int id) {
+	public Grupo recuperarGrupo(int id) {
 		return groupAdapter.get(id);
 	}
 	
-	public static void removeGroup(Grupo grupo) {
+	public void removeGroup(Grupo grupo) {
 		groupAdapter.obtenerListaMiembros(grupo.getDBID()).forEach(u -> eliminarGrupoFromUser(u.getNumero(), grupo)); // elimina el grupo de los usuarios
 		groupAdapter.delete(grupo);
 	}
 	
-	public static void actualizarGrupo(Grupo grupo) {
+	public void actualizarGrupo(Grupo grupo) {
 		groupAdapter.update(grupo);
 	}
 	
-	public static EntidadComunicable addMiembroToGrupo(int id, EntidadComunicable miembro) {
+	public  EntidadComunicable addMiembroToGrupo(int id, EntidadComunicable miembro) {
 		contactAdapter.create(miembro);
 		//System.out.println("[DEBUG]" + "DAOConttroller" + " el id del nuevo miembro es : "+ miembro.getId());
 		EntidadComunicable newMiembro = contactAdapter.get(miembro.getId());
@@ -158,31 +172,31 @@ public class DAOController {
 		return newMiembro;
 	}
 	
-	public static void removeMiembroFromGrupo(int id, EntidadComunicable miembro) {
+	public void removeMiembroFromGrupo(int id, EntidadComunicable miembro) {
 		groupAdapter.eliminarMiembro(id, miembro);
 		userAdapter.eliminarGrupoFromUser(miembro.getNumero(), groupAdapter.get(id));
 	}
 	
-	public static boolean isMiembro(int numeroUser, int groupID) {
+	public boolean isMiembro(int numeroUser, int groupID) {
 		return groupAdapter.isMiembro(numeroUser, groupID);
 	}
 	
-	public static void addAdminToGrupo(int idGrupo, int numeroAdmin) {
+	public void addAdminToGrupo(int idGrupo, int numeroAdmin) {
 		//System.out.println("[DEBUG]" + "DAOConttroller" + " anyadiendo admin : " + numeroAdmin );
 		groupAdapter.addAdmin(idGrupo, numeroAdmin);
 	}
 	
-	public static void removeAdminFromGrupo(int idGrupo, int numeroAdmin) {
+	public void removeAdminFromGrupo(int idGrupo, int numeroAdmin) {
 		groupAdapter.eliminarAdmin(idGrupo, numeroAdmin);
 	}
 	
-	public static boolean isAdmin(int numeroAdmin, int groupID) {
+	public boolean isAdmin(int numeroAdmin, int groupID) {
 		return groupAdapter.isAdmin(numeroAdmin, groupID);
 	}
 	
 	// ### noContactos
 	
-	public static EntidadComunicable addNoContact(EntidadComunicable noContact, int userToAddNoContact) {				
+	public EntidadComunicable addNoContact(EntidadComunicable noContact, int userToAddNoContact) {				
 		noContactAdapter.create(noContact);
 		//System.out.println("[DEBUG] el  id del no contacto es : "+ contact.getId());
 		EntidadComunicable noContacto = noContactAdapter.get(noContact.getId());
@@ -192,29 +206,29 @@ public class DAOController {
 		return noContacto;
 	}
 	
-	public static boolean isNoContact(int numeroNoContacto, int userToTest) {
+	public boolean isNoContact(int numeroNoContacto, int userToTest) {
 		return userAdapter.isNoContact(numeroNoContacto, userToTest);
 	}
 	
-	public static Optional<EntidadComunicable> makeContactFromNoContact(EntidadComunicable noContact) {
+	public Optional<EntidadComunicable> makeContactFromNoContact(EntidadComunicable noContact) {
 		boolean success = true;
 		
 		String msgsAux = noContactAdapter.obtenerListaIDsMsgs(noContact.getId());
-		userAdapter.eliminarNoContacto(BackendController.getUserNumber(), noContact);
+		userAdapter.eliminarNoContacto(BackendController.getUnicaInstancia().getUserNumber(), noContact);
 		success = noContactAdapter.delete(noContact);
 		if(success) {
 			EntidadComunicable contactAux = addContact(noContact);
 			contactAdapter.addMsgs(contactAux.getId(), msgsAux);
 			return Optional.of(contactAux);
 		}else {
-			userAdapter.addNoContacto(BackendController.getUserNumber(), noContact); // si no se puede elimiar se restaura la referencia al nocontacto
+			userAdapter.addNoContacto(BackendController.getUnicaInstancia().getUserNumber(), noContact); // si no se puede elimiar se restaura la referencia al nocontacto
 		}
 		return Optional.empty();
 	}
 	
 	// ### message
 	
-	public static void sendMessageToContact(ModelMessage msg) {
+	public void sendMessageToContact(ModelMessage msg) {
 		int reciver = (int) msg.getReciver();
 		int userNum = msg.getSender();
 		
@@ -273,7 +287,7 @@ public class DAOController {
 		}
 	}
 	
-	public static void sendMessageToGroup(ModelMessage msg, int groupID) {
+	public void sendMessageToGroup(ModelMessage msg, int groupID) {
 		int userNum = msg.getSender();
 		
 		if(isMiembro(userNum, groupID)) {
@@ -282,7 +296,7 @@ public class DAOController {
 		}
 	}
 	
-	public static List<ModelMessage> getMessageFromAChat(EntidadComunicable contacto, int startLote, Optional<Integer> lastMsgId){
+	public List<ModelMessage> getMessageFromAChat(EntidadComunicable contacto, int startLote, Optional<Integer> lastMsgId){
 		List<ModelMessage> lote = contactAdapter.obtenerLoteMsg(contacto.getId(), 10, startLote);
 		
 		//for(ModelMessage msg : lote) System.out.println("[DEBUG]" + " DaoController" + " mensaje a cargar : " + '\n' + msg.toString()); 
@@ -307,7 +321,7 @@ public class DAOController {
 		
 	}
 	
-	public static List<ModelMessage> getMessageFromAGroup(Grupo grupo, int startLote, Optional<Integer> lastMsgId){
+	public List<ModelMessage> getMessageFromAGroup(Grupo grupo, int startLote, Optional<Integer> lastMsgId){
 		List<ModelMessage> lote = groupAdapter.obtenerLoteMsg(grupo.getDBID(), 10, startLote);
 		//for(ModelMessage msg : lote) System.out.println("[DEBUG]" + " DaoController" + " mensaje a cargar : " + '\n' + msg.toString()); 
 		
@@ -329,7 +343,7 @@ public class DAOController {
 		return lote;
 	}
 	
-	public static List<ModelMessage> getAllMsgsFromAChat(EntidadComunicable contacto, boolean isContact, Optional<String> filter){
+	public List<ModelMessage> getAllMsgsFromAChat(EntidadComunicable contacto, boolean isContact, Optional<String> filter){
 		List<ModelMessage> list = new ArrayList<ModelMessage>();
 		
 		if(filter.isPresent()) {
@@ -342,7 +356,7 @@ public class DAOController {
 		return list;
 	}
 	
-	public static List<ModelMessage> getAllMsgsFromAGroup(Grupo grupo, Optional<String> filter){
+	public List<ModelMessage> getAllMsgsFromAGroup(Grupo grupo, Optional<String> filter){
 		List<ModelMessage> list = new ArrayList<ModelMessage>();
 		
 		if(filter.isPresent()) {
@@ -353,7 +367,7 @@ public class DAOController {
 		return list;
 	}
 	
-	public static List<ModelMessage> getAllMsgsFromAChat(EntidadComunicable contacto, boolean isContact){
+	public List<ModelMessage> getAllMsgsFromAChat(EntidadComunicable contacto, boolean isContact){
 		List<ModelMessage> list = new ArrayList<ModelMessage>();
 		
 		if(isContact)list = contactAdapter.obtenerListaMsg(contacto.getId());
@@ -364,14 +378,14 @@ public class DAOController {
 	
 	// ### métodos para PDF
 	
-	public static List<String> getMensajesDeUsuario(EntidadComunicable contacto) {
+	public List<String> getMensajesDeUsuario(EntidadComunicable contacto) {
 	    return getAllMsgsFromAChat(contacto, true)
 	            .stream()
 	            .map(m -> "[" + m.getDate() + "] " + m.getName() + ": " + m.getMessage().orElse("[Emoji]"))
 	            .collect(Collectors.toList());
 	}
 
-	public static List<String> getIntegrantesDeGrupo(Grupo grupo) {
+	public List<String> getIntegrantesDeGrupo(Grupo grupo) {
 	    return grupo.getIntegrantes().stream()
 	            .map(i -> i.getNumero() + " - " + i.getNombre())
 	            .collect(Collectors.toList());

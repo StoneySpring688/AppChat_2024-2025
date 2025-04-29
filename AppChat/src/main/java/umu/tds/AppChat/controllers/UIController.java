@@ -24,12 +24,11 @@ import umu.tds.AppChat.ui.AppFrame;
 import umu.tds.AppChat.ui.ElementoChatOGrupo;
 import umu.tds.AppChat.ui.MainPanel;
 import umu.tds.AppChat.ui.MessageList;
-import umu.tds.AppChat.ui.OptionsPane;
 import umu.tds.AppChat.ui.chatInterface.ChatBox.BoxType;
 
 public class UIController {
-    private static AppFrame appFrame;
-    private static long actualChatOptimization = 0; // evitar usar el método cambiarChat para el chatActual
+    private AppFrame appFrame;
+    private long actualChatOptimization = 0; // evitar usar el método cambiarChat para el chatActual
     
     // singleton
  	private static UIController unicaInstancia = null;
@@ -39,11 +38,11 @@ public class UIController {
  		return unicaInstancia;
  	}
 
-    public UIController() {  
-    	iniciarUI();
+    private UIController() {  
+    	// iniciarUI(); evita bucle
     }
 
-    public static void iniciarUI() {
+    public void iniciarUI() {
     	UIManager.put( "Button.arc", 300 );
     	UIManager.put( "TextComponent.arc", 100 );
     	UIManager.put( "Component.arc", 100 );
@@ -54,88 +53,88 @@ public class UIController {
     	showLogin();
     }
     
-    public static void setActualChatOptimization(long actualChat) {
+    public void setActualChatOptimization(long actualChat) {
     	actualChatOptimization = actualChat;
     }
     
-    public static long getActualChatOptimization() {
+    public long getActualChatOptimization() {
     	return actualChatOptimization;
     }
     
     // ### show methods
-    public static void showLogin() {
+    public void showLogin() {
         appFrame.showLoginPanel();
         appFrame.setVisible(true);
     }
     
-    public static void showRegister() {
+    public void showRegister() {
     	appFrame.showRegisterPanel();
     }
 
-    public static void showMainPanel() {
+    public void showMainPanel() {
         appFrame.showMainPanel();
     }
     
-    public static void prepareMainPanel() {
-        appFrame.setUserInfo(BackendController.getUserName(), BackendController.getUserIcon() );
+    public void prepareMainPanel() {
+        appFrame.setUserInfo(BackendController.getUnicaInstancia().getUserName(), BackendController.getUnicaInstancia().getUserIcon() );
         addChats();
         addGroups();
         actualizarPremiumExpireDate();
-        appFrame.llamarMetodo(13, Optional.of(BackendController.getOfertas()), Optional.empty()); // cargar ofertas    
+        appFrame.llamarMetodo(13, Optional.of(BackendController.getUnicaInstancia().getOfertas()), Optional.empty()); // cargar ofertas    
     }
     
-    public static void showPanelIntermedio() {
+    public void showPanelIntermedio() {
     	appFrame.showPanelIntermedio();
     }
     
-    public static void showPanelAnyadirContacto() {
+    public void showPanelAnyadirContacto() {
     	appFrame.showAnyadirContactoPanel();
     }
     
-    public static void showPanelCrearGrupo() {
-    	List<EntidadComunicable> lista = MainController.getListaContactos() ;
+    public void showPanelCrearGrupo() {
+    	List<EntidadComunicable> lista = MainController.getUnicaInstancia().getListaContactos() ;
     	appFrame.llamarMetodo(1, Optional.empty(), Optional.of(lista));
     	appFrame.showCrearGrupoPanel();
     }
     
-    public static void showSettingsPanel() {
-    	MainPanel.getUnicaInstancia().showSettings(MainController.getListaContactos(), MainController.getGrupos(),BackendController.currentUserIsPremium());
+    public void showSettingsPanel() {
+    	MainPanel.getUnicaInstancia().showSettings(MainController.getUnicaInstancia().getListaContactos(), MainController.getUnicaInstancia().getGrupos(),BackendController.getUnicaInstancia().currentUserIsPremium());
     	//OptionsPane.getUnicaInstancia().prepareOptions(MainController.getListaContactos(), MainController.getGrupos(), BackendController.currentUserIsPremium());
     	//appFrame.llamarMetodo(14, Optional.of(MainController.getGrupos()), Optional.of(MainController.getListaContactos()));
     }
     
     // ### gestión errores
     
- 	public static void registerErrors(byte code) {
+ 	public void registerErrors(byte code) {
  		//System.out.println("[DEBUG] registerErrors" + code);
      	appFrame.llamarMetodo(3, Optional.of((byte) code), Optional.empty());
      }
  	
- 	public static void loginErrors(byte code) {
+ 	public void loginErrors(byte code) {
  		appFrame.loginErrors(code);
  	}
      
-     public static void addContactErrors(byte code) {
+     public void addContactErrors(byte code) {
      	appFrame.llamarMetodo(4, Optional.of((byte) code), Optional.empty());
      }
      
-     public static void makeGroupErrors(byte code) {
+     public void makeGroupErrors(byte code) {
       	appFrame.llamarMetodo(5, Optional.of((byte) code), Optional.empty());
       }
      
-     public static void ContactSettingsErrors(byte code) {
+     public void ContactSettingsErrors(byte code) {
     	 appFrame.llamarMetodo(15, Optional.of((byte) code), Optional.empty());
      }
      
-     public static void groupSettingsErrors(byte code) {
+     public void groupSettingsErrors(byte code) {
     	 appFrame.llamarMetodo(17, Optional.of((byte) code), Optional.empty());
      }
     
      // ### registro
      
-    public static void doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature){
+    public void doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature){
     	//System.out.println("[DEBUG] doRegister UIController");
-    	if(MainController.doRegister(nombre, numero, passwd, birthDate, url, signature)) {
+    	if(MainController.getUnicaInstancia().doRegister(nombre, numero, passwd, birthDate, url, signature)) {
     		appFrame.registerReset();
     		showLogin();
     	}
@@ -143,11 +142,11 @@ public class UIController {
     
     // ### login/logout
     
-    public static void doLogin(int numero, String passwd) {
-    	MainController.doLogin(numero, passwd);
+    public void doLogin(int numero, String passwd) {
+    	MainController.getUnicaInstancia().doLogin(numero, passwd);
     }
     
-    public static void onLoginSuccess() {
+    public void onLoginSuccess() {
     	appFrame.loginReset();
     	showPanelIntermedio();
     	prepareMainPanel();
@@ -155,9 +154,9 @@ public class UIController {
         showMainPanel();
     }
     
-    public static void doLogout() {
+    public void doLogout() {
     	setActualChatOptimization(0);
-    	MainController.doLogout(); 
+    	MainController.getUnicaInstancia().doLogout(); 
     	appFrame.resetMainPanel();
     	
     	showPanelIntermedio();
@@ -168,25 +167,25 @@ public class UIController {
     
     // ### add contacts and noContacts
     
-    public static void anyadirContacto() {
+    public void anyadirContacto() {
     	showPanelAnyadirContacto();
     }
     
-	public static boolean verificarContactoYAnyadirContacto(String numero, String nombre) {
-    	return MainController.anyadirContacto(numero, nombre);
+	public boolean verificarContactoYAnyadirContacto(String numero, String nombre) {
+    	return MainController.getUnicaInstancia().anyadirContacto(numero, nombre);
     }
 	
-	public static boolean verificarContactoYEditarContacto(String phone, String nombreContacto) {
+	public boolean verificarContactoYEditarContacto(String phone, String nombreContacto) {
 		if(phone.isBlank() || nombreContacto.isBlank()) return false;
-		boolean success = MainController.editContact(phone, nombreContacto);
+		boolean success = MainController.getUnicaInstancia().editContact(phone, nombreContacto);
 		appFrame.llamarMetodo(16, Optional.empty(), Optional.empty());
 		addChats(); // actualizar la lista de chats con las ediciones
 		return success;
 	}
 	
-	public static boolean removeContact(String numero) {
+	public boolean removeContact(String numero) {
 		if(numero.isBlank()) return false;
-		boolean success = MainController.removeContact(numero);
+		boolean success = MainController.getUnicaInstancia().removeContact(numero);
 		appFrame.llamarMetodo(16, Optional.empty(), Optional.empty());
 		addChats(); // actualizar la lista de chats con las ediciones
 		return success;
@@ -194,17 +193,17 @@ public class UIController {
     
 	// ### groups
 	
-	public static boolean verificarContactoYEditarGrupo(String urlProfileIcon, String nombreGrupo, List<Integer> miembros, long groupID) {
+	public boolean verificarContactoYEditarGrupo(String urlProfileIcon, String nombreGrupo, List<Integer> miembros, long groupID) {
 		if(urlProfileIcon.isBlank() || nombreGrupo.isBlank()) return false;
-		boolean success = MainController.editGroup(urlProfileIcon, nombreGrupo, miembros, groupID);
+		boolean success = MainController.getUnicaInstancia().editGroup(urlProfileIcon, nombreGrupo, miembros, groupID);
 		appFrame.llamarMetodo(18, Optional.empty(), Optional.empty());
 		addGroups(); // actualizar la lista de chats con las ediciones
 		return success;
 	}
 	
-	public static boolean leaveGroup(Grupo group) {
+	public boolean leaveGroup(Grupo group) {
 		boolean success = false;
-		if(MainController.leaveGroup(group)) {
+		if(MainController.getUnicaInstancia().leaveGroup(group)) {
 			success = true;
 			appFrame.llamarMetodo(18, Optional.empty(), Optional.empty());
 			addGroups();
@@ -212,32 +211,32 @@ public class UIController {
 		return success;
 	}
 	
-	public static void removeGroup(Grupo group) {
-		MainController.removeGroup(group);
+	public void removeGroup(Grupo group) {
+		MainController.getUnicaInstancia().removeGroup(group);
 		appFrame.llamarMetodo(18, Optional.empty(), Optional.empty());
 		addGroups();
 	}
 	
 	// ### chats
 	
-    public static void addChat(EntidadComunicable ent) {
+    public void addChat(EntidadComunicable ent) {
     	//EntidadComunicable ent = MainController.getContacto(number);
 		appFrame.llamarMetodo(2, Optional.empty(), Optional.of(new EntidadComunicable(ent)));
     }
     
-    public static void addChats(){
-    	for(EntidadComunicable ent : BackendController.getListaContactos()) {
+    public void addChats(){
+    	for(EntidadComunicable ent : BackendController.getUnicaInstancia().getListaContactos()) {
     		//System.out.println("cuenta contacto");
     		addChat(ent);
     	}
-    	for(EntidadComunicable ent : BackendController.getListaNoContactos()) {
+    	for(EntidadComunicable ent : BackendController.getUnicaInstancia().getListaNoContactos()) {
     		//System.out.println("cuenta noContacto");
     		addChat(ent);
     	}
     }
 
-    public static boolean addContactFromNoContact(ElementoChatOGrupo noContact) {
-    	boolean success = MainController.makeContactFromNoContact(noContact.getContacto().get());
+    public boolean addContactFromNoContact(ElementoChatOGrupo noContact) {
+    	boolean success = MainController.getUnicaInstancia().makeContactFromNoContact(noContact.getContacto().get());
     	if(success) {
     		noContact.getContacto().get().setIsNoContact(false);
     		appFrame.llamarMetodo(16, Optional.empty(), Optional.empty());
@@ -249,30 +248,30 @@ public class UIController {
     
     // ### add groups
     
-	public static boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
-		return MainController.makeGroup(nombre, profilepPicUrl, miembros);
+	public boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
+		return MainController.getUnicaInstancia().makeGroup(nombre, profilepPicUrl, miembros);
     }
 	
-	public static void addGroup(long id) {
-		Grupo gp = MainController.getGrupo(id);
+	public void addGroup(long id) {
+		Grupo gp = MainController.getUnicaInstancia().getGrupo(id);
 		appFrame.llamarMetodo(6, Optional.empty(), Optional.of(gp));
 	}
 	
-	public static void addGroups() {
-		for(Grupo grupo : BackendController.getGrupos()) {
+	public void addGroups() {
+		for(Grupo grupo : BackendController.getUnicaInstancia().getGrupos()) {
 			addGroup(grupo.getID());
 		}
 	}
 	
 	// ### message render
 	
-    public static void renderMessage(List<ModelMessage> msgs) {
-    	appFrame.llamarMetodo(8, Optional.of(BackendController.getUserNumber()), Optional.of(msgs));
+    public void renderMessage(List<ModelMessage> msgs) {
+    	appFrame.llamarMetodo(8, Optional.of(BackendController.getUnicaInstancia().getUserNumber()), Optional.of(msgs));
     }
     
 	// ### chats change and load algorithm
     
-    public static void changeChat(ElementoChatOGrupo chat) {
+    public void changeChat(ElementoChatOGrupo chat) {
     	
     	if(actualChatOptimization != (chat.isGrupo() ? chat.getGroupID() : chat.getNumero())) {
     		setActualChatOptimization(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
@@ -281,24 +280,24 @@ public class UIController {
         	
         	//System.out.println("[DEBUG]" + " UIController" + " cambiando de chat");
         	
-        	MainController.loadChat(chat.getContacto(), chat.getGrupo());
+        	MainController.getUnicaInstancia().loadChat(chat.getContacto(), chat.getGrupo());
         	
     	}
 
     }
     
-    protected static void loadChat(List<ModelMessage> msgs) {
-    		appFrame.llamarMetodo(9, Optional.of(BackendController.getUserNumber()), Optional.of(msgs));
+    protected void loadChat(List<ModelMessage> msgs) {
+    		appFrame.llamarMetodo(9, Optional.of(BackendController.getUnicaInstancia().getUserNumber()), Optional.of(msgs));
     }
     
     // ### send messages
     
-    public static void sendMessage(long reciver, Optional<String> message, Optional<Integer> emoji) {
+    public void sendMessage(long reciver, Optional<String> message, Optional<Integer> emoji) {
     	//System.out.println("[DEBUG]" + " UIController " + "sendMessage");
 		SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
 		String fecha =fechaAux.format(new Date());
-		String nombre = BackendController.getUserName();
-        String urlText = BackendController.getUserIconUrl();
+		String nombre = BackendController.getUnicaInstancia().getUserName();
+        String urlText = BackendController.getUnicaInstancia().getUserIconUrl();
         URL url;
         ImageIcon icono = null;
         
@@ -315,7 +314,7 @@ public class UIController {
             icono = new ImageIcon(UIController.class.getResource("/assets/ProfilePic.png"));
 		}
 		
-		int sender = BackendController.getUserNumber();
+		int sender = BackendController.getUnicaInstancia().getUserNumber();
 		ModelMessage msg;
 		if(message.isPresent()) {
 			msg = new ModelMessage(icono, nombre, fecha, sender, reciver, message, Optional.empty());
@@ -323,7 +322,7 @@ public class UIController {
 			msg = new ModelMessage(icono, nombre, fecha, sender, reciver, Optional.empty(), emoji);
 		}
 		
-    	MainController.sendMessage(msg);
+    	MainController.getUnicaInstancia().sendMessage(msg);
     	List<ModelMessage> msgs = new ArrayList<ModelMessage>();
 		msgs.add(msg);
 		renderMessage(msgs);
@@ -331,39 +330,39 @@ public class UIController {
     
     // ### search messages methods
     
-    public static void previewMessage(ModelMessage msg) {
-    	appFrame.llamarMetodo(10, Optional.of(msg), Optional.of(BackendController.getUserNumber() == msg.getSender() ? BoxType.RIGHT : BoxType.LEFT));
+    public void previewMessage(ModelMessage msg) {
+    	appFrame.llamarMetodo(10, Optional.of(msg), Optional.of(BackendController.getUnicaInstancia().getUserNumber() == msg.getSender() ? BoxType.RIGHT : BoxType.LEFT));
     }
     
-    public static void doSearch(int num, String contact, String msg) {
-    	List<ModelMessage> list =  MainController.doSearch(num, contact, msg);
+    public void doSearch(int num, String contact, String msg) {
+    	List<ModelMessage> list =  MainController.getUnicaInstancia().doSearch(num, contact, msg);
     	MessageList.getUnicaInstancia().reset();
     	MessageList.getUnicaInstancia().addMsgs(list);
     }
     
     // ### shop methods
     
-    public static void changeMembershipShop(double precio, MembershipType type) {
+    public void changeMembershipShop(double precio, MembershipType type) {
     	appFrame.llamarMetodo(12, Optional.of(precio), Optional.of(type));
     	appFrame.showShopPanel();
     }
     
-    public static void buyPremium() {
-    	Optional<LocalDate> expireDate = BackendController.getEndPremium();
+    public void buyPremium() {
+    	Optional<LocalDate> expireDate = BackendController.getUnicaInstancia().getEndPremium();
     	if(expireDate.isEmpty() || LocalDate.now().isAfter(expireDate.get())) {
-    		MainController.makePremiumUser();
+    		MainController.getUnicaInstancia().makePremiumUser();
     		appFrame.showDefaultPanel();
     	}
     }
     
-    public static void actualizarPremiumExpireDate() {
+    public void actualizarPremiumExpireDate() {
     	appFrame.llamarMetodo(11, Optional.empty(), Optional.empty()); // actualizar la fecha de expiración del premium en ui
     }
     
     // ### PDF
     
-    public static void makePDF() {
-        String ruta = MainController.makePDF();
+    public void makePDF() {
+        String ruta = MainController.getUnicaInstancia().makePDF();
         if (ruta != null) {
             System.out.println("[OK] PDF generado en: " + ruta);
         } else {
@@ -374,7 +373,7 @@ public class UIController {
     
     // ### efectos
     
-    public static void addHoverEffect(JButton button) {
+    public void addHoverEffect(JButton button) {
 	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
 	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
 
@@ -392,7 +391,7 @@ public class UIController {
 	    });
 	}
 	
-	public static void addHoverEffect(JLabel button, int xHover, int yHover) {
+	public void addHoverEffect(JLabel button, int xHover, int yHover) {
 	    ImageIcon originalIcon = (ImageIcon) button.getIcon();
 	    ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(xHover, yHover, Image.SCALE_SMOOTH));
 

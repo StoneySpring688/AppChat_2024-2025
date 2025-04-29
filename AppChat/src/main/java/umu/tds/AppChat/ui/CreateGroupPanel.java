@@ -141,7 +141,7 @@ public class CreateGroupPanel  extends PanelGrande {
 				}
 				}
 			});		
-		UIController.addHoverEffect(buttonDeleteUrl, 20, 20);
+		UIController.getUnicaInstancia().addHoverEffect(buttonDeleteUrl, 20, 20);
 		this.fondo.add(buttonDeleteUrl);
 		
 		//boton para actualizar la imagen
@@ -159,7 +159,7 @@ public class CreateGroupPanel  extends PanelGrande {
 				}
 			}
 		});
-		UIController.addHoverEffect(buttonUpdateImage, 20, 20);
+		UIController.getUnicaInstancia().addHoverEffect(buttonUpdateImage, 20, 20);
 		this.fondo.add(buttonUpdateImage);
 		
 		//panel de contactos
@@ -271,7 +271,7 @@ public class CreateGroupPanel  extends PanelGrande {
 		reset();
 		this.miembros = new DefaultListModel<>();
 		this.listaMiembros.setModel(this.miembros);
-		iniciar(BackendController.getListaContactos());
+		iniciar(BackendController.getUnicaInstancia().getListaContactos());
 	}
 	
 	public void iniciar(List<EntidadComunicable> lista) {
@@ -291,7 +291,7 @@ public class CreateGroupPanel  extends PanelGrande {
 		String profilepPicUrl = this.getProfilePicUrl();
 		List<Integer> miembros = this.getMiembros();
 		
-		return UIController.makeGroup(nombre, profilepPicUrl, miembros);
+		return UIController.getUnicaInstancia().makeGroup(nombre, profilepPicUrl, miembros);
 		
 	}
 	

@@ -13,7 +13,7 @@ public class AppChat {
     	EventQueue.invokeLater(()-> {
     		
     		try {
-                MainController.startApp();
+                MainController.getUnicaInstancia().startApp();;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

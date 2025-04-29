@@ -97,7 +97,7 @@ public class LoginPanel extends JPanel {
 		RegisterButton.setForeground(Color.WHITE);
 		RegisterButton.setBackground(new Color(241, 57, 83));
 		RegisterButton.setBounds(535, 360, 120, 35);
-		RegisterButton.addActionListener(e -> {UIController.showRegister(); this.reset();});
+		RegisterButton.addActionListener(e -> {UIController.getUnicaInstancia().showRegister(); this.reset();});
 		this.add(RegisterButton);
 		
 		textFieldPhone = new JTextField();
@@ -202,7 +202,7 @@ public class LoginPanel extends JPanel {
     	try {
 		    number = Integer.parseInt(this.getPhone());
 		} catch (NumberFormatException e) {
-		    UIController.addContactErrors((byte) 1);
+		    UIController.getUnicaInstancia().addContactErrors((byte) 1);
 			success = false;
 		}
 		
@@ -223,7 +223,7 @@ public class LoginPanel extends JPanel {
     		success = false;
     	}
 		
-    	if(success) UIController.doLogin(number, passwd);
+    	if(success) UIController.getUnicaInstancia().doLogin(number, passwd);
     	
 	}
 	

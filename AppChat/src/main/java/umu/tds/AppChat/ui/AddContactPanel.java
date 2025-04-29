@@ -100,7 +100,7 @@ public class AddContactPanel extends PanelGrande {
 	}
 	
 	private boolean addContact() {
-		    return UIController.verificarContactoYAnyadirContacto( getNumero(), getNombre());		
+		    return UIController.getUnicaInstancia().verificarContactoYAnyadirContacto( getNumero(), getNombre());		
 	}
 	
 	private void reset() {

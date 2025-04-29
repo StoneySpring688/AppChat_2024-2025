@@ -44,7 +44,7 @@ public class NoContactoDAO implements InterfaceNoContactoDAO {
 		String numero = servPersistencia.recuperarPropiedadEntidad(eNoContact, NUMERO);
 		
 		int number = Integer.parseInt(numero);
-		Usuario userAux = DAOController.recuperarUser(number).get();
+		Usuario userAux = DAOController.getUnicaInstancia().recuperarUser(number).get();
 		
 		EntidadComunicable noContacto = new EntidadComunicable(number, userAux.getNombre(), userAux.getIconUrl());
 		noContacto.setIsNoContact(true);

@@ -435,7 +435,7 @@ public class OptionsPane extends PanelGrande {
 				}
 				}
 			});		
-		UIController.addHoverEffect(buttonDeleteUrl, 20, 20);
+		UIController.getUnicaInstancia().addHoverEffect(buttonDeleteUrl, 20, 20);
 		this.fondo.add(buttonDeleteUrl);
 		
 		//boton para actualizar la imagen
@@ -453,7 +453,7 @@ public class OptionsPane extends PanelGrande {
 				}
 			}
 		});
-		UIController.addHoverEffect(buttonUpdateImage, 20, 20);
+		UIController.getUnicaInstancia().addHoverEffect(buttonUpdateImage, 20, 20);
 		this.fondo.add(buttonUpdateImage);
 		
 		editGroupButton = new JButton("Edit");
@@ -463,7 +463,7 @@ public class OptionsPane extends PanelGrande {
 		editGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(selectedGroup != null && selectedGroup.isAdmin(BackendController.getUserNumber()) && editGrupo(getEditGroup().getID())) {
+				if(selectedGroup != null && selectedGroup.isAdmin(BackendController.getUnicaInstancia().getUserNumber()) && editGrupo(getEditGroup().getID())) {
 					resetGroupSettings();
 				}
 			}
@@ -478,7 +478,7 @@ public class OptionsPane extends PanelGrande {
 		leaveGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(selectedGroup != null && !selectedGroup.isAdmin(BackendController.getUserNumber()) && leaveGroup(getEditGroup())) {
+				if(selectedGroup != null && !selectedGroup.isAdmin(BackendController.getUnicaInstancia().getUserNumber()) && leaveGroup(getEditGroup())) {
 					resetGroupSettings();
 				}
 			}
@@ -493,7 +493,7 @@ public class OptionsPane extends PanelGrande {
 		deleteGroupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(selectedGroup != null && selectedGroup.isAdmin(BackendController.getUserNumber()) && deleteGroup(getEditGroup())) {
+				if(selectedGroup != null && selectedGroup.isAdmin(BackendController.getUnicaInstancia().getUserNumber()) && deleteGroup(getEditGroup())) {
 					resetGroupSettings();
 				}
 			}
@@ -563,7 +563,7 @@ public class OptionsPane extends PanelGrande {
 		for (int i = 0; i < size; i++) {
 	        lista.add(this.editarGrupoMiembros.get(i).getNumero());
 	    }
-		lista.add(BackendController.getUserNumber()); // se añade el numero del usuario actual (se elimino de la visualización para evitar errores)
+		lista.add(BackendController.getUnicaInstancia().getUserNumber()); // se añade el numero del usuario actual (se elimino de la visualización para evitar errores)
 		
  		return lista;
 	}
@@ -583,8 +583,8 @@ public class OptionsPane extends PanelGrande {
 	}
 	
 	private void prepareEditGroup(ElementoChatOGrupo grupo) {
-		if(grupo.getGrupo().isPresent() && grupo.getGrupo().get().isAdmin(BackendController.getUserNumber())) {
-			loadEditGroup(BackendController.getListaContactos(), grupo.getGrupo().get().getIntegrantes());
+		if(grupo.getGrupo().isPresent() && grupo.getGrupo().get().isAdmin(BackendController.getUnicaInstancia().getUserNumber())) {
+			loadEditGroup(BackendController.getUnicaInstancia().getListaContactos(), grupo.getGrupo().get().getIntegrantes());
 			this.textNombreGrupo.setText(grupo.getNombre());
 			this.urlField.setText(grupo.getGrupo().get().getIconUrl());
 			try {
@@ -623,7 +623,7 @@ public class OptionsPane extends PanelGrande {
 		// ojo, como se modifica la lista de contactos se trabajar con una copia
 		listContactos.removeIf(contacto -> listaMiembros.stream().anyMatch(e -> e.getNumero() == contacto.getNumero()));
 		// elimino el usuario actual de la lista de miembros que se muestra para  evitar errores
-		listMiembros.removeIf(e -> e.getNumero() == BackendController.getUserNumber());
+		listMiembros.removeIf(e -> e.getNumero() == BackendController.getUnicaInstancia().getUserNumber());
 		
 		listContactos.forEach(e -> this.editarGrupoContactos.addElement(new ElementoChatOGrupo(Optional.of(e), Optional.empty())));
 		this.editarGrupoListaContactos.setModel(this.editarGrupoContactos);
@@ -650,11 +650,11 @@ public class OptionsPane extends PanelGrande {
 	// ### contacts
 	
 	private boolean editContact() {
-	    return UIController.verificarContactoYEditarContacto(getNumeroEditContact(), getNombreEditContact());		
+	    return UIController.getUnicaInstancia().verificarContactoYEditarContacto(getNumeroEditContact(), getNombreEditContact());		
 	}
 	
 	private boolean removeContact() {
-		return UIController.removeContact(getNumeroEditContact());
+		return UIController.getUnicaInstancia().removeContact(getNumeroEditContact());
 	}
 	
 	private void resetContactSettings() {
@@ -667,7 +667,7 @@ public class OptionsPane extends PanelGrande {
 		this.listaContactos.setModel(this.contactos);
 		
 		this.contactos.clear();
-		BackendController.getListaContactos().forEach(e -> this.contactos.addElement(new ElementoChatOGrupo(Optional.of(e), Optional.empty())));
+		BackendController.getUnicaInstancia().getListaContactos().forEach(e -> this.contactos.addElement(new ElementoChatOGrupo(Optional.of(e), Optional.empty())));
 	    this.listaContactos.setModel(this.contactos);
 	    this.repaint();
 	    this.revalidate();
@@ -678,14 +678,14 @@ public class OptionsPane extends PanelGrande {
 	
 	private boolean editGrupo(long grupID) {
 		if(grupID == 0) return false;
-		return UIController.verificarContactoYEditarGrupo(getProfilePicUrlEditGroup(),getNombreEditGroup() , getListaMiembrosEditGroup(), grupID);
+		return UIController.getUnicaInstancia().verificarContactoYEditarGrupo(getProfilePicUrlEditGroup(),getNombreEditGroup() , getListaMiembrosEditGroup(), grupID);
 	}
 	
 	private boolean leaveGroup(Grupo group) {
 		boolean success = false;
 		if(group != null) {
 			success = true;
-			UIController.leaveGroup(group);
+			UIController.getUnicaInstancia().leaveGroup(group);
 		}
 		
 		return success;
@@ -695,7 +695,7 @@ public class OptionsPane extends PanelGrande {
 		boolean success = false;
 		if(group != null) {
 			success = true;
-			UIController.removeGroup(group);
+			UIController.getUnicaInstancia().removeGroup(group);
 		}
 		return success;
 	}
@@ -713,7 +713,7 @@ public class OptionsPane extends PanelGrande {
 		this.editarGrupoListaMiembros.setModel(this.editarGrupoMiembros);
 		
 		this.grupos.clear();
-		BackendController.getGrupos().forEach(e -> this.grupos.addElement(new ElementoChatOGrupo(Optional.empty(), Optional.of(e))));
+		BackendController.getUnicaInstancia().getGrupos().forEach(e -> this.grupos.addElement(new ElementoChatOGrupo(Optional.empty(), Optional.of(e))));
 	    this.listaGrupos.setModel(this.grupos);
 	    
 	    this.editarGrupoContactos.clear();
@@ -736,7 +736,7 @@ public class OptionsPane extends PanelGrande {
 	
 	// ### PDF
 	private void makePDF() {
-		UIController.makePDF();
+		UIController.getUnicaInstancia().makePDF();
 	}
 	
 	// ### errors

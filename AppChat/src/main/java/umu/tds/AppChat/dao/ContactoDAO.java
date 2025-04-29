@@ -47,7 +47,7 @@ public class ContactoDAO implements InterfaceContactoDAO {
 		
 		int number = Integer.parseInt(numero);
 		
-		EntidadComunicable contacto = new EntidadComunicable(number, nombre, DAOController.recuperarUser(number).get().getIconUrl());
+		EntidadComunicable contacto = new EntidadComunicable(number, nombre, DAOController.getUnicaInstancia().recuperarUser(number).get().getIconUrl());
 		return contacto;
 	}
 	

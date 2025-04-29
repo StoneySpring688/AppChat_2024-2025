@@ -250,7 +250,7 @@ public class ChatArea extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(UIController.addContactFromNoContact(getCurrentChat())) {
+				if(UIController.getUnicaInstancia().addContactFromNoContact(getCurrentChat())) {
 					hideAddNoContactPanel();
 					
 				}

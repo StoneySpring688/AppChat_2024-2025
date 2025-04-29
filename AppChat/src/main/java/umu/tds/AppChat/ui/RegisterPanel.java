@@ -110,7 +110,7 @@ public class RegisterPanel extends JPanel {
 		backButton.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	UIController.showLogin();
+		    	UIController.getUnicaInstancia().showLogin();
 		    	reset();
 		    }
 		});
@@ -412,7 +412,7 @@ public class RegisterPanel extends JPanel {
 				}
 			}
 		});
-		UIController.addHoverEffect(buttonDeleteUrl, 20, 20);
+		UIController.getUnicaInstancia().addHoverEffect(buttonDeleteUrl, 20, 20);
 		this.add(buttonDeleteUrl);
 		
 		//boton para actualizar la imagen
@@ -430,7 +430,7 @@ public class RegisterPanel extends JPanel {
 				}
 			}
 		});
-		UIController.addHoverEffect(buttonUpdateImage, 20, 20);
+		UIController.getUnicaInstancia().addHoverEffect(buttonUpdateImage, 20, 20);
 		this.add(buttonUpdateImage);
 		
 	}
@@ -501,7 +501,7 @@ public class RegisterPanel extends JPanel {
 		String passwd = this.getPasswd();
 		//System.out.println(passwd);
 		
-		UIController.doRegister(nombre, numero, passwd, birthDate, profilepPicUrl, signature);
+		UIController.getUnicaInstancia().doRegister(nombre, numero, passwd, birthDate, profilepPicUrl, signature);
 		
 	}
 	

@@ -60,7 +60,7 @@ public class MessageList extends JPanel {
                     // Obtener el elemento clickeado
                     ModelMessage elemento = new ModelMessage(messages.getElementAt(index).getMsg());
                     //System.out.println("[DEBUG] " + '\n' + elemento);
-                    UIController.previewMessage(elemento);
+                    UIController.getUnicaInstancia().previewMessage(elemento);
                 }
             }
         });

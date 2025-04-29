@@ -76,7 +76,7 @@ public class ChatsList extends JPanel {
 		buttonAnyadirUser.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UIController.anyadirContacto();
+				UIController.getUnicaInstancia().anyadirContacto();
 				}
 			
 			@Override
@@ -99,7 +99,7 @@ public class ChatsList extends JPanel {
                 if (index >= 0) {
                     // Obtener el elemento clickeado
                     ElementoChatOGrupo elemento = chats.getElementAt(index);
-                    UIController.changeChat(elemento);
+                    UIController.getUnicaInstancia().changeChat(elemento);
                     //System.out.println("Elemento clickeado: " + elemento.getNumero());
                 }
             }

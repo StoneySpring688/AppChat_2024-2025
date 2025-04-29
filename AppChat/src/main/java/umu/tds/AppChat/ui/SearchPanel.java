@@ -146,7 +146,7 @@ public class SearchPanel extends PanelGrande {
 					clearPreview();
 				}
 			});
-		UIController.addHoverEffect(buttonCleanList, 20, 20);
+		UIController.getUnicaInstancia().addHoverEffect(buttonCleanList, 20, 20);
 		this.fondo.add(buttonCleanList);
 		
 	}
@@ -169,7 +169,7 @@ public class SearchPanel extends PanelGrande {
 	}
 	
 	private void doSearch(int num, String contact, String msg) {
-		UIController.doSearch(num, contact, msg);
+		UIController.getUnicaInstancia().doSearch(num, contact, msg);
 	}
 	
 	public void previewMessage(ModelMessage message, BoxType type) {

@@ -78,7 +78,7 @@ public class GroupsList extends JPanel {
 		buttonAnyadirGrupo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UIController.showPanelCrearGrupo();
+				UIController.getUnicaInstancia().showPanelCrearGrupo();
 			}
 
 			@Override
@@ -102,7 +102,7 @@ public class GroupsList extends JPanel {
 					// Obtener el elemento clickeado
 					ElementoChatOGrupo elemento = groups.getElementAt(index);
 					//System.out.println("Elemento clickeado: " + elemento.getGrupo().get().getDBID()); ///TODO
-					UIController.changeChat(elemento);
+					UIController.getUnicaInstancia().changeChat(elemento);
 					
 				}
 			}

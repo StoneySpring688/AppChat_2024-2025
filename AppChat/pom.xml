@@ -91,7 +91,24 @@
     	<artifactId>eclipselink</artifactId>
     	<version>2.7.12</version>
 	</dependency>
-	 
+	<!-- SLF4j(fachada de logger) + Logback para hacer loogger-->
+	<dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-api</artifactId>
+    	<version>2.0.11</version>
+	</dependency>
+	<dependency>
+    	<groupId>ch.qos.logback</groupId>
+    	<artifactId>logback-classic</artifactId>
+    	<version>1.4.11</version>
+	</dependency>
+	<!-- librería para colorear el output del log según el nivel -->
+	<dependency>
+    	<groupId>org.fusesource.jansi</groupId>
+    	<artifactId>jansi</artifactId>
+    	<version>2.4.0</version>
+	</dependency>
+
   </dependencies>
 
   <build>
