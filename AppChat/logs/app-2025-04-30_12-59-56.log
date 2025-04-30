@@ -1,0 +1,3 @@
+2025-04-30 12:59:56.457 [main] INFO  umu.tds.AppChat.devtools.LoggerTest - Este es un mensaje de INFO
+2025-04-30 12:59:56.458 [main] WARN  umu.tds.AppChat.devtools.LoggerTest - Este es un mensaje de WARNING
+2025-04-30 12:59:56.459 [main] ERROR umu.tds.AppChat.devtools.LoggerTest - Este es un mensaje de ERROR
