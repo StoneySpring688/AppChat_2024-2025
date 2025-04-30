@@ -529,7 +529,7 @@ public class MainController {
 				ui.loadChat(lista);
 				
 				while (ui.getActualChatOptimization() == (long) contacto.get().getNumero() && lista.size() > 0) {
-					logger.trace("Iteración de carga de mensajes, inicio del lote: {}", startLote);
+					//logger.trace("Iteración de carga de mensajes, inicio del lote: {}", startLote);
 					
 					lista = dao.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
 					startLote += lista.size();
@@ -582,7 +582,7 @@ public class MainController {
 				 ui.loadChat(lista);
 				 
 				 while (ui.getActualChatOptimization() == (long) grupo.get().getID() && lista.size() > 0) { // OJO el id del grupo es distinto del id que le asigna la BD (grupo.getDBID)
-					 logger.trace("Iteración de carga de mensajes, inicio del lote: {}", startLote);
+					 //logger.trace("Iteración de carga de mensajes, inicio del lote: {}", startLote);
 					
 					lista = dao.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
 					startLote += lista.size();
@@ -611,6 +611,8 @@ public class MainController {
 		List<Grupo> gruposPertenece = new ArrayList<Grupo>();
 		
 		// filtro numero
+		logger.trace("Filtro por número: {}", num);
+		
 		if(num != 0 && backend.getUserNumber() == num) {
 			ent = backend.getCurrentUser();
 			f1 = true;
@@ -632,6 +634,8 @@ public class MainController {
 		}
 		
 		// filtro contacto
+		logger.trace("Filtro por contacto: {}", contact);
+		
 		if(contact != null && backend.getCurrentUser().getNombre().equals(contact)) {
 			ent2 = backend.getCurrentUser();
 			f2 = true;
@@ -656,6 +660,8 @@ public class MainController {
 		}
 		
 		// tercer filtro
+		logger.trace("Filtro por mensaje: {}", msg);
+		
 		if(msg != null) {
 			if(ent != null && ent2 != null && ent.getNumero() == ent2.getNumero()) { //  entidades coinciden
 				if(ent.getNumero() == backend.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
@@ -674,8 +680,15 @@ public class MainController {
 				if(ent2 != null && ent2.getNumero() == backend.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
 					for(EntidadComunicable e : contactos) {msgs.addAll(dao.getAllMsgsFromAChat(e, true, Optional.of(msg)));}
 					for(EntidadComunicable e : noContactos) {msgs.addAll(dao.getAllMsgsFromAChat(e, false, Optional.of(msg)));}
-				} else if(ent2 != null) {
+				} else if(ent2 != null && ent != null) {
 					msgs.addAll(dao.getAllMsgsFromAChat(ent2, backend.isContact(ent.getNumero()), Optional.of(msg)));
+				} else if(ent2 != null) {
+					Optional<Integer> entNum = backend.getNumeroDesdeNombreContacto(contact);
+					if(entNum.isPresent()) {
+						msgs.addAll(dao.getAllMsgsFromAChat(ent2, backend.isContact(entNum.get()), Optional.of(msg)));
+					}else {
+						logger.error("Error al buscar mensajes: contacto no encontrado");
+					}
 				}
 			} 
 			if(!gruposPertenece.isEmpty()) {

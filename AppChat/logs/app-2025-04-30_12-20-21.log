@@ -1,0 +1,15 @@
+2025-04-30 12:20:21.548 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Buscando mensajes con número: 123456789, contacto: null, mensaje: h
+2025-04-30 12:20:21.549 [AWT-EventQueue-0] INFO  u.t.A.controllers.MainController - Iniciando búsqueda de mensajes
+2025-04-30 12:20:21.549 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Obteniendo lista de contactos (2 elementos).
+2025-04-30 12:20:21.550 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Obteniendo lista de noContactos (1 elementos).
+2025-04-30 12:20:21.550 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando lista de grupos para usuario: 123456789
+2025-04-30 12:20:21.573 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando usuario con número: 123456789
+2025-04-30 12:20:21.585 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando usuario con número: 684190405
+2025-04-30 12:20:21.604 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando usuario con número: 234567890
+2025-04-30 12:20:21.609 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando usuario con número: 123456789
+2025-04-30 12:20:21.614 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando usuario con número: 684190405
+2025-04-30 12:20:21.620 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando usuario con número: 234567890
+2025-04-30 12:20:21.622 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando usuario con número: 123456789
+2025-04-30 12:20:21.625 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando usuario con número: 684190405
+2025-04-30 12:20:21.627 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando mensajes de contacto [123456789], filtro: h
+2025-04-30 12:20:21.970 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Recuperando mensajes de grupo [Grupo de prueba]

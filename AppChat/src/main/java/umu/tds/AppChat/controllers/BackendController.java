@@ -51,7 +51,7 @@ public class BackendController {
     private List<Membership> ofertas;
     
     // logger
-    private static final Logger logger = LoggerUtil.getLogger(MainController.class);
+    private static final Logger logger = LoggerUtil.getLogger(BackendController.class);
     
     // singleton
     private static BackendController unicaInstancia = null;
@@ -173,7 +173,7 @@ public class BackendController {
     }
     
     public void nuevosMensajes(long chatID, List<ModelMessage> mensajes) {
-    	logger.debug("Añadiendo {} nuevos mensajes al chat ID: {}", mensajes.size(), chatID);
+    	logger.debug("Añadiendo nuevos mensajes al chat ID: {}", chatID);
 
     	for(ModelMessage mensaje : mensajes) {
     		nuevoMensaje(chatID, mensaje);
@@ -182,7 +182,7 @@ public class BackendController {
     }
     
     public void nuevosMensajesAlInicio(long chatID, List<ModelMessage> mensajes) {
-    	logger.debug("nuevosMensajesAlInicio() - tamaño del lote: {}, chatID: {}", mensajes.size(), chatID);
+    	logger.debug("nuevosMensajesAlInicio() - chatID: {}", chatID);
     	
         if (mensajes == null || mensajes.isEmpty()) {
             return;
@@ -245,6 +245,15 @@ public class BackendController {
     	chatsRepository.removeContact(numero);
     }
     
+    public Optional<Integer> getNumeroDesdeNombreContacto(String nombre) {
+    	logger.debug("Buscando número de contacto por nombre: {}", nombre);
+    	
+        return getListaContactos().stream()
+            .filter(c -> c.getNombre().equals(nombre))
+            .map(EntidadComunicable::getNumero)
+            .findFirst();
+    }
+
     // ### noContactos
     
     public void loadNoContactList(List<EntidadComunicable> noContactList) {

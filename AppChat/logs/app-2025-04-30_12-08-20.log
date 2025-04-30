@@ -1,0 +1,5 @@
+2025-04-30 12:08:20.632 [AWT-EventQueue-0] DEBUG u.t.A.controllers.MainController - Cambiando a chat: 684190405
+2025-04-30 12:08:20.634 [AWT-EventQueue-0] INFO  u.t.A.controllers.MainController - Cargando chat para 684190405
+2025-04-30 12:08:20.634 [pool-1-thread-1] TRACE u.t.A.controllers.MainController - Cargando lote de mensajes para optimización de chat: 684190405
+2025-04-30 12:08:20.634 [pool-1-thread-1] DEBUG u.t.A.controllers.MainController - Obteniendo mensajes de caché para chat ID: 684190405
+2025-04-30 12:08:20.634 [pool-1-thread-1] DEBUG u.t.A.controllers.MainController - Recuperando lote de mensajes para contacto [684190405], inicio [0]

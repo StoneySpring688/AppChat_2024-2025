@@ -47,7 +47,7 @@ public class DAOController {
 	//private static InterfaceMensajeDAO msgAdapter;
 	
     // logger
-    private static final Logger logger = LoggerUtil.getLogger(MainController.class);
+    private static final Logger logger = LoggerUtil.getLogger(DAOController.class);
 	
 	// singleton
 	private static DAOController unicaInstancia = null;

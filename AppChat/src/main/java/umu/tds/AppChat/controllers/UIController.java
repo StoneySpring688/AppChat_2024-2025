@@ -55,7 +55,7 @@ public class UIController {
     private long actualChatOptimization = 0; // evitar usar el método cambiarChat para el chatActual
     
     // logger
-    private static final Logger logger = LoggerUtil.getLogger(MainController.class);
+    private static final Logger logger = LoggerUtil.getLogger(UIController.class);
     
     // singleton
  	private static UIController unicaInstancia = null;
@@ -356,7 +356,7 @@ public class UIController {
 	// ### message render
 	
     public void renderMessage(List<ModelMessage> msgs) {
-    	logger.debug("Renderizando {} mensajes", msgs.size());
+    	logger.debug("Renderizando mensajes");
     	
     	appFrame.llamarMetodo(8, Optional.of(BackendController.getUnicaInstancia().getUserNumber()), Optional.of(msgs));
     }
@@ -364,7 +364,7 @@ public class UIController {
 	// ### chats change and load algorithm
     
     public void changeChat(ElementoChatOGrupo chat) {
-    	logger.debug("Cambiando a chat: {}", chat.getContacto().get().getNumero());
+    	logger.debug("Cambiando de chat");
     	
     	if(actualChatOptimization != (chat.isGrupo() ? chat.getGroupID() : chat.getNumero())) {
     		setActualChatOptimization(chat.isGrupo() ? chat.getGroupID() : chat.getNumero());
@@ -380,7 +380,7 @@ public class UIController {
     }
     
     protected void loadChat(List<ModelMessage> msgs) {
-    	logger.debug("Cargando chat con {} mensajes", msgs.size());
+    	logger.debug("Cargando chat con sus mensajes");
     	
     	appFrame.llamarMetodo(9, Optional.of(BackendController.getUnicaInstancia().getUserNumber()), Optional.of(msgs));
     }
@@ -388,7 +388,7 @@ public class UIController {
     // ### send messages
     
     public void sendMessage(long reciver, Optional<String> message, Optional<Integer> emoji) {
-    	logger.debug("Enviando mensaje a [{}]: {}", reciver, message.orElse("Emoji : " + emoji.orElse(0)));
+    	logger.debug("Enviando mensaje a [{}]");
     	
     	//System.out.println("[DEBUG]" + " UIController " + "sendMessage");
 		SimpleDateFormat fechaAux = new SimpleDateFormat("dd/MM/yyyy, hh:mmaa");
