@@ -5,8 +5,28 @@ import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 
+/**
+ * Clase de utilidad para obtener y configurar loggers en la aplicación.
+ * 
+ * <p>Permite:
+ * <ul>
+ *   <li>Obtener un logger específico por clase.</li>
+ *   <li>Cambiar dinámicamente el nivel de logging en tiempo de ejecución.</li>
+ * </ul>
+ * 
+ * <p>Niveles permitidos: {@code TRACE}, {@code DEBUG}, {@code INFO}, {@code WARN}, {@code ERROR}, {@code OFF}.
+ * 
+ * <p>Ejemplo de uso:
+ * <pre>{@code
+ *   Logger logger = LoggerUtil.getLogger(MiClase.class);
+ *   logger.info("Mensaje de log");
+ *   LoggerUtil.setLogLevel("DEBUG");
+ * }</pre>
+ * 
+ * @author StoneySpring
+ */
 public class LoggerUtil {
-
+		
     private LoggerUtil() {
         // Clase de utilidad, no instanciable
     }
@@ -38,6 +58,9 @@ public class LoggerUtil {
             case "OFF":
                 level = Level.OFF;
                 break;
+            case "TRACE":
+				level = Level.TRACE;
+				break;
             default:
                 System.err.println("Nivel desconocido '" + levelStr + "'. Usando OFF por defecto.");
                 level = Level.OFF;

@@ -20,6 +20,29 @@ import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Usuario;
 import umu.tds.AppChat.devtools.LoggerUtil;
 
+/**
+ * Controlador principal de la aplicación.
+ *
+ * <p>Gestiona el ciclo de vida general de la app, incluyendo:
+ * <ul>
+ *   <li>Inicio y cierre de la aplicación.</li>
+ *   <li>Autenticación (login/logout).</li>
+ *   <li>Gestión de usuarios, contactos y grupos.</li>
+ *   <li>Envío y recepción de mensajes.</li>
+ *   <li>Exportación de historial en PDF.</li>
+ * </ul>
+ *
+ * <p>Coordina la interacción entre:
+ * <ul>
+ *  <li>UIController</li>
+ *  <li>BackendController</li>
+ *  <li>DAOController</li>
+ * </ul>
+ * Siguiendo el patrón Singleton.
+ *
+ * @author StoneySpring
+ */
+
 public class MainController {
     
 	private UIController ui;
@@ -462,6 +485,8 @@ public class MainController {
 		
 		executor.submit(() -> {
 			if (contacto.isPresent()) {
+				logger.trace("Cargando lote de mensajes para optimización de chat: {}", contacto.get().getNumero());
+
 				List<ModelMessage> listaCaché = backend.getChat((long) contacto.get().getNumero());
 				Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
 				
@@ -504,6 +529,7 @@ public class MainController {
 				ui.loadChat(lista);
 				
 				while (ui.getActualChatOptimization() == (long) contacto.get().getNumero() && lista.size() > 0) {
+					logger.trace("Iteración de carga de mensajes, inicio del lote: {}", startLote);
 					
 					lista = dao.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
 					startLote += lista.size();
@@ -513,6 +539,8 @@ public class MainController {
 				}
 				
 			} else if (grupo.isPresent()) {
+				logger.trace("Cargando lote de mensajes para optimización de grupo: {}", grupo.get().getID());
+				
 				List<ModelMessage> listaCaché = backend.getChat((long) grupo.get().getID());
 				 Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
 				 
@@ -554,6 +582,7 @@ public class MainController {
 				 ui.loadChat(lista);
 				 
 				 while (ui.getActualChatOptimization() == (long) grupo.get().getID() && lista.size() > 0) { // OJO el id del grupo es distinto del id que le asigna la BD (grupo.getDBID)
+					 logger.trace("Iteración de carga de mensajes, inicio del lote: {}", startLote);
 					
 					lista = dao.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
 					startLote += lista.size();
