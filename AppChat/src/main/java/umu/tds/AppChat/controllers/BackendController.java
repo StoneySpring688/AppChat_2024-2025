@@ -11,6 +11,8 @@ import java.util.Optional;
 
 import javax.swing.ImageIcon;
 
+import org.slf4j.Logger;
+
 import umu.tds.AppChat.backend.utils.Emoji;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.GeneradorPDF;
@@ -18,8 +20,28 @@ import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.Membership;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Usuario;
+import umu.tds.AppChat.devtools.LoggerUtil;
 import umu.tds.AppChat.backend.services.ChatService;
 import umu.tds.AppChat.backend.services.ChatsAndGroupsRepository;
+
+/**
+ * Controlador del backend de la aplicación.
+ *
+ * <p>Encargado de la lógica de negocio interna, incluyendo:
+ * <ul>
+ *   <li>Gestión de usuarios y su sesión actual.</li>
+ *   <li>Caché de mensajes y contactos en memoria.</li>
+ *   <li>Manejo de grupos y contactos (localmente).</li>
+ *   <li>Exportación de mensajes y estructura de datos a PDF.</li>
+ * </ul>
+ *
+ * <p>Utiliza servicios auxiliares como {@code ChatService} y {@code ChatsAndGroupsRepository}
+ * para optimizar operaciones de acceso rápido y minimizar la dependencia directa de la capa DAO.
+ *
+ * <p>Implementado como Singleton para asegurar una única instancia activa.
+ *
+ * @author StoneySpring
+ */
 
 public class BackendController {
     private ChatService chatService;
@@ -27,6 +49,9 @@ public class BackendController {
     private Usuario user;
     private ImageIcon userIconCached;
     private List<Membership> ofertas;
+    
+    // logger
+    private static final Logger logger = LoggerUtil.getLogger(BackendController.class);
     
     // singleton
     private static BackendController unicaInstancia = null;
@@ -43,12 +68,16 @@ public class BackendController {
     }
     
     public void iniciar() {
+    	logger.info("Inicializando BackendController: servicios y repositorios.");
+
     	chatService = new ChatService(15);
         chatsRepository = new ChatsAndGroupsRepository();
         Emoji.cargarEmojis();
     }
     
     protected void doLogout() {
+    	logger.debug("Cerrando sesión en BackendController. Reiniciando estado.");
+
     	
     	//System.out.println("backend do logout");
     	
@@ -64,6 +93,8 @@ public class BackendController {
     }
     
     public void loadOfertas(List<Membership> listOfertas) {
+    	logger.debug("Cargando lista de ofertas ({} elementos).", listOfertas.size());
+
     	ofertas = new ArrayList<Membership>(listOfertas);
     }
     
@@ -94,6 +125,8 @@ public class BackendController {
     }
 
     public void loadCurrentUser(Usuario usuario) {
+    	logger.info("Cargando datos del usuario actual: {} ({})", usuario.getNombre(), usuario.getNumero());
+
     	user = new Usuario(usuario, false);        
     	URL url;
         userIconCached = null;
@@ -108,6 +141,8 @@ public class BackendController {
 	        }
 	        
 		} catch (MalformedURLException e) {
+			logger.warn("URL de imagen de perfil inválida. Usando imagen por defecto.");
+
 			userIconCached = new ImageIcon(UIController.class.getResource("/assets/ProfilePic.png"));
 		}
 		
@@ -131,11 +166,15 @@ public class BackendController {
     // ### mensajes
     
     public void nuevoMensaje(long chatID, ModelMessage mensaje) {
+    	logger.debug("Registrando nuevo mensaje para chat ID: {}", chatID);
+
         chatService.addMessage(chatID, mensaje);
         //System.out.println(obtenerMensajesChat().get(obtenerMensajesChat().size() - 1));
     }
     
     public void nuevosMensajes(long chatID, List<ModelMessage> mensajes) {
+    	logger.debug("Añadiendo nuevos mensajes al chat ID: {}", chatID);
+
     	for(ModelMessage mensaje : mensajes) {
     		nuevoMensaje(chatID, mensaje);
     	}   
@@ -143,6 +182,8 @@ public class BackendController {
     }
     
     public void nuevosMensajesAlInicio(long chatID, List<ModelMessage> mensajes) {
+    	logger.debug("nuevosMensajesAlInicio() - chatID: {}", chatID);
+    	
         if (mensajes == null || mensajes.isEmpty()) {
             return;
         }
@@ -159,13 +200,14 @@ public class BackendController {
         }*/
         chatService.addMessageAlInicio(chatID, mensajes);
     }
-
     
     public List<ModelMessage> obtenerMensajesChat() {
         return chatService.getMsgChatActual();
     }
     
     public List<ModelMessage> getChat(long chatID){
+    	logger.debug("Obteniendo mensajes de caché para chat ID: {}", chatID);
+
     	//List<ModelMessage> lista = chatService.getLRUChat(chatID);
     	//System.out.println("[DEBUG]" + " backendController " + "lista de : " + lista.size() + " chats");
     	
@@ -175,6 +217,8 @@ public class BackendController {
     // ### contactos
     
     public void loadContactList(List<EntidadComunicable> contactList) {
+    	logger.debug("Cargando lista de contactos ({} elementos).", contactList.size());
+
     	chatsRepository.loadContactList(contactList);
     }
     
@@ -183,6 +227,8 @@ public class BackendController {
     }
     
     public List<EntidadComunicable> getListaContactos() {
+    	logger.debug("Obteniendo lista de contactos ({} elementos).", chatsRepository.getContactos().size());
+    	
     	//System.out.println("num contactos : " + chatsRepository.getContactos().size());
     	return chatsRepository.getContactos();
     }
@@ -199,9 +245,20 @@ public class BackendController {
     	chatsRepository.removeContact(numero);
     }
     
+    public Optional<Integer> getNumeroDesdeNombreContacto(String nombre) {
+    	logger.debug("Buscando número de contacto por nombre: {}", nombre);
+    	
+        return getListaContactos().stream()
+            .filter(c -> c.getNombre().equals(nombre))
+            .map(EntidadComunicable::getNumero)
+            .findFirst();
+    }
+
     // ### noContactos
     
     public void loadNoContactList(List<EntidadComunicable> noContactList) {
+    	logger.debug("Cargando lista de noContactos ({} elementos).", noContactList.size());
+
     	chatsRepository.loadNoContactList(noContactList);
     }
     
@@ -210,6 +267,8 @@ public class BackendController {
     }
     
     public List<EntidadComunicable> getListaNoContactos(){
+    	logger.debug("Obteniendo lista de noContactos ({} elementos).", chatsRepository.getUsuariosNoContactos().size());
+    	
     	//System.out.println("num no contactos : " + chatsRepository.getUsuariosNoContactos().size());
     	return chatsRepository.getUsuariosNoContactos();
     }
@@ -229,6 +288,8 @@ public class BackendController {
     // ### grupos
     
     public void loadGroupList(List<Grupo> groupList) {
+    	logger.debug("Cargando lista de grupos ({} elementos).", groupList.size());
+
     	chatsRepository.loadGroupList(groupList);
     }
     
@@ -241,7 +302,7 @@ public class BackendController {
     }
     
     public long makeGroup(String nombre, String profilepPicUrl, List<EntidadComunicable> miembros) {
-		
+    	
 	   SecureRandom secureRandom = new SecureRandom();
 	   long idAleatorio;
 	   // como no es una bd hecha a medida no se puede comprobar el id de forma eficiente, se seguirá usando porque está hecha la implementación, pero si no se migra a otra bd su uso será solo parcial
@@ -249,7 +310,9 @@ public class BackendController {
 	   List<Integer> admins = new ArrayList<Integer>();
 	   ///admins.add(getUserNumber());
 	   chatsRepository.addGroup(new Grupo(idAleatorio, nombre, profilepPicUrl, miembros, admins));
-		
+	   
+	   logger.debug("Creando nuevo grupo: {} con ID generado: {}", nombre, idAleatorio);
+
 		return idAleatorio;
 		
     }
@@ -285,7 +348,9 @@ public class BackendController {
     // ### registro
     
     protected Optional <Usuario> doRegister(String name, String number, String passwd, String birthDate, String profilePicUrl, String signature) {
-		//System.out.println("[DEBUG] doRegister BackendControoller");
+    	logger.debug("Intentando registrar usuario: {}", name);
+    	
+    	//System.out.println("[DEBUG] doRegister BackendControoller");
 		boolean success = true;
     	
     	if(name.isBlank() || name.isEmpty()) {
@@ -317,6 +382,8 @@ public class BackendController {
     			return Optional.of(newUser);
     			
     		} catch (Exception e) {
+    			logger.error("Error al procesar datos de registro. Puede que el formato sea inválido: ", e);
+
         		//System.out.println("[DEBUG] doRegister BackendControoller 6");
     			UIController.getUnicaInstancia().registerErrors((byte) 4);
     			success = false;
@@ -330,6 +397,8 @@ public class BackendController {
     
     // ### PDF
     public String exportarDatosPDF() {
+    	logger.debug("Exportando historial a PDF.");
+
         List<EntidadComunicable> contactos = getListaContactos();
         List<Grupo> grupos = getGrupos();
         
@@ -338,7 +407,9 @@ public class BackendController {
         contenido.add("\n=====================================\n");
 
         // Agregar información de contactos
-        contenido.add("🟢 Contactos:");
+        logger.debug("Agregando información y chats de contactos al PDF.");
+        
+        contenido.add("Contactos:");
         for (EntidadComunicable contacto : contactos) {
             contenido.add("• " + contacto.getNombre() + " - " + contacto.getNumero());
             //System.out.println("[DEBUG]" + " BackendController " + "exportarDatosPDF " + "id contacto : " + contacto.getId());
@@ -351,7 +422,9 @@ public class BackendController {
         }
 
         // Agregar información de grupos
-        contenido.add("\n🟣 Grupos:");
+        logger.debug("Agregando información y chats de grupos al PDF.");
+        
+        contenido.add("\nGrupos:");
         for (Grupo grupo : grupos) {
             contenido.add("• Grupo: " + grupo.getNombre());
             contenido.add("  Integrantes:");

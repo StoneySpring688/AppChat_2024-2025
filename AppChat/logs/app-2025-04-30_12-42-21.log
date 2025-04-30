@@ -1,0 +1,20 @@
+2025-04-30 12:42:21.430 [AWT-EventQueue-0] DEBUG u.t.AppChat.controllers.UIController - Cambiando de chat
+2025-04-30 12:42:21.431 [AWT-EventQueue-0] INFO  u.t.A.controllers.MainController - Cargando chat para 123456789
+2025-04-30 12:42:21.432 [pool-2-thread-2] TRACE u.t.A.controllers.MainController - Cargando lote de mensajes para optimización de chat: 123456789
+2025-04-30 12:42:21.432 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - Obteniendo mensajes de caché para chat ID: 123456789
+2025-04-30 12:42:21.432 [pool-2-thread-2] DEBUG u.t.A.controllers.DAOController - Recuperando lote de mensajes para contacto [123456789], inicio [0]
+2025-04-30 12:42:21.683 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - Añadiendo nuevos mensajes al chat ID: 123456789
+2025-04-30 12:42:21.684 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - Registrando nuevo mensaje para chat ID: 123456789
+2025-04-30 12:42:21.684 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - Registrando nuevo mensaje para chat ID: 123456789
+2025-04-30 12:42:21.684 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - Registrando nuevo mensaje para chat ID: 123456789
+2025-04-30 12:42:21.684 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - Registrando nuevo mensaje para chat ID: 123456789
+2025-04-30 12:42:21.684 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - Obteniendo mensajes de caché para chat ID: 123456789
+2025-04-30 12:42:21.684 [pool-2-thread-2] DEBUG u.t.AppChat.controllers.UIController - Cargando chat con sus mensajes
+2025-04-30 12:42:21.698 [pool-2-thread-2] DEBUG u.t.A.controllers.DAOController - Recuperando lote de mensajes para contacto [123456789], inicio [4]
+2025-04-30 12:42:21.701 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - nuevosMensajesAlInicio() - chatID: 123456789
+2025-04-30 12:42:21.701 [pool-2-thread-2] DEBUG u.t.AppChat.controllers.UIController - Cargando chat con sus mensajes
+2025-04-30 12:42:21.926 [AWT-EventQueue-0] DEBUG u.t.AppChat.controllers.UIController - Cambiando de chat
+2025-04-30 12:42:21.927 [AWT-EventQueue-0] INFO  u.t.A.controllers.MainController - Cargando chat para 234567890
+2025-04-30 12:42:21.927 [pool-2-thread-2] TRACE u.t.A.controllers.MainController - Cargando lote de mensajes para optimización de chat: 234567890
+2025-04-30 12:42:21.927 [pool-2-thread-2] DEBUG u.t.A.controllers.BackendController - Obteniendo mensajes de caché para chat ID: 234567890
+2025-04-30 12:42:21.928 [pool-2-thread-2] DEBUG u.t.A.controllers.DAOController - Recuperando lote de mensajes para contacto [234567890], inicio [0]

@@ -10,12 +10,38 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.Membership;
 import umu.tds.AppChat.backend.utils.Membership.MembershipType;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 import umu.tds.AppChat.backend.utils.Usuario;
+import umu.tds.AppChat.devtools.LoggerUtil;
+
+/**
+ * Controlador principal de la aplicación.
+ *
+ * <p>Gestiona el ciclo de vida general de la app, incluyendo:
+ * <ul>
+ *   <li>Inicio y cierre de la aplicación.</li>
+ *   <li>Autenticación (login/logout).</li>
+ *   <li>Gestión de usuarios, contactos y grupos.</li>
+ *   <li>Envío y recepción de mensajes.</li>
+ *   <li>Exportación de historial en PDF.</li>
+ * </ul>
+ *
+ * <p>Coordina la interacción entre:
+ * <ul>
+ *  <li>UIController</li>
+ *  <li>BackendController</li>
+ *  <li>DAOController</li>
+ * </ul>
+ * Siguiendo el patrón Singleton.
+ *
+ * @author StoneySpring
+ */
 
 public class MainController {
     
@@ -30,6 +56,10 @@ public class MainController {
     
     // gestión de hilos
     private ExecutorService executor;
+    
+    // logger
+    private static final Logger logger = LoggerUtil.getLogger(MainController.class);
+
 
 	// singleton
 	private static MainController unicaInstancia = null;
@@ -47,6 +77,8 @@ public class MainController {
     }
 
 	public void startApp() {
+		logger.info("Iniciando aplicación - startApp()");
+
 
 		actualizarEstado(loggedOut);
 		executor = new ThreadPoolExecutor(2, 20, 30, TimeUnit.SECONDS, new SynchronousQueue<>()); //min hilos, max hilos, tiempo hasta eliminar hilo, unidades, cola de espera
@@ -64,6 +96,8 @@ public class MainController {
 	}
     
     public void shutdownApp() {
+    	logger.info("Cerrando aplicación - shutdownApp()");
+
     	executor.shutdown();
     	try {
 			executor.awaitTermination(5, TimeUnit.SECONDS); // 5 seg de gracia para terminar tareas
@@ -86,10 +120,13 @@ public class MainController {
     // ### registro
     
 	protected boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
+		logger.info("Iniciando registro de nuevo usuario");
+
 		//System.out.println("[DEBUG] haciendo registro");
 		Optional<Usuario> user = backend.doRegister(nombre, numero, passwd, birthDate, url, signature);
 		if(user.isPresent()) {
 			//System.out.println("[DEBUG] escribiendo usuario");
+			logger.debug("Registro exitoso, escribiendo usuario en base de datos");
 			return dao.registerUser(user.get());
 			
 		}
@@ -99,11 +136,15 @@ public class MainController {
     // ### login/logout
     
 	protected void doLogin(int numero, String passwd) {
+		logger.info("Intentando iniciar sesión");
+
 		//Optional<Usuario> user = dao.recuperarUser(numero);
 		if(getEstadoActual() == loggedOut) {
 			if (!dao.isUser(numero)) {
+				logger.warn("Intento de login fallido: usuario no encontrado");
 				ui.loginErrors((byte)4);
 			}else if(!dao.checkLogin(numero, passwd)) {
+				logger.warn("Intento de login fallido: contraseña incorrecta");
 				ui.loginErrors((byte)4);
 			}else {
 				onLoginSuccess(numero);
@@ -113,6 +154,8 @@ public class MainController {
 	}
     
 	protected void doLogout() {
+		logger.info("Cerrando sesión de usuario");
+
 		if(getEstadoActual() == loggedIn) {
 			backend.doLogout();
 			actualizarEstado(loggedOut);
@@ -121,6 +164,8 @@ public class MainController {
 	}
     
 	public void onLoginSuccess(int numero) {
+		logger.info("Login exitoso para usuario número {}", numero);
+
 		actualizarEstado(loggedIn);
 		backend.loadCurrentUser(dao.recuperarUser(numero).get());
 		backend.loadContactList(dao.getListaContactos(numero));
@@ -132,6 +177,8 @@ public class MainController {
     // ### usuario
     
 	protected void makePremiumUser() {
+		logger.info("Actualizando usuario a Premium");
+
 		backend.makePremiumUser();
 		dao.makePremium(backend.getCurrentUser());
 		ui.actualizarPremiumExpireDate();
@@ -140,6 +187,7 @@ public class MainController {
     // ### contactos
     
 	protected boolean anyadirContacto(String numero, String nombre) {
+		logger.info("Añadiendo nuevo contacto: {}", numero);
 		
 		boolean success = true;
 		int number = 0;
@@ -147,6 +195,7 @@ public class MainController {
 		try {
 			number = Integer.parseInt(numero);
 		} catch (NumberFormatException e) {
+			logger.error("Error al añadir contacto: número inválido '{}'", numero);
 			ui.addContactErrors((byte) 1);
 			success = false;
 		}
@@ -182,12 +231,15 @@ public class MainController {
 	}
     
 	protected boolean editContact(String phone, String nombre) {
+		logger.info("Editando contacto: {}", phone);
+
 		boolean success = true;
 		int number = 0;
 		
 		try {
 			number = Integer.parseInt(phone);
 		} catch (NumberFormatException e) {
+			logger.error("Error al editar contacto: número inválido '{}'", phone);
 			ui.ContactSettingsErrors((byte) 1);
 			success = false;
 		}
@@ -221,12 +273,15 @@ public class MainController {
 	}
     
 	public boolean removeContact(String numero) {
+		logger.info("Eliminando contacto: {}", numero);
+
 		boolean success = true;
 		int number = 0;
 		
 		try {
 			number = Integer.parseInt(numero);
 		} catch (NumberFormatException e) {
+			logger.error("Error al eliminar contacto: número inválido '{}'", numero);
 			ui.ContactSettingsErrors((byte) 1);
 			success = false;
 		}
@@ -253,6 +308,8 @@ public class MainController {
 	}
     
 	public boolean makeContactFromNoContact(EntidadComunicable noContacto) {
+		logger.info("Haciendo contacto de noContacto: {}", noContacto.getNumero());
+		
 		boolean success = true;
 		
 		Optional<EntidadComunicable> contactAux = dao.makeContactFromNoContact(noContacto);
@@ -277,6 +334,7 @@ public class MainController {
     // ### grupos
     
 	public boolean makeGroup(String nombre, String profilepPicUrl, List<Integer> miembros) {
+		logger.info("Creando nuevo grupo: {}", nombre);
 		
 		boolean success = true;
 		
@@ -319,6 +377,8 @@ public class MainController {
 	}
     
 	protected boolean editGroup(String urlProfileIcon, String nombreGrupo, List<Integer> miembros, long groupID) {
+		logger.info("Editando grupo: {}", nombreGrupo);
+
 		boolean success = true;
 			
 		if(nombreGrupo.length() == 0) {
@@ -372,12 +432,16 @@ public class MainController {
 	}
     
 	public void removeGroup(Grupo group) {
+		logger.info("Eliminando grupo ID: {}", group.getID());
+
 		//System.out.println("[DEBUG]" + " MainController " + "remove group : " + group.getDBID());
 		dao.removeGroup(group);
 		backend.removeGrupo(group.getID());
 	}
     
 	protected boolean leaveGroup(Grupo group) {
+		logger.info("Saliendo del grupo ID: {}", group.getID());
+
 		boolean success = false;
 		if(group.getIntegrantes().size() > 2) {
 			success = true;
@@ -403,6 +467,7 @@ public class MainController {
     // ### mensajes
     
 	protected void sendMessage(ModelMessage msg) {
+		logger.info("Enviando mensaje a {}", msg.getReciver());
 		
 		if(backend.isGroup(msg.getReciver())) {
 			int groupBDID = backend.getGrupo(msg.getReciver()).getDBID();
@@ -416,9 +481,12 @@ public class MainController {
 	}
     
 	protected void loadChat(Optional<EntidadComunicable> contacto, Optional<Grupo> grupo) {
+		logger.info("Cargando chat para {}", contacto.isPresent() ? contacto.get().getNumero() : grupo.get().getID());
 		
 		executor.submit(() -> {
 			if (contacto.isPresent()) {
+				logger.trace("Cargando lote de mensajes para optimización de chat: {}", contacto.get().getNumero());
+
 				List<ModelMessage> listaCaché = backend.getChat((long) contacto.get().getNumero());
 				Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
 				
@@ -461,6 +529,7 @@ public class MainController {
 				ui.loadChat(lista);
 				
 				while (ui.getActualChatOptimization() == (long) contacto.get().getNumero() && lista.size() > 0) {
+					//logger.trace("Iteración de carga de mensajes, inicio del lote: {}", startLote);
 					
 					lista = dao.getMessageFromAChat(contacto.get(), startLote, lastMsgId);
 					startLote += lista.size();
@@ -470,6 +539,8 @@ public class MainController {
 				}
 				
 			} else if (grupo.isPresent()) {
+				logger.trace("Cargando lote de mensajes para optimización de grupo: {}", grupo.get().getID());
+				
 				List<ModelMessage> listaCaché = backend.getChat((long) grupo.get().getID());
 				 Optional<Integer> lastMsgId = listaCaché.isEmpty() ? Optional.empty() : Optional.of(listaCaché.get(listaCaché.size() - 1).getBDID());
 				 
@@ -511,6 +582,7 @@ public class MainController {
 				 ui.loadChat(lista);
 				 
 				 while (ui.getActualChatOptimization() == (long) grupo.get().getID() && lista.size() > 0) { // OJO el id del grupo es distinto del id que le asigna la BD (grupo.getDBID)
+					 //logger.trace("Iteración de carga de mensajes, inicio del lote: {}", startLote);
 					
 					lista = dao.getMessageFromAGroup(grupo.get(), startLote, lastMsgId);
 					startLote += lista.size();
@@ -523,6 +595,7 @@ public class MainController {
 	}
     
 	protected List<ModelMessage> doSearch(int num, String contact, String msg) {
+		logger.info("Iniciando búsqueda de mensajes");
 		
 		boolean f1 = false;
 		boolean f2 = false;
@@ -538,6 +611,8 @@ public class MainController {
 		List<Grupo> gruposPertenece = new ArrayList<Grupo>();
 		
 		// filtro numero
+		logger.trace("Filtro por número: {}", num);
+		
 		if(num != 0 && backend.getUserNumber() == num) {
 			ent = backend.getCurrentUser();
 			f1 = true;
@@ -559,6 +634,8 @@ public class MainController {
 		}
 		
 		// filtro contacto
+		logger.trace("Filtro por contacto: {}", contact);
+		
 		if(contact != null && backend.getCurrentUser().getNombre().equals(contact)) {
 			ent2 = backend.getCurrentUser();
 			f2 = true;
@@ -583,6 +660,8 @@ public class MainController {
 		}
 		
 		// tercer filtro
+		logger.trace("Filtro por mensaje: {}", msg);
+		
 		if(msg != null) {
 			if(ent != null && ent2 != null && ent.getNumero() == ent2.getNumero()) { //  entidades coinciden
 				if(ent.getNumero() == backend.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
@@ -601,8 +680,15 @@ public class MainController {
 				if(ent2 != null && ent2.getNumero() == backend.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
 					for(EntidadComunicable e : contactos) {msgs.addAll(dao.getAllMsgsFromAChat(e, true, Optional.of(msg)));}
 					for(EntidadComunicable e : noContactos) {msgs.addAll(dao.getAllMsgsFromAChat(e, false, Optional.of(msg)));}
-				} else if(ent2 != null) {
+				} else if(ent2 != null && ent != null) {
 					msgs.addAll(dao.getAllMsgsFromAChat(ent2, backend.isContact(ent.getNumero()), Optional.of(msg)));
+				} else if(ent2 != null) {
+					Optional<Integer> entNum = backend.getNumeroDesdeNombreContacto(contact);
+					if(entNum.isPresent()) {
+						msgs.addAll(dao.getAllMsgsFromAChat(ent2, backend.isContact(entNum.get()), Optional.of(msg)));
+					}else {
+						logger.error("Error al buscar mensajes: contacto no encontrado");
+					}
 				}
 			} 
 			if(!gruposPertenece.isEmpty()) {
@@ -647,8 +733,10 @@ public class MainController {
     // ### PDF
     
 	public String makePDF() {
+		logger.info("Haciendo PDF");
 		if (!backend.currentUserIsPremium()) {
-			System.out.println("[ERROR] No tienes acceso a esta función. Debes ser usuario Premium.");
+			logger.error("Acceso denegado a exportar PDF: usuario no es premium");
+			// System.out.println("[ERROR] No tienes acceso a esta función. Debes ser usuario Premium.");
 			return null;
 		}
 		return backend.exportarDatosPDF();
