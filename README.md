@@ -1,5 +1,5 @@
 # AppChat_2024-2025
-### A modern, feature-rich chat application powered by Java Swing
+### A modern, feature-rich chat application powered by Java
 
 ---
 
@@ -33,30 +33,31 @@ La aplicación está estructurada en un modelo de **tres capas**:
 - **iText**: Para la generación de archivos PDF en cuentas premium.
 
 ## 🧩 Instalación
+### Para desarrollo:
 **Clonar el repositorio**:
 ```bash
 git clone https://github.com/StoneySpring688/AppChat_2024-2025.git
 cd AppChat_2024-2025
 ```
+### Para ejecución:
+**[descargar la última versión de la app](https://github.com/StoneySpring688/AppChat_2024-2025/releases)**
 
 ## 🔧 Construcción
 
 1. Asegúrate de tener **Maven** instalado 
 2. Descomprime el archivo si lo has descargado como un **.zip**
-3. Ejecuta estos comandos dentro del directorio del proyecto **AppChat_2024-2025**:
-
-```bash
-cd AppChat
-mvn install:install-file -Dfile=lib/gradient-icon-font.jar -DgroupId=umu.tds -DartifactId=gradient-icon-font -Dversion=1.0 -Dpackaging=jar
-mvn install:install-file -Dfile=lib/DriverPersistencia.jar -DgroupId=umu.tds -DartifactId=driverPersistencia -Dversion=2.0 -Dpackaging=jar
-mvn clean install
-cd ..
-```
+3. Utilizando el **pom.xml** del proyecto haz *build* e *install*
 
 ## ▶️ Ejecutar la aplicación
+1. asegurate de estar en el directorio **release** de la aplicación
+2. Ejecuta el siguiente comando :
 
 ```bash
-java -jar target/AppChat.jar
+java -jar ServidorPersistenciaH2/ServidorPersistenciaH2/ServidorPersistenciaH2.jar
+```
+3. Ejecuta la aplicación java ya sea con doble click o en otra terminal usando :
+```bash
+java -jar AppChat-1.0-beta1-jar-with-dependencies.jar
 ```
 
 
