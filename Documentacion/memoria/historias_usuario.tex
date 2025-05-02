@@ -1,7 +1,131 @@
-\chapter{Historias de Usuario}
+\phantomsection
+\section*{Historias de Usuario}
+\addcontentsline{toc}{section}{Historias de Usuario}
 
+\phantomsection
+\subsection*{HU1: Registro de nuevo usuario}
+\addcontentsline{toc}{subsection}{HU1: Registro de nuevo usuario}
+\begin{description}
+  \item[Como:] usuario nuevo
+  \item[quiero:] poder registrarme con mi número  de telefono y una contraseña
+  \item[para:] poder acceder a la aplicación de mensajería
+\end{description}
+
+\textbf{Criterios de aceptación:}
 \begin{itemize}
-    \item Como usuario, quiero poder agregar contactos a grupos para organizarlos mejor.
-    \item Como administrador, quiero editar los datos de un contacto.
-    \item ...
+    \item El usuario puede introducir un número valido y una contraseña segura.
+    \item El sistema valida el número y muestra errores claros si es incorrecto.
+    \item El sistema informa si el número ya está registrado.
+\end{itemize}
+
+\phantomsection
+\subsection*{HU2: Inicio de sesión}
+\addcontentsline{toc}{subsection}{HU2: Inicio de sesión}
+\begin{description}
+  \item[Como:] usuario registrado
+  \item[quiero:] iniciar sesión con mis credenciales
+  \item[para:] acceder a mis contactos y conversaciones
+\end{description}
+
+\textbf{Criterios de aceptación:}
+\begin{itemize}
+    \item El usuario puede ingresar su número y contraseña correctamente.
+    \item Si las credenciales son inválidas, el sistema muestra un mensaje de error.
+    \item El acceso es denegado hasta que las credenciales sean válidas.
+\end{itemize}
+
+\phantomsection
+\subsection*{HU3: Añadir contacto}
+\addcontentsline{toc}{subsection}{HU3: Añadir contacto}
+\begin{description}
+  \item[Como:] usuario
+  \item[quiero:] poder añadir nuevos contactos mediante su identificador
+  \item[para:] poder comunicarme con ellos desde la aplicación
+\end{description}
+
+\textbf{Criterios de aceptación:}
+\begin{itemize}
+    \item El sistema permite buscar usuarios por identificador.
+    \item Se muestra un mensaje si el usuario no existe.
+    \item El contacto se añade a la lista del usuario tras la confirmación.
+\end{itemize}
+
+\phantomsection
+\subsection*{HU4: Crear grupo}
+\addcontentsline{toc}{subsection}{HU4: Crear grupo}
+\begin{description}
+  \item[Como:] usuario
+  \item[quiero:] poder crear grupos de conversación
+  \item[para:] mantener conversaciones con múltiples contactos al mismo tiempo
+\end{description}
+
+\textbf{Criterios de aceptación:}
+\begin{itemize}
+    \item El usuario puede nombrar el grupo y seleccionar contactos.
+    \item El grupo se guarda con la información y miembros indicados.
+    \item Se puede ver el grupo creado en la lista de grupos.
+\end{itemize}
+
+\phantomsection
+\subsection*{HU5: Enviar mensaje}
+\addcontentsline{toc}{subsection}{HU5: Enviar mensaje}
+\begin{description}
+  \item[Como:] usuario
+  \item[quiero:] poder enviar mensajes de texto a mis contactos o grupos
+  \item[para:] comunicarme con mis contactos.
+\end{description}
+
+\textbf{Criterios de aceptación:}
+\begin{itemize}
+    \item El usuario puede escribir y enviar mensajes.
+    \item Los mensajes se muestran inmediatamente en el chat.
+    \item Los destinatarios reciben el mensaje cuando se conectan.
+\end{itemize}
+
+\phantomsection
+\subsection*{HU6: Ver historial de conversaciones}
+\addcontentsline{toc}{subsection}{HU6: Ver historial de conversaciones}
+\begin{description}
+  \item[Como:] usuario
+  \item[quiero:] poder ver el historial de mensajes de mis conversaciones
+  \item[para:] seguir el contexto de la conversación
+\end{description}
+
+\textbf{Criterios de aceptación:}
+\begin{itemize}
+    \item El historial de cada chat se carga al abrirlo.
+    \item El usuario puede desplazarse y leer mensajes anteriores.
+    \item Los mensajes aparecen en orden cronológico.
+\end{itemize}
+
+\phantomsection
+\subsection*{HU7: Gestionar Contactos y Grupos}
+\addcontentsline{toc}{subsection}{HU7: Gestionar Contactos y Grupos}
+\begin{description}
+  \item[Como:] usuario
+  \item[quiero:] poder gestionar mis contactos y grupos
+  \item[para:] mantener mi lista de contactos y grupos actualizada
+\end{description}
+
+\textbf{Criterios de aceptación:}
+\begin{itemize}
+    \item El usuario puede acceder a un formulario de edición.
+    \item Los cambios se guardan y se reflejan inmediatamente.
+    \item El sistema valida los campos antes de guardar.
+\end{itemize}
+
+\phantomsection
+\subsection*{HU8: Cerrar sesión}
+\addcontentsline{toc}{subsection}{HU8: Cerrar sesión}
+\begin{description}
+  \item[Como:] usuario
+  \item[quiero:] poder cerrar sesión de forma segura
+  \item[para:] proteger el acceso a mi cuenta
+\end{description}
+
+\textbf{Criterios de aceptación:}
+\begin{itemize}
+    \item Hay una opción accesible para cerrar sesión.
+    \item Al cerrar sesión se redirige al usuario a la pantalla de inicio.
+    \item No se puede acceder a funciones privadas tras cerrar sesión.
 \end{itemize}
