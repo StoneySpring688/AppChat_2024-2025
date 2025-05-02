@@ -1,0 +1,52 @@
+\documentclass[a4paper,12pt]{report}
+
+% ================== PAQUETES ==================
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{titlesec}
+
+
+% ================== CONFIGURACIÓN DE PAQUETES ==================
+\geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
+
+% ================== INFORMACIÓN DEL DOCUMENTO ==================
+\title{Documentación de AppChat}
+\author{Zapata Mira, Alberto \\ Cañada Rubio, Laura}
+\date{\today}
+
+% ================== INICIO ==================
+\begin{document}
+
+% -------- PORTADA --------
+\input{portada}
+
+% Página en blanco
+\newpage
+\thispagestyle{empty}
+~
+
+% Tabla de contenidos
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\setcounter{page}{0}
+
+% ============= CONTENIDO DEL DOCUMENTO =============
+\newpage
+\setcounter{page}{1}
+
+\input{historias_usuario}
+\input{uml_clases}
+\input{uml_secuencia}
+\input{arquitectura}
+\input{patrones}
+\input{manual}
+\input{observaciones}
+
+\end{document}
