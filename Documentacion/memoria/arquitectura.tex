@@ -1,6 +1,115 @@
+\phantomsection
 \section*{Arquitectura de la Aplicación}
 \addcontentsline{toc}{section}{Arquitectura de la Aplicación}
 
-Breve explicación de la arquitectura utilizada. Por ejemplo: patrón MVC, capas de presentación, lógica y datos, etc.
+\phantomsection
+\subsection*{1. Introducción}
+\addcontentsline{toc}{subsection}{1. Introducción}
 
-Decisiones de diseño importantes tomadas durante el desarrollo.
+El objetivo del sistema es permitir el envío de mensajes entre usuarios.\\
+Para ello, la aplicación se organiza en distintas capas funcionales que separan la presentación, la lógica de negocio y persistencia, 
+las cuales se gestionan a través de controladores específicos.
+Esta estructura responde a una necesidad de organización del código y de distribución de responsabilidades entre componentes.
+
+\vspace{5ex}
+
+\phantomsection
+\subsection*{2. Arquitectura}
+\addcontentsline{toc}{subsection}{2. Arquitectura}
+
+La aplicación implementa una arquitectura en capas estructurada según el patrón Modelo-Vista-Controlador (MVC).
+Esta combinación permite una separación clara de responsabilidades y facilita el mantenimiento y la escalabilidad del sistema.
+
+\begin{itemize}
+    \item \textbf{Vista:} La interfaz de usuario es gestionada por la clase \texttt{UIController}, que captura las interacciones del usuario.
+    \item \textbf{Controladores:} Las clase \texttt{BackendController} se encargan de coordinar la lógica del sistema.
+    \item \textbf{Modelo y persistencia:} \texttt{DAOController} actúa como intermediario entre la lógica de negocio y los datos almacenados.
+    \item \textbf{Coordinación:} La clase \texttt{MainController} orquesta la comunicación entre la vista, la lógica de negocio y la persistencia.
+\end{itemize}
+
+A nivel estructural, la aplicación respeta la arquitectura en capas tradicional:
+
+\begin{enumerate}
+    \item \textbf{Capa de presentación:} interacción con el usuario.
+    \item \textbf{Capa de lógica:} procesamiento de acciones y flujo de trabajo.
+    \item \textbf{Capa de persistencia:} gestión de datos y almacenamiento.
+\end{enumerate}
+
+Esta combinación proporciona modularidad y una clara organización del código fuente.
+
+\newpage
+
+\begin{samepage}
+    
+\end{samepage}
+\phantomsection
+\subsection*{3. Componentes principales}
+\addcontentsline{toc}{subsection}{3. Componentes principales}
+
+\begin{description}
+    \item[Interfaz de usuario (UI):] Componente que gestiona la presentación y la interacción con el usuario, desarrollado con Java Swing.
+    Las entradas del usuario son capturadas y enviadas al controlador principal para su procesamiento.
+    \item[Lógica de negocio (Dominio):] La gestión del dominio se realiza en su mayor parte a través del \texttt{BackendController}, que centraliza la lógica asociada a las reglas del sistema, 
+    el procesamiento de operaciones sobre entidades y la coordinación de servicios internos. 
+    Esta capa encapsula la lógica de negocio sin depender de detalles de interfaz o persistencia, manteniendo la coherencia y autonomía del modelo. 
+    La lógica del dominio se desarrolla siguiendo principios de encapsulamiento y separación de responsabilidades, permitiendo que la aplicación evolucione sin comprometer su estructura.
+    \item[Persistencia de datos:] Gestionada mediante \texttt{DAOController}, responsable del acceso y almacenamiento de datos.
+    \item[MainController:] Responsable de la coordinación general del sistema. Su función es actuar como punto de entrada desde la interfaz,
+    delegando las operaciones correspondientes a otras capas (como la lógica de negocio y la persistencia). Aunque participa en el flujo de datos y en la toma de decisiones,
+    su propósito es más bien estructural, no lógico.
+\end{description}
+
+\vspace{5ex}
+
+\phantomsection
+\subsection*{4. Flujo general de datos}
+\addcontentsline{toc}{subsection}{4. Flujo general de datos}
+\begin{itemize}
+    \item El usuario realiza una acción en la interfaz (\texttt{UIController}).
+    \item Esta acción es enviada a \texttt{MainController}, que determina la lógica a aplicar.
+    \item La lógica de negocio se delega a \texttt{BackendController}, donde puede incluirse validación y procesamiento.
+    \item Si es necesario acceder a los datos, la solicitud se redirige a \texttt{DAOController}.
+    \item El resultado se devuelve a \texttt{MainController} y se refleja en la interfaz.
+\end{itemize}
+
+\newpage
+
+\phantomsection
+\subsection*{5. Consideraciones técnicas y decisiones}
+\addcontentsline{toc}{subsection}{6. Consideraciones técnicas y decisiones}
+\begin{itemize}
+    \item Los grupos utilizan un identificador de 10 dígitos en el dominio. Sin embargo, dado que el servicio de persistencia genera su propio identificador, se optó por utilizar este último para la persistencia, 
+    manteniendo al mismo tiempo el identificador de 10 dígitos en el dominio.
+    \item La persistencia se modeló siguiendo el siguiente diseño conceptual:
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{0.85\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{images/AppChat_DiseñoConceptual_Persistencia.png}
+            \caption*{Diseño conceptual de la persistencia}
+        \end{minipage}
+    \end{figure}
+    No obstante, debido a las particularidades del \texttt{Servicio de Persistencia H2}, fue necesario realizar ciertas adaptaciones, 
+    especialmente en las relaciones \texttt{n,m}, que se implementaron como relaciones \texttt{1,n} desde cada una de las entidades participantes.
+    \item No se implementó una caché DAO, ya que objetos como la lista de grupos y contactos se cargan al iniciar sesión, y los mensajes disponen de su propia caché, implementada mediante un algoritmo LRU. 
+    Este enfoque permite:
+    \begin{itemize}
+        \item Asignar más recursos a un chat cuanto más tiempo se permanezca en él.
+        \item Liberar recursos de chats que no se han utilizado recientemente.
+    \end{itemize}
+    \item Con el objetivo de facilitar el desarrollo, la aplicación incorpora un sistema de registro de eventos (logger), cuya verbosidad puede configurarse mediante un parámetro que se pasa al ejecutar la aplicación. 
+    Este admite los siguientes niveles:
+    \begin{itemize}
+        \item \texttt{DEBUG}
+        \item \texttt{INFO}
+        \item \texttt{WARN}
+        \item \texttt{ERROR}
+        \item \texttt{OFF} (nivel por defecto si no se especifica ninguno)
+        \item \texttt{TRACE}
+    \end{itemize}
+    Los mensajes generados se muestran por terminal y, además, se almacenan en el directorio \texttt{logs/}.
+
+\end{itemize}
+
+
+\newpage

@@ -38,7 +38,7 @@
 \subsection*{HU3: Añadir contacto}
 \addcontentsline{toc}{subsection}{HU3: Añadir contacto}
 \begin{description}
-  \item[Como:] usuario
+  \item[Como:] usuario registrado
   \item[quiero:] poder añadir nuevos contactos mediante su identificador
   \item[para:] poder comunicarme con ellos desde la aplicación
 \end{description}
@@ -54,7 +54,7 @@
 \subsection*{HU4: Crear grupo}
 \addcontentsline{toc}{subsection}{HU4: Crear grupo}
 \begin{description}
-  \item[Como:] usuario
+  \item[Como:] usuario registrado
   \item[quiero:] poder crear grupos de conversación
   \item[para:] mantener conversaciones con múltiples contactos al mismo tiempo
 \end{description}
@@ -70,7 +70,7 @@
 \subsection*{HU5: Enviar mensaje}
 \addcontentsline{toc}{subsection}{HU5: Enviar mensaje}
 \begin{description}
-  \item[Como:] usuario
+  \item[Como:] usuario registrado
   \item[quiero:] poder enviar mensajes de texto a mis contactos o grupos
   \item[para:] comunicarme con mis contactos.
 \end{description}
@@ -86,7 +86,7 @@
 \subsection*{HU6: Ver historial de conversaciones}
 \addcontentsline{toc}{subsection}{HU6: Ver historial de conversaciones}
 \begin{description}
-  \item[Como:] usuario
+  \item[Como:] usuario registrado
   \item[quiero:] poder ver el historial de mensajes de mis conversaciones
   \item[para:] seguir el contexto de la conversación
 \end{description}
@@ -102,7 +102,7 @@
 \subsection*{HU7: Gestionar Contactos y Grupos}
 \addcontentsline{toc}{subsection}{HU7: Gestionar Contactos y Grupos}
 \begin{description}
-  \item[Como:] usuario
+  \item[Como:] usuario registrado
   \item[quiero:] poder gestionar mis contactos y grupos
   \item[para:] mantener mi lista de contactos y grupos actualizada
 \end{description}
@@ -118,7 +118,7 @@
 \subsection*{HU8: Cerrar sesión}
 \addcontentsline{toc}{subsection}{HU8: Cerrar sesión}
 \begin{description}
-  \item[Como:] usuario
+  \item[Como:] usuario registrado
   \item[quiero:] poder cerrar sesión de forma segura
   \item[para:] proteger el acceso a mi cuenta
 \end{description}
@@ -129,3 +129,52 @@
     \item Al cerrar sesión se redirige al usuario a la pantalla de inicio.
     \item No se puede acceder a funciones privadas tras cerrar sesión.
 \end{itemize}
+
+\phantomsection
+\subsection*{HU9 - Convertirse en usuario premium}
+\addcontentsline{toc}{subsection}{HU9 - Convertirse en usuario premium}
+\begin{description}
+    \item[Como:]usuario registrado
+    \item[quiero:] poder convertirme en usuario premium pagando una suscripción
+    \item[para:] acceder a funciones adicionales como la exportación de mensajes
+\end{description}
+
+\textbf{Criterios de verificación:}
+\begin{itemize}
+    \item El sistema debe permitir al usuario registrarse como premium mediante el pago de una suscripción anual.
+    \item El usuario premium debe tener acceso a funciones adicionales como la exportación de mensajes en PDF.
+\end{itemize}
+
+\phantomsection
+\subsection*{HU10 - Buscar mensajes}
+\addcontentsline{toc}{subsection}{HU10 - Buscar mensajes}
+\begin{description}
+    \item[Como:] usuario registrado
+    \item[quiero:] buscar mensajes por fragmento de texto, nombre de contacto o número de teléfono
+    \item[para:] encontrar fácilmente los mensajes que necesito
+\end{description}
+
+\textbf{Criterios de verificación:}
+\begin{itemize}
+    \item El sistema debe permitir buscar mensajes enviados o recibidos por el usuario filtrando por fragmento de texto, nombre del contacto o número de teléfono.
+    \item Los resultados de la búsqueda deben mostrarse en forma de lista.
+    \item El sistema debe permitir combinar varios criterios de búsqueda (por ejemplo, texto y contacto).
+\end{itemize}
+
+\phantomsection
+\subsection*{HU11 - Exportar mensajes a PDF (solo premium)}
+\addcontentsline{toc}{subsection}{HU11 - Exportar mensajes a PDF (solo premium)}
+\begin{description}
+    \item[Como:] usuario premium
+    \item[quiero:] exportar mis conversaciones a un archivo PDF
+    \item[para:]tener un registro de los mensajes intercambiados
+\end{description}
+
+\textbf{Criterios de verificación:}
+\begin{itemize}
+    \item El sistema debe permitir al usuario exportar sus conversaciones a PDF.
+    \item El archivo PDF debe incluir los nombres de los participantes, el contenido del mensaje, y la fecha y hora de cada mensaje.
+    \item El archivo PDF debe generarse correctamente y descargarse en el dispositivo del usuario.
+\end{itemize}
+
+\vspace{5ex}

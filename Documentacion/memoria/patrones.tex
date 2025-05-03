@@ -1,4 +1,45 @@
-\section*{Patrones de Diseño}
-\addcontentsline{toc}{section}{Patrones de Diseño}
+\phantomsection
+\section*{Patrones de diseño utilizados}
+\addcontentsline{toc}{section}{Patrones de diseño utilizados}
 
-Se describen los patrones utilizados, ya sea explícitamente o mediante librerías como Swing, DAO, etc.
+A continuación se describen los patrones de diseño identificados en la implementación del proyecto.
+
+\phantomsection
+\subsection*{1. MVC (Modelo-Vista-Controlador)}
+La aplicación combina una estructura en capas con el patrón Modelo-Vista-Controlador (MVC). 
+Esta integración permite organizar el sistema de forma comprensible, manteniendo la separación entre los distintos tipos de responsabilidades.
+\begin{itemize}
+    \item \textbf{Vista:} \texttt{UIController} gestiona la interfaz de usuario y captura las interacciones del usuario.
+    \item \textbf{Controladores:} \texttt{BackendController} implementa la lógica del dominio,\\
+    y \texttt{MainController} coordina la comunicación entre componentes.
+    \item \textbf{Modelo y persistencia:} \texttt{DAOController} proporciona acceso estructurado a los datos persistentes del sistema.
+\end{itemize}
+Este patrón se encuentra implementado dentro de una arquitectura por capas clásica (presentación, lógica, persistencia).
+
+\phantomsection
+\subsection*{2. Abstract Factory}
+Este patrón creacional permite crear familias de objetos relacionados sin especificar sus clases concretas. 
+En el proyecto, \texttt{AbstractFactoriaDAO} define métodos abstractos para obtener diferentes DAOs, y \texttt{FactoriaDAO} proporciona su implementación.
+
+\phantomsection
+\subsection*{3. Factory Method}
+Utilizado para delegar la creación de objetos a subclases. 
+En el proyecto, \texttt{FactoriaDAO} implementa métodos como \texttt{getUsuarioDAO()} o \texttt{getGrupoDAO()} para instanciar objetos concretos de acceso a datos.
+
+\phantomsection
+\subsection*{4. DAO (Data Access Object)}
+Este patrón encapsula el acceso a los datos y separa la lógica de persistencia del resto de la aplicación. 
+Se encuentra implementado en \texttt{DAOController}, \texttt{UsuarioDAO}, entre otros.
+
+\phantomsection
+\subsection*{5. Facade}
+Este patrón estructural proporciona una interfaz unificada para un conjunto de interfaces en un subsistema. 
+En el proyecto, \texttt{MainController} actúa como fachada, centralizando la comunicación entre la vista, la lógica de negocio y la persistencia.
+
+\phantomsection
+\subsection*{6. Singleton}
+Asegura que una clase tenga una única instancia accesible globalmente.
+Se aplica en clases clave como \texttt{MainController}, \texttt{BackendController}, \texttt{DAOController} y \texttt{UIController},
+así como en los adaptadores de los DAO, como \texttt{ContactoDAO}, mediante un constructor privado y un método estático \texttt{getUnicaInstancia()}.
+
+\newpage
