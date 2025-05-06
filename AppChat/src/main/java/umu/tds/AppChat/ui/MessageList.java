@@ -51,7 +51,7 @@ public class MessageList extends JPanel {
 		this.lista = new JList<>(messages);
 		this.lista.setCellRenderer(new ElementoMessageRender(this.lista));
 		this.lista.setBackground(this.darkPorDefecto);
-		this.lista.addMouseListener(new MouseAdapter() {
+		/*this.lista.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 // Obtener el índice del elemento clickeado
@@ -60,10 +60,10 @@ public class MessageList extends JPanel {
                     // Obtener el elemento clickeado
                     ModelMessage elemento = new ModelMessage(messages.getElementAt(index).getMsg());
                     //System.out.println("[DEBUG] " + '\n' + elemento);
-                    UIController.getUnicaInstancia().previewMessage(elemento);
+                    //UIController.getUnicaInstancia().previewMessage(elemento);
                 }
             }
-        });
+        });*/
 		
 		this.scroll = new JScrollPane(lista);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

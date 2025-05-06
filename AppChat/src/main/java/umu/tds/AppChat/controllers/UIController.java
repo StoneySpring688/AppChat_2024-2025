@@ -430,7 +430,7 @@ public class UIController {
     public void previewMessage(ModelMessage msg) {
     	logger.debug("Previsualizando mensaje: {}", msg.getMessage().orElse("Emoji : " + msg.getEmoji().orElse(0)));
     	
-    	appFrame.llamarMetodo(10, Optional.of(msg), Optional.of(BackendController.getUnicaInstancia().getUserNumber() == msg.getSender() ? BoxType.RIGHT : BoxType.LEFT));
+    	MainPanel.getUnicaInstancia().renderSearchedMessage(msg,(BackendController.getUnicaInstancia().getUserNumber() == msg.getSender() ? BoxType.RIGHT : BoxType.LEFT));
     }
     
     public void doSearch(int num, String contact, String msg) {
@@ -439,6 +439,10 @@ public class UIController {
     	List<ModelMessage> list =  MainController.getUnicaInstancia().doSearch(num, contact, msg);
     	MessageList.getUnicaInstancia().reset();
     	MessageList.getUnicaInstancia().addMsgs(list);
+    	for(ModelMessage m : list) {
+    		previewMessage(m);
+		}
+    	
     }
     
     // ### shop methods

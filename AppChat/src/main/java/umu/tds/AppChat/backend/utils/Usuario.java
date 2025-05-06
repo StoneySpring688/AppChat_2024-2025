@@ -92,6 +92,5 @@ public class Usuario extends EntidadComunicable {
 	            ", finPremium=" + (endPremium.isPresent() ? endPremium.get() : "No aplica") +
 	            '}';
 	}
-
 	
 }

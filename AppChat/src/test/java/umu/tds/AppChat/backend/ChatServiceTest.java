@@ -13,7 +13,7 @@ import umu.tds.AppChat.backend.services.ChatService;
 import umu.tds.AppChat.backend.utils.ModelMessage;
 
 @SuppressWarnings("unused")
-class ChatServiceTest {
+public class ChatServiceTest {
     private static final int STRESS_TEST = 0; // Cambia a 0 para ejecutar la prueba normal
     private static final int CACHE_SIZE = (STRESS_TEST == 1) ? 500 : 10;
     private ChatService service;

@@ -131,7 +131,7 @@ public class SearchPanel extends PanelGrande {
 		*/
 		
 		//boton para limpiar la lista
-		JLabel lblButtonCleanList =  new JLabel("clean list");
+		/*JLabel lblButtonCleanList =  new JLabel("clean list");
 		lblButtonCleanList.setForeground(new Color(255, 255, 255));
 		lblButtonCleanList.setBounds(464, 31, 60, 22);
 		this.fondo.add(lblButtonCleanList);
@@ -147,7 +147,7 @@ public class SearchPanel extends PanelGrande {
 				}
 			});
 		UIController.getUnicaInstancia().addHoverEffect(buttonCleanList, 20, 20);
-		this.fondo.add(buttonCleanList);
+		this.fondo.add(buttonCleanList);*/
 		
 	}
 	
@@ -169,6 +169,7 @@ public class SearchPanel extends PanelGrande {
 	}
 	
 	private void doSearch(int num, String contact, String msg) {
+		clearPreview();
 		UIController.getUnicaInstancia().doSearch(num, contact, msg);
 	}
 	
@@ -176,7 +177,7 @@ public class SearchPanel extends PanelGrande {
 		int values = scrollBody.getVerticalScrollBar().getValue();
 		ChatBox msg = new ChatBox(type, message);
 		
-		msg.addMouseListener(new MouseAdapter() { // Eliminar el msg al hacer doble clic
+		/*msg.addMouseListener(new MouseAdapter() { // Eliminar el msg al hacer doble clic
 	        @Override
 	        public void mouseClicked(MouseEvent e) {
 	        	if (e.getClickCount() == 2) {
@@ -185,7 +186,7 @@ public class SearchPanel extends PanelGrande {
 	                messagePreviewPanel.repaint();
 	            }
 	        }
-	    });
+	    });*/
 
         if (type == ChatBox.BoxType.LEFT) {
             messagePreviewPanel.add(msg, "width ::80%");

@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.slf4j.Logger;
+
 import beans.Entidad;
 import beans.Propiedad;
 import tds.driver.FactoriaServicioPersistencia;
@@ -15,8 +17,13 @@ import tds.driver.ServicioPersistencia;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.Usuario;
+import umu.tds.AppChat.controllers.MainController;
+import umu.tds.AppChat.devtools.LoggerUtil;
 
 public class UsuarioDAO implements InterfaceUsuarioDAO{
+	
+	// logger
+    private static final Logger logger = LoggerUtil.getLogger(UsuarioDAO.class);
 	
 	// entidad
 	private static final String USUARIO = "Usuario";
@@ -106,6 +113,8 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 
 	@Override
 	public void update(Usuario usuario) {
+		logger.debug("UsuarioDAO - update");
+		logger.debug("UsuarioDAO - update - usuario : " + usuario);
 		Entidad eUser = servPersistencia.recuperarEntidad(usuario.getNumero());
 		
 		for(Propiedad prop : eUser.getPropiedades()) { //el numero no se puede actualizar una vez registrado
@@ -122,7 +131,10 @@ public class UsuarioDAO implements InterfaceUsuarioDAO{
 			}else if(prop.getNombre().equals(PREMIUM)) {
 				prop.setValor(String.valueOf(usuario.isPremium()));
 			}else if(prop.getNombre().equals(ENDPREMIUMDATE)) {
-				prop.setValor(usuario.getEndPremiumDate().get().format(dateFormat).toString());
+				if(usuario.getEndPremiumDate().isEmpty()) {
+					prop.setValor("");
+				}
+				else prop.setValor(usuario.getEndPremiumDate().get().format(dateFormat).toString());
 			}
 			/* @ deprecated
 			else if(prop.getNombre().equals(LISTACONTACTOS)) {

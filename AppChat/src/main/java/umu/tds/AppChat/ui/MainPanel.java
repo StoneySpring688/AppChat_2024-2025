@@ -262,6 +262,10 @@ public class MainPanel extends JPanel {
 		this.revalidate();
 	}
 	
+	public void renderSearchedMessage(ModelMessage message, BoxType type) {
+		this.searchPanel.previewMessage(message, type);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void accederMetodoNoVisible(int numMetodo, Optional<Object> arg2, Optional<Object> arg) {
 		

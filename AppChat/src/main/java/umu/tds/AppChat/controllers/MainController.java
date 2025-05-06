@@ -119,7 +119,7 @@ public class MainController {
     
     // ### registro
     
-	protected boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
+	public boolean doRegister(String nombre, String numero, String passwd, String birthDate, String url, String signature) {
 		logger.info("Iniciando registro de nuevo usuario");
 
 		//System.out.println("[DEBUG] haciendo registro");
@@ -135,7 +135,7 @@ public class MainController {
     
     // ### login/logout
     
-	protected void doLogin(int numero, String passwd) {
+	public void doLogin(int numero, String passwd) {
 		logger.info("Intentando iniciar sesión");
 
 		//Optional<Usuario> user = dao.recuperarUser(numero);
@@ -153,7 +153,7 @@ public class MainController {
 
 	}
     
-	protected void doLogout() {
+	public void doLogout() {
 		logger.info("Cerrando sesión de usuario");
 
 		if(getEstadoActual() == loggedIn) {
@@ -176,7 +176,7 @@ public class MainController {
     
     // ### usuario
     
-	protected void makePremiumUser() {
+	public void makePremiumUser() {
 		logger.info("Actualizando usuario a Premium");
 
 		backend.makePremiumUser();
@@ -186,7 +186,7 @@ public class MainController {
     
     // ### contactos
     
-	protected boolean anyadirContacto(String numero, String nombre) {
+	public boolean anyadirContacto(String numero, String nombre) {
 		logger.info("Añadiendo nuevo contacto: {}", numero);
 		
 		boolean success = true;
@@ -230,7 +230,7 @@ public class MainController {
 		return success;
 	}
     
-	protected boolean editContact(String phone, String nombre) {
+	public boolean editContact(String phone, String nombre) {
 		logger.info("Editando contacto: {}", phone);
 
 		boolean success = true;
@@ -245,18 +245,23 @@ public class MainController {
 		}
 			
 		if(number != 0 && (int) (Math.log10(Math.abs(number)) + 1) != 9) {
+			logger.error("Error al editar contacto: número inválido '{}'", phone);
 			ui.ContactSettingsErrors((byte) 1);
 			success = false;
 		}if(nombre.length() == 0) {
+			logger.error("Error al editar contacto: nombre vacío");
 			ui.ContactSettingsErrors((byte) 3);
 			success = false;
 		}else if(backend.getUserNumber() == number) {
+			logger.error("Error al editar contacto: no se puede editar el propio número");
 			ui.ContactSettingsErrors((byte) 1);
 			success = false;
 		}else if(!backend.isContact(number)) {
+			logger.error("Error al editar contacto: número no encontrado");
 			ui.ContactSettingsErrors((byte) 2);
 			success = false;
 		}if(nombre.length() == 0) {
+			logger.error("Error al editar contacto: nombre vacío");
 			ui.ContactSettingsErrors((byte) 3);
 			success = false;
 		}
@@ -460,13 +465,13 @@ public class MainController {
 		return backend.getGrupo(id);
 	}
     
-	protected List<Grupo> getGrupos(){
+	public List<Grupo> getGrupos(){
 		return backend.getGrupos();
 	}
     
     // ### mensajes
     
-	protected void sendMessage(ModelMessage msg) {
+	public void sendMessage(ModelMessage msg) {
 		logger.info("Enviando mensaje a {}", msg.getReciver());
 		
 		if(backend.isGroup(msg.getReciver())) {
@@ -594,7 +599,14 @@ public class MainController {
 		});
 	}
     
-	protected List<ModelMessage> doSearch(int num, String contact, String msg) {
+	public List<ModelMessage> doSearch(int num, String contact, String msg) {
+		
+		if (num == 0 && (contact == null || contact.isBlank()) && (msg == null || msg.isBlank())) { // si no hay criterios de busqueda, no se busca nada
+		    logger.warn("Búsqueda vacía: no se proporcionaron número, contacto ni mensaje.");
+		    return new ArrayList<>();
+		}
+
+		
 		logger.info("Iniciando búsqueda de mensajes");
 		
 		boolean f1 = false;
@@ -697,6 +709,19 @@ public class MainController {
 				for(Grupo grupo : grupos) msgs.addAll(dao.getAllMsgsFromAGroup(grupo, Optional.of(msg)).stream()
 						.filter(e -> e.getSender() == n1 || e.getSender() == n2).toList());
 			}
+			if ((num == 0 && (contact == null || contact.isBlank())) && ent == null && ent2 == null)  {
+				// Buscar en todos los contactos
+				for (EntidadComunicable c : contactos) {
+					msgs.addAll(dao.getAllMsgsFromAChat(c, true, Optional.ofNullable(msg)));
+				}
+				for (EntidadComunicable c : noContactos) {
+					msgs.addAll(dao.getAllMsgsFromAChat(c, false, Optional.ofNullable(msg)));
+				}
+				// Buscar en todos los grupos
+				for (Grupo g : grupos) {
+					msgs.addAll(dao.getAllMsgsFromAGroup(g, Optional.ofNullable(msg)));
+				}
+			}
 		} else {
 			if(ent != null && ent2 != null && ent.getNumero() == ent2.getNumero()) { //  entidades coinciden
 				if(ent.getNumero() == backend.getUserNumber()) { // en el caso de los usuarios buscamos por todos sus chats
@@ -725,6 +750,20 @@ public class MainController {
 				for(Grupo grupo : grupos) msgs.addAll(dao.getAllMsgsFromAGroup(grupo, Optional.empty()).stream()
 						.filter(e -> e.getSender() == n1 || e.getSender() == n2).toList());
 			}
+			if ((num == 0 && (contact == null || contact.isBlank())) && ent == null && ent2 == null)  {
+				// Buscar en todos los contactos
+				for (EntidadComunicable c : contactos) {
+					msgs.addAll(dao.getAllMsgsFromAChat(c, true, Optional.ofNullable(msg)));
+				}
+				for (EntidadComunicable c : noContactos) {
+					msgs.addAll(dao.getAllMsgsFromAChat(c, false, Optional.ofNullable(msg)));
+				}
+				// Buscar en todos los grupos
+				for (Grupo g : grupos) {
+					msgs.addAll(dao.getAllMsgsFromAGroup(g, Optional.ofNullable(msg)));
+				}
+			}
+
 		}
 		
 		return msgs.stream().distinct().toList();
@@ -741,6 +780,5 @@ public class MainController {
 		}
 		return backend.exportarDatosPDF();
 	}
-
     
 }
