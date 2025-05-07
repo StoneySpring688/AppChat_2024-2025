@@ -62,8 +62,8 @@ public class LoggerUtil {
 				level = Level.TRACE;
 				break;
             default:
-                System.err.println("Nivel desconocido '" + levelStr + "'. Usando OFF por defecto.");
-                level = Level.OFF;
+                System.err.println("Nivel desconocido '" + levelStr + "'. Usando INFO por defecto.");
+                level = Level.INFO;
         }
         setLogLevel(level);
     }

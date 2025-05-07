@@ -2,8 +2,6 @@ package umu.tds.AppChat.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,7 +13,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.MatteBorder;
 
 import umu.tds.AppChat.backend.utils.ModelMessage;
-import umu.tds.AppChat.controllers.UIController;
 
 public class MessageList extends JPanel {
 
