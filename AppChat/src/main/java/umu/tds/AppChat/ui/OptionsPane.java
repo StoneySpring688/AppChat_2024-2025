@@ -17,11 +17,14 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.slf4j.Logger;
+
 import net.miginfocom.swing.MigLayout;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.controllers.BackendController;
 import umu.tds.AppChat.controllers.UIController;
+import umu.tds.AppChat.devtools.LoggerUtil;
 
 import java.awt.Font;
 import java.awt.Image;
@@ -43,6 +46,8 @@ public class OptionsPane extends PanelGrande {
 	
 	private Background fondo;
 	private JScrollPane scrollPanel;
+	// logger
+    private static final Logger logger = LoggerUtil.getLogger(OptionsPane.class);
 	
 	// contacts settings
 	private DefaultListModel<ElementoChatOGrupo> contactos;
@@ -269,6 +274,7 @@ public class OptionsPane extends PanelGrande {
 		        if (selectedIndex != -1) {
 		            // Obtener el elemento seleccionado
 		            ElementoChatOGrupo selectedGroup = grupos.getElementAt(selectedIndex);  
+		            logger.debug("Selected group: " + selectedGroup);
 		            //System.out.println(selectedGroup.getNombre() + " ," + selectedGroup.getGroupID());
 		            groupPreview(selectedGroup);
 		            prepareEditGroup(selectedGroup);

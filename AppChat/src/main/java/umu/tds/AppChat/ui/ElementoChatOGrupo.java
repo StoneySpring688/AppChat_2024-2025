@@ -1,6 +1,7 @@
 package umu.tds.AppChat.ui;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.Optional;
 
 import javax.swing.ImageIcon;
@@ -22,6 +23,7 @@ public class ElementoChatOGrupo extends JPanel {
     private JPanel panelInfo;
     
     private final int MAX_CARACTERES_DISPLAY = 12;
+    private final static String defaultProfileImage = "/assets/ProfilePic.png";
     private final Color darkPorDefecto = new Color(54, 57, 63);
     
     public ElementoChatOGrupo(Optional<EntidadComunicable> contacto, Optional<Grupo> grupo) {
@@ -37,7 +39,7 @@ public class ElementoChatOGrupo extends JPanel {
             	this.isGrupo = true;
             }
 		} catch (Exception e) {
-			this.imagen = new ImageIcon(getClass().getResource("/assets/ProfilePic.png"));
+			this.imagen = new ImageIcon( new ImageIcon(RegisterPanel.class.getResource(defaultProfileImage)).getImage().getScaledInstance(44, 44, Image.SCALE_SMOOTH) );
 			if(contacto.isPresent()) {
             	this.contacto = contacto;
             	this.isGrupo = false;
@@ -122,4 +124,9 @@ public class ElementoChatOGrupo extends JPanel {
         this.panelInfo.setBackground(color);
         this.setBackground(color);
     }
+    
+    @Override
+    public String toString() {
+		return "ElementoChatOGrupo [contacto=" + contacto + ", grupo=" + grupo + ", isGrupo=" + isGrupo + "]";
+	}
 }

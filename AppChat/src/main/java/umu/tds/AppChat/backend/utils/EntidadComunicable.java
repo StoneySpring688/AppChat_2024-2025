@@ -96,4 +96,10 @@ public class EntidadComunicable {
 			}
     }
 	
+	@Override
+	public String toString() {
+		return "EntidadComunicable [id=" + id + ", numero=" + numero + ", nombre=" + nombre + ", iconUrl=" + iconUrl
+				+ ", isNoContact=" + isNoContact + "]";
+	}
+	
 }

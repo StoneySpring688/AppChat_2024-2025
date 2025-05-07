@@ -57,7 +57,7 @@ java -jar ServidorPersistenciaH2/ServidorPersistenciaH2/ServidorPersistenciaH2.j
 ```
 3. Ejecuta la aplicación java ya sea con doble click o en otra terminal usando :
 ```bash
-java -jar AppChat-1.0-beta1-jar-with-dependencies.jar
+java -jar AppChat-1.2-beta3-jar-with-dependencies.jar
 ```
 
 
@@ -72,6 +72,3 @@ Consulta el archivo `TDS-AppChat-Documentacion.pdf` para más detalles técnicos
 ## 🏆 Créditos
 Este proyecto ha sido desarrollado como parte del curso de **Tecnologías de Desarrollo de Software** en la Universidad de Murcia (Curso 2024/2025).
 
-### 👥 Equipo de Desarrollo
-- [StoneySpring688](https://github.com/StoneySpring688)
-- [LuvBluu](https://github.com/LuvBluu)

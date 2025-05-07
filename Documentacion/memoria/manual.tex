@@ -65,13 +65,13 @@ Para añadir un nuevo contacto, el usuario debe pulsar el botón para acceder a 
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/manualDeUsuario/AñadirContacto1.png}
-        \caption*{Pantalla principal}
+        \caption*{Botón de contactos}
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/manualDeUsuario/AñadirContacto2.png}
-        \caption*{Lista de usuarios}
+        \caption*{Lista de contactos}
     \end{minipage}
 \end{figure}
 
@@ -91,7 +91,7 @@ Para crear un nuevo grupo, el usuario debe pulsar el botón para acceder a la li
     \begin{minipage}[b]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{images/manualDeUsuario/HacerGrupo1.png}
-        \caption*{Pantalla principal}
+        \caption*{Botón de grupos}
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.48\textwidth}
@@ -138,33 +138,114 @@ Para acceder a los ajustes, el usuario debe pulsar el botón con forma de engran
     \caption*{Botón de ajustes}
 \end{figure}
 
-Una vez ahí puede seleccionar un contacto o grupo y eliminarlo, o bien modificar su información.
-En el caso de los grupos, solo el administrador del grupo puede eliminarlo o modificar su información.
+Una vez ahí puede seleccionar un contacto para editar su nombre de contacto o eliminarlo de la lista de contactos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.58\textwidth]{images/manualDeUsuario/EditarContactos&Grupos2.png}
+    \caption*{Ajustes de contactos}
+\end{figure}
+
+En el caso de los grupos, solo el administrador del grupo puede eliminarlo o modificar su información, pero no puede abandonar el grupo. 
+Los miembros solo pueden abandonar el grupo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.58\textwidth]{images/manualDeUsuario/EditarContactos&Grupos3.png}
+    \caption*{Ajustes de grupos}
+\end{figure}
+
+\subsection*{8. Buscar mensajes}
+Para buscar mensajes, el usuario debe pulsar el botón correspondiente para acceder a la pantalla de búsqueda.  
+Puede buscar mensajes combinando Número de teléfono, Nombre de contacto y un fragmento de texto.
+
+\begin{itemize}
+    \item Número de teléfono
+    \item Nombre de contacto
+    \item Fragmento de texto
+\end{itemize}
+
+Los resultados se muestran tanto en una lista sin formato para una búsqueda rápida, como en una vista renderizada para una mejor visualización.
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{images/manualDeUsuario/EditarContactos&Grupos2.png}
-        \caption*{Ajustes de contactos}
+        \includegraphics[width=\textwidth]{images/manualDeUsuario/BuscarMensajes1.png}
+        \caption*{Botón de búsqueda}
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{images/manualDeUsuario/EditarContactos&Grupos3.png}
-        \caption*{Ajustes de grupos}
+        \includegraphics[width=\textwidth]{images/manualDeUsuario/BuscarMensajes2.png}
+        \caption*{Pantalla de búsqueda}
     \end{minipage}
 \end{figure}
 
-\subsection*{8. Cerrar sesión}
+\subsection*{9. Cerrar sesión}
+Para cerrar sesión, se debe pulsar el botón de azul en la parte inferior de la pantalla principal.\\
+Esto cerrará la sesión del usuario y lo llevará de nuevo a la pantalla de inicio de sesión.
 
-Para cerrar sesión, se debe pulsar el botón de azul en la parte inferior de la pantalla principal.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.58\textwidth]{images/manualDeUsuario/Logout1.png}
-    \caption*{Botón de cerrar sesión}
+    \begin{minipage}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/manualDeUsuario/Logout1.png}
+        \caption*{Botón de cerrar sesión}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/manualDeUsuario/InicioAplicación.png}
+        \caption*{Pantalla de inicio de sesión}
+    \end{minipage}
 \end{figure}
 
-\subsection*{9. Buscar Mensajes}
-Para buscar mensajes, el usuario debe pulsar el botón para acceder a la pantalla de búsqueda.
+\newpage
 
+\subsection*{10. Comprar Premium}
+Para acceder a la opción de compra de la versión Premium, el usuario debe pulsar el botón de la tienda en la pantalla principal.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.48\textwidth]{images/manualDeUsuario/HacerPremium1.png}
+    \caption*{Botón de tienda}
+\end{figure}
+
+Una vez en la tienda debe elegir una de las opciones disponibles y pulsar el botón \texttt{Buy Premium}.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/manualDeUsuario/HacerPremium2.png}
+        \caption*{Listado de ofertas}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/manualDeUsuario/HacerPremium3.png}
+        \caption*{Pantalla de compra}
+    \end{minipage}
+\end{figure}
+
+\subsection*{11. Exportar mensajes a PDF}
+Para exportar los mensajes a PDF, el usuario debe pulsar el botón \texttt{Export to PDF} en la pantalla de ajustes.\\
+Solo los usuarios premium pueden utilizar esta función.\\
+No está permitido exportar mensajes de grupos, ya que en ellos participan varios usuarios.\\
+El archivo se genera en el directorio base del usuario.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/manualDeUsuario/EditarContactos&Grupos1.png}
+        \caption*{Botón de ajustes}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/manualDeUsuario/ExportarAPDF1.png}
+        \caption*{Botón de exportar a PDF}
+    \end{minipage}
+\end{figure}

@@ -137,4 +137,15 @@ public class Grupo  {
 			}
 	}
 	
+	@Override
+	public String toString() {
+	    return "Grupo{" +
+	            "nombre='" + getNombre() + '\'' +
+	            ", groupID=" + getID() +
+	            ", iconUrl='" + getIconUrl() + '\'' +
+	            ", integrantes=" + getIntegrantes() +
+	            ", admins=" + getAdmins() +
+	            '}';
+	    }
+	
 }
