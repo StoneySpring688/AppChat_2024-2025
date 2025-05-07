@@ -17,7 +17,6 @@ import tds.driver.ServicioPersistencia;
 import umu.tds.AppChat.backend.utils.EntidadComunicable;
 import umu.tds.AppChat.backend.utils.Grupo;
 import umu.tds.AppChat.backend.utils.Usuario;
-import umu.tds.AppChat.controllers.MainController;
 import umu.tds.AppChat.devtools.LoggerUtil;
 
 public class UsuarioDAO implements InterfaceUsuarioDAO{
