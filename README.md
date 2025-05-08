@@ -54,16 +54,14 @@ cd AppChat_2024-2025
 
 ## ▶️ Ejecutar la aplicación
 1. asegurate de estar en el directorio **release** de la aplicación
-2. Ejecuta el siguiente comando :
+2. Según la version de la aplicación, ejecuta el archivo :
+- Windows : *AppChat.bat*
+- Linux : *AppChat.sh*
 
+En Linux puede ser necesario ejecutar el siguiente comando :
 ```bash
-java -jar ServidorPersistenciaH2/ServidorPersistenciaH2/ServidorPersistenciaH2.jar
+chmod +x AppChat.sh
 ```
-3. Ejecuta la aplicación java ya sea con doble click o en otra terminal usando :
-```bash
-java -jar AppChat-*.jar
-```
-
 
 ## 📖 Documentación
 Documentación detallada del proyecto:
